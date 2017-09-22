@@ -1,2 +1,0 @@
-/* In this test it is paramount that the imported stylesheet is under a different url */
-@import url("differentPath/withImage.css");

@@ -1,3 +1,0 @@
-function indentMe() {
-"no, me!";
-}
