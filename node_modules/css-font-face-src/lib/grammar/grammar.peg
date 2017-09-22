@@ -1,0 +1,41 @@
+/*
+ * The @font-face src grammar used. http://www.w3.org/TR/css-fonts-3/#src-desc
+ *
+ * Update the generated parser by running
+ *   $ ./node_modules/.bin/pegjs lib/grammar/grammar.peg lib/grammar/index.js
+ */
+
+{
+  var util = require('../util');
+}
+
+start
+  = sourceEntries
+  / { return []}
+
+sourceEntries
+  = x:sourceEntry whitespace* "," whitespace* xs:sourceEntries { return [x].concat(xs); }
+  / entry:sourceEntry { return [entry]; }
+
+sourceEntry
+  = urlEntry
+  / localEntry
+
+urlEntry
+  = url:url whitespace+ format:format  { return {url: url, format: format}; }
+  / url:url  { return {url: url}; }
+
+url
+  = "url(" value:value ")" { return value; }
+
+format
+  = "format(" value:value ")" { return value; }
+
+localEntry
+  = "local(" value:value ")" { return {local: value}; }
+
+value
+  = chars:[^)]+ { return util.extractValue(chars.join("")); }
+
+whitespace
+  = [ \t\r\n\f]

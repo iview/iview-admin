@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>rasterizeHTML.js example</title>
+    <script type="text/javascript" src="../dist/rasterizeHTML.allinone.js"></script>
+    <style>
+        canvas, textarea {
+            display: block;
+            border: 1px solid gray;
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="200"></canvas>
+
+    <textarea id="input" cols="80" rows="10" style="width: 600px; height: 250px"></textarea>
+
+    <div id="template" style="display: none">
+        You can type HTML into this <span style='color: green'>canvas</span>.
+        In <span style="font-style: italic">Chrome</span> make sure to open the file through a webserver to load the embedded images.
+        <div class="tigerbg">
+            A div with background-image
+        </div>
+        An img: <img src='ghostscript_tiger.png' alt='Tiger'/>
+        <style type="text/css">
+            body {
+                font-size: 16px;
+            }
+            .tigerbg {
+                background: url(ghostscript_tiger.png) no-repeat top right #eef;
+                height: 50px;
+            }
+        </style>
+    </div>
+
+    <script type="text/javascript">
+        var input = document.getElementById("input"),
+            canvas = document.getElementById("canvas"),
+            template = document.getElementById("template"),
+            oldText = input.value;
+
+        var draw = function () {
+            rasterizeHTML.drawHTML(input.value, canvas).then(function (result) {
+                console.log(result);
+            }, function (e) {
+                console.log('An error occured:', e);
+            });
+        };
+
+        input.onkeyup = function () {
+            if (input.value !== oldText) {
+                oldText = input.value;
+                canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+                draw();
+            }
+        };
+
+        if (!input.value) {
+            input.value = template.innerHTML.replace(/^ {8}/gm, "").replace(/^\n/g, "").replace(/\n +$/g, "\n");
+        }
+        draw();
+    </script>
+</body>
+</html>

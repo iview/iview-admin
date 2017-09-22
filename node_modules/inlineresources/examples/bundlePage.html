@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Helper page for bundlePage.js</title>
+    <script type="text/javascript" src="../build/dependencies/xmlserializer.js"></script>
+    <script type="text/javascript" src="../node_modules/ayepromise/ayepromise.js"></script>
+    <script type="text/javascript" src="../dist/inlineresources.allinone.js"></script>
+    <script>
+        var sendMessage = function (cmd, content) {
+            console.log(JSON.stringify({
+                cmd: cmd,
+                content: content
+            }));
+        };
+
+        var loadDocument = function (url) {
+            var ajaxRequest = new window.XMLHttpRequest(),
+                defer = ayepromise.defer(),
+                doReject = function () {
+                    defer.reject({message: "Unable to load page"});
+                };
+
+            ajaxRequest.addEventListener("load", function () {
+                if (ajaxRequest.status === 200 || ajaxRequest.status === 0) {
+                    defer.resolve(ajaxRequest.responseXML);
+                } else {
+                    doReject();
+                }
+            }, false);
+
+            ajaxRequest.addEventListener("error", function () {
+                doReject();
+            }, false);
+
+            try {
+                ajaxRequest.open('GET', url, true);
+                ajaxRequest.responseType = "document";
+                ajaxRequest.send(null);
+            } catch (err) {
+                doReject();
+            }
+
+            return defer.promise;
+        };
+
+        window.bundlePage = function (url) {
+            loadDocument(url).then(function (doc) {
+                inlineresources.inlineReferences(doc, {}).then(function (errors) {
+                    var xhtml;
+
+                    errors.forEach(function (error) {
+                        sendMessage('log', error.msg);
+                    });
+
+                    xhtml = xmlserializer.serializeToString(doc);
+                    sendMessage('done', xhtml);
+                });
+            }, function () {
+                sendMessage('log', "error loading file '" + url + "'");
+            });
+
+        };
+    </script>
+</head>
+<body>
+    <h1>Helper page for bundlePage.js</h1>
+    <p>Example usage:</p>
+    <pre>phantomjs examples/bundlePage.js test/fixtures/image.html</pre>
+    or
+    <pre>slimerjs examples/bundlePage.js test/fixtures/image.html</pre>
+</body>
+</html>

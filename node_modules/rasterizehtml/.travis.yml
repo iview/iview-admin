@@ -1,0 +1,17 @@
+language: node_js
+sudo: false
+node_js:
+  - 6.1
+env:
+  - DISPLAY=:99.0
+before_script:
+  - sh -e /etc/init.d/xvfb start
+deploy:
+  provider: npm
+  email: christoph.burgmer@gmail.com
+  api_key:
+    secure: TxyrJX17vROKy5EMmpQdg161KnFbaesJ4cfKBvEUj8l5c7nfaUFDJm5E122b2st8X+X9e062K9PKLR6qcPBOMrjGMBrm2eLL9ABF0Ulsd93GhiZxmWnoXkitYonK7w7y6zjAzNPunOPJlHzjN1f+BW07YFFPtDtIgVExc5jFR5M=
+  on:
+    tags: true
+    repo: cburgmer/rasterizeHTML.js
+    all_branches: true

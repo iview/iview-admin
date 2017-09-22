@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="browser/parser.js"></script>
+    <script type="text/javascript" src="dist/xmlserializer.js"></script>
+</head>
+<body>
+    <textarea id="input" cols="80" rows="10" style="width: 600px; height: 250px"><p>An HTML document<br>with linebreaks<p>and more paragraphs.</textarea>
+
+    <pre id="output" style="width: 600px; min-height: 250px; white-space: pre-wrap; border: 1px solid grey;"></pre>
+
+    <script type="text/javascript">
+        var input = document.getElementById("input"),
+            output = document.getElementById("output"),
+            oldText = input.value;
+
+        function update() {
+            output.textContent = xmlserializer.serializeToString(parser.parse(input.value));
+        }
+
+        input.onkeyup = function () {
+            if (input.value !== oldText) {
+                oldText = input.value;
+
+                update();
+            }
+        };
+
+        update();
+    </script>
+</body>
+</html>

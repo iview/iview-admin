@@ -1,0 +1,27 @@
+Index: test/index.test.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/index.test.js	(revision 7ab6a2ef7d17e1ebaa9d15e8cf79fc0120c21523)
++++ test/index.test.js	(revision )
+@@ -29,6 +29,7 @@
+ 		}
+ 	});
+ 	test("should not try to resolve import urls", "imports-url");
++	test("should not try to resolve import urls", "imports-url");
+ 	test("should compile data-uri function", "data-uri");
+ 	test("should transform urls", "url-path");
+ 	test("should transform urls to files above the current directory", "folder/url-path");
+Index: test/less/imports-fallback.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/less/imports-fallback.less	(revision )
++++ test/less/imports-fallback.less	(revision )
+@@ -0,0 +1,4 @@
++// This import does not use a tilde to reference the bower_components folder – just like your JS modules.
++// In this case, the less-loader will first try to resolve ./module.less and then module.less. This behavior is pretty
++// similar to how LESS is handling the --inlucde-path option
++@import "module.less";

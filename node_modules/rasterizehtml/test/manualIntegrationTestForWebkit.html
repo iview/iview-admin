@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manual integration test</title>
+        <script src="../build/dependencies/xmlserializer.js"></script>
+        <script src="../build/dependencies/sane-domparser-error.js"></script>
+        <script src="../build/dependencies/url.js"></script>
+        <script src="../build/dependencies/cssmediaquery.js"></script>
+        <script src="../build/dependencies/inlineresources.js"></script>
+        <script src="../node_modules/ayepromise/ayepromise.js"></script>
+        <script src="../src/util.js"></script>
+        <script src="../src/proxies.js"></script>
+        <script src="../src/browser.js"></script>
+        <script src="../src/documentUtil.js"></script>
+        <script src="../src/documentHelper.js"></script>
+        <script src="../src/mediaQueryHelper.js"></script>
+        <script src="../src/document2svg.js"></script>
+        <script src="../src/svg2image.js"></script>
+        <script src="../src/rasterize.js"></script>
+        <script src="../src/index.js"></script>
+
+        <script src="../test/testHelper.js"></script>
+
+        <style type="text/css">
+         canvas,
+         .container {
+             border: 1px solid gray;
+             display: inline-block;
+         }
+        </style>
+    </head>
+    <body>
+        <p>Due to <a href="https://bugs.webkit.org/show_bug.cgi?id=17352">this issue in Webkit</a> (and in older Chromes due to <a href="https://code.google.com/p/chromium/issues/detail?id=294129">this issue in Blink</a>) certain automatic tests that need to read the canvas will fail there and are disabled in those environments. Use these manual tests here instead.</p>
+        <p>
+            Input (hover and click on the black/pink rectangle):<br>
+            <iframe src="fixtures/test.html" style="width: 230px; height: 140px;"></iframe>
+            <iframe src="fixtures/testScaled50PercentWithJs.html" style="width: 200px; height: 100px;"></iframe>
+        </p>
+
+        <p>All five canvases below should show the following image:<br><img src="fixtures/testResult.png" alt="reference image"></p>
+
+        <h3>Test cases</h3>
+
+        <div>
+            <canvas id="documentTestCanvas" width="200" height="100"></canvas>
+            <script type="text/javascript">
+             testHelper.readHTMLDocumentFixture("test.html").then(function (doc) {
+                 rasterizeHTML.drawDocument(doc, documentTestCanvas, {
+                     baseUrl: "fixtures/",
+                     cache: false,
+                     active: '.bgimage',
+                     hover: '.webfont',
+                     clip: 'body'
+                 });
+             });
+            </script>
+        </div>
+
+        <div>
+            <canvas id="htmlTestCanvas" width="200" height="100"></canvas>
+            <script type="text/javascript">
+             testHelper.readHTMLFixture("test.html").then(function (html) {
+                 rasterizeHTML.drawHTML(html, htmlTestCanvas, {
+                     baseUrl: "fixtures/",
+                     cache: false,
+                     active: '.bgimage',
+                     hover: '.webfont',
+                     clip: 'body'
+                 });
+             });
+            </script>
+        </div>
+
+        <div>
+            <canvas id="htmlTestScaled50PercentWithJsCanvas" width="200" height="100"></canvas>
+            <script type="text/javascript">
+             testHelper.readHTMLFixture("testScaled50PercentWithJs.html").then(function (html) {
+                 rasterizeHTML.drawHTML(html, htmlTestScaled50PercentWithJsCanvas, {
+                     baseUrl: "fixtures/",
+                     cache: false,
+                     executeJs: true,
+                     executeJsTimeout: 100,
+                     zoom: 2,
+                     active: '.bgimage',
+                     hover: '.webfont',
+                     focus: 'img',
+                     clip: 'body'
+                 });
+             });
+            </script>
+        </div>
+
+        <div>
+            <canvas id="urlTestScaled50PercentWithJsCanvas" width="200" height="100"></canvas>
+            <script type="text/javascript">
+             rasterizeHTML.drawURL("fixtures/testScaled50PercentWithJs.html", urlTestScaled50PercentWithJsCanvas, {
+                 cache: false,
+                 executeJs: true,
+                 executeJsTimeout: 100,
+                 zoom: 2,
+                 active: '.bgimage',
+                 hover: '.webfont',
+                 focus: 'img',
+                 clip: 'body'
+             });
+            </script>
+        </div>
+
+        <div>
+            <div id="urlTestScaled50PercentWithJsImageContainer" class="container"></div>
+            <script type="text/javascript">
+             rasterizeHTML.drawURL("fixtures/testScaled50PercentWithJs.html", {
+                 cache: false,
+                 executeJs: true,
+                 executeJsTimeout: 100,
+                 zoom: 2,
+                 width: 200,
+                 height: 100,
+                 active: '.bgimage',
+                 hover: '.webfont',
+                 focus: 'img',
+                 clip: 'body'
+             }).then(function (result) {
+                 urlTestScaled50PercentWithJsImageContainer.appendChild(result.image);
+             });
+            </script>
+        </div>
+</body>
+</html>

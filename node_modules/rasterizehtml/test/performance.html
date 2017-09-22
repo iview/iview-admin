@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>rasterizeHTML.js performance test</title>
+    <script src="../build/dependencies/xmlserializer.js"></script>
+    <script src="../build/dependencies/sane-domparser-error.js"></script>
+    <script src="../build/dependencies/url.js"></script>
+    <script src="../build/dependencies/cssmediaquery.js"></script>
+    <script src="../build/dependencies/inlineresources.js"></script>
+    <script src="../node_modules/ayepromise/ayepromise.js"></script>
+    <script src="../src/util.js"></script>
+    <script src="../src/proxies.js"></script>
+    <script src="../src/browser.js"></script>
+    <script src="../src/documentUtil.js"></script>
+    <script src="../src/documentHelper.js"></script>
+    <script src="../src/mediaQueryHelper.js"></script>
+    <script src="../src/document2svg.js"></script>
+    <script src="../src/svg2image.js"></script>
+    <script src="../src/rasterize.js"></script>
+    <script src="../src/index.js"></script>
+</head>
+<body>
+    <pre id="console"></pre>
+    <canvas id="canvas" width="1024" height="768"></canvas>
+
+    <script type="text/javascript">
+        var url = "fixtures/test.html",
+            cache = {};
+
+        var renderPageMultipleTimes = function (count, tick) {
+            var canvas = document.getElementById("canvas");
+            if (count === 0) {
+                return;
+            }
+            return rasterizeHTML.drawURL(url, canvas, {
+                active: '.bgimage',
+                hover: '.webfont',
+                clip: 'body',
+                cacheBucket: cache
+            }).then(function (result) {
+                count -= 1;
+                tick(count, result.errors);
+                return renderPageMultipleTimes(count, tick);
+            });
+        }
+
+        var log = function (msg) {
+            var pre = document.getElementById("console");
+            pre.textContent += msg;
+        };
+
+        var run = function (runs, url) {
+            var startTime = Date.now(),
+                firstStepEndTime;
+
+            log("Running performance test against " + url + " with " + runs + " runs\n");
+
+            renderPageMultipleTimes(runs, function (stepsLeft, errors) {
+                if (stepsLeft === runs - 1) {
+                    firstStepEndTime = Date.now();
+
+                    errors.forEach(function (error) {
+                        console.log(error);
+                    });
+                }
+
+                log(".");
+                if (stepsLeft === 0) {
+                    log("\n");
+                }
+            }).then(function () {
+                var endTime = Date.now();
+
+                log("Results:\n");
+                log(Math.floor((endTime - startTime) / runs) + " milliseconds on average\n");
+                log(Math.floor(firstStepEndTime - startTime) + " milliseconds for first call\n");
+                log(Math.floor((endTime - firstStepEndTime) / (runs - 1)) + " milliseconds on avarage for remaining\n");
+            });
+        };
+
+        run(10, url);
+    </script>
+</body>
+</html>

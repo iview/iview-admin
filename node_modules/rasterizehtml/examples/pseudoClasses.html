@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>rasterizeHTML.js example</title>
+    <script type="text/javascript" src="../dist/rasterizeHTML.allinone.js"></script>
+    <style>
+        canvas, textarea {
+            display: block;
+            border: 1px solid gray;
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="150"></canvas>
+
+    <label>
+        Hover selector:
+        <input type="text" id="hoverSelector" value=".link">
+    </label>
+    <label>
+        Active selector:
+        <input type="text" id="activeSelector">
+    </label>
+    <label>
+        Focus selector:
+        <input type="text" id="focusSelector">
+    </label>
+    <label>
+        Target selector:
+        <input type="text" id="targetSelector">
+    </label>
+    <textarea id="input" cols="80" rows="10" style="width: 600px; height: 350px"></textarea>
+
+    <script type="text/template" id="template">
+        <a href="#" class="link">A link</a>
+        <div><h1>Caption</h1>A div</div>
+
+        <style type="text/css">
+            a {
+                text-decoration: none;
+            }
+            a:hover {
+                color: blue;
+                text-decoration: underline;
+            }
+            a:active {
+                color: green;
+            }
+            a:focus {
+                outline: 3px solid red;
+            }
+            div:target {
+                background: red;
+            }
+            h1:target {
+                color: red;
+            }
+            div:active::after, div:hover::after {
+                font-size: 8px;
+                color: green;
+                content: "hover or active"
+            }
+            body:active {
+                background-color: #ccc;
+            }
+            body {
+                font-size: 16px;
+            }
+        </style>
+    </script>
+
+    <script type="text/javascript">
+        var oldText = input.value;
+
+        var render = function () {
+            var html = input.value,
+                hover = hoverSelector.value,
+                active = activeSelector.value,
+                focus = focusSelector.value,
+                target = targetSelector.value;
+
+            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+            rasterizeHTML.drawHTML(input.value, canvas, {
+                hover: hover,
+                active: active,
+                focus: focus,
+                target: target
+            });
+        };
+
+        input.onkeyup = function () {
+            if (input.value !== oldText) {
+                oldText = input.value;
+                render();
+            }
+        };
+        hoverSelector.onchange = render;
+        activeSelector.onchange = render;
+        focusSelector.onchange = render;
+        targetSelector.onchange = render;
+
+        if (!input.value) {
+            input.value = template.innerHTML.replace(/^ {8}/gm, "").replace(/^\n/g, "").replace(/\n +$/g, "\n");
+        }
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "extends": "standard",
+  "rules": {
+    "padded-blocks": 0,
+    "semi": 0,
+    "curly": 0,
+    "space-before-function-paren": 0,
+    "space-before-blocks": 0,
+    "brace-style": 0,
+    "quotes": 0,
+    "new-cap": 0,
+    "no-multiple-empty-lines": 0,
+    "promise/param-names": 0,
+    "spaced-comment": 0,
+    "yoda": 0,
+    "keyword-spacing": 0,
+    "standard/object-curly-even-spacing": 0,
+    "comma-spacing": 0
+  }
+}

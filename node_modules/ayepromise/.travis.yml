@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - 0.10
+deploy:
+  provider: npm
+  email: christoph.burgmer@gmail.com
+  api_key:
+    secure: EsvyCKvVOxMZDU5yvIGiwpqWTGlHUWZtcFLTaXqdJB4PseJQpDoWohFL+aH/N3cc5DgxwtCTRunwQ1jesGsQb++AWMZ5TeWuYDQXvvU6vs5oGY7wChqb70Ksjbcyp4MIzyUEotfwt+PGlDKPEOb/S3wnBBRjF9m5fWfnS4RjVZQ=
+  on:
+    tags: true
+    repo: cburgmer/ayepromise
+branches:
+  only:
+    - master

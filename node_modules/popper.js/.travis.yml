@@ -1,0 +1,10 @@
+language: node_js
+
+node_js: 5.9.1
+
+before_script:
+    - sudo apt-get install -y chromium-browser xvfb
+    - npm install -g grunt-cli bower
+    - bower install
+
+script: grunt test-ci

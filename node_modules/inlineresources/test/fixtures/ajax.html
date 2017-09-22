@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test page that tries to load content via AJAX</title>
+</head>
+<body>
+    <div>Not loaded yet</div>
+    <script>
+        (function () {
+            var xhr = new window.XMLHttpRequest();
+
+            xhr.addEventListener("load", function () {
+                document.querySelector('div').textContent = xhr.responseText;
+            }, false);
+
+            xhr.open('GET', 'ajaxContent.txt', true);
+            xhr.send(null);
+        }());
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+/* See testScaled50PercentWithJs.html for reference to integrational aspects of this file */
+@font-face {
+    font-family: "RaphaelIcons";
+    src: url('raphaelicons-webfont.woff');
+}
+
+.bgimage:active {
+    background-image: url("rednblue.png");
+    background-size: 100%;
+}
+.webfont {
+    font-family: 'RaphaelIcons';
+    font-size: 10rem;
+    line-height: 100px;
+    color: black;
+}
+.webfont:hover {
+    color: #f52887;
+}

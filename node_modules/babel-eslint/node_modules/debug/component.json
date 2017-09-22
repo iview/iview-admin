@@ -1,0 +1,19 @@
+{
+  "name": "debug",
+  "repo": "visionmedia/debug",
+  "description": "small debugging utility",
+  "version": "3.0.1",
+  "keywords": [
+    "debug",
+    "log",
+    "debugger"
+  ],
+  "main": "src/browser.js",
+  "scripts": [
+    "src/browser.js",
+    "src/debug.js"
+  ],
+  "dependencies": {
+    "rauchg/ms.js": "2.0.0"
+  }
+}

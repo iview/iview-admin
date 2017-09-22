@@ -1,0 +1,19 @@
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- README.md	(revision 9267cb1e8ba19079a651e7c15da4cc92d2808d72)
++++ README.md	(revision )
+@@ -55,9 +55,8 @@
+ 
+ ### LESS plugins
+ 
+-In order to use [plugins](http://lesscss.org/usage/#plugins), simply define
+-the `lessLoader.lessPlugins` option. You can also change the options key
+-with a query parameter: `"less?config=lessLoaderCustom"`.
++In order to use [plugins](http://lesscss.org/usage/#plugins), simply set
++the `lessLoader.lessPlugins`-option on your webpack options. You can also change the options' key with a query parameter: `"less?config=lessLoaderCustom"`.
+ 
+ ``` javascript
+ var LessPluginCleanCSS = require('less-plugin-clean-css');

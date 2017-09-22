@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 'stable'
+  - '0.10'
+  - '0.12'
+before_install:
+  - npm install -g gulp
+after_success:
+  - gulp coveralls

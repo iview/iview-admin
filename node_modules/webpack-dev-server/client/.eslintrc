@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "object-shorthand": ["error", "never"],
+    "prefer-arrow-callback": ["off"],
+    "prefer-template": ["off"]
+  }
+}

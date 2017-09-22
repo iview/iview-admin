@@ -1,0 +1,1 @@
+testHelper.fixturesPath = 'test/fixtures/';

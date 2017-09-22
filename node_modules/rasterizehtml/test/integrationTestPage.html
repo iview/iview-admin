@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smoke test</title>
+    <script src="../dist/rasterizeHTML.allinone.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="200" height="100"></canvas>
+    <script type="text/javascript">
+        var canvas = document.getElementById("canvas");
+
+        rasterizeHTML.drawURL("fixtures/testScaled50PercentWithJs.html", canvas, {
+            cache: false,
+            executeJs: true,
+            executeJsTimeout: 100,
+            zoom: 2,
+            active: '.bgimage',
+            hover: '.webfont',
+            focus: 'img',
+            clip: 'body'
+        }).then(function (result) {
+            if (result.errors.length > 0) {
+                console.log("Could not load the following resources: ", errors.map(function (e) {
+                    return e.msg;
+                }).join(', '));
+            }
+        }, function (err) {
+            console.error(err);
+        });
+    </script>
+</body>
+</html>

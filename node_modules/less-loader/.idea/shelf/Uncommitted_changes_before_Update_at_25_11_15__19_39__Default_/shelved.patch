@@ -1,0 +1,35 @@
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- README.md	(revision 41c6caf2d20afea537a7202858bdff5a17728ef1)
++++ README.md	(revision )
+@@ -55,9 +55,8 @@
+ 
+ ### LESS plugins
+ 
+-In order to use [plugins](http://lesscss.org/usage/#plugins), simply define
+-the `lessLoader.lessPlugins` option. You can also change the options key
+-with a query parameter: `"less?config=lessLoaderCustom"`.
++In order to use [plugins](http://lesscss.org/usage/#plugins), simply set
++the `lessLoader.lessPlugins`-option on your webpack options. You can also change the options' key with a query parameter: `"less?config=lessLoaderCustom"`.
+ 
+ ``` javascript
+ var LessPluginCleanCSS = require('less-plugin-clean-css');
+Index: .editorconfig
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .editorconfig	(revision 41c6caf2d20afea537a7202858bdff5a17728ef1)
++++ .editorconfig	(revision )
+@@ -9,7 +9,7 @@
+ end_of_line = lf
+ insert_final_newline = true
+ indent_style = tab
+-indent_size = 2
++indent_size = 4
+ 
+ # Matches the exact files either package.json or .travis.yml
+ [{package.json,.travis.yml}]

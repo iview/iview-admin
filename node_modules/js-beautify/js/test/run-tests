@@ -1,0 +1,17 @@
+#!/usr/bin/spidermonkey-1.7 -s
+
+//#!/usr/bin/js
+
+// a little helper for testing from command line
+// just run it, it will output the test results
+
+load('js/lib/beautify.js');
+load('js/test/sanitytest.js')
+load('js/test/beautify-tests.js')
+load('js/lib/unpackers/urlencode_unpacker.js')
+
+print(run_beautifier_tests(new SanityTest(), Urlencoded, js_beautify).results_raw())
+
+
+// for nodejs use this from the command line from the main directory:
+// node test/beautify-tests.js

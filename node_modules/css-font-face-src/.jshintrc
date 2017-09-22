@@ -1,0 +1,28 @@
+{
+  "bitwise": true,
+  "indent": 4,
+  "camelcase": false,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "laxbreak": true,
+  "newcap": true,
+  "noarg": true,
+  "regexp": true,
+  "undef": true,
+  "unused": true,
+  "trailing": true,
+  "smarttabs": true,
+
+  "globals": {
+    "require": false,
+    "exports": false,
+
+    "jasmine": false,
+    "expect": false,
+    "it": false,
+    "describe": false,
+    "beforeEach": false
+  }
+}

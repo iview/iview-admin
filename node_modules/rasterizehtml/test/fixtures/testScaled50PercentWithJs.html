@@ -1,0 +1,70 @@
+<!--
+This integration test includes a bunch of different aspects (list not exhaustive):
+
+* Mixed letter-case for type selectors (by tag names)
+* Mixed letter-case for class name selectors
+* Size in 'rem'
+* JavaScript code
+* Delayed JS execution
+* JS-based media queries matching the viewport
+* CSS-based media queries matching the viewport
+* External image
+* External JS + CSS
+* CSS @import
+* External webfont
+* External background image
+* :active and :hover style
+* Scollbar shown on Chrome under Linux when html element is set to overflow: scoll
+
+Together with external parameters:
+* Zooming
+* Clipping
+-->
+<html>
+<head>
+    <title>Test page with full resource includes, scaled and styling hidden behind hover/active selectors + JS</title>
+    <link rel="stylesheet" type="text/css" href="import_test.css"/>
+    <style type="text/css">
+        .teST {
+            margin: 0;
+            padding: 0;
+            vertical-align: top;
+            position: relative; /* Reproduce https://github.com/cburgmer/rasterizeHTML.js/pull/109 */
+        }
+        div.teST {
+            float: left;
+            width: 50px;
+            height: 50px;
+        }
+        /* Catch https://bugzilla.mozilla.org/show_bug.cgi?id=986403 */
+        @media (max-width: 200px) {
+            .webfont {
+                font-size: 5rem;
+                line-height: 5rem;
+            }
+        }
+        HTmL {
+            padding: 20px 17px 4px 12px;
+            background-color: orange;
+            font-size: 10px;
+
+            /* Force rendering on same line, esp. for Firefox on Linux */
+            width: 100px;
+            overflow: hidden;
+        }
+        img {
+            opacity: 0.1;
+        }
+        img:focus {
+            opacity: 1;
+        }
+        html { overflow-y: scroll; }
+    </style>
+</head>
+<body class="teST">
+    <div class="teST">
+        <img class="teST" src="green.png" width="50" height="50" alt="green image"/>
+    </div>
+    <script src="testWithJs.js"></script>
+</body>
+</html>

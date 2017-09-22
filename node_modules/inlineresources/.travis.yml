@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 6.1
+env:
+  - DISPLAY=:99.0
+before_script:
+  - sh -e /etc/init.d/xvfb start
+after_failure:
+  - echo 'Uploading result of integration test to clbin.com'
+  - cat build/tests/github.xhtml | curl -F 'clbin=<-' https://clbin.com
+deploy:
+  provider: npm
+  email: christoph.burgmer@gmail.com
+  api_key:
+    secure: Fh6GXU/d4fcBLvdjyQLexgRIqoqj8aaevYBAf7xca6dvS5tDZmmzo3VD7c18Ebe30tpb8l3yDaifoblLf0t6IVaTm2e0OCIIx9h9MO+IFF2g/kHK4AxgWJqNFJZYxIrvy8qZSKpVOL66Wh0swWAXrsyzycYznWc7VF1Kr/Y+nQc=
+  on:
+    tags: true
+    repo: cburgmer/inlineresources
+    all_branches: true

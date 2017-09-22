@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>Test page with full resource includes, scaled and styling hidden behind hover/active selectors</title>
+    <link rel="stylesheet" type="text/css" href="import_test.css"/>
+    <style type="text/css">
+        .teST {
+            margin: 0;
+            padding: 0;
+            vertical-align: top;
+        }
+        div.teST {
+            float: left;
+            width: 100px;
+            height: 100px;
+        }
+        html {
+            padding: 20px 17px 4px 12px;
+            background-color: orange;
+            font-size: 10px;
+
+            /* Force rendering on same line, esp. for Firefox on Linux */
+            width: 200px;
+            overflow: hidden;
+        }
+        body:after {
+            clear: both;
+            content: '';
+            display:block;
+        }
+    </style>
+</head>
+<body class="teST">
+    <div class="teST">
+        <img class="teST" src="green.png" width="100" height="100" alt="green image"/>
+    </div>
+    <div class="bgimage webfont teST">
+        A
+    </div>
+</body>
+</html>
