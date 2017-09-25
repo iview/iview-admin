@@ -8,7 +8,7 @@
             @on-close="closePage"
             @click.native="linkTo(item.name)"
             :closable="item.name==='home_index'?false:true"
-            :color="item.children?(item.children[0].name===currentPageName?'blue':false):(item.name===currentPageName?'blue':false)"
+            :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
         >{{ item.title }}</Tag>
     </div>
 </template>

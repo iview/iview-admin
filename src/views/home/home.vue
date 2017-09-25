@@ -104,7 +104,7 @@
                             <Col span="10">12</Col>
                             <Col span="14" class="map-incon">
                                 <Row type="flex" justify="center" align="middle">
-                                    <!-- <home-map></home-map> -->
+                                    <home-map></home-map>
                                 </Row>
                             </Col>
                         </Row>

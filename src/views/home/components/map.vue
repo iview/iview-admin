@@ -4,16 +4,26 @@
 
 <script>
 
-import data from '../map-data/get-city-value.js';
+import cityData from '../map-data/get-city-value.js';
 import geoData from '../map-data/get-geography-value.js';
 import styleJson from '../map-data/get-style-json.js';
+const path = require('path');
+const axios = require('axios');
 
 import echarts from 'echarts';
-require('echarts/extension/bmap/bmap');
 
-var convertData = function (data) {
-            var res = [];
-            for (var i = 0; i < data.length; i++) {
+export default {
+    name: 'homeMap',
+    mounted () {
+        //const mapCharts = echarts.init(document.getElementById('home_page_map'));
+        // this.$nextTick(() => {
+        //     mapCharts.setOption(option)
+        // })
+        var convertData = function (data) {
+            let res = [];
+            let len = data.length;
+            console.log(len)
+            for (var i = 0; i < len; i++) {
                 var geoCoord = geoData[data[i].name];
                 if (geoCoord) {
                     res.push({
@@ -25,29 +35,34 @@ var convertData = function (data) {
             return res;
         };
 
-        const option = {
-            title: {
-                text: '今日流量地理分布',
-                left: 'center'
-            },
-            tooltip : {
-                trigger: 'item'
-            },
-            bmap: {
-                center: [104.114129, 37.550339],
-                zoom: 5,
-                roam: true,
-                mapStyle: {
-                    styleJson: styleJson
-                }
-            },
-            series : [
-                {
-                    name: 'pm2.5',
+        var map = echarts.init(document.getElementById('home_page_map'));
+        const map_path = path.join(__dirname, './src/views/home/map-data/china.json');
+        axios.get(map_path).then((chinaJson) => {
+            echarts.registerMap('china', chinaJson.data);
+            map.setOption({
+                backgroundColor: '#FFF',
+                geo: {
+                    map: 'china',
+                    label: {
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#EFEFEF',
+                            borderColor: '#CCC'
+                        },
+                        emphasis: {
+                            areaColor: '#E5E5E5'
+                        }
+                    }
+                },
+                series: [{
                     type: 'scatter',
-                    coordinateSystem: 'bmap',
-                    data: convertData(data),
-                    symbolSize: function (val) {
+                    coordinateSystem: 'geo',
+                    data: convertData(cityData),
+                    symbolSize: function(val) {
                         return val[2] / 10;
                     },
                     label: {
@@ -62,18 +77,18 @@ var convertData = function (data) {
                     },
                     itemStyle: {
                         normal: {
-                            color: 'purple'
+                            color: '#0099CC'
                         }
                     }
                 },
                 {
                     name: 'Top 5',
                     type: 'effectScatter',
-                    coordinateSystem: 'bmap',
-                    data: convertData(data.sort(function (a, b) {
+                    coordinateSystem: 'geo',
+                    data: convertData(cityData.sort(function(a, b) {
                         return b.value - a.value;
                     }).slice(0, 6)),
-                    symbolSize: function (val) {
+                    symbolSize: function(val) {
                         return val[2] / 10;
                     },
                     showEffectOn: 'render',
@@ -90,23 +105,16 @@ var convertData = function (data) {
                     },
                     itemStyle: {
                         normal: {
-                            color: 'purple',
+                            color: '#0099CC',
                             shadowBlur: 10,
-                            shadowColor: '#fff'
+                            shadowColor: '#333'
                         }
                     },
                     zlevel: 1
-                }
-            ]
-        };
+                }]
 
-export default {
-    name: 'homeMap',
-    mounted () {
-        const mapCharts = echarts.init(document.getElementById('home_page_map'));
-        this.$nextTick(() => {
-            mapCharts.setOption(option)
-        })
+            });
+        }) 
     }
 }
 </script>
