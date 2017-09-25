@@ -100,6 +100,10 @@
                 </Row>
                 <Row class="margin-top-10">
                     <Card :padding="0">
+                        <p slot="title" class="card-title">
+                            <Icon type="map"></Icon>
+                            今日流量地理分布
+                        </p>
                         <Row class="map-con">
                             <Col span="10">12</Col>
                             <Col span="14" class="map-incon">
@@ -268,7 +272,7 @@ export default {
     background-color: #f25e43;
 }
 .map-con{
-    height: 355px;
+    height: 305px;
 }
 .map-incon{
     height: 100%;

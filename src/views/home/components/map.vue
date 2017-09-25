@@ -1,5 +1,5 @@
 <template>
-    <div style="width:calc(100% - 10px);height:345px;margin-top:5px;" id="home_page_map"></div>
+    <div style="width:calc(100% - 10px);height:305px;" id="home_page_map"></div>
 </template>
 
 <script>
@@ -36,13 +36,13 @@ export default {
             echarts.registerMap('china', chinaJson.data);
             map.setOption({
                 backgroundColor: '#FFF',
-                title: {
-                    text: "今日流量地理分布",
-                    left: "center",
-                    textStyle: {
-                        color: '#2d8cf0'
-                    }
-                },
+                // title: {
+                //     text: "今日流量地理分布",
+                //     left: "center",
+                //     textStyle: {
+                //         color: '#2d8cf0'
+                //     }
+                // },
                 geo: {
                     map: 'china',
                     label: {
@@ -64,7 +64,7 @@ export default {
                     top: 0,
                     left: '2%',
                     right: '2%',
-                    bottom: '2%',
+                    bottom: '0',
                     containLabel: true
                 },
                 series: [{
