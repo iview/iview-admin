@@ -7,8 +7,8 @@
             :name="item.name" 
             @on-close="closePage"
             @click.native="linkTo(item.name)"
-            :closable="item.name==='home'?false:true"
-            :color="item.children?(item.children[0].name===currentPageName?'blue':'yellow'):(item.name===currentPageName?'blue':'yellow')"
+            :closable="item.name==='home_index'?false:true"
+            :color="item.children?(item.children[0].name===currentPageName?'blue':false):(item.name===currentPageName?'blue':false)"
         >{{ item.title }}</Tag>
     </div>
 </template>
@@ -51,7 +51,6 @@ export default {
             this.$router.push({
                 name: name
             });
-            console.log(this.$store.state.pageOpenedList)
         },
         // tagColor (item) {
         //     return item.children?

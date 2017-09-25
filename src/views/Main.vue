@@ -34,8 +34,9 @@
     .layout-header{
         height: 60px;
         background: #fff;
-        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+        box-shadow: 0 2px 1px 1px rgba(100,100,100,.1);
         position: relative;
+        z-index: 10;
     }
     .navicon-con{
         margin: 6px;
@@ -66,14 +67,18 @@
     .tags-con{
         height: 40px;
         padding: 2px 10px;
+        z-index: -1;
     }
     .single-page-con{
         position: absolute;
+        padding: 10px;
         top: 40px;
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: white;
+        background-color: #F0F0F0;
+        overflow: auto;
+        box-shadow: 0 -2px 1px 1px rgba(100,100,100,.1);
     }
 </style>
 <template>

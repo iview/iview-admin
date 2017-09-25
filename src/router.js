@@ -24,7 +24,7 @@ export const app_router = [
     {
         path: '/access',
         redirect: '/access/index',
-        icon: 'search',
+        icon: 'key',
         name: 'access',
         title: '权限管理',
         component: Main,
@@ -35,7 +35,7 @@ export const app_router = [
     {
         path: '/icons',
         redirect: '/icons/index',
-        icon: 'search',
+        icon: 'information-circled',
         name: 'icons',
         title: 'Icon图标',
         component: Main,
@@ -45,25 +45,48 @@ export const app_router = [
     },
     {
         path: '/component',
-        icon: 'search',
+        icon: 'social-buffer',
         name: 'component',
         title: '组件',
         component: Main,
         children: [
             {
                 path: 'text-editor',
-                icon: 'search',
+                icon: 'compose',
                 name: 'text-editor',
                 title: '富文本编辑器',
                 component: require('./views/my_components/text-editor.vue')
             },
             {
                 path: 'avatar-editor',
-                icon: 'search',
+                icon: 'ios-crop-strong',
                 name: 'avatar-editor',
                 title: '头像编辑器',
                 component: require('./views/my_components/avator-editor.vue')
             }
+        ]
+    },
+    {
+        path: '/form',
+        redirect: '/form/index',
+        icon: 'android-list',
+        name: 'form',
+        title: 'Form表单',
+        component: Main,
+        children: [
+            { path: 'index', title: 'Form表单', name: 'form_index', component: require('./views/icons/icons.vue') }
+        ]
+    },
+    {
+        path: '/charts',
+        icon: 'ios-analytics',
+        name: 'charts',
+        title: '图表',
+        component: Main,
+        children: [
+            { path: 'pie', title: '饼状图', name: 'pie',icon: 'ios-pie', component: require('./views/icons/icons.vue') },
+            { path: 'histogram', title: '柱状图', name: 'histogram',icon: 'stats-bars', component: require('./views/icons/icons.vue') }
+            
         ]
     }
 ]
