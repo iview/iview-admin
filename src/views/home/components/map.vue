@@ -15,14 +15,9 @@ import echarts from 'echarts';
 export default {
     name: 'homeMap',
     mounted () {
-        //const mapCharts = echarts.init(document.getElementById('home_page_map'));
-        // this.$nextTick(() => {
-        //     mapCharts.setOption(option)
-        // })
         var convertData = function (data) {
             let res = [];
             let len = data.length;
-            console.log(len)
             for (var i = 0; i < len; i++) {
                 var geoCoord = geoData[data[i].name];
                 if (geoCoord) {
@@ -41,6 +36,13 @@ export default {
             echarts.registerMap('china', chinaJson.data);
             map.setOption({
                 backgroundColor: '#FFF',
+                title: {
+                    text: "今日流量地理分布",
+                    left: "center",
+                    textStyle: {
+                        color: '#2d8cf0'
+                    }
+                },
                 geo: {
                     map: 'china',
                     label: {
@@ -57,6 +59,13 @@ export default {
                             areaColor: '#E5E5E5'
                         }
                     }
+                },
+                grid: {
+                    top: 0,
+                    left: '2%',
+                    right: '2%',
+                    bottom: '2%',
+                    containLabel: true
                 },
                 series: [{
                     type: 'scatter',
@@ -115,6 +124,9 @@ export default {
 
             });
         }) 
+        window.addEventListener( 'resize', function(){
+            map.resize();
+        } )
     }
 }
 </script>

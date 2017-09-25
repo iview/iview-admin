@@ -69,6 +69,10 @@ export default {
             };
 
             visiteVolume.setOption(option);
+
+            window.addEventListener('resize', function(){
+                visiteVolume.resize();
+            })
         }) 
     }
 }

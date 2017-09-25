@@ -23,7 +23,7 @@ export default {
             grid: {
                 top: '3%',
                 left: '1.2%',
-                right: '4%',
+                right: '1%',
                 bottom: '3%',
                 containLabel: true
             },
@@ -98,11 +98,8 @@ export default {
         const serviceRequestCharts = echarts.init(document.getElementById('service_request_con'));
         serviceRequestCharts.setOption(option)
 
-        this.$nextTick( () => {
-            // setInterval(function () {
-            //     addData(true);
-                
-            // }, 500);
+        window.addEventListener('resize', function(){
+            serviceRequestCharts.resize();
         })
         
     }

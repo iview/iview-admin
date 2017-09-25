@@ -113,7 +113,7 @@
             </Col>
         </Row>
         <Row class="margin-top-10">
-            <Col span="16">
+            <Col span="8">
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
@@ -132,6 +132,17 @@
                     </p>
                     <Row class="data-source-row">
                         <data-source-pie></data-source-pie>
+                    </Row>
+                </Card>
+            </Col>
+            <Col span="8" class="padding-left-10">
+                <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="android-wifi"></Icon>
+                        各类用户服务调用变化统计
+                    </p>
+                    <Row class="data-source-row">
+                        <user-flow></user-flow>
                     </Row>
                 </Card>
             </Col>
@@ -156,13 +167,15 @@ import homeMap from './components/map.vue';
 import dataSourcePie from './components/dataSourcePie.vue';
 import visiteVolume from './components/visiteVolume.vue';
 import serviceRequests from './components/serviceRequests.vue';
+import userFlow from './components/userFlow.vue';
 
 export default {
     components: {
         homeMap,
         dataSourcePie,
         visiteVolume,
-        serviceRequests
+        serviceRequests,
+        userFlow
     },
     data () {
         return {

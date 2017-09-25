@@ -15,6 +15,8 @@ export default {
     mounted () {
         this.$nextTick( () => {
             var dataSourcePie = echarts.init(document.getElementById('data_source_con'));
+            
+            
 
             const option = {
                 tooltip : {
@@ -23,7 +25,7 @@ export default {
                 },
                 legend: {
                     orient: 'vertical',
-                    left: 'left',
+                    left: 'right',
                     data: ['ios','android','pc','web','others']
                 },
                 series : [
@@ -50,6 +52,9 @@ export default {
                 ]
             };
             dataSourcePie.setOption(option);
+            window.addEventListener('resize', function(){
+                dataSourcePie.resize();
+            })
         }) 
     }
 }
