@@ -1,13 +1,11 @@
 npm-debug.log
 node_modules
 .project
-README.md
 .vscode
 .history
 buy.html
 show.html
 cart.html
-index.html
 order.html
 details.html
 dist/
