@@ -57,7 +57,17 @@
                                         <Icon type="android-person-add" :size="40"></Icon>
                                     </Row>
                                 </Col>
-                                <Col span="8"></Col>
+                                <Col span="16" class="height-100">
+                                    <Row type="flex" align="middle" justify="center" class="height-100">
+                                        <count-up 
+                                            class="infor-card-count user-created-count" 
+                                            id-name="user_created_count" 
+                                            :end-val="count.createUser" 
+                                        >
+                                            <p class="infor-intro-text" slot="intro">今日新增用户</p>
+                                        </count-up>
+                                    </Row>
+                                </Col>
                             </Row>
                         </Card>
                     </Col>
@@ -69,7 +79,17 @@
                                         <Icon type="ios-eye" :size="54"></Icon>
                                     </Row>
                                 </Col>
-                                <Col span="8"></Col>
+                                <Col span="16" class="height-100">
+                                    <Row type="flex" align="middle" justify="center" class="height-100">
+                                        <count-up 
+                                            class="infor-card-count visit-count" 
+                                            id-name="visit_count" 
+                                            :end-val="count.visit" 
+                                        >
+                                            <p class="infor-intro-text" slot="intro">今日浏览量</p>
+                                        </count-up>
+                                    </Row>
+                                </Col>
                             </Row>
                         </Card>
                     </Col>
@@ -81,7 +101,17 @@
                                         <Icon type="upload" :size="46"></Icon>
                                     </Row>
                                 </Col>
-                                <Col span="8"></Col>
+                                <Col span="16" class="height-100">
+                                    <Row type="flex" align="middle" justify="center" class="height-100">
+                                        <count-up 
+                                            class="infor-card-count collection-count" 
+                                            id-name="collection_count" 
+                                            :end-val="count.collection" 
+                                        >
+                                            <p class="infor-intro-text" slot="intro">今日数据采集量</p>
+                                        </count-up>
+                                    </Row>
+                                </Col>
                             </Row>
                         </Card>
                     </Col>
@@ -93,7 +123,17 @@
                                         <Icon type="shuffle" :size="38"></Icon>
                                     </Row>
                                 </Col>
-                                <Col span="8"></Col>
+                                <Col span="16" class="height-100">
+                                    <Row type="flex" align="middle" justify="center" class="height-100">
+                                        <count-up 
+                                            class="infor-card-count transfer-count" 
+                                            id-name="transfer_count" 
+                                            :end-val="count.transfer" 
+                                        >
+                                            <p class="infor-intro-text" slot="intro">今日服务调用量</p>
+                                        </count-up>
+                                    </Row>
+                                </Col>
                             </Row>
                         </Card>
                     </Col>
@@ -108,7 +148,7 @@
                             <Col span="10">12</Col>
                             <Col span="14" class="map-incon">
                                 <Row type="flex" justify="center" align="middle">
-                                    <home-map></home-map>
+                                    <!-- <home-map></home-map> -->
                                 </Row>
                             </Col>
                         </Row>
@@ -124,7 +164,7 @@
                         上周每日来访量统计
                     </p>
                     <Row class="data-source-row">
-                        <visite-volume></visite-volume>
+                        <!-- <visite-volume></visite-volume> -->
                     </Row>
                 </Card>
             </Col>
@@ -135,7 +175,7 @@
                         数据来源统计
                     </p>
                     <Row class="data-source-row">
-                        <data-source-pie></data-source-pie>
+                        <!-- <data-source-pie></data-source-pie> -->
                     </Row>
                 </Card>
             </Col>
@@ -146,7 +186,7 @@
                         各类用户服务调用变化统计
                     </p>
                     <Row class="data-source-row">
-                        <user-flow></user-flow>
+                        <!-- <user-flow></user-flow> -->
                     </Row>
                 </Card>
             </Col>
@@ -158,7 +198,7 @@
                     上周每日服务调用量(万)
                 </p>
                 <Row class="line-chart-con">
-                    <service-requests></service-requests>
+                    <!-- <service-requests></service-requests> -->
                 </Row>
             </Card>
         </Row>
@@ -172,6 +212,7 @@ import dataSourcePie from './components/dataSourcePie.vue';
 import visiteVolume from './components/visiteVolume.vue';
 import serviceRequests from './components/serviceRequests.vue';
 import userFlow from './components/userFlow.vue';
+import countUp from './components/countUp.vue';
 
 export default {
     components: {
@@ -179,7 +220,8 @@ export default {
         dataSourcePie,
         visiteVolume,
         serviceRequests,
-        userFlow
+        userFlow,
+        countUp
     },
     data () {
         return {
@@ -204,13 +246,30 @@ export default {
                     title: '去iView官网学习完整的iView组件',
                     time: '1506257011'
                 }
-            ]
+            ],
+            count: {
+                createUser: 496,
+                visit: 3264,
+                collection: 24389305,
+                transfer: 39503498
+            }
         }
     },
     methods: {
         addNewToDoItem () {
             console.log(123)
+        },
+        init () {
+            setInterval( () => {
+                this.count.createUser += parseInt(Math.random()*10);
+                this.count.visit += parseInt(Math.random()*100);
+                this.count.collection += parseInt(Math.random()*10000);
+                this.count.transfer += parseInt(Math.random()*100000);
+            },2000)
         }
+    },
+    mounted () {
+        this.init()
     }
 }
 </script>
@@ -259,17 +318,39 @@ export default {
 .infor-card-icon-row{
     height: 100%;
 }
+.infor-card-count{
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+.infor-intro-text{
+    font-size:12px;
+    font-weight:500;
+    color:#C8C8C8;
+}
 .infor-card-icon-con1{
     background-color: #2d8cf0;
+}
+.user-created-count{
+    color: #2d8cf0;
 }
 .infor-card-icon-con2{
     background-color: #64d572;
 }
+.visit-count{
+    color: #64d572;
+}
 .infor-card-icon-con3{
     background-color: #ffd572;
 }
+.collection-count{
+    color: #ffd572;
+}
 .infor-card-icon-con4{
     background-color: #f25e43;
+}
+.transfer-count{
+    color: #f25e43;
 }
 .map-con{
     height: 305px;
@@ -303,6 +384,9 @@ export default {
 }
 .padding-left-10{
     padding-left: 10px;
+}
+.height-100{
+    height: 100%;
 }
 .line-gray{
     height: 0;
