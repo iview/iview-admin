@@ -74,7 +74,7 @@ export const app_router = [
         title: 'Form表单',
         component: Main,
         children: [
-            { path: 'index', title: 'Form表单', name: 'form_index', component: require('./views/icons/icons.vue') }
+            { path: 'index', title: 'Form表单', name: 'form_index', component: require('./views/form/form.vue') }
         ]
     },
     {
