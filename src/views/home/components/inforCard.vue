@@ -3,7 +3,7 @@
         <Row class="infor-card-con">
             <Col class="infor-card-icon-con" :style="{backgroundColor: color, color: 'white'}" span="8">
                 <Row class="height-100" type="flex" align="middle" justify="center">
-                    <Icon :type="iconType" :size="40"></Icon>
+                    <Icon :type="iconType" :size="iconSize"></Icon>
                 </Row>
             </Col>
             <Col span="16" class="height-100">
@@ -45,6 +45,10 @@ export default {
         countWeight: {
             type: Number,
             default: 700
+        },
+        iconSize: {
+            type: Number,
+            default: 40
         }
     }
 }

@@ -65,6 +65,7 @@
                             :end-val="count.visit"
                             iconType="ios-eye"
                             color="#64d572"
+                            :iconSize="50"
                             intro-text="今日浏览量"
                         ></infor-card>
                     </Col>
