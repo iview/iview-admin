@@ -41,8 +41,14 @@ export default {
     props: {
         idName: String,
         className: String,
-        startVal: Number,
-        endVal: Number,
+        startVal: {
+            type: Number,
+            default: 0
+        },
+        endVal: {
+            type: Number,
+            required: true
+        },
         decimals: {
             type: Number,
             default: 0

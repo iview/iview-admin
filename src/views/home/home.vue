@@ -265,7 +265,7 @@ export default {
                 this.count.visit += parseInt(Math.random()*100);
                 this.count.collection += parseInt(Math.random()*10000);
                 this.count.transfer += parseInt(Math.random()*100000);
-            },2000)
+            },10000)
         }
     },
     mounted () {
