@@ -21,11 +21,11 @@
                         </Row>
                         <div class="line-gray"></div>
                         <Row class="margin-top-8">
-                            <Col span="8">上次登录时间:</Col>
+                            <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
                             <Col span="16" class="padding-left-8">2017.09.12-13:32:20</Col>
                         </Row>
                         <Row class="margin-top-8">
-                            <Col span="8">上次登录地点:</Col>
+                            <Col span="8"><p class="notwrap">上次登录地点:</p></Col>
                             <Col span="16" class="padding-left-8">北京</Col>
                         </Row>
                     </Card>
@@ -39,9 +39,22 @@
                         <a type="text" slot="extra" @click.prevent="addNewToDoItem">
                             <Icon type="plus-round"></Icon>
                         </a>
+                        <Modal
+                            v-model="showAddNewTodo"
+                            title="添加新的待办事项"
+                            @on-ok="addNew"
+                            @on-cancel="cancelAdd">
+                            <Row type="flex" justify="center">
+                                <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px" />
+                            </Row>
+                            <Row slot="footer">
+                                <Button type="text" @click="cancelAdd">取消</Button>
+                                <Button type="primary" @click="addNew">确定</Button>
+                            </Row>
+                        </Modal>
                         <Row class="to-do-list-con">
                             <Row v-for="(item, index) in toDoList" :key="index" class="to-do-item">
-                                <Checkbox :v-model="index">{{ item.title }}</Checkbox>
+                                <to-do-list-item :content="item.title"></to-do-list-item>
                             </Row>
                         </Row>
                     </Card>
@@ -50,14 +63,13 @@
             <Col span="16" class-name="padding-left-5">
                 <Row>
                     <Col span="6">
-                            <infor-card
-                                id-name="user_created_count"
-                                :end-val="count.createUser"
-                                iconType="android-person-add"
-                                color="#2d8cf0"
-                                intro-text="今日新增用户"
-                            ></infor-card>
-                        
+                        <infor-card
+                            id-name="user_created_count"
+                            :end-val="count.createUser"
+                            iconType="android-person-add"
+                            color="#2d8cf0"
+                            intro-text="今日新增用户"
+                        ></infor-card>
                     </Col>
                     <Col span="6" class-name="padding-left-5">
                         <infor-card
@@ -168,6 +180,7 @@ import userFlow from './components/userFlow.vue';
 import countUp from './components/countUp.vue';
 import inforCard from './components/inforCard.vue';
 import mapDataTable from './components/mapDataTable.vue';
+import toDoListItem from './components/toDoListItem.vue';
 
 export default {
     components: {
@@ -178,30 +191,26 @@ export default {
         userFlow,
         countUp,
         inforCard,
-        mapDataTable
+        mapDataTable,
+        toDoListItem
     },
     data () {
         return {
             toDoList:[
                 {
-                    title: '去iView官网学习完整的iView组件只是打发斯蒂芬斯蒂芬斯蒂芬斯蒂芬',
-                    time: '1506257011'
+                    title: '去iView官网学习完整的iView组件'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件',
-                    time: '1506257011'
+                    title: '去iView官网学习完整的iView组件'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件',
-                    time: '1506257011'
+                    title: '去iView官网学习完整的iView组件'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件',
-                    time: '1506257011'
+                    title: '去iView官网学习完整的iView组件'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件',
-                    time: '1506257011'
+                    title: '去iView官网学习完整的iView组件'
                 }
             ],
             count: {
@@ -210,12 +219,31 @@ export default {
                 collection: 24389305,
                 transfer: 39503498
             },
-            cityData: cityData
+            cityData: cityData,
+            showAddNewTodo: false,
+            newToDoItemValue: ''
         }
     },
     methods: {
         addNewToDoItem () {
-            console.log(123)
+            this.showAddNewTodo = true;
+        },
+        addNew () {
+            if(this.newToDoItemValue.length !== 0){
+                this.toDoList.unshift({
+                    title: this.newToDoItemValue
+                });
+                setTimeout(function() {
+                    this.newToDoItemValue = ''
+                }, 200);
+                this.showAddNewTodo = false;
+            } else {
+                this.$Message.error('请输入待办事项内容');
+            }
+        },
+        cancelAdd () {
+            this.showAddNewTodo = false;
+            this.newToDoItemValue = '';
         },
         init () {
             setInterval( () => {
@@ -344,5 +372,11 @@ export default {
 .line-gray{
     height: 0;
     border-bottom: 2px solid #dcdcdc;
+}
+.notwrap{
+    word-break:keep-all; 
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>
