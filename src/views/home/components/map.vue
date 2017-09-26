@@ -4,7 +4,7 @@
 
 <script>
 
-import cityData from '../map-data/get-city-value.js';
+//import cityData from '../map-data/get-city-value.js';
 import geoData from '../map-data/get-geography-value.js';
 import styleJson from '../map-data/get-style-json.js';
 const path = require('path');
@@ -14,6 +14,9 @@ import echarts from 'echarts';
 
 export default {
     name: 'homeMap',
+    props: {
+        cityData: Array
+    },
     mounted () {
         var convertData = function (data) {
             let res = [];
@@ -36,13 +39,6 @@ export default {
             echarts.registerMap('china', chinaJson.data);
             map.setOption({
                 backgroundColor: '#FFF',
-                // title: {
-                //     text: "今日流量地理分布",
-                //     left: "center",
-                //     textStyle: {
-                //         color: '#2d8cf0'
-                //     }
-                // },
                 geo: {
                     map: 'china',
                     label: {
@@ -70,7 +66,7 @@ export default {
                 series: [{
                     type: 'scatter',
                     coordinateSystem: 'geo',
-                    data: convertData(cityData),
+                    data: convertData(this.cityData),
                     symbolSize: function(val) {
                         return val[2] / 10;
                     },
@@ -94,7 +90,7 @@ export default {
                     name: 'Top 5',
                     type: 'effectScatter',
                     coordinateSystem: 'geo',
-                    data: convertData(cityData.sort(function(a, b) {
+                    data: convertData(this.cityData.sort(function(a, b) {
                         return b.value - a.value;
                     }).slice(0, 6)),
                     symbolSize: function(val) {

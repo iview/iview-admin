@@ -92,13 +92,15 @@
                     <Card :padding="0">
                         <p slot="title" class="card-title">
                             <Icon type="map"></Icon>
-                            今日流量地理分布
+                            今日服务调用地理分布
                         </p>
                         <Row class="map-con">
-                            <Col span="10">12</Col>
+                            <Col span="10">
+                                <map-data-table :cityData="cityData" height="281" :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
+                            </Col>
                             <Col span="14" class="map-incon">
                                 <Row type="flex" justify="center" align="middle">
-                                    <home-map></home-map>
+                                    <!-- <home-map :city-data="cityData"></home-map> -->
                                 </Row>
                             </Col>
                         </Row>
@@ -157,6 +159,7 @@
 
 <script>
 
+import cityData from './map-data/get-city-value.js';
 import homeMap from './components/map.vue';
 import dataSourcePie from './components/dataSourcePie.vue';
 import visiteVolume from './components/visiteVolume.vue';
@@ -164,6 +167,7 @@ import serviceRequests from './components/serviceRequests.vue';
 import userFlow from './components/userFlow.vue';
 import countUp from './components/countUp.vue';
 import inforCard from './components/inforCard.vue';
+import mapDataTable from './components/mapDataTable.vue';
 
 export default {
     components: {
@@ -173,7 +177,8 @@ export default {
         serviceRequests,
         userFlow,
         countUp,
-        inforCard
+        inforCard,
+        mapDataTable
     },
     data () {
         return {
@@ -204,7 +209,8 @@ export default {
                 visit: 3264,
                 collection: 24389305,
                 transfer: 39503498
-            }
+            },
+            cityData: cityData
         }
     },
     methods: {
