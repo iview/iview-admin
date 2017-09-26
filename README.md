@@ -4,6 +4,9 @@
     </a>
 </p>
 
+# iView Admin
+[![](https://img.shields.io/travis/iview/iview-admin.svg?style=flat-square)](https://travis-ci.org/iview/iview-admin)
+
 ## Run
 
 ```
