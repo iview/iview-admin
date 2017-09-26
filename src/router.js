@@ -68,13 +68,13 @@ export const app_router = [
     },
     {
         path: '/form',
-        redirect: '/form/index',
         icon: 'android-list',
         name: 'form',
-        title: 'Form表单',
+        title: 'Form',
         component: Main,
         children: [
-            { path: 'index', title: 'Form表单', name: 'form_index', component: require('./views/form/form.vue') }
+            { path: 'index', title: 'Form表单', name: 'form_index', component: require('./views/form/form_index.vue') },
+            { path: 'form-element', title: '表单元素', name: 'form_element', component: require('./views/form/form_element.vue') }
         ]
     },
     {
