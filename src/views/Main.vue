@@ -1,4 +1,4 @@
-<style scoped>
+<style>
     .layout{
         border: 1px solid #d7dde4;
         background: #f5f7f9;
@@ -10,6 +10,7 @@
     }
     .container{
         height: 100%;
+        width: 100%;
     }
     .layout-breadcrumb{
         padding: 8px 15px 0;
@@ -61,9 +62,6 @@
     .layout-ceiling-main a{
         color: #9ba7b5;
     }
-    .ivu-col{
-        transition: width .2s ease-in-out;
-    }
     .tags-con{
         height: 40px;
         padding: 2px 10px;
@@ -80,16 +78,31 @@
         overflow: auto;
         box-shadow: 0 -2px 1px 1px rgba(100,100,100,.1);
     }
+    .sidebar-menu-con{
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #495060;
+        transition: width .2s ease;
+    }
+    .main-content-container{
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        transition: left .2s ease;
+    }
 </style>
 <template>
-    <div class="layout" :class="{'layout-hide-text': spanLeft < 4}">
-        <Row type="flex" class="container">
-            <Col :span="spanLeft" class="layout-menu-left">
-                <sidebar-menu :routers="menuList" :iconSize="iconSize">
-                    <div slot="top" class="layout-logo-left">logo</div>
-                </sidebar-menu>
-            </Col>
-            <Col :span="spanRight">
+    <div class="layout" :class="{'layout-hide-text': hideMenuText}">
+        <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px'}">
+            <sidebar-menu :routers="menuList" :iconSize="iconSize">
+                <div slot="top" class="layout-logo-left">logo</div>
+            </sidebar-menu>
+        </div>
+        <div class="main-content-container":style="{left: hideMenuText?'80px':'200px'}">
+            <div class="container">
                 <div class="layout-header">
                     <div class="navicon-con">
                         <Button type="text" @click="toggleClick">
@@ -114,8 +127,8 @@
                 <div class="layout-copy">
                     2011-2016 &copy; TalkingData
                 </div>
-            </Col>
-        </Row>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -138,12 +151,13 @@
                 tags_list: this.$store.state.tags_list,  //所有页面的页面对象
                 page_tags_list: this.$store.state.pageOpenedList,  //打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  //当前面包屑数组
-                currentPageName: ''
+                currentPageName: '',
+                hideMenuText: false
             }
         },
         computed: {
             iconSize () {
-                return this.spanLeft === 4 ? 14 : 24;
+                return this.hideMenuText ? 24 : 14;
             }
         },
         methods: {
@@ -165,13 +179,7 @@
                 }
             },
             toggleClick () {
-                if (this.spanLeft === 4) {
-                    this.spanLeft = 1;
-                    this.spanRight = 23;
-                } else {
-                    this.spanLeft = 4;
-                    this.spanRight = 20;
-                }
+                this.hideMenuText = !this.hideMenuText
             }
         },
         watch: {

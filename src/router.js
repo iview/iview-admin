@@ -33,17 +33,6 @@ export const app_router = [
         ]
     },
     {
-        path: '/icons',
-        redirect: '/icons/index',
-        icon: 'information-circled',
-        name: 'icons',
-        title: 'Icon图标',
-        component: Main,
-        children: [
-            { path: 'index', title: 'Icon图标', name: 'icons_index', component: require('./views/icons/icons.vue') }
-        ]
-    },
-    {
         path: '/component',
         icon: 'social-buffer',
         name: 'component',
@@ -64,17 +53,6 @@ export const app_router = [
                 title: '头像编辑器',
                 component: require('./views/my_components/avator-editor.vue')
             }
-        ]
-    },
-    {
-        path: '/form',
-        icon: 'android-list',
-        name: 'form',
-        title: 'Form',
-        component: Main,
-        children: [
-            { path: 'index', title: 'Form表单', name: 'form_index', component: require('./views/form/form_index.vue') },
-            { path: 'form-element', title: '表单元素', name: 'form_element', component: require('./views/form/form_element.vue') }
         ]
     },
     {
