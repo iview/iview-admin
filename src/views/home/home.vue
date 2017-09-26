@@ -50,92 +50,41 @@
             <Col span="16" class-name="padding-left-5">
                 <Row>
                     <Col span="6">
-                        <Card :padding="0">
-                            <Row class="infor-card-con">
-                                <Col class="infor-card-icon-con infor-card-icon-con1" span="8">
-                                    <Row class="infor-card-icon-row" type="flex" align="middle" justify="center">
-                                        <Icon type="android-person-add" :size="40"></Icon>
-                                    </Row>
-                                </Col>
-                                <Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <count-up 
-                                            class="infor-card-count user-created-count" 
-                                            id-name="user_created_count" 
-                                            :end-val="count.createUser" 
-                                        >
-                                            <p class="infor-intro-text" slot="intro">今日新增用户</p>
-                                        </count-up>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Card>
+                            <infor-card
+                                id-name="user_created_count"
+                                :end-val="count.createUser"
+                                iconType="android-person-add"
+                                color="#2d8cf0"
+                                intro-text="今日新增用户"
+                            ></infor-card>
+                        
                     </Col>
                     <Col span="6" class-name="padding-left-5">
-                        <Card :padding="0">
-                            <Row class="infor-card-con">
-                                <Col class="infor-card-icon-con infor-card-icon-con2" span="8">
-                                    <Row class="infor-card-icon-row" type="flex" align="middle" justify="center">
-                                        <Icon type="ios-eye" :size="54"></Icon>
-                                    </Row>
-                                </Col>
-                                <Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <count-up 
-                                            class="infor-card-count visit-count" 
-                                            id-name="visit_count" 
-                                            :end-val="count.visit" 
-                                        >
-                                            <p class="infor-intro-text" slot="intro">今日浏览量</p>
-                                        </count-up>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Card>
+                        <infor-card
+                            id-name="visit_count"
+                            :end-val="count.visit"
+                            iconType="ios-eye"
+                            color="#64d572"
+                            intro-text="今日浏览量"
+                        ></infor-card>
                     </Col>
                     <Col span="6" class-name="padding-left-5">
-                        <Card :padding="0">
-                            <Row class="infor-card-con">
-                                <Col class="infor-card-icon-con infor-card-icon-con3" span="8">
-                                    <Row class="infor-card-icon-row" type="flex" align="middle" justify="center">
-                                        <Icon type="upload" :size="46"></Icon>
-                                    </Row>
-                                </Col>
-                                <Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <count-up 
-                                            class="infor-card-count collection-count" 
-                                            id-name="collection_count" 
-                                            :end-val="count.collection" 
-                                        >
-                                            <p class="infor-intro-text" slot="intro">今日数据采集量</p>
-                                        </count-up>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Card>
+                        <infor-card
+                            id-name="collection_count"
+                            :end-val="count.collection"
+                            iconType="upload"
+                            color="#ffd572"
+                            intro-text="今日数据采集量"
+                        ></infor-card>
                     </Col>
                     <Col span="6" class-name="padding-left-5">
-                        <Card :padding="0">
-                            <Row class="infor-card-con">
-                                <Col class="infor-card-icon-con infor-card-icon-con4" span="8">
-                                    <Row class="infor-card-icon-row" type="flex" align="middle" justify="center">
-                                        <Icon type="shuffle" :size="38"></Icon>
-                                    </Row>
-                                </Col>
-                                <Col span="16" class="height-100">
-                                    <Row type="flex" align="middle" justify="center" class="height-100">
-                                        <count-up 
-                                            class="infor-card-count transfer-count" 
-                                            id-name="transfer_count" 
-                                            :end-val="count.transfer" 
-                                        >
-                                            <p class="infor-intro-text" slot="intro">今日服务调用量</p>
-                                        </count-up>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Card>
+                        <infor-card
+                            id-name="transfer_count"
+                            :end-val="count.transfer"
+                            iconType="shuffle"
+                            color="#f25e43"
+                            intro-text="今日服务调用量"
+                        ></infor-card>
                     </Col>
                 </Row>
                 <Row class="margin-top-10">
@@ -148,7 +97,7 @@
                             <Col span="10">12</Col>
                             <Col span="14" class="map-incon">
                                 <Row type="flex" justify="center" align="middle">
-                                    <!-- <home-map></home-map> -->
+                                    <home-map></home-map>
                                 </Row>
                             </Col>
                         </Row>
@@ -213,6 +162,7 @@ import visiteVolume from './components/visiteVolume.vue';
 import serviceRequests from './components/serviceRequests.vue';
 import userFlow from './components/userFlow.vue';
 import countUp from './components/countUp.vue';
+import inforCard from './components/inforCard.vue';
 
 export default {
     components: {
@@ -221,7 +171,8 @@ export default {
         visiteVolume,
         serviceRequests,
         userFlow,
-        countUp
+        countUp,
+        inforCard
     },
     data () {
         return {
@@ -315,9 +266,7 @@ export default {
     color: white;
     border-radius: 3px 0 0 3px;
 }
-.infor-card-icon-row{
-    height: 100%;
-}
+
 .infor-card-count{
     font-size: 30px;
     font-weight: 700;
@@ -384,9 +333,6 @@ export default {
 }
 .padding-left-10{
     padding-left: 10px;
-}
-.height-100{
-    height: 100%;
 }
 .line-gray{
     height: 0;

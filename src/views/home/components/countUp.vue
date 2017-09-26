@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p :class="className"><span v-cloak :id="idName">{{ startVal }}</span><span>{{ unit }}</span></p>
+        <p :class="className" :style="{textAlign: 'center', color: color, fontSize: countSize, fontWeight: countWeight}"><span v-cloak :id="idName">{{ startVal }}</span><span>{{ unit }}</span></p>
         <slot name="intro"></slot>
     </div>
 </template>
@@ -72,14 +72,23 @@ export default {
                 }
             }
         },
+        color: String,
+        countSize: {
+            type: String,
+            default: '30px'
+        },
+        countWeight: {
+            type: Number,
+            default: 700
+        },
         introText: [String, Number]
     },
     mounted () {
         this.$nextTick( () => {
-            let res = transformValue(this.endVal);
-            let endVal = res.val;
-            this.unit = res.unit;
             setTimeout( () => {
+                let res = transformValue(this.endVal);
+                let endVal = res.val;
+                this.unit = res.unit;
                 let demo = {};
                 this.demo = demo = new countUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
                 if (!demo.error) {
@@ -101,7 +110,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 [v-cloak]{
     display: none;
 }
