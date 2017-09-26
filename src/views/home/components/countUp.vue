@@ -7,7 +7,7 @@
 
 <script>
 
-import countUp from 'countUp'
+import countUp from 'countUp';
 
 function transformValue(val) {
     let endVal = 0,
@@ -16,18 +16,18 @@ function transformValue(val) {
         endVal = val;
     }else if(val >= 1000 && val < 1000000){
         endVal = parseInt(val/1000);
-        unit = "K+";
+        unit = 'K+';
     } else if (val >= 1000000 && val < 10000000000){
         endVal = parseInt(val/1000000);
-        unit = "M+";
+        unit = 'M+';
     } else {
         endVal = parseInt(val/1000000000);
-        unit = "B+";
+        unit = 'B+';
     }
     return {
         val: endVal,
         unit: unit
-    }
+    };
 }
 
 export default {
@@ -35,7 +35,7 @@ export default {
         return {
             unit: '',
             demo: {},
-        }
+        };
     },
     name: 'countUp',
     props: {
@@ -66,10 +66,10 @@ export default {
             default: () => {
                 return {
                     useEasing: true, 
-                    useGrouping: true, 
-                    separator: ',', 
-                    decimal: '.',
-                }
+                    useGrouping: true, 
+                    separator: ',', 
+                    decimal: '.',
+                };
             }
         },
         color: String,
@@ -92,22 +92,20 @@ export default {
                 let demo = {};
                 this.demo = demo = new countUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
                 if (!demo.error) {
-                    demo.start();
-                } else {
-                    console.error(demo.error);
+                    demo.start();
                 }
-            }, this.delay)
-        })
+            }, this.delay);
+        });
     },
     watch: {
         endVal (val) {
             let res = transformValue(val);
             let endVal = res.val;
             this.unit = res.unit;
-            this.demo.update(endVal)
+            this.demo.update(endVal);
         }
     }
-}
+};
 </script>
 
 <style scoped>

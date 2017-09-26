@@ -62,8 +62,8 @@ export const app_router = [
         title: '图表',
         component: Main,
         children: [
-            { path: 'pie', title: '饼状图', name: 'pie',icon: 'ios-pie', component: require('./views/icons/icons.vue') },
-            { path: 'histogram', title: '柱状图', name: 'histogram',icon: 'stats-bars', component: require('./views/icons/icons.vue') }
+            { path: 'pie', title: '饼状图', name: 'pie',icon: 'ios-pie', component: require('./views/access/access.vue') },
+            { path: 'histogram', title: '柱状图', name: 'histogram',icon: 'stats-bars', component: require('./views/access/access.vue') }
             
         ]
     }

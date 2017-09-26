@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import util from '../util.js';
+//import util from '../util.js';
 
 export default {
     data () {
@@ -33,7 +33,7 @@ export default {
             currentPageName: this.$store.state.currentPageName,
             tags_list: this.$store.state.tags_list,
             openedSubmenuArr: this.$store.state.openedSubmenuArr
-        }
+        };
     },
     name: 'sidebarMenu',
     props: {
@@ -62,12 +62,12 @@ export default {
             if(!tagHasOpened){
                 let tag = this.tags_list.filter( (item) => {
                     if(item.children){
-                        return active === item.children[0].name
+                        return active === item.children[0].name;
                     }else{
                         return active === item.name;
                     }
-                })
-                tag = tag[0]
+                });
+                tag = tag[0];
                 tag = tag.children?tag.children[0]:tag;
                 this.$store.commit('increateTag', tag);
             }
@@ -75,26 +75,25 @@ export default {
             this.$router.push({
                 name: active
             });
-            let pathArr = util.setCurrentPath(this, active);
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList) //本地存储已打开页面
+            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList); //本地存储已打开页面
         }
     },
     watch: {
-        '$route' (to, from) {
+        '$route' (to) {
             this.currentPageName = to.name;
         },
         currentPageName () {
             this.openedSubmenuArr = this.$store.state.openedSubmenuArr;
             this.$nextTick(
                 this.$refs.sideMenu.updateOpened()
-            )
+            );
         }
     },
     created () {
-        this.init()
+        this.init();
     }
 
-}
+};
 </script>
 
 <style>

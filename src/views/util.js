@@ -14,7 +14,7 @@ util.getPathObjByName = function(vm, name) {
                 if(childArr[i].name === name){
                     return true;
                 }
-                i++;
+                i ++;
             }
             return false;
         }
@@ -34,7 +34,7 @@ util.setCurrentPath = function(vm, name) {
                 if(childArr[i].name === name){
                     return true;
                 }
-                i++;
+                i ++;
             }
             return false;
         }

@@ -222,7 +222,7 @@ export default {
             cityData: cityData,
             showAddNewTodo: false,
             newToDoItemValue: ''
-        }
+        };
     },
     methods: {
         addNewToDoItem () {
@@ -234,7 +234,7 @@ export default {
                     title: this.newToDoItemValue
                 });
                 setTimeout(function() {
-                    this.newToDoItemValue = ''
+                    this.newToDoItemValue = '';
                 }, 200);
                 this.showAddNewTodo = false;
             } else {
@@ -251,13 +251,13 @@ export default {
                 this.count.visit += parseInt(Math.random()*100);
                 this.count.collection += parseInt(Math.random()*10000);
                 this.count.transfer += parseInt(Math.random()*100000);
-            },10000)
+            },10000);
         }
     },
     mounted () {
-        this.init()
+        this.init();
     }
-}
+};
 </script>
 
 <style scoped>

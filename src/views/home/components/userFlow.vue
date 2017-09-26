@@ -8,7 +8,7 @@ import echarts from 'echarts';
 
 const option = {
     tooltip : {
-        formatter: "{a} <br/>{b} : {c}%"
+        formatter: '{a} <br/>{b} : {c}%'
     },
     series: [
         {
@@ -62,13 +62,13 @@ export default {
             option.series[0].data[0].value = (Math.random()*1000).toFixed(2) - 0;
             option.series[1].data[0].value = (Math.random()*1000).toFixed(2) - 0;
             userFlow.setOption(option);
-        },2000)
+        },2000);
 
         window.addEventListener('resize', function(){
             userFlow.resize();
-        })
+        });
     }
-}
+};
 </script>
 
 <style>

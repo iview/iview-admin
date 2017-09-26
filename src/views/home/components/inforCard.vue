@@ -51,7 +51,7 @@ export default {
             default: 40
         }
     }
-}
+};
 </script>
 
 <style scoped>

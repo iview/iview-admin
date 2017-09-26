@@ -153,7 +153,7 @@
                 currentPath: this.$store.state.currentPath,  //当前面包屑数组
                 currentPageName: '',
                 hideMenuText: false
-            }
+            };
         },
         computed: {
             iconSize () {
@@ -167,9 +167,9 @@
                     if(item.children.length <= 1){
                         tagsList.push(item);
                     }else{
-                        tagsList.push(...item.children)
+                        tagsList.push(...item.children);
                     }
-                })
+                });
                 this.$store.commit('setTagsList', tagsList);
                 this.$store.commit('setCurrentPageName', this.$route.name);
 
@@ -179,16 +179,16 @@
                 }
             },
             toggleClick () {
-                this.hideMenuText = !this.hideMenuText
+                this.hideMenuText = !this.hideMenuText;
             }
         },
         watch: {
-            '$route' (to, from) {
-                this.$store.commit('setCurrentPageName', to.name)
+            '$route' (to) {
+                this.$store.commit('setCurrentPageName', to.name);
             }
         },
         mounted () {
-            this.init()
+            this.init();
         }
-    }
+    };
 </script>

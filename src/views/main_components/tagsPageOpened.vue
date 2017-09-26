@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import routers from '../../router.js';
 import util from '../util.js';
 
 export default {
@@ -22,14 +21,14 @@ export default {
     data () {
         return {
             currentPageName: this.$route.name
-        }
+        };
     },
     props: {
         pageTagsList: Array
     },
     methods: {
         closePage (event, name) {
-            this.$store.commit('removeTag', name)
+            this.$store.commit('removeTag', name);
             if(this.currentPageName === name){
                 let lastPageName = '';
                 if(this.$store.state.pageOpenedList.length>1){
@@ -39,9 +38,9 @@ export default {
                 }
                 this.$router.push({
                     name: lastPageName
-                })
+                });
             }
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList)
+            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList);
         },
         linkTo (name){
             let pathArr = util.setCurrentPath(this, name);
@@ -59,8 +58,8 @@ export default {
         // }
     },
     watch: {
-        '$route' (to, from) {
-            this.currentPageName = to.name
+        '$route' (to) {
+            this.currentPageName = to.name;
             let pathArr = util.setCurrentPath(this, to.name);
             if(pathArr.length>2){
                 this.$store.commit('addOpenSubmenu', pathArr[1].name);
@@ -70,5 +69,5 @@ export default {
     mounted () {
         
     }
-}
+};
 </script>

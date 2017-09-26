@@ -10,7 +10,7 @@ export default {
     data () {
         return {
             
-        }
+        };
     },
     mounted () {
         this.$nextTick( () => {
@@ -72,10 +72,10 @@ export default {
 
             window.addEventListener('resize', function(){
                 visiteVolume.resize();
-            })
-        }) 
+            });
+        });
     }
-}
+};
 </script>
 
 <style>

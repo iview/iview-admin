@@ -4,9 +4,7 @@
 
 <script>
 
-//import cityData from '../map-data/get-city-value.js';
 import geoData from '../map-data/get-geography-value.js';
-import styleJson from '../map-data/get-style-json.js';
 const path = require('path');
 const axios = require('axios');
 
@@ -119,12 +117,12 @@ export default {
                 }]
 
             });
-        }) 
+        });
         window.addEventListener( 'resize', function(){
             map.resize();
-        } )
+        } );
     }
-}
+};
 </script>
 
 <style>

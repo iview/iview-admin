@@ -24,7 +24,7 @@ export default {
     data () {
         return {
             todoitem: false
-        }
+        };
     },
     props: {
         content: String
@@ -32,12 +32,9 @@ export default {
     methods: {
         handleHasDid () {
             this.todoitem = !this.todoitem;
-        },
-        // showItemInfor () {
-        //     console.log(123)
-        // }
+        }
     }
-}
+};
 </script>
 
 <style scoped>

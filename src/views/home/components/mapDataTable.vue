@@ -20,14 +20,14 @@ export default {
                     sortable: true
                 }
             ],
-        }
+        };
     },
     props: {
         cityData: Array,
         styleObj: Object,
         height: String
     }
-}
+};
 </script>
 
 <style scoped>

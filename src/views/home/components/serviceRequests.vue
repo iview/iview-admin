@@ -96,14 +96,14 @@ export default {
 
 
         const serviceRequestCharts = echarts.init(document.getElementById('service_request_con'));
-        serviceRequestCharts.setOption(option)
+        serviceRequestCharts.setOption(option);
 
         window.addEventListener('resize', function(){
             serviceRequestCharts.resize();
-        })
+        });
         
     }
-}
+};
 </script>
 
 <style>

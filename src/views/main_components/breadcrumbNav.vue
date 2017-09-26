@@ -14,6 +14,6 @@ export default {
     props: {
         currentPath: Array
     }
-}
+};
 </script>
 
