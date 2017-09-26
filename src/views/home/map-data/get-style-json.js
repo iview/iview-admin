@@ -94,4 +94,4 @@ export default [{
     'stylers': {
         'color': '#999999'
     }
-}]
+}];

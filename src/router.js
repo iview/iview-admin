@@ -7,7 +7,7 @@ export const login_router = {
         title: 'Login - 登录'
     },
     component: require('./login.vue')
-}
+};
 
 export const home_router = {
     path: '/',
@@ -18,7 +18,7 @@ export const home_router = {
     children: [
         { path: 'home', title: '首页', name: 'home_index', component: require('./views/home/home.vue') }
     ]
-}
+};
 
 export const app_router = [
     {
@@ -89,13 +89,13 @@ export const app_router = [
             
         ]
     }
-]
+];
 
 export const routers = [
     login_router,
     home_router,
     ...app_router
-]
+];
 
 export const RouterConfig = {
     mode: 'history',
