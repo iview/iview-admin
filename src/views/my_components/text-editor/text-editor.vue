@@ -1,21 +1,26 @@
 <template>
     <div>
-        <textarea class='tinymce-textarea' id="tinymceEditer" key="e"></textarea>
+        <div>
+            <textarea class='tinymce-textarea' id="tinymceEditer"></textarea>
+        </div>
     </div>
 </template>
 
 <script>
 // import tinymce from 'tinymce';
+<<<<<<< HEAD:src/views/my_components/text-editor/text-editer.vue
 import tinymce from './tinymce.min.js';
+=======
+import tinymce from './tinymce.js';
+>>>>>>> parent of f0b93765... add text-editer:src/views/my_components/text-editor/text-editor.vue
 export default {
     mounted () {
-        var height = document.querySelector('.single-page-con').offsetHeight - 200;
         tinymce.init({
             selector: '#tinymceEditer',
             branding: false,
             elementpath: false,
-            height: height,
-            language: 'zh_CN.GB2312',
+            height: 500,
+            // language: 'zh_CN.GB2312',
             menubar: 'edit insert view format table tools',
             theme: 'modern',
             plugins: [
@@ -25,16 +30,20 @@ export default {
                 'emoticons paste textcolor colorpicker textpattern imagetools codesample'
             ],
             toolbar1: ' newnote print fullscreen preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample',
-            autosave_interval: '20s',
-            image_advtab: true,
+            autosave_interval: '20s', // 自动保存间隔
+            image_advtab: true,  // 显示图片高级选项
             table_default_styles: {
                 width: '100%',
                 borderCollapse: 'collapse'
             }
+            // setup: function (editor) {
+            //     editor.addButton('newnote', {
+            //         icon: 'newdocument',
+            //         tooltip: '新建笔记',
+            //         onclick: newNote
+            //     });
+            // }
         });
-    },
-    destroyed () {
-        tinymce.get('tinymceEditer').destroy();
     }
 };
 </script>
