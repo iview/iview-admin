@@ -1,6 +1,6 @@
 <template>
     <div>
-        <textarea class='tinymce-textarea' id="tinymceEditer" key="e"></textarea>
+        <textarea class='tinymce-textarea' id="tinymceEditer"></textarea>
     </div>
 </template>
 
