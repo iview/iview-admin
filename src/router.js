@@ -40,18 +40,18 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'text-editor',
+                path: 'text-editer',
                 icon: 'compose',
-                name: 'text-editor',
+                name: 'text-editer',
                 title: '富文本编辑器',
-                component: require('./views/my_components/text-editor/text-editor.vue')
+                component: require('./views/my_components/text-editer/text-editer.vue')
             },
             {
-                path: 'avatar-editor',
+                path: 'avatar-editer',
                 icon: 'ios-crop-strong',
-                name: 'avatar-editor',
+                name: 'avatar-editer',
                 title: '头像编辑器',
-                component: require('./views/my_components/avator-editor.vue')
+                component: require('./views/my_components/avator-editer/avator-editer.vue')
             }
         ]
     },

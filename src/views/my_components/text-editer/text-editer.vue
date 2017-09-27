@@ -1,6 +1,8 @@
 <template>
     <div>
+        <Card shadow>
         <textarea class='tinymce-textarea' id="tinymceEditer"></textarea>
+        </Card>
     </div>
 </template>
 
