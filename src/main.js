@@ -137,9 +137,13 @@ new Vue({
     methods: {
         init () {
             this.currentPageName = this.$route.name;
-            let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
-            let themeLink = document.querySelector('link[name="theme"]');
-            themeLink.setAttribute('href', stylesheetPath);
+            if (localStorage.theme) {
+                if (localStorage.theme !== 'b') {
+                    let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
+                    let themeLink = document.querySelector('link[name="theme"]');
+                    themeLink.setAttribute('href', stylesheetPath);
+                }
+            }
         }
     },
     mounted () {
