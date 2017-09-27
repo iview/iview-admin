@@ -69,7 +69,8 @@ const store = new Vuex.Store({
             }
         ],  // 面包屑数组
         openedSubmenuArr: [],  // 要展开的菜单数组
-        menuTheme: 'dark' // 主题
+        menuTheme: localStorage.menuTheme ? localStorage.menuTheme : 'dark', // 主题
+        theme: localStorage.theme ? localStorage.theme : 'b'
     },
     getters: {
 
@@ -136,6 +137,12 @@ new Vue({
     methods: {
         init () {
             this.currentPageName = this.$route.name;
+            let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
+            let themeLink = document.querySelector('link[name="theme"]');
+            themeLink.setAttribute('href', stylesheetPath);
         }
+    },
+    mounted () {
+        this.init();
     }
 });

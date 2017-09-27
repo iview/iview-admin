@@ -71,11 +71,14 @@ export default {
             if (menuTheme === 'b') {
                 // 黑色菜单
                 this.$store.commit('changeTheme', 'dark');
+                localStorage.menuTheme = 'dark';
             } else {
                 this.$store.commit('changeTheme', 'light');
+                localStorage.menuTheme = 'light';
             }
             let path = '';
             let themeLink = document.querySelector('link[name="theme"]');
+            localStorage.theme = mainTheme;
             if (mainTheme !== 'b') {
                 path = '/src/styles/' + mainTheme + '.css';
             } else {
