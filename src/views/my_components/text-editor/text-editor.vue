@@ -1,6 +1,6 @@
 <template>
     <div>
-        avator-editor
+        text-editor
     </div>
 </template>
 

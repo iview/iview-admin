@@ -1,5 +1,0 @@
-configure({
-  configs: [
-    './test.js'
-  ]
-});
