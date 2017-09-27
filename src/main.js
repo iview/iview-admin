@@ -68,7 +68,8 @@ const store = new Vuex.Store({
                 name: 'home_index'
             }
         ],  // 面包屑数组
-        openedSubmenuArr: []  // 要展开的菜单数组
+        openedSubmenuArr: [],  // 要展开的菜单数组
+        menuTheme: 'light' // 主题
     },
     getters: {
 
@@ -114,6 +115,9 @@ const store = new Vuex.Store({
             if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
             }
+        },
+        changeTheme (state, theme) {
+            state.menuTheme = theme;
         }
     },
     actions: {

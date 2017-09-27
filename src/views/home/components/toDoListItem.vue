@@ -11,7 +11,7 @@
         </Col>
         <Col span="22" class="height-100">
             <Row type="flex" justify="start" align="middle" class="height-100">
-                <p class="to-do-list-item-text" @click="handleHasDid" :class="{'has-did': todoitem}">{{ content }}</p>
+                <p class="to-do-list-item-text" @click="handleHasDid" :class="{hasDid: todoitem}">{{ content }}</p>
             </Row>
         </Col>
         <!-- <Col span="4" class="height-100">

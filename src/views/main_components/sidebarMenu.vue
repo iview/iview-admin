@@ -1,7 +1,6 @@
 <template>
-    <Menu ref="sideMenu" :active-name="currentPageName" :open-names="openedSubmenuArr" theme="dark" width="auto" @on-select="changeMenu">
+    <Menu ref="sideMenu" :active-name="currentPageName" :open-names="openedSubmenuArr" :theme="$store.state.menuTheme" width="auto" @on-select="changeMenu">
         <slot name="top" :class="slotTopClass"></slot>
-
         <template v-for="item in routers">
             <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="item.path">
                 <Icon :type="item.icon" :size="iconSize" :key="item.path"></Icon>
@@ -25,13 +24,11 @@
 </template>
 
 <script>
-// import util from '../util.js';
-
 export default {
     data () {
         return {
             currentPageName: this.$store.state.currentPageName,
-            tags_list: this.$store.state.tags_list,
+            tagsList: this.$store.state.tagsList,
             openedSubmenuArr: this.$store.state.openedSubmenuArr
         };
     },
@@ -43,7 +40,7 @@ export default {
     },
     methods: {
         init () {
-            this.tags_list = this.$store.state.tags_list;
+            this.tagsList = this.$store.state.tagsList;
             this.currentPageName = this.$route.name;
         },
         changeMenu (active) {
@@ -60,7 +57,7 @@ export default {
                 i++;
             }
             if (!tagHasOpened) {
-                let tag = this.tags_list.filter((item) => {
+                let tag = this.tagsList.filter((item) => {
                     if (item.children) {
                         return active === item.children[0].name;
                     } else {

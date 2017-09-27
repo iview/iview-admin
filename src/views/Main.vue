@@ -3,7 +3,7 @@
 </style>
 <template>
     <div class="main" :class="{'main-hide-text': hideMenuText}">
-        <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px'}">
+        <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <sidebar-menu :routers="menuList" :iconSize="iconSize">
                 <div slot="top" class="main-logo-left">logo</div>
             </sidebar-menu>
@@ -32,7 +32,7 @@
                 
                 <div class="main-content">
                     <div class="tags-con">
-                        <tags-page-opened :pageTagsList="page_tags_list"></tags-page-opened>
+                        <tags-page-opened :pageTagsList="pagePagsList"></tags-page-opened>
                     </div>
                     <div class="single-page-con">
                         <router-view></router-view>
@@ -64,8 +64,8 @@
                 spanLeft: 4,
                 spanRight: 20,
                 menuList: this.$store.state.appRouter,
-                tags_list: this.$store.state.tagsList,  // 所有页面的页面对象
-                page_tags_list: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
+                tagsList: this.$store.state.tagsList,  // 所有页面的页面对象
+                pagePagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
                 hideMenuText: false

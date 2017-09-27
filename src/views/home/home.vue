@@ -116,7 +116,7 @@
                             </Col>
                             <Col span="14" class="map-incon">
                                 <Row type="flex" justify="center" align="middle">
-                                    <!-- <home-map :city-data="cityData"></home-map> -->
+                                    <home-map :city-data="cityData"></home-map>
                                 </Row>
                             </Col>
                         </div>
@@ -132,7 +132,7 @@
                         上周每日来访量统计
                     </p>
                     <div class="data-source-row">
-                        <!-- <visite-volume></visite-volume> -->
+                        <visite-volume></visite-volume>
                     </div>
                 </Card>
             </Col>
@@ -143,7 +143,7 @@
                         数据来源统计
                     </p>
                     <div class="data-source-row">
-                        <!-- <data-source-pie></data-source-pie> -->
+                        <data-source-pie></data-source-pie>
                     </div>
                 </Card>
             </Col>
@@ -154,7 +154,7 @@
                         各类用户服务调用变化统计
                     </p>
                     <div class="data-source-row">
-                        <!-- <user-flow></user-flow> -->
+                        <user-flow></user-flow>
                     </div>
                 </Card>
             </Col>
@@ -166,7 +166,7 @@
                     上周每日服务调用量(万)
                 </p>
                 <div class="line-chart-con">
-                    <!-- <service-requests></service-requests> -->
+                    <service-requests></service-requests>
                 </div>
             </Card>
         </Row>

@@ -8,7 +8,7 @@
     export default {
         data () {
             return {
-
+                theme: this.$store.state.theme
             };
         },
         mounted () {
