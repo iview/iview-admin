@@ -3,5 +3,6 @@ node_modules
 .project
 .vscode
 .history
+dist/
 .DS_Store
 \.settings/

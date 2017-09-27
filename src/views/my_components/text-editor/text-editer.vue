@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import tinymce from 'tinymce';
+// import tinymce from 'tinymce';
+import tinymce from './tinymce.min.js';
 export default {
     mounted () {
         var height = document.querySelector('.single-page-con').offsetHeight - 200;
