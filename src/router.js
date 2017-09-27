@@ -47,6 +47,13 @@ export const appRouter = [
                 component: require('./views/my_components/text-editer/text-editer.vue')
             },
             {
+                path: 'file-upload',
+                icon: 'android-upload',
+                name: 'file-upload',
+                title: '文件上传',
+                component: require('./views/my_components/file-upload/file-upload.vue')
+            },
+            {
                 path: 'avatar-editer',
                 icon: 'ios-crop-strong',
                 name: 'avatar-editer',

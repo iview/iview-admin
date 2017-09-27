@@ -104,14 +104,20 @@ const store = new Vuex.Store({
             let i = 0;
             let hasThisName = false;
             let isEmpty = false;
-            while (state.openedSubmenuArr[i]) {
-                if (name.length === 0) {
-                    isEmpty = true;
-                }
-                if (state.openedSubmenuArr[i] === name) {
-                    hasThisName = true;
-                }
-                i++;
+            // while (state.openedSubmenuArr[i]) {
+            //     if (name.length === 0) {
+            //         isEmpty = true;
+            //     }
+            //     if (state.openedSubmenuArr[i] === name) {
+            //         hasThisName = true;
+            //     }
+            //     i++;
+            // }
+            if (name.length === 0) {
+                isEmpty = true;
+            }
+            if (state.openedSubmenuArr.indexOf(name)) {
+                hasThisName = true;
             }
             if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
