@@ -44,7 +44,7 @@ export const appRouter = [
                 icon: 'compose',
                 name: 'text-editor',
                 title: '富文本编辑器',
-                component: require('./views/my_components/text-editor/text-editor.vue')
+                component: require('./views/my_components/text-editor/text-editer.vue')
             },
             {
                 path: 'avatar-editor',
