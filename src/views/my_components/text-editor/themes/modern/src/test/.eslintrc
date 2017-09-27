@@ -1,0 +1,14 @@
+{
+  "env": {
+    "browser": true,
+    "amd": true
+  },
+
+  "globals": {
+    "assert": true,
+    "test": true,
+    "asynctest": true
+  },
+
+  "extends": "../../../../../.eslintrc"
+}

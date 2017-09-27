@@ -1,0 +1,5 @@
+configure({
+  configs: [
+    './test.js'
+  ]
+});
