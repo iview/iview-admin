@@ -1,5 +1,9 @@
+<style lang="less">
+    @import './styles/to-do-list-item.less';
+</style>
+
 <template>
-    <Row class="item">
+    <Row class="to-do-list-item">
         <Col span="2" class="height-100">
             <Row type="flex" justify="center" align="middle" class="height-100">
                 <Checkbox v-model="todoitem"></Checkbox>
@@ -7,7 +11,7 @@
         </Col>
         <Col span="22" class="height-100">
             <Row type="flex" justify="start" align="middle" class="height-100">
-                <p @click="handleHasDid" :class="{hasDid: todoitem}">{{ content }}</p>
+                <p class="to-do-list-item-text" @click="handleHasDid" :class="{'has-did': todoitem}">{{ content }}</p>
             </Row>
         </Col>
         <!-- <Col span="4" class="height-100">
@@ -36,32 +40,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-.item{
-    height: 36px;
-}
-span{
-    display: inline-block;
-    width: 100%;
-}
-p{
-    word-break:keep-all; 
-    white-space:nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 500;
-    cursor: pointer;
-}
-.hasDid{
-    text-decoration: line-through;
-    color: gray;
-    font-weight: 100;
-}
-.height-100{
-    height: 100%;
-}
-.infor-icon-row{
-    color: #c8c8c8;
-}
-</style>

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import iView from 'iview';
 import VueRouter from 'vue-router';
-import {RouterConfig, homeRouter, appRouter} from './router';
+import {routers, homeRouter, appRouter} from './router';
 // import appRouter from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
@@ -33,6 +33,11 @@ Vue.locale('zh-CN', mergeZH);
 Vue.locale('en-US', mergeEN);
 
 // 路由配置
+const RouterConfig = {
+    mode: 'history',
+    routes: routers
+};
+
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
@@ -53,7 +58,7 @@ const store = new Vuex.Store({
             ...appRouter
         ],
         appRouter: appRouter,
-        tags_list: [],
+        tagsList: [],
         pageOpenedList: localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [homeRouter.children[0]],
         currentPageName: '',
         currentPath: [
@@ -70,7 +75,7 @@ const store = new Vuex.Store({
     },
     mutations: {
         setTagsList (state, list) {
-            state.tags_list.push(...list);
+            state.tagsList.push(...list);
         },
         increateTag (state, tagObj) {
             state.pageOpenedList.splice(1, 0, tagObj);

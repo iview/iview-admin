@@ -74,8 +74,3 @@ export const routers = [
     homeRouter,
     ...appRouter
 ];
-
-export const RouterConfig = {
-    mode: 'history',
-    routes: routers
-};

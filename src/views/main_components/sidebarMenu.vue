@@ -95,9 +95,3 @@ export default {
 
 };
 </script>
-
-<style>
-.layout-hide-text .layout-text{
-    display: none;
-}
-</style>

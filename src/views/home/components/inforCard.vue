@@ -1,6 +1,10 @@
+<style lang="less">
+    @import './styles/infor-card.less';
+</style>
+
 <template>
     <Card :padding="0">
-        <Row class="infor-card-con">
+        <div class="infor-card-con">
             <Col class="infor-card-icon-con" :style="{backgroundColor: color, color: 'white'}" span="8">
                 <Row class="height-100" type="flex" align="middle" justify="center">
                     <Icon :type="iconType" :size="iconSize"></Icon>
@@ -20,7 +24,7 @@
                     </count-up>
                 </Row>
             </Col>
-        </Row>
+        </div>
     </Card>
 </template>
 
@@ -54,19 +58,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.infor-card-icon-con{
-    height: 100%;
-}
-.height-100{
-    height: 100%;
-}
-.infor-card-con{
-    height: 100px;
-}
-.infor-intro-text{
-    font-size:12px;
-    font-weight:500;
-    color:#C8C8C8;
-}
-</style>

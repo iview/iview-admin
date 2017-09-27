@@ -1,3 +1,7 @@
+<style lang="less">
+    @import "./home.less";
+    @import "../../styles/common.less";
+</style>
 <template>
     <div class="home-main">
         <Row>
@@ -52,11 +56,11 @@
                                 <Button type="primary" @click="addNew">确定</Button>
                             </Row>
                         </Modal>
-                        <Row class="to-do-list-con">
-                            <Row v-for="(item, index) in toDoList" :key="index" class="to-do-item">
+                        <div class="to-do-list-con">
+                            <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
                                 <to-do-list-item :content="item.title"></to-do-list-item>
-                            </Row>
-                        </Row>
+                            </div>
+                        </div>
                     </Card>
                 </Row>
             </Col>
@@ -106,16 +110,16 @@
                             <Icon type="map"></Icon>
                             今日服务调用地理分布
                         </p>
-                        <Row class="map-con">
+                        <div class="map-con">
                             <Col span="10">
                                 <map-data-table :cityData="cityData" height="281" :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
                             </Col>
                             <Col span="14" class="map-incon">
                                 <Row type="flex" justify="center" align="middle">
-                                    <home-map :city-data="cityData"></home-map>
+                                    <!-- <home-map :city-data="cityData"></home-map> -->
                                 </Row>
                             </Col>
-                        </Row>
+                        </div>
                     </Card>
                 </Row>
             </Col>
@@ -127,9 +131,9 @@
                         <Icon type="android-map"></Icon>
                         上周每日来访量统计
                     </p>
-                    <Row class="data-source-row">
-                        <visite-volume></visite-volume>
-                    </Row>
+                    <div class="data-source-row">
+                        <!-- <visite-volume></visite-volume> -->
+                    </div>
                 </Card>
             </Col>
             <Col span="8" class="padding-left-10">
@@ -138,9 +142,9 @@
                         <Icon type="ios-pulse-strong"></Icon>
                         数据来源统计
                     </p>
-                    <Row class="data-source-row">
-                        <data-source-pie></data-source-pie>
-                    </Row>
+                    <div class="data-source-row">
+                        <!-- <data-source-pie></data-source-pie> -->
+                    </div>
                 </Card>
             </Col>
             <Col span="8" class="padding-left-10">
@@ -149,9 +153,9 @@
                         <Icon type="android-wifi"></Icon>
                         各类用户服务调用变化统计
                     </p>
-                    <Row class="data-source-row">
-                        <user-flow></user-flow>
-                    </Row>
+                    <div class="data-source-row">
+                        <!-- <user-flow></user-flow> -->
+                    </div>
                 </Card>
             </Col>
         </Row>
@@ -161,9 +165,9 @@
                     <Icon type="ios-shuffle-strong"></Icon>
                     上周每日服务调用量(万)
                 </p>
-                <Row class="line-chart-con">
-                    <service-requests></service-requests>
-                </Row>
+                <div class="line-chart-con">
+                    <!-- <service-requests></service-requests> -->
+                </div>
             </Card>
         </Row>
     </div>
@@ -258,124 +262,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-.home-main{
-    /* padding: 10px; */
-}
-.user-infor{
-    height: 120px;
-}
-.padding-left-5{
-    padding-left: 10px;
-}
-.avator-img{
-    display: block;
-    width: 80%;
-    max-width: 100px;
-    height: auto;
-}
-.card-user-infor-name{
-    font-size: 2em;
-    color: #2d8cf0;
-}
-.card-title{
-    color: #abafbd;
-}
-.made-child-con-middle{
-    height: 100%;
-}
-.to-do-list-con{
-    height: 160px;
-    overflow: auto;
-}
-.to-do-item{
-    padding: 2px;
-}
-.infor-card-con{
-    height: 100px;
-}
-.infor-card-icon-con{
-    height: 100%;
-    color: white;
-    border-radius: 3px 0 0 3px;
-}
-
-.infor-card-count{
-    font-size: 30px;
-    font-weight: 700;
-    text-align: center;
-}
-.infor-intro-text{
-    font-size:12px;
-    font-weight:500;
-    color:#C8C8C8;
-}
-.infor-card-icon-con1{
-    background-color: #2d8cf0;
-}
-.user-created-count{
-    color: #2d8cf0;
-}
-.infor-card-icon-con2{
-    background-color: #64d572;
-}
-.visit-count{
-    color: #64d572;
-}
-.infor-card-icon-con3{
-    background-color: #ffd572;
-}
-.collection-count{
-    color: #ffd572;
-}
-.infor-card-icon-con4{
-    background-color: #f25e43;
-}
-.transfer-count{
-    color: #f25e43;
-}
-.map-con{
-    height: 305px;
-}
-.map-incon{
-    height: 100%;
-}
-.data-source-row{
-    height: 200px;
-}
-.line-chart-con{
-    height: 200px;
-}
-.margin-top-8{
-    margin-top: 8px;
-}
-.margin-top-10{
-    margin-top: 10px;
-}
-.margin-left-10{
-    margin-left: 10px;
-}
-.margin-bottom-100{
-    margin-bottom: 100px;
-}
-.padding-left-6{
-    padding-left: 6px;
-}
-.padding-left-8{
-    padding-left: 5px;
-}
-.padding-left-10{
-    padding-left: 10px;
-}
-.line-gray{
-    height: 0;
-    border-bottom: 2px solid #dcdcdc;
-}
-.notwrap{
-    word-break:keep-all; 
-    white-space:nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-</style>
