@@ -2,19 +2,19 @@ let util = {
 
 };
 
-util.getPathObjByName = function(vm, name) {
-    let pathObj = vm.$store.state.routers.filter( (item) => {
-        if(item.children.length<=1){
+util.getPathObjByName = function (vm, name) {
+    let pathObj = vm.$store.state.routers.filter((item) => {
+        if (item.children.length <= 1) {
             return item.name === name;
         } else {
-            let i = 0,
-                childArr = item.children,
-                len = childArr.length;
-            while(i < len){
-                if(childArr[i].name === name){
+            let i = 0;
+            let childArr = item.children;
+            let len = childArr.length;
+            while (i < len) {
+                if (childArr[i].name === name) {
                     return true;
                 }
-                i ++;
+                i++;
             }
             return false;
         }
@@ -22,25 +22,25 @@ util.getPathObjByName = function(vm, name) {
     return pathObj;
 };
 
-util.setCurrentPath = function(vm, name) {
-    let currentPathObj = vm.$store.state.routers.filter( (item) => {
-        if(item.children.length<=1){
+util.setCurrentPath = function (vm, name) {
+    let currentPathObj = vm.$store.state.routers.filter((item) => {
+        if (item.children.length <= 1) {
             return item.children[0].name === name;
         } else {
-            let i = 0,
-                childArr = item.children,
-                len = childArr.length;
-            while(i < len){
-                if(childArr[i].name === name){
+            let i = 0;
+            let childArr = item.children;
+            let len = childArr.length;
+            while (i < len) {
+                if (childArr[i].name === name) {
                     return true;
                 }
-                i ++;
+                i++;
             }
             return false;
         }
     })[0];
     let currentPathArr = [];
-    if(currentPathObj.children.length<=1 && currentPathObj.name === 'home'){
+    if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
         currentPathArr = [
             {
                 title: '首页',
@@ -48,7 +48,7 @@ util.setCurrentPath = function(vm, name) {
                 name: 'home_index'
             }
         ];
-    }else if(currentPathObj.children.length<=1 && currentPathObj.name !== 'home') {
+    } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
         currentPathArr = [
             {
                 title: '首页',
@@ -58,11 +58,11 @@ util.setCurrentPath = function(vm, name) {
             {
                 title: currentPathObj.title,
                 path: '',
-                name: name,
+                name: name
             }
         ];
     } else {
-        let childObj = currentPathObj.children.filter( (child) => {
+        let childObj = currentPathObj.children.filter((child) => {
             return child.name === name;
         })[0];
         currentPathArr = [
@@ -74,12 +74,12 @@ util.setCurrentPath = function(vm, name) {
             {
                 title: currentPathObj.title,
                 path: '',
-                name: currentPathObj.name,
+                name: currentPathObj.name
             },
             {
                 title: childObj.title,
-                path: currentPathObj.path+'/'+childObj.path,
-                name: name,
+                path: currentPathObj.path + '/' + childObj.path,
+                name: name
             }
         ];
     }

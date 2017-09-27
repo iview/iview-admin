@@ -148,9 +148,9 @@
                 spanLeft: 4,
                 spanRight: 20,
                 menuList: this.$store.state.app_router,
-                tags_list: this.$store.state.tags_list,  //所有页面的页面对象
-                page_tags_list: this.$store.state.pageOpenedList,  //打开的页面的页面对象
-                currentPath: this.$store.state.currentPath,  //当前面包屑数组
+                tags_list: this.$store.state.tags_list,  // 所有页面的页面对象
+                page_tags_list: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
+                currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
                 hideMenuText: false
             };
@@ -161,12 +161,12 @@
             }
         },
         methods: {
-            init() {
+            init () {
                 let tagsList = [];
                 this.menuList.map((item) => {
-                    if(item.children.length <= 1){
+                    if (item.children.length <= 1) {
                         tagsList.push(item);
-                    }else{
+                    } else {
                         tagsList.push(...item.children);
                     }
                 });
@@ -174,7 +174,7 @@
                 this.$store.commit('setCurrentPageName', this.$route.name);
 
                 let pathArr = util.setCurrentPath(this, this.$route.name);
-                if(pathArr.length>2){
+                if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
             },

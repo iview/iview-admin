@@ -29,11 +29,11 @@ export default {
     methods: {
         closePage (event, name) {
             this.$store.commit('removeTag', name);
-            if(this.currentPageName === name){
+            if (this.currentPageName === name) {
                 let lastPageName = '';
-                if(this.$store.state.pageOpenedList.length>1){
+                if (this.$store.state.pageOpenedList.length > 1) {
                     lastPageName = this.$store.state.pageOpenedList[1].name;
-                }else{
+                } else {
                     lastPageName = this.$store.state.pageOpenedList[0].name;
                 }
                 this.$router.push({
@@ -42,15 +42,15 @@ export default {
             }
             localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList);
         },
-        linkTo (name){
+        linkTo (name) {
             let pathArr = util.setCurrentPath(this, name);
-            if(pathArr.length>2){
+            if (pathArr.length > 2) {
                 this.$store.commit('addOpenSubmenu', pathArr[1].name);
             }
             this.$router.push({
                 name: name
             });
-        },
+        }
         // tagColor (item) {
         //     return item.children?
         //     (item.children[0].name===this.currentPageName?'blue':'yellow'):
@@ -61,13 +61,13 @@ export default {
         '$route' (to) {
             this.currentPageName = to.name;
             let pathArr = util.setCurrentPath(this, to.name);
-            if(pathArr.length>2){
+            if (pathArr.length > 2) {
                 this.$store.commit('addOpenSubmenu', pathArr[1].name);
             }
         }
     },
     mounted () {
-        
+        //
     }
 };
 </script>

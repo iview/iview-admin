@@ -19,7 +19,7 @@ export default {
                     key: 'value',
                     sortable: true
                 }
-            ],
+            ]
         };
     },
     props: {

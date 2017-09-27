@@ -170,7 +170,6 @@
 </template>
 
 <script>
-
 import cityData from './map-data/get-city-value.js';
 import homeMap from './components/map.vue';
 import dataSourcePie from './components/dataSourcePie.vue';
@@ -196,7 +195,7 @@ export default {
     },
     data () {
         return {
-            toDoList:[
+            toDoList: [
                 {
                     title: '去iView官网学习完整的iView组件'
                 },
@@ -229,11 +228,11 @@ export default {
             this.showAddNewTodo = true;
         },
         addNew () {
-            if(this.newToDoItemValue.length !== 0){
+            if (this.newToDoItemValue.length !== 0) {
                 this.toDoList.unshift({
                     title: this.newToDoItemValue
                 });
-                setTimeout(function() {
+                setTimeout(function () {
                     this.newToDoItemValue = '';
                 }, 200);
                 this.showAddNewTodo = false;
@@ -246,12 +245,12 @@ export default {
             this.newToDoItemValue = '';
         },
         init () {
-            setInterval( () => {
-                this.count.createUser += parseInt(Math.random()*10);
-                this.count.visit += parseInt(Math.random()*100);
-                this.count.collection += parseInt(Math.random()*10000);
-                this.count.transfer += parseInt(Math.random()*100000);
-            },10000);
+            setInterval(() => {
+                this.count.createUser += parseInt(Math.random() * 10);
+                this.count.visit += parseInt(Math.random() * 100);
+                this.count.collection += parseInt(Math.random() * 10000);
+                this.count.transfer += parseInt(Math.random() * 100000);
+            }, 10000);
         }
     },
     mounted () {

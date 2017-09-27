@@ -3,13 +3,10 @@
 </template>
 
 <script>
-
+import echarts from 'echarts';
 import geoData from '../map-data/get-geography-value.js';
 const path = require('path');
 const axios = require('axios');
-
-import echarts from 'echarts';
-
 export default {
     name: 'homeMap',
     props: {
@@ -32,8 +29,8 @@ export default {
         };
 
         var map = echarts.init(document.getElementById('home_page_map'));
-        const map_path = path.join(__dirname, './src/views/home/map-data/china.json');
-        axios.get(map_path).then((chinaJson) => {
+        const mapPath = path.join(__dirname, './src/views/home/map-data/china.json');
+        axios.get(mapPath).then((chinaJson) => {
             echarts.registerMap('china', chinaJson.data);
             map.setOption({
                 backgroundColor: '#FFF',
@@ -65,7 +62,7 @@ export default {
                     type: 'scatter',
                     coordinateSystem: 'geo',
                     data: convertData(this.cityData),
-                    symbolSize: function(val) {
+                    symbolSize: function (val) {
                         return val[2] / 10;
                     },
                     label: {
@@ -88,10 +85,10 @@ export default {
                     name: 'Top 5',
                     type: 'effectScatter',
                     coordinateSystem: 'geo',
-                    data: convertData(this.cityData.sort(function(a, b) {
+                    data: convertData(this.cityData.sort(function (a, b) {
                         return b.value - a.value;
                     }).slice(0, 6)),
-                    symbolSize: function(val) {
+                    symbolSize: function (val) {
                         return val[2] / 10;
                     },
                     showEffectOn: 'render',
@@ -118,9 +115,9 @@ export default {
 
             });
         });
-        window.addEventListener( 'resize', function(){
+        window.addEventListener('resize', function () {
             map.resize();
-        } );
+        });
     }
 };
 </script>

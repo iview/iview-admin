@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import iView from 'iview';
 import VueRouter from 'vue-router';
-import {RouterConfig, home_router, app_router} from './router';
-//import app_router from './router';
+import {RouterConfig, homeRouter, appRouter} from './router';
+// import appRouter from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
@@ -32,7 +32,6 @@ const mergeEN = Object.assign(enLocale, locales['en-US']);
 Vue.locale('zh-CN', mergeZH);
 Vue.locale('en-US', mergeEN);
 
-
 // 路由配置
 const router = new VueRouter(RouterConfig);
 
@@ -50,12 +49,12 @@ router.afterEach(() => {
 const store = new Vuex.Store({
     state: {
         routers: [
-            home_router,
-            ...app_router
+            homeRouter,
+            ...appRouter
         ],
-        app_router: app_router,
+        appRouter: appRouter,
         tags_list: [],
-        pageOpenedList: localStorage.pageOpenedList?JSON.parse(localStorage.pageOpenedList):[home_router.children[0]],
+        pageOpenedList: localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [homeRouter.children[0]],
         currentPageName: '',
         currentPath: [
             {
@@ -63,8 +62,8 @@ const store = new Vuex.Store({
                 path: '',
                 name: 'home_index'
             }
-        ],  //面包屑数组
-        openedSubmenuArr: []  //要展开的菜单数组
+        ],  // 面包屑数组
+        openedSubmenuArr: []  // 要展开的菜单数组
     },
     getters: {
 
@@ -76,15 +75,14 @@ const store = new Vuex.Store({
         increateTag (state, tagObj) {
             state.pageOpenedList.splice(1, 0, tagObj);
         },
-        removeTag (state, name){
-            state.pageOpenedList.map( (item, index) => {
-                if(item.name === name){
+        removeTag (state, name) {
+            state.pageOpenedList.map((item, index) => {
+                if (item.name === name) {
                     state.pageOpenedList.splice(index, 1);
-                    return ;
                 }
             });
         },
-        moveToSecond (state, index){
+        moveToSecond (state, index) {
             let openedPage = state.pageOpenedList[index];
             state.pageOpenedList.splice(index, 1);
             state.pageOpenedList.splice(1, 0, openedPage);
@@ -96,19 +94,19 @@ const store = new Vuex.Store({
             state.currentPageName = name;
         },
         addOpenSubmenu (state, name) {
-            let i = 0,
-                hasThisName = false,
-                isEmpty = false;
-            while(state.openedSubmenuArr[i]){
-                if(name.length===0){
+            let i = 0;
+            let hasThisName = false;
+            let isEmpty = false;
+            while (state.openedSubmenuArr[i]) {
+                if (name.length === 0) {
                     isEmpty = true;
                 }
-                if(state.openedSubmenuArr[i]===name){
+                if (state.openedSubmenuArr[i] === name) {
                     hasThisName = true;
                 }
-                i ++;
+                i++;
             }
-            if(! hasThisName&&! isEmpty){
+            if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
             }
         }
@@ -123,7 +121,7 @@ new Vue({
     router: router,
     store: store,
     render: h => h(App),
-    data : {
+    data: {
         currentPageName: ''
     },
     methods: {

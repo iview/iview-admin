@@ -6,15 +6,15 @@
 
 <script>
     export default {
-        data() {
+        data () {
             return {
 
             };
         },
-        mounted() {
+        mounted () {
 
         },
-        beforeDestroy() {
+        beforeDestroy () {
 
         },
         methods: {

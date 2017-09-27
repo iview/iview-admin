@@ -6,22 +6,21 @@
 </template>
 
 <script>
+import CountUp from 'countUp';
 
-import countUp from 'countUp';
-
-function transformValue(val) {
-    let endVal = 0,
-        unit = '';
-    if(val < 1000){
+function transformValue (val) {
+    let endVal = 0;
+    let unit = '';
+    if (val < 1000) {
         endVal = val;
-    }else if(val >= 1000 && val < 1000000){
-        endVal = parseInt(val/1000);
+    } else if (val >= 1000 && val < 1000000) {
+        endVal = parseInt(val / 1000);
         unit = 'K+';
-    } else if (val >= 1000000 && val < 10000000000){
-        endVal = parseInt(val/1000000);
+    } else if (val >= 1000000 && val < 10000000000) {
+        endVal = parseInt(val / 1000000);
         unit = 'M+';
     } else {
-        endVal = parseInt(val/1000000000);
+        endVal = parseInt(val / 1000000000);
         unit = 'B+';
     }
     return {
@@ -34,7 +33,7 @@ export default {
     data () {
         return {
             unit: '',
-            demo: {},
+            demo: {}
         };
     },
     name: 'countUp',
@@ -65,10 +64,10 @@ export default {
             type: Object,
             default: () => {
                 return {
-                    useEasing: true, 
-                    useGrouping: true, 
-                    separator: ',', 
-                    decimal: '.',
+                    useEasing: true,
+                    useGrouping: true,
+                    separator: ',',
+                    decimal: '.'
                 };
             }
         },
@@ -84,13 +83,13 @@ export default {
         introText: [String, Number]
     },
     mounted () {
-        this.$nextTick( () => {
-            setTimeout( () => {
+        this.$nextTick(() => {
+            setTimeout(() => {
                 let res = transformValue(this.endVal);
                 let endVal = res.val;
                 this.unit = res.unit;
                 let demo = {};
-                this.demo = demo = new countUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
+                this.demo = demo = new CountUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
                 if (!demo.error) {
                     demo.start();
                 }

@@ -168,7 +168,7 @@ export default [
     {name: '邢台', value: 19},
     {name: '德州', value: 20},
     {name: '济宁', value: 20},
-    {name: '荆州', value:27},
+    {name: '荆州', value: 27},
     {name: '宜昌', value: 30},
     {name: '义乌', value: 32},
     {name: '丽水', value: 33},

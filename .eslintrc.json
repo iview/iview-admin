@@ -1,4 +1,6 @@
 {
+    "extends": "standard",
+    "installedESLint": true,
     "root": true,
     "parserOptions": {
         "ecmaVersion": 6,
@@ -8,12 +10,14 @@
         "browser": true,
         "node": true
     },
-    "extends": "eslint:recommended",
-    "plugins": [ "html" ],
+    "plugins": [ "html", "standard" ],
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
-        "no-console": ["error"]
+        "no-console": ["error"],
+        "no-empty": 2,
+        "no-eq-null": 2,
+        "no-new": 0
     }
 }

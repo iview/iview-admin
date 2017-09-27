@@ -1,6 +1,6 @@
 import Main from './views/Main.vue';
 
-export const login_router = {
+export const loginRouter = {
     path: '/login',
     name: 'login',
     meta: {
@@ -9,7 +9,7 @@ export const login_router = {
     component: require('./login.vue')
 };
 
-export const home_router = {
+export const homeRouter = {
     path: '/',
     redirect: '/home',
     name: 'home',
@@ -20,7 +20,7 @@ export const home_router = {
     ]
 };
 
-export const app_router = [
+export const appRouter = [
     {
         path: '/access',
         redirect: '/access/index',
@@ -62,17 +62,17 @@ export const app_router = [
         title: '图表',
         component: Main,
         children: [
-            { path: 'pie', title: '饼状图', name: 'pie',icon: 'ios-pie', component: require('./views/access/access.vue') },
-            { path: 'histogram', title: '柱状图', name: 'histogram',icon: 'stats-bars', component: require('./views/access/access.vue') }
-            
+            { path: 'pie', title: '饼状图', name: 'pie', icon: 'ios-pie', component: require('./views/access/access.vue') },
+            { path: 'histogram', title: '柱状图', name: 'histogram', icon: 'stats-bars', component: require('./views/access/access.vue') }
+
         ]
     }
 ];
 
 export const routers = [
-    login_router,
-    home_router,
-    ...app_router
+    loginRouter,
+    homeRouter,
+    ...appRouter
 ];
 
 export const RouterConfig = {

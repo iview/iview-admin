@@ -4,8 +4,8 @@
 
         <template v-for="item in routers">
             <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="item.path">
-                <Icon :type="item.icon" :size="iconSize"></Icon>
-                <span class="layout-text">{{ item.title }}</span>
+                <Icon :type="item.icon" :size="iconSize" :key="item.path"></Icon>
+                <span class="layout-text" :key="item.path">{{ item.title }}</span>
             </MenuItem>
 
             <Submenu v-if="item.children.length>1" :name="item.name" :key="item.path">
@@ -15,8 +15,8 @@
                 </template>
                 <template v-for="child in item.children">
                     <MenuItem :name="child.name" :key="child.name">
-                        <Icon :type="child.icon" :size="iconSize"></Icon>
-                        <span class="layout-text">{{ child.title }}</span>
+                        <Icon :type="child.icon" :size="iconSize" :key="child.name"></Icon>
+                        <span class="layout-text" :key="child.name">{{ child.title }}</span>
                     </MenuItem>
                 </template>
             </Submenu>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-//import util from '../util.js';
+// import util from '../util.js';
 
 export default {
     data () {
@@ -47,35 +47,35 @@ export default {
             this.currentPageName = this.$route.name;
         },
         changeMenu (active) {
-            let pageOpenedList = this.$store.state.pageOpenedList,
-                opened_page_len = pageOpenedList.length,
-                i = 0,
-                tagHasOpened = false;
-            while(i < opened_page_len){
-                if(active===pageOpenedList[i].name){  //页面已经打开
+            let pageOpenedList = this.$store.state.pageOpenedList;
+            let openedPageLen = pageOpenedList.length;
+            let i = 0;
+            let tagHasOpened = false;
+            while (i < openedPageLen) {
+                if (active === pageOpenedList[i].name) {  // 页面已经打开
                     this.$store.commit('moveToSecond', i);
                     tagHasOpened = true;
                     break;
                 }
                 i++;
             }
-            if(!tagHasOpened){
-                let tag = this.tags_list.filter( (item) => {
-                    if(item.children){
+            if (!tagHasOpened) {
+                let tag = this.tags_list.filter((item) => {
+                    if (item.children) {
                         return active === item.children[0].name;
-                    }else{
+                    } else {
                         return active === item.name;
                     }
                 });
                 tag = tag[0];
-                tag = tag.children?tag.children[0]:tag;
+                tag = tag.children ? tag.children[0] : tag;
                 this.$store.commit('increateTag', tag);
             }
             this.$store.commit('setCurrentPageName', active);
             this.$router.push({
                 name: active
             });
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList); //本地存储已打开页面
+            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList); // 本地存储已打开页面
         }
     },
     watch: {

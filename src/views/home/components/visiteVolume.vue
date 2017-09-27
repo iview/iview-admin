@@ -3,25 +3,24 @@
 </template>
 
 <script>
-const echarts = require('echarts'); 
-
+const echarts = require('echarts');
 export default {
     name: 'visiteVolume',
     data () {
         return {
-            
+            //
         };
     },
     mounted () {
-        this.$nextTick( () => {
+        this.$nextTick(() => {
             let visiteVolume = echarts.init(document.getElementById('visite_volume_con'));
             let xAxisData = [];
             let data1 = [];
             let data2 = [];
             for (let i = 0; i < 20; i++) {
                 xAxisData.push('类目' + i);
-                data1.push((Math.sin(i / 5) * (i / 5 -10) + i / 6) * 5);
-                data2.push((Math.cos(i / 5) * (i / 5 -10) + i / 6) * 5);
+                data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+                data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
             }
 
             const option = {
@@ -44,7 +43,7 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['Mon','Tues','Wed','Thur','Fri','Sat','Sun'],
+                    data: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
                     nameTextStyle: {
                         color: '#c3c3c3'
                     }
@@ -53,24 +52,22 @@ export default {
                     {
                         name: '访问量',
                         type: 'bar',
-                        data:[
-                            {value:453682, name:'Mon',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            {value:879545, name:'Tues',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            {value:2354678, name:'Wed',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            {value:1598403, name:'Thur',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            {value:543250, name:'Fri',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            {value:1305923, name:'Sat',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            {value:1103456, name:'Sun',itemStyle:{normal:{color:'#2d8cf0'}}},
-                            
+                        data: [
+                            {value: 453682, name: 'Mon', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 879545, name: 'Tues', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 2354678, name: 'Wed', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 1598403, name: 'Thur', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 543250, name: 'Fri', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 1305923, name: 'Sat', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 1103456, name: 'Sun', itemStyle: {normal: {color: '#2d8cf0'}}}
                         ]
-                        //data: [439057, 243678, 652801, 321546, 360956, 362586, 504290]
                     }
                 ]
             };
 
             visiteVolume.setOption(option);
 
-            window.addEventListener('resize', function(){
+            window.addEventListener('resize', function () {
                 visiteVolume.resize();
             });
         });
