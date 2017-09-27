@@ -69,7 +69,7 @@ const store = new Vuex.Store({
             }
         ],  // 面包屑数组
         openedSubmenuArr: [],  // 要展开的菜单数组
-        menuTheme: 'light' // 主题
+        menuTheme: 'dark' // 主题
     },
     getters: {
 
