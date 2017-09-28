@@ -37,15 +37,6 @@ export default {
                     align: 'center',
                     key: 'handle',
                     type: 'handle'
-                    // render: (h, params) => {
-                    //     return h('div', [
-                    //         h('Button', {
-                    //             props: {
-                    //                 
-                    //             }
-                    //         })
-                    //     ])
-                    // }
                 }
             ];
             this.tableData = [

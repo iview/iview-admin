@@ -5,22 +5,6 @@
 </template>
 
 <script>
-import util from '@/libs/util.js';
-import Vue from 'Vue';
-const editButton = function (h, canEdit, buttonText, buttonType) {
-    return h('Button', {
-        props: {
-            type: buttonType
-        },
-        on: {
-            'click' (event, buttonText, buttonType) {
-                canEdit = true;
-                buttonText = buttonText === '编辑' ? '完成' : '编辑';
-                buttonType = buttonType === 'primary' ? 'success' : 'primary';
-            }
-        }
-    }, buttonText);
-};
 export default {
     name: 'EditableTable',
     props: {
@@ -38,7 +22,6 @@ export default {
             this.$set(item, 'editting', false);
             return item;
         });
-        console.log(this.columnsList)
         this.columnsList.map(item => {
             // this.$set(item, 'editting', false);
             if (item.editable) {
@@ -65,7 +48,6 @@ export default {
                         },
                         on: {
                             'click': () => {
-                                console.log(this.tableData[param.index])
                                 this.tableData[param.index].editting = !this.tableData[param.index].editting;
                             }
                         }
