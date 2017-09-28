@@ -20,4 +20,14 @@ util.ajax = axios.create({
     timeout: 30000
 });
 
+util.inOf = function (arr, targetArr) {
+    let res = true;
+    arr.map(item => {
+        if (targetArr.indexOf(item) < 0) {
+            res = false;
+        }
+    });
+    return res;
+};
+
 export default util;
