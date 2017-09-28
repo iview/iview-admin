@@ -7,7 +7,9 @@
     <div>
         <Row>
             <Col span="16">
-                <DragableTable refs="table1" :columnsList="columnsList" :tableData="tableData" :start="handleOnstart1" :end="handleOnend1" ></DragableTable>
+                <Card>
+                    <DragableTable refs="table1" :columnsList="columnsList" :tableData="tableData" :start="handleOnstart1" :end="handleOnend1" ></DragableTable>
+                </Card>
             </Col>
             <Col span="8" class="padding-left-10 height-100" >
                 <Card>
@@ -15,7 +17,7 @@
                         <Icon type="clipboard"></Icon>
                         表格1操作记录( 拖拽 )
                     </p>
-                    <Row style="height: 340px;">
+                    <Row style="height: 374px;">
                         <div class="dragging-tip-con">
                             <transition name="dragging-tip">
                                 <span v-show="table1.isDragging">您正在拖拽表格1单元行...</span>
@@ -39,7 +41,7 @@
                         <Icon type="clipboard"></Icon>
                         表格2操作记录( 点击和拖拽 )  
                     </p>
-                    <Row style="height: 340px;">
+                    <Row style="height: 374px;">
                         <div class="dragging-tip-con">
                             <transition name="dragging-tip">
                                 <span v-show="table2.hasDragged">拖拽第 {{ table2.oldIndex + 1 }} 行表格到第 {{ table2.newIndex + 1 }} 行</span>
@@ -56,7 +58,9 @@
                 </Card>
             </Col>
             <Col span="16" class="padding-left-10">
-                <DragableTable refs="table2" :columnsList="columnsList" :tableData="tableData" :start="handleOnstart2" :end="handleOnend2" :choose="handleOnchoose2" ></DragableTable>
+                <Card>
+                    <DragableTable refs="table2" :columnsList="columnsList" :tableData="tableData" :start="handleOnstart2" :end="handleOnend2" :choose="handleOnchoose2" ></DragableTable>
+                </Card>
             </Col>
         </Row>
     </div>
