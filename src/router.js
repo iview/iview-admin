@@ -76,13 +76,13 @@ export const appRouter = [
     },
     {
         path: '/tables',
-        icon: 'ios-analytics',
+        icon: 'ios-grid-view',
         name: 'tables',
         title: '表格',
         component: Main,
         children: [
-            { path: 'dragableTable', title: '可拖拽排序', name: 'dragableTable', icon: 'ios-pie', component: require('./views/tables/dragable-table.vue') },
-            { path: 'editableTable', title: '可编辑排序', name: 'editableTable', icon: 'ios-pie', component: require('./views/tables/dragable-table.vue') }
+            { path: 'dragableTable', title: '可拖拽排序', name: 'dragableTable', icon: 'arrow-move', component: require('./views/tables/dragable-table.vue') },
+            { path: 'editableTable', title: '可编辑单元格', name: 'editableTable', icon: 'edit', component: require('./views/tables/editable-table.vue') }
 
         ]
     }
