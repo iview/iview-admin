@@ -11,7 +11,11 @@
             </Col>
             <Col span="8" class="padding-left-10 height-100" >
                 <Card>
-                    <Row style="height: 392px;">
+                    <p slot="title">
+                        <Icon type="clipboard"></Icon>
+                        表格1操作记录( 拖拽 )
+                    </p>
+                    <Row style="height: 340px;">
                         <div class="dragging-tip-con">
                             <transition name="dragging-tip">
                                 <span v-show="table1.isDragging">您正在拖拽表格1单元行...</span>
@@ -31,7 +35,11 @@
         <Row class="margin-top-10">
             <Col span="8" class="height-100" >
                 <Card>
-                    <Row style="height: 392px;">
+                    <p slot="title">
+                        <Icon type="clipboard"></Icon>
+                        表格2操作记录( 点击和拖拽 )  
+                    </p>
+                    <Row style="height: 340px;">
                         <div class="dragging-tip-con">
                             <transition name="dragging-tip">
                                 <span v-show="table2.hasDragged">拖拽第 {{ table2.oldIndex + 1 }} 行表格到第 {{ table2.newIndex + 1 }} 行</span>
