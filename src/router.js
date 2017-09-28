@@ -44,21 +44,21 @@ export const appRouter = [
                 icon: 'compose',
                 name: 'text-editer',
                 title: '富文本编辑器',
-                component: require('./views/my_components/text-editer/text-editer.vue')
+                component: require('./views/my_components/text-editer/textEditer.vue')
             },
             {
                 path: 'file-upload',
                 icon: 'android-upload',
                 name: 'file-upload',
                 title: '文件上传',
-                component: require('./views/my_components/file-upload/file-upload.vue')
+                component: require('./views/my_components/file-upload/fileUpload.vue')
             },
             {
                 path: 'avatar-editer',
                 icon: 'ios-crop-strong',
                 name: 'avatar-editer',
                 title: '头像编辑器',
-                component: require('./views/my_components/avator-editer/avator-editer.vue')
+                component: require('./views/my_components/avator-editer/avatorEditer.vue')
             }
         ]
     },
@@ -71,6 +71,18 @@ export const appRouter = [
         children: [
             { path: 'pie', title: '饼状图', name: 'pie', icon: 'ios-pie', component: require('./views/access/access.vue') },
             { path: 'histogram', title: '柱状图', name: 'histogram', icon: 'stats-bars', component: require('./views/access/access.vue') }
+
+        ]
+    },
+    {
+        path: '/tables',
+        icon: 'ios-analytics',
+        name: 'tables',
+        title: '表格',
+        component: Main,
+        children: [
+            { path: 'dragableTable', title: '可拖拽排序', name: 'dragableTable', icon: 'ios-pie', component: require('./views/tables/dragable-table.vue') },
+            { path: 'editableTable', title: '可编辑排序', name: 'editableTable', icon: 'ios-pie', component: require('./views/tables/dragable-table.vue') }
 
         ]
     }

@@ -101,18 +101,8 @@ const store = new Vuex.Store({
             state.currentPageName = name;
         },
         addOpenSubmenu (state, name) {
-            let i = 0;
             let hasThisName = false;
             let isEmpty = false;
-            // while (state.openedSubmenuArr[i]) {
-            //     if (name.length === 0) {
-            //         isEmpty = true;
-            //     }
-            //     if (state.openedSubmenuArr[i] === name) {
-            //         hasThisName = true;
-            //     }
-            //     i++;
-            // }
             if (name.length === 0) {
                 isEmpty = true;
             }
