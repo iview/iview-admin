@@ -34,27 +34,30 @@
             <Col span="18" class="padding-left-10">
                 <Card>
                     <div class="edittable-con-1">
-                            <EditableTable refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></EditableTable>
+                        <EditableTable refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></EditableTable>
                     </div>
                 </Card>
             </Col>
         </Row>
         <Row class="margin-top-10">
-            <Col span="12">
-                <Card></Card>
-            </Col>
-            <Col span="12" class="padding-left-10">
-                <Card></Card>
-            </Col>
+            <Card>
+                <p slot="title">
+                    <Icon type="load-b"></Icon>
+                    带有分页的可编辑、删除表格实例<span style="color: gray;">(示例代码来自iView官网，并根据需求做了部分修改)</span>
+                </p>
+                <multiPageTable></multiPageTable>
+            </Card>
         </Row>
     </div>
 </template>
 
 <script>
 import EditableTable from './components/editableTable.vue';
+import multiPageTable from './components/multiPageTable.vue';
 export default {
     components: {
-        EditableTable
+        EditableTable,
+        multiPageTable
     },
     data () {
         return {
