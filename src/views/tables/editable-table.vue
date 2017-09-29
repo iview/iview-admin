@@ -1,6 +1,6 @@
 <template>
     <div>
-        <EditableTable refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit"></EditableTable>
+        <EditableTable refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></EditableTable>
     </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
                     title: '操作',
                     align: 'center',
                     key: 'handle',
-                    type: 'handle'
+                    handle: ['edit', 'delete']
                 }
             ];
             this.tableData = [
@@ -71,12 +71,21 @@ export default {
             let vm = this;
             setTimeout(function () {
                 fail(() => {
-                    vm.$Message.error('对方不想说话，并且向你抛出了一个异常');
+                    vm.$Message.error('服务器嫌弃你的网络，所以保存失败');
+                });
+            }, 1000);
+        },
+        deleteRow (index, success, fail) {
+            let vm = this;
+            setTimeout(function () {
+                vm.tableData.splice(index, 1);
+                success(() => {
+                    vm.$Message.success('删除数据成功~');
                 });
             }, 1000);
         }
     },
-    mounted () {
+    created () {
         this.getData();
     }
 };

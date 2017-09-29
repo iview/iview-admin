@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table :ref="refs" :columns="columnsList" :data="tableData" border></Table>
+        <Table :ref="refs" :columns="columnsList" :data="tableData" border disabled-hover></Table>
     </div>
 </template>
 
@@ -28,6 +28,29 @@ const editButton = (vm, h, currentRow, index) => {
         }
     }, currentRow.editting ? '保存' : (currentRow.saveFail ? '重试' : '编辑'));
 };
+const deleteButton = (vm, h, currentRow, index) => {
+    return h('Poptip', {
+        props: {
+            confirm: true,
+            title: '您确定要删除这条数据吗?',
+            transfer: true
+        },
+        on: {
+            'on-ok': () => {
+                currentRow.isDeleting = true;
+                vm.deleteRow(vm.deleteIndex(index), vm.successDel(currentRow), vm.failDel(currentRow));
+            }
+        }
+    }, [
+        h('Button', {
+            props: {
+                type: 'error',
+                placement: 'top',
+                loading: currentRow.isDeleting
+            }
+        }, '删除')
+    ]);
+};
 export default {
     name: 'EditableTable',
     props: {
@@ -53,15 +76,16 @@ export default {
             columns: []
         };
     },
-    beforeUpdate () {
+    created () {
         let vm = this;
         this.tableData.map(item => {
             this.$set(item, 'editting', false);
             this.$set(item, 'saving', false);
             this.$set(item, 'saveFail', false);
+            this.$set(item, 'isDeleting', false);
             return item;
         });
-        this.columnsList.map(item => {
+        this.columnsList.forEach(item => {
             if (item.editable) {
                 item.render = (h, param) => {
                     return h('div', {
@@ -76,7 +100,7 @@ export default {
                             lineHeight: '30px'
                         },
                         on: {
-                            'keyup' (event) {
+                            'blur' (event) {
                                 event = event || window.event;
                                 let thisTd = event.srcElement || event.target;
                                 vm.tableData[param.index][item.key] = thisTd.innerHTML;
@@ -85,11 +109,24 @@ export default {
                     }, param.row[item.key]);
                 };
             }
-            if (item.type === 'handle') {
+            if (item.handle) {
                 item.render = (h, param) => {
-                    return h('div', [
-                        editButton(this, h, this.tableData[param.index], param.index)
-                    ]);
+                    if (item.handle.length === 2) {
+                        return h('div', [
+                            editButton(this, h, this.tableData[param.index], param.index),
+                            deleteButton(this, h, this.tableData[param.index], param.index)
+                        ]);
+                    } else if (item.handle.length === 1) {
+                        if (item.handle[0] === 'edit') {
+                            return h('div', [
+                                editButton(this, h, this.tableData[param.index], param.index)
+                            ]);
+                        } else {
+                            return h('div', [
+                                deleteButton(this, h, this.tableData[param.index], param.index)
+                            ]);
+                        }
+                    }
                 };
             }
         });
@@ -115,10 +152,24 @@ export default {
                 currentRow.saving = false;
                 callback();
             };
+        },
+        deleteIndex (index) {
+            return (() => {
+                return index;
+            })();
+        },
+        successDel (currentRow) {
+            return (callback) => {
+                callback();
+                currentRow.isDeleting = false;
+            };
+        },
+        failDel (currentRow) {
+            return (callback) => {
+                callback();
+                currentRow.isDeleting = false;
+            };
         }
-    },
-    mounted () {
-        //
     }
 };
 </script>
