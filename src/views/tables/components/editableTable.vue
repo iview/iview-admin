@@ -1,3 +1,8 @@
+<style lang="less">
+    @import '../../../styles/common.less';
+</style>
+
+
 <template>
     <div>
         <Table :ref="refs" :columns="columnsList" :data="tableData" border disabled-hover></Table>
@@ -43,6 +48,9 @@ const deleteButton = (vm, h, currentRow, index) => {
         }
     }, [
         h('Button', {
+            style: {
+                margin: '0 10px'
+            },
             props: {
                 type: 'error',
                 placement: 'top',
@@ -94,10 +102,7 @@ export default {
                         },
                         style: {
                             width: '100%',
-                            height: '30px',
-                            outline: 'none',
-                            fontSize: '16px',
-                            lineHeight: '30px'
+                            outline: 'none'
                         },
                         on: {
                             'blur' (event) {
