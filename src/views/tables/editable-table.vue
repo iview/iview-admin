@@ -6,7 +6,7 @@
 <template>
     <div>
         <Row>
-            <Col span="8">
+            <Col span="6">
                 <Card>
                     <p slot="title">
                         <Icon type="load-b"></Icon>
@@ -31,12 +31,20 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="16" class="padding-left-10">
+            <Col span="18" class="padding-left-10">
                 <Card>
                     <div class="edittable-con-1">
                             <EditableTable refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></EditableTable>
                     </div>
                 </Card>
+            </Col>
+        </Row>
+        <Row class="margin-top-10">
+            <Col span="12">
+                <Card></Card>
+            </Col>
+            <Col span="12" class="padding-left-10">
+                <Card></Card>
             </Col>
         </Row>
     </div>
