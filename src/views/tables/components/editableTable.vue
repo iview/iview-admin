@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const editButton = (vm, h, currentRow) => {
+const editButton = (vm, h, currentRow, index) => {
     return h('Button', {
         props: {
             type: currentRow.editting ? 'success' : (currentRow.saveFail ? 'error' : 'primary'),
@@ -15,13 +15,13 @@ const editButton = (vm, h, currentRow) => {
             'click': () => {
                 if (currentRow.saveFail) {
                     currentRow.saving = true;
-                    vm.saveEdit(vm.successSave(currentRow), vm.failSave(currentRow));
+                    vm.saveEdit(vm.editIndex(index), vm.successSave(currentRow), vm.failSave(currentRow));
                 } else {
                     if (!currentRow.editting) {
                         currentRow.editting = true;
                     } else {
                         currentRow.saving = true;
-                        vm.saveEdit(vm.successSave(currentRow), vm.failSave(currentRow));
+                        vm.saveEdit(vm.editIndex(index), vm.successSave(currentRow), vm.failSave(currentRow));
                     }
                 }
             }
@@ -35,7 +35,18 @@ export default {
         columnsList: Array,
         tableData: Array,
         url: String,
-        saveEdit: Function
+        saveEdit: {
+            type: Function,
+            default () {
+                return () => {};
+            }
+        },
+        deleteRow: {
+            type: Function,
+            default () {
+                return () => {};
+            }
+        }
     },
     data () {
         return {
@@ -77,13 +88,18 @@ export default {
             if (item.type === 'handle') {
                 item.render = (h, param) => {
                     return h('div', [
-                        editButton(this, h, this.tableData[param.index])
+                        editButton(this, h, this.tableData[param.index], param.index)
                     ]);
                 };
             }
         });
     },
     methods: {
+        editIndex (index) {
+            return (() => {
+                return index;
+            })();
+        },
         successSave (currentRow) {
             return (callback) => {
                 currentRow.editting = false;

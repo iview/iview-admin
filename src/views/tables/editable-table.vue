@@ -67,7 +67,7 @@ export default {
                 }
             ];
         },
-        saveEdit (success, fail) {
+        saveEdit (index, success, fail) {
             let vm = this;
             setTimeout(function () {
                 fail(() => {
