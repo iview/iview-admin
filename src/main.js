@@ -106,7 +106,7 @@ const store = new Vuex.Store({
             if (name.length === 0) {
                 isEmpty = true;
             }
-            if (state.openedSubmenuArr.indexOf(name)) {
+            if (state.openedSubmenuArr.indexOf(name) > -1) {
                 hasThisName = true;
             }
             if (!hasThisName && !isEmpty) {

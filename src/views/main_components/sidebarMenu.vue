@@ -27,7 +27,7 @@
 export default {
     data () {
         return {
-            currentPageName: this.$store.state.currentPageName,
+            currentPageName: this.$route.name,
             tagsList: this.$store.state.tagsList,
             openedSubmenuArr: this.$store.state.openedSubmenuArr
         };
@@ -39,10 +39,6 @@ export default {
         iconSize: Number
     },
     methods: {
-        init () {
-            this.tagsList = this.$store.state.tagsList;
-            this.currentPageName = this.$route.name;
-        },
         changeMenu (active) {
             let pageOpenedList = this.$store.state.pageOpenedList;
             let openedPageLen = pageOpenedList.length;
@@ -78,6 +74,7 @@ export default {
     watch: {
         '$route' (to) {
             this.currentPageName = to.name;
+            localStorage.currentPageName = to.name;
         },
         currentPageName () {
             this.openedSubmenuArr = this.$store.state.openedSubmenuArr;
@@ -86,8 +83,10 @@ export default {
             );
         }
     },
-    created () {
-        this.init();
+    updated () {
+        this.$nextTick(
+            this.$refs.sideMenu.updateOpened()
+        );
     }
 
 };

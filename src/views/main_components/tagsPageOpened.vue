@@ -51,11 +51,6 @@ export default {
                 name: name
             });
         }
-        // tagColor (item) {
-        //     return item.children?
-        //     (item.children[0].name===this.currentPageName?'blue':'yellow'):
-        //     (item.name===this.currentPageName?'blue':'yellow')
-        // }
     },
     watch: {
         '$route' (to) {
@@ -65,9 +60,6 @@ export default {
                 this.$store.commit('addOpenSubmenu', pathArr[1].name);
             }
         }
-    },
-    mounted () {
-        //
     }
 };
 </script>

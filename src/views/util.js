@@ -88,4 +88,13 @@ util.setCurrentPath = function (vm, name) {
     return currentPathArr;
 };
 
+util.getParentName = (vm, child) => {
+    const parent = vm.$store.state.routers.filter((parent) => {
+        return parent.children.length > 1 && parent.children.filter((item) => {
+            return item.name === child;
+        });
+    });
+    return parent.name;
+};
+
 export default util;
