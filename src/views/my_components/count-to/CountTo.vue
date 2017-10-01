@@ -13,16 +13,11 @@ export default {
     data () {
         return {
             counter: {},
-            unitText: ''
+            unitText: '',
+            countId: 'count' + parseInt(Math.random() * 1000000)
         };
     },
     props: {
-        countId: {
-            type: String,
-            default: () => {
-                return 'count' + parseInt(Math.random() * 1000000);
-            }
-        },
         mainClass: String,
         countClass: String,
         mainStyle: {
