@@ -91,18 +91,6 @@ export default {
         transformValue (val) {
             let endVal = 0;
             let unit = '';
-            // if (val < this.unit[0][0]) {
-            //     endVal = val;
-            // } else if (val >= Math.pow(10, this.unit[0][0]) && val < Math.pow(10, this.unit[1][0])) {
-            //     endVal = parseInt(val / Math.pow(10, this.unit[0][0]));
-            //     unit = this.unit[0][1];
-            // } else if (val >= Math.pow(10, this.unit[1][0]) && val < Math.pow(10, this.unit[2][0])) {
-            //     endVal = parseInt(val / Math.pow(10, this.unit[1][0]));
-            //     unit = this.unit[1][1];
-            // } else {
-            //     endVal = parseInt(val / Math.pow(10, this.unit[2][0]));
-            //     unit = this.unit[2][1];
-            // }
             let len = this.unit.length;
             if (val < Math.pow(10, this.unit[0][0])) {
                 endVal = val;
