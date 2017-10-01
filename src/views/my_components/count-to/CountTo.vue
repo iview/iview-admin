@@ -91,17 +91,32 @@ export default {
         transformValue (val) {
             let endVal = 0;
             let unit = '';
-            if (val < 10 * this.unit[0][0]) {
+            // if (val < this.unit[0][0]) {
+            //     endVal = val;
+            // } else if (val >= Math.pow(10, this.unit[0][0]) && val < Math.pow(10, this.unit[1][0])) {
+            //     endVal = parseInt(val / Math.pow(10, this.unit[0][0]));
+            //     unit = this.unit[0][1];
+            // } else if (val >= Math.pow(10, this.unit[1][0]) && val < Math.pow(10, this.unit[2][0])) {
+            //     endVal = parseInt(val / Math.pow(10, this.unit[1][0]));
+            //     unit = this.unit[1][1];
+            // } else {
+            //     endVal = parseInt(val / Math.pow(10, this.unit[2][0]));
+            //     unit = this.unit[2][1];
+            // }
+            let len = this.unit.length;
+            if (val < Math.pow(10, this.unit[0][0])) {
                 endVal = val;
-            } else if (val >= 10 * Math.pow(10, this.unit[0][0]) && val < 10 * Math.pow(10, this.unit[1][0])) {
-                endVal = parseInt(val / Math.pow(10, this.unit[0][0]));
-                unit = this.unit[0][1];
-            } else if (val >= 10 * Math.pow(10, this.unit[1][0]) && val < 10 * Math.pow(10, this.unit[2][0])) {
-                endVal = parseInt(val / Math.pow(10, this.unit[1][0]));
-                unit = this.unit[1][1];
             } else {
-                endVal = parseInt(val / Math.pow(10, this.unit[2][0]));
-                unit = this.unit[2][1];
+                for (let i = 1; i < len; i++) {
+                    if (val >= Math.pow(10, this.unit[i - 1][0]) && val < Math.pow(10, this.unit[i][0])) {
+                        endVal = parseInt(val / Math.pow(10, this.unit[i - 1][0]));
+                        unit = this.unit[i - 1][1];
+                    }
+                }
+            }
+            if (val > Math.pow(10, this.unit[len - 1][0])) {
+                endVal = parseInt(val / Math.pow(10, this.unit[len - 1][0]));
+                unit = this.unit[len - 1][1];
             }
             return {
                 val: endVal,
