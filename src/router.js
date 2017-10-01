@@ -52,14 +52,14 @@ export const appRouter = [
                 name: 'file-upload',
                 title: '文件上传',
                 component: require('./views/my_components/file-upload/fileUpload.vue')
+            },
+            {
+                path: 'count-to',
+                icon: 'arrow-graph-up-right',
+                name: 'count-to',
+                title: '数字渐变',
+                component: require('./views/my_components/count-to/count-to.vue')
             }
-            // {
-            //     path: 'avatar-editer',
-            //     icon: 'ios-crop-strong',
-            //     name: 'avatar-editer',
-            //     title: '头像编辑器',
-            //     component: require('./views/my_components/avator-editer/avatorEditer.vue')
-            // }
         ]
     },
     // {
