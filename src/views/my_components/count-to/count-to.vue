@@ -114,7 +114,7 @@
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
                         <div class="count-to-con">
-                            <CountTo :simplify="true" :endVal="asynEndVal" :mainStyle="mainStyle" :countStyle="countStyle">
+                            <CountTo :endVal="asynEndVal" :mainStyle="mainStyle" :countStyle="countStyle">
                                 <span slot="leftText">Total:&nbsp;</span>
                                 <span slot="rightText">&nbsp;times</span>
                             </CountTo>
@@ -167,7 +167,7 @@ export default {
             },
             unit: [[3, '千多'], [4, '万多'], [5, '十万多']],
             unit2: [[1, '十多'], [2, '百多'], [3, '千多'], [4, '万多'], [5, '十万多'], [6, '百万多'], [7, '千万多'], [8, '亿多']],
-            asynEndVal: 920,
+            asynEndVal: 487,
             integratedEndVal: 3
         };
     },
