@@ -51,7 +51,7 @@ export const appRouter = [
                 icon: 'android-upload',
                 name: 'file-upload',
                 title: '文件上传',
-                component: require('./views/my_components/file-upload/fileUpload.vue')
+                component: require('./views/my_components/file-upload/file-upload.vue')
             },
             {
                 path: 'count-to',
