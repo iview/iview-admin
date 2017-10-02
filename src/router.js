@@ -47,6 +47,13 @@ export const appRouter = [
                 component: require('./views/my_components/text-editer/textEditer.vue')
             },
             {
+                path: 'md-editor',
+                icon: 'pound',
+                name: 'md-editor',
+                title: 'Markdown编辑器',
+                component: require('./views/my_components/markdown-editor/markdown-editor.vue')
+            },
+            {
                 path: 'file-upload',
                 icon: 'android-upload',
                 name: 'file-upload',
