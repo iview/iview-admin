@@ -54,6 +54,13 @@ export const appRouter = [
                 component: require('./views/my_components/markdown-editor/markdown-editor.vue')
             },
             {
+                path: 'draggable-list',
+                icon: 'arrow-move',
+                name: 'draggable-list',
+                title: '可拖拽列表',
+                component: require('./views/my_components/draggable-list/draggable-list.vue')
+            },
+            {
                 path: 'file-upload',
                 icon: 'android-upload',
                 name: 'file-upload',
