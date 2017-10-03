@@ -4,7 +4,7 @@
 <template>
     <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
-            <sidebar-menu :routers="menuList" :iconSize="iconSize">
+            <sidebar-menu :routers="menuList" :iconSize="14">
                 <div slot="top" class="main-logo-left">logo</div>
             </sidebar-menu>
         </div>
@@ -72,9 +72,9 @@
             };
         },
         computed: {
-            iconSize () {
-                return this.hideMenuText ? 24 : 14;
-            }
+            // iconSize () {
+            //     return this.hideMenuText ? 24 : 14;
+            // }
         },
         methods: {
             init () {

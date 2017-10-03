@@ -1,15 +1,21 @@
+<style lang="less">
+    @import '../main.less';
+</style>
+
 <template>
     <div>
-        <Tag 
-            type="dot"
-            v-for="item in pageTagsList" 
-            :key="item.name" 
-            :name="item.name" 
-            @on-close="closePage"
-            @click.native="linkTo(item.name)"
-            :closable="item.name==='home_index'?false:true"
-            :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
-        >{{ item.title }}</Tag>
+        <transition-group name="taglist-moving-animation">
+            <Tag 
+                type="dot"
+                v-for="item in pageTagsList" 
+                :key="item.name" 
+                :name="item.name" 
+                @on-close="closePage"
+                @click.native="linkTo(item.name)"
+                :closable="item.name==='home_index'?false:true"
+                :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
+            >{{ item.title }}</Tag>
+        </transition-group>
     </div>
 </template>
 
