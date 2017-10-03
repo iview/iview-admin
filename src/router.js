@@ -83,8 +83,8 @@ export const appRouter = [
         title: '表单编辑',
         component: Main,
         children: [
-            { path: 'articalpublish', title: '文章发布', name: 'articalpublish', icon: 'arrow-move', component: require('./views/form/article-publish/article-publish.vue') },
-            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-move', component: require('./views/form/work-flow/work-flow.vue') },
+            { path: 'articalpublish', title: '文章发布', name: 'articalpublish', icon: 'compose', component: require('./views/form/article-publish/article-publish.vue') },
+            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: require('./views/form/work-flow/work-flow.vue') }
             
         ]
     },
