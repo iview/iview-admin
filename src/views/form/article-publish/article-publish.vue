@@ -32,7 +32,44 @@
                 </Card>
             </Col>
             <Col span="6" class="padding-left-10">
-                <Card></Card>
+                <Card>
+                    <p slot="title">
+                        <Icon type="paper-airplane"></Icon>
+                        发布
+                    </p>
+                    <!-- <div>
+                        <span><Button>保存草稿</Button></span>
+                        <span style="float:right;"><Button>预览</Button></span>
+                    </div> -->
+                    <p class="margin-top-10">
+                        <Icon type="android-time"></Icon>&nbsp;&nbsp;状&nbsp;&nbsp;&nbsp; 态：
+                        <Select size="small" style="width:70px">
+                            <Option v-for="item in articleStateList" :value="item.value" :key="item.value">{{ item.value }}</Option>
+                        </Select>
+                    </p>
+                    <p class="margin-top-10">
+                        <Icon type="android-time"></Icon>&nbsp;&nbsp;公开度：&nbsp;<b>{{ Openness }}</b><Button v-show="!editOpenness" @click="handleEditOpenness" type="text">修改</Button>
+                        <transition name="openness-con">
+                            <div v-show="editOpenness" class="openness-radio-con">
+                                <RadioGroup v-model="currentOpenness" vertical>
+                                    <Radio label="公开">
+                                        公开
+                                        <Checkbox v-show="currentOpenness === '公开'" v-model="topArticle">在首页置顶这篇文章</Checkbox>
+                                    </Radio>
+                                    <Radio label="密码">
+                                        密码
+                                        <Input v-show="currentOpenness === '密码'" style="width:120px" size="small" placeholder="请输入密码"/>
+                                    </Radio>
+                                    <Radio label="私密"></Radio>
+                                </RadioGroup>
+                                <div>
+                                    <Button type="primary" @click="handleSaveOpenness">确认</Button>
+                                    <Button type="ghost" @click="cancelEditOpenness">取消</Button>
+                                </div>
+                            </div>
+                        </transition>
+                    </p>
+                </Card>
             </Col>
         </Row>
     </div>
@@ -51,7 +88,12 @@ export default {
             articlePathHasEdited: false,
             editLink: false,
             editPathButtonType: 'ghost',
-            editPathButtonText: '编辑'
+            editPathButtonText: '编辑',
+            articleStateList: [{value: '草稿'}, {value: '等待复审'}],
+            editOpenness: false,
+            Openness: '公开',
+            currentOpenness: '公开',
+            topArticle: false
         };
     },
     methods: {
@@ -77,6 +119,17 @@ export default {
             this.editLink = !this.editLink;
             this.editPathButtonType = this.editPathButtonType === 'ghost' ? 'success' : 'ghost';
             this.editPathButtonText = this.editPathButtonText === '编辑' ? '完成' : '编辑';
+        },
+        handleEditOpenness () {
+            this.editOpenness = !this.editOpenness;
+        },
+        handleSaveOpenness () {
+            this.Openness = this.currentOpenness;
+            this.editOpenness = false;
+        },
+        cancelEditOpenness () {
+            this.currentOpenness = this.Openness;
+            this.editOpenness = false;
         }
     },
     mounted () {

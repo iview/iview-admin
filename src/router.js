@@ -85,7 +85,7 @@ export const appRouter = [
         children: [
             { path: 'articalpublish', title: '文章发布', name: 'articalpublish', icon: 'compose', component: require('./views/form/article-publish/article-publish.vue') },
             { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: require('./views/form/work-flow/work-flow.vue') }
-            
+
         ]
     },
     // {

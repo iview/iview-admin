@@ -6,8 +6,30 @@
     opacity: 0;
 }
 .fixed-link-enter-active, .fixed-link-leave-active {
-    transition: opacity .5s
+    transition: opacity .3s
 }
 .fixed-link-enter-to{
     opacity: 1
+}
+.openness-radio-con{
+    margin-left: 40px;
+    padding-left: 10px;
+    height: 130px;
+    border-left: 1px dashed #ebe9f3;
+    overflow: hidden;
+}
+.openness-con-enter{
+    height: 0;
+}
+.openness-con-enter-active, .openness-con-leave-active{
+    transition: height .3s;
+}
+.openness-con-enter-to{
+    height: 130px;
+}
+.openness-con-leave{
+    height: 130px;
+}
+.openness-con-leave-to{
+    height: 0;
 }
