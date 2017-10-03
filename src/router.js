@@ -76,6 +76,18 @@ export const appRouter = [
             }
         ]
     },
+    {
+        path: '/form',
+        icon: 'ios-grid-view',
+        name: 'form',
+        title: '表单编辑',
+        component: Main,
+        children: [
+            { path: 'articalpublish', title: '文章发布', name: 'articalpublish', icon: 'arrow-move', component: require('./views/form/article-publish/article-publish.vue') },
+            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-move', component: require('./views/form/work-flow/work-flow.vue') },
+            
+        ]
+    },
     // {
     //     path: '/charts',
     //     icon: 'ios-analytics',
