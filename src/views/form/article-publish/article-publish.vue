@@ -114,7 +114,16 @@
                             <Icon type="ios-pricetags-outline"></Icon>
                             标签
                         </p>
-                        
+                        <Row>
+                            <Col span="18">
+                                <Select v-model="articleTagSelected" multiple placeholder="请选择文章标签">
+                                    <Option v-for="item in articleTagList" :value="item.value" :key="item.value">{{ item.value }}</Option>
+                                </Select>
+                            </Col>
+                            <Col span="6" class="padding-left-10">
+                                <Button type="ghost">新建</Button>
+                            </Col>
+                        </Row>
                     </Card>
                 </div>
             </Col>
@@ -147,8 +156,16 @@ export default {
             topArticle: false,
             publishTime: '',
             publishTimeType: 'immediately',
-            editPublishTime: false
-
+            editPublishTime: false,
+            articleTagSelected: [],
+            articleTagList: [
+                {value: 'vue'},
+                {value: 'iview'},
+                {value: 'ES6'},
+                {value: 'webpack'},
+                {value: 'babel'},
+                {value: 'eslint'}
+            ]
         };
     },
     methods: {
