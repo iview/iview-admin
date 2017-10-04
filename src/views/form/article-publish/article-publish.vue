@@ -85,7 +85,7 @@
                     <Row class="margin-top-20 publish-button-con">
                         <span class="publish-button"><Button>预览</Button></span>
                         <span class="publish-button"><Button>保存草稿</Button></span>
-                        <span class="publish-button"><Button type="primary">发布</Button></span>
+                        <span class="publish-button"><Button icon="ios-checkmark" style="width:90px;" type="primary">发布</Button></span>
                     </Row>
                 </Card>
                 <div class="margin-top-10">
@@ -97,12 +97,16 @@
                         <Tabs type="card">
                             <TabPane label="所有分类目录">
                                 <div class="classification-con">
-                                    <classificationList></classificationList>
+                                    <Tree :data="classificationList" @on-check-change="setClassificationInAll" show-checkbox></Tree>
                                 </div>
                             </TabPane>
                             <TabPane label="常用目录">
                                 <div class="classification-con">
-                                    d
+                                    <CheckboxGroup v-model="offenUsedClassSelected" @on-change="setClassificationInOffen">
+                                        <p v-for="item in offenUsedClass" :key="item.title">
+                                            <Checkbox :label="item.title">{{ item.title }}</Checkbox>
+                                        </p>
+                                    </CheckboxGroup>
                                 </div>
                             </TabPane>
                         </Tabs>
@@ -133,11 +137,7 @@
 
 <script>
 import tinymce from 'tinymce';
-import classificationList from './classificationList.vue';
 export default {
-    components: {
-        classificationList
-    },
     data () {
         return {
             articleTitle: '',
@@ -156,16 +156,14 @@ export default {
             topArticle: false,
             publishTime: '',
             publishTimeType: 'immediately',
-            editPublishTime: false,
+            editPublishTime: false,  // 是否正在编辑发布时间
             articleTagSelected: [],
-            articleTagList: [
-                {value: 'vue'},
-                {value: 'iview'},
-                {value: 'ES6'},
-                {value: 'webpack'},
-                {value: 'babel'},
-                {value: 'eslint'}
-            ]
+            articleTagList: [],
+            classificationList: [],
+            classificationSelected: [],  // 在所有分类目录中选中的目录数组
+            offenUsedClass: [],
+            offenUsedClassSelected: [],  // 常用目录选中的目录
+            classificationFinalSelected: []  // 最后实际选择的目录
         };
     },
     methods: {
@@ -216,9 +214,104 @@ export default {
         },
         setPublishTime (datetime) {
             this.publishTime = datetime;
+        },
+        setClassificationInAll (selectedArray) {
+            this.classificationFinalSelected = selectedArray.map(item => {
+                return item.title;
+            });
+        },
+        setClassificationInOffen (selectedArray) {
+            this.classificationFinalSelected = selectedArray;
         }
     },
     mounted () {
+        this.articleTagList = [
+            {value: 'vue'},
+            {value: 'iview'},
+            {value: 'ES6'},
+            {value: 'webpack'},
+            {value: 'babel'},
+            {value: 'eslint'}
+        ];
+        this.classificationList = [
+            {
+                title: 'Vue实例',
+                expand: true,
+                children: [
+                    {
+                        title: '数据与方法',
+                        expand: true
+                    },
+                    {
+                        title: '生命周期',
+                        expand: true
+                    }
+                ]
+            },
+            {
+                title: 'Class与Style绑定',
+                expand: true,
+                children: [
+                    {
+                        title: '绑定HTML class',
+                        expand: true,
+                        children: [
+                            {
+                                title: '对象语法',
+                                expand: true
+                            },
+                            {
+                                title: '数组语法',
+                                expand: true
+                            },
+                            {
+                                title: '用在组件上',
+                                expand: true
+                            }
+                        ]
+                    },
+                    {
+                        title: '生命周期',
+                        expand: true
+                    }
+                ]
+            },
+            {
+                title: '模板语法',
+                expand: true,
+                children: [
+                    {
+                        title: '插值',
+                        expand: true
+                    },
+                    {
+                        title: '指令',
+                        expand: true
+                    },
+                    {
+                        title: '缩写',
+                        expand: true
+                    }
+                ]
+            }
+        ];
+        this.offenUsedClass = [
+            {
+                title: 'vue实例'
+            },
+            {
+                title: '生命周期'
+            },
+            {
+                title: '模板语法'
+            },
+            {
+                title: '插值'
+            },
+            {
+                title: '缩写'
+            }
+        ];
         tinymce.init({
             selector: '#articleEditor',
             branding: false,

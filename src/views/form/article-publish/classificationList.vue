@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <Checkbox >{{ checkText }}</Checkbox>
     </div>
 </template>
 
@@ -15,10 +15,32 @@ export default {
     mounted () {
         this.classification = [
             {
-                name: 'Vue开发实战',
+                name: 'Vue实例',
                 children: [
                     {
                         name: '数据与方法'
+                    },
+                    {
+                        name: '生命周期'
+                    }
+                ]
+            },
+            {
+                name: 'Class与Style绑定',
+                children: [
+                    {
+                        name: '绑定HTML class',
+                        children: [
+                            {
+                                name: '对象语法'
+                            },
+                            {
+                                name: '数组语法'
+                            },
+                            {
+                                name: '用在组件上'
+                            }
+                        ]
                     },
                     {
                         name: '生命周期'
