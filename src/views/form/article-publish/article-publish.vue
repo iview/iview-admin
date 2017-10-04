@@ -6,7 +6,7 @@
 <template>
     <div>
         <Row>
-            <!-- <Col span="18">
+            <Col span="18">
                 <Card>
                     <Form :label-width="80">
                         <FormItem label="文章标题" :error="articleError">
@@ -30,8 +30,8 @@
                         <textarea id="articleEditor"></textarea>
                     </div>
                 </Card>
-            </Col> -->
-            <Col span="12" class="padding-left-10">
+            </Col>
+            <Col span="6" class="padding-left-10">
                 <Card>
                     <p slot="title">
                         <Icon type="paper-airplane"></Icon>
@@ -316,7 +316,7 @@ export default {
             selector: '#articleEditor',
             branding: false,
             elementpath: false,
-            height: 400,
+            height: 600,
             language: 'zh_CN.GB2312',
             menubar: 'edit insert view format table tools',
             theme: 'modern',
