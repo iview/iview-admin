@@ -6,7 +6,7 @@
 <template>
     <div>
         <Row>
-            <Col span="18">
+            <!-- <Col span="18">
                 <Card>
                     <Form :label-width="80">
                         <FormItem label="文章标题" :error="articleError">
@@ -30,25 +30,22 @@
                         <textarea id="articleEditor"></textarea>
                     </div>
                 </Card>
-            </Col>
-            <Col span="6" class="padding-left-10">
+            </Col> -->
+            <Col span="12" class="padding-left-10">
                 <Card>
                     <p slot="title">
                         <Icon type="paper-airplane"></Icon>
                         发布
                     </p>
-                    <!-- <div>
-                        <span><Button>保存草稿</Button></span>
-                        <span style="float:right;"><Button>预览</Button></span>
-                    </div> -->
                     <p class="margin-top-10">
                         <Icon type="android-time"></Icon>&nbsp;&nbsp;状&nbsp;&nbsp;&nbsp; 态：
-                        <Select size="small" style="width:70px">
+                        <Select size="small" style="width:90px" value="草稿">
                             <Option v-for="item in articleStateList" :value="item.value" :key="item.value">{{ item.value }}</Option>
                         </Select>
                     </p>
                     <p class="margin-top-10">
-                        <Icon type="android-time"></Icon>&nbsp;&nbsp;公开度：&nbsp;<b>{{ Openness }}</b><Button v-show="!editOpenness" @click="handleEditOpenness" type="text">修改</Button>
+                        <Icon type="eye"></Icon>&nbsp;&nbsp;公开度：&nbsp;<b>{{ Openness }}</b>
+                        <Button v-show="!editOpenness" size="small" @click="handleEditOpenness" type="text">修改</Button>
                         <transition name="openness-con">
                             <div v-show="editOpenness" class="openness-radio-con">
                                 <RadioGroup v-model="currentOpenness" vertical>
@@ -69,7 +66,57 @@
                             </div>
                         </transition>
                     </p>
+                    <p class="margin-top-10">
+                        <Icon type="ios-calendar-outline"></Icon>&nbsp;&nbsp;
+                        <span v-if="publishTimeType === 'immediately'">立即发布</span><span v-else>定时：{{ publishTime }}</span>
+                        <Button v-show="!editPublishTime" size="small" @click="handleEditPublishTime" type="text">修改</Button>
+                        <transition name="publish-time">
+                            <div v-show="editPublishTime" class="publish-time-picker-con">
+                                <div class="margin-top-10">
+                                    <DatePicker @on-change="setPublishTime" type="datetime" style="width:200px;" placeholder="选择日期和时间" ></DatePicker>                                    
+                                </div>
+                                <div class="margin-top-10">
+                                    <Button type="primary" @click="handleSavePublishTime">确认</Button>
+                                    <Button type="ghost" @click="cancelEditPublishTime">取消</Button>
+                                </div>
+                            </div>
+                        </transition>
+                    </p>
+                    <Row class="margin-top-20 publish-button-con">
+                        <span class="publish-button"><Button>预览</Button></span>
+                        <span class="publish-button"><Button>保存草稿</Button></span>
+                        <span class="publish-button"><Button type="primary">发布</Button></span>
+                    </Row>
                 </Card>
+                <div class="margin-top-10">
+                    <Card>
+                        <p slot="title">
+                            <Icon type="navicon-round"></Icon>
+                            分类目录
+                        </p>
+                        <Tabs type="card">
+                            <TabPane label="所有分类目录">
+                                <div class="classification-con">
+                                    <classificationList></classificationList>
+                                </div>
+                            </TabPane>
+                            <TabPane label="常用目录">
+                                <div class="classification-con">
+                                    d
+                                </div>
+                            </TabPane>
+                        </Tabs>
+                    </Card>
+                </div>
+                <div class="margin-top-10">
+                    <Card>
+                        <p slot="title">
+                            <Icon type="ios-pricetags-outline"></Icon>
+                            标签
+                        </p>
+                        
+                    </Card>
+                </div>
             </Col>
         </Row>
     </div>
@@ -77,7 +124,11 @@
 
 <script>
 import tinymce from 'tinymce';
+import classificationList from './classificationList.vue';
 export default {
+    components: {
+        classificationList
+    },
     data () {
         return {
             articleTitle: '',
@@ -93,7 +144,11 @@ export default {
             editOpenness: false,
             Openness: '公开',
             currentOpenness: '公开',
-            topArticle: false
+            topArticle: false,
+            publishTime: '',
+            publishTimeType: 'immediately',
+            editPublishTime: false
+
         };
     },
     methods: {
@@ -130,6 +185,20 @@ export default {
         cancelEditOpenness () {
             this.currentOpenness = this.Openness;
             this.editOpenness = false;
+        },
+        handleEditPublishTime () {
+            this.editPublishTime = !this.editPublishTime;
+        },
+        handleSavePublishTime () {
+            this.publishTimeType = 'timing';
+            this.editPublishTime = false;
+        },
+        cancelEditPublishTime () {
+            this.publishTimeType = 'immediately';
+            this.editPublishTime = false;
+        },
+        setPublishTime (datetime) {
+            this.publishTime = datetime;
         }
     },
     mounted () {
