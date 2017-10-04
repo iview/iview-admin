@@ -83,9 +83,9 @@
                         </transition>
                     </p>
                     <Row class="margin-top-20 publish-button-con">
-                        <span class="publish-button"><Button>预览</Button></span>
-                        <span class="publish-button"><Button>保存草稿</Button></span>
-                        <span class="publish-button"><Button icon="ios-checkmark" style="width:90px;" type="primary">发布</Button></span>
+                        <span class="publish-button"><Button @click="handlePreview">预览</Button></span>
+                        <span class="publish-button"><Button @click="handleSaveDraft">保存草稿</Button></span>
+                        <span class="publish-button"><Button @click="handlePublish" :loading="publishLoading" icon="ios-checkmark" style="width:90px;" type="primary">发布</Button></span>
                     </Row>
                 </Card>
                 <div class="margin-top-10">
@@ -163,7 +163,8 @@ export default {
             classificationSelected: [],  // 在所有分类目录中选中的目录数组
             offenUsedClass: [],
             offenUsedClassSelected: [],  // 常用目录选中的目录
-            classificationFinalSelected: []  // 最后实际选择的目录
+            classificationFinalSelected: [],  // 最后实际选择的目录
+            publishLoading: false
         };
     },
     methods: {
@@ -222,6 +223,41 @@ export default {
         },
         setClassificationInOffen (selectedArray) {
             this.classificationFinalSelected = selectedArray;
+        },
+        canPublish () {
+            if (this.articleTitle.length === 0) {
+                this.$Message.error('请输入文章标题');
+                return false;
+            } else {
+                return true;
+            }
+        },
+        handlePreview () {
+            if (!this.canPublish()) {
+                //
+            }
+        },
+        handleSaveDraft () {
+            if (!this.canPublish()) {
+                //
+            }
+        },
+        handlePublish () {
+            if (this.canPublish()) {
+                this.publishLoading = true;
+                setTimeout(() => {
+                    this.publishLoading = false;
+                    this.$Notice.success({
+                        title: '保存成功',
+                        desc: '文章《' + this.articleTitle + '》保存成功'
+                    });
+                }, 1000);
+            }
+        }
+    },
+    computed: {
+        completeUrl () {
+            return this.fixedLink + this.articlePath;
         }
     },
     mounted () {

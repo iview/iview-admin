@@ -20,6 +20,12 @@ export const homeRouter = {
     ]
 };
 
+export const preview = {
+    path: '/preview',
+    name: 'preview',
+    component: require('./views/form/article-publish/preview.vue')
+};
+
 export const appRouter = [
     // {
     //     path: '/access',
@@ -118,5 +124,6 @@ export const appRouter = [
 export const routers = [
     loginRouter,
     homeRouter,
+    preview,
     ...appRouter
 ];
