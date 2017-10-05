@@ -125,9 +125,22 @@
                                 </Select>
                             </Col>
                             <Col span="6" class="padding-left-10">
-                                <Button type="ghost">新建</Button>
+                                <Button v-show="!addingNewTag" @click="handleAddNewTag" long type="ghost">新建</Button>
                             </Col>
                         </Row>
+                        <transition name="add-new-tag">
+                            <div v-show="addingNewTag" class="add-new-tag-con">
+                                <Col span="14">
+                                    <Input v-model="newTagName" placeholder="请输入标签名" />                                
+                                </Col>
+                                <Col span="5" class="padding-left-10">
+                                    <Button @click="createNewTag" long type="primary">确定</Button>
+                                </Col>
+                                <Col span="5" class="padding-left-10">
+                                    <Button @click="cancelCreateNewTag" long type="ghost">取消</Button>
+                                </Col>
+                            </div>
+                        </transition>
                     </Card>
                 </div>
             </Col>
@@ -164,7 +177,9 @@ export default {
             offenUsedClass: [],
             offenUsedClassSelected: [],  // 常用目录选中的目录
             classificationFinalSelected: [],  // 最后实际选择的目录
-            publishLoading: false
+            publishLoading: false,
+            addingNewTag: false,  // 添加新标签
+            newTagName: '' // 新建标签名
         };
     },
     methods: {
@@ -225,6 +240,24 @@ export default {
         },
         setClassificationInOffen (selectedArray) {
             this.classificationFinalSelected = selectedArray;
+        },
+        handleAddNewTag () {
+            this.addingNewTag = !this.addingNewTag;
+        },
+        createNewTag () {
+            if (this.newTagName.length !== 0) {
+                this.articleTagList.push({value: this.newTagName});
+                this.addingNewTag = false;
+                setTimeout(() => {
+                    this.newTagName = '';
+                }, 200);
+            } else {
+                this.$Message.error('请输入标签名');
+            }
+        },
+        cancelCreateNewTag () {
+            this.newTagName = '';
+            this.addingNewTag = false;
         },
         canPublish () {
             if (this.articleTitle.length === 0) {
