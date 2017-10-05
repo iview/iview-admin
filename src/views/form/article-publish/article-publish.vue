@@ -120,7 +120,7 @@
                         </p>
                         <Row>
                             <Col span="18">
-                                <Select v-model="articleTagSelected" multiple placeholder="请选择文章标签">
+                                <Select v-model="articleTagSelected" multiple @on-change="handleSelectTag" placeholder="请选择文章标签">
                                     <Option v-for="item in articleTagList" :value="item.value" :key="item.value">{{ item.value }}</Option>
                                 </Select>
                             </Col>
@@ -157,8 +157,8 @@ export default {
             publishTime: '',
             publishTimeType: 'immediately',
             editPublishTime: false,  // 是否正在编辑发布时间
-            articleTagSelected: [],
-            articleTagList: [],
+            articleTagSelected: [],  // 文章选中的标签
+            articleTagList: [],  // 所有标签列表
             classificationList: [],
             classificationSelected: [],  // 在所有分类目录中选中的目录数组
             offenUsedClass: [],
@@ -171,6 +171,7 @@ export default {
         handleArticletitleBlur () {
             if (this.articleTitle.length !== 0) {
                 // this.articleError = '';
+                localStorage.articleTitle = this.articleTitle; // 本地存储文章标题
                 if (!this.articlePathHasEdited) {
                     let date = new Date();
                     let year = date.getFullYear();
@@ -220,6 +221,7 @@ export default {
             this.classificationFinalSelected = selectedArray.map(item => {
                 return item.title;
             });
+            localStorage.classificationSelected = JSON.stringify(this.classificationFinalSelected);  // 本地存储所选目录列表
         },
         setClassificationInOffen (selectedArray) {
             this.classificationFinalSelected = selectedArray;
@@ -233,8 +235,23 @@ export default {
             }
         },
         handlePreview () {
-            if (!this.canPublish()) {
-                //
+            if (this.canPublish()) {
+                if (this.publishTimeType === 'immediately') {
+                    let date = new Date();
+                    let year = date.getFullYear();
+                    let month = date.getMonth() + 1;
+                    let day = date.getDay() + 1;
+                    let hour = date.getHours();
+                    let minute = date.getMinutes();
+                    let second = date.getSeconds();
+                    localStorage.publishTime = year + ' 年 ' + month + ' 月 ' + day + ' 日 -- ' + hour + ' : ' + minute + ' : ' + second;
+                } else {
+                    localStorage.publishTime = this.publishTime;  // 本地存储发布时间
+                }
+                localStorage.content = tinymce.activeEditor.getContent();
+                this.$router.push({
+                    name: 'preview'
+                });
             }
         },
         handleSaveDraft () {
@@ -253,11 +270,16 @@ export default {
                     });
                 }, 1000);
             }
+        },
+        handleSelectTag () {
+            localStorage.tagsList = JSON.stringify(this.articleTagSelected);  // 本地存储文章标签列表
         }
     },
     computed: {
         completeUrl () {
-            return this.fixedLink + this.articlePath;
+            let finalUrl = this.fixedLink + this.articlePath;
+            localStorage.finalUrl = finalUrl;  // 本地存储完整文章路径
+            return finalUrl;
         }
     },
     mounted () {
@@ -369,6 +391,11 @@ export default {
                 width: '100%',
                 borderCollapse: 'collapse'
             }
+            // init_instance_callback (editor) {
+            //     editor.on('keyup', () => {
+            //         localStorage.content = tinymce.activeEditor.getContent();
+            //     });
+            // }
         });
     },
     destroyed () {
