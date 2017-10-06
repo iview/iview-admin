@@ -46,7 +46,6 @@ export default {
                     name: lastPageName
                 });
             }
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList);
         },
         linkTo (name) {
             let pathArr = util.setCurrentPath(this, name);
