@@ -10,7 +10,7 @@
 import tinymce from 'tinymce';
 export default {
     mounted () {
-        var height = document.querySelector('.single-page-con').offsetHeight - 200;
+        var height = document.querySelector('.single-page-con').offsetHeight - 250;
         tinymce.init({
             selector: '#tinymceEditer',
             branding: false,
