@@ -120,9 +120,10 @@
                         name: 'ownspace_index'
                     });
                     let hasOpened = false;
-                    this.pageTagsList.forEach(item => {
+                    this.pageTagsList.forEach((item, index) => {
                         if (item.name === 'ownspace_index') {
                             hasOpened = true;
+                            this.$store.commit('moveToSecond', index);
                         }
                     });
                     if (!hasOpened) {
