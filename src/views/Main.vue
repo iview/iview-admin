@@ -23,7 +23,7 @@
                     </div>
                     <div class="header-avator-con">
                         <div @click="handleFullScreen" v-if="showFullScreenBtn" class="full-screen-btn-con">
-                            <Tooltip content="全屏" placement="bottom">
+                            <Tooltip :content="isFullScreen ? '退出全屏' : '全屏'" placement="bottom">
                                 <Icon :type="isFullScreen ? 'arrow-shrink' : 'arrow-expand'" :size="23"></Icon>
                             </Tooltip>
                         </div>
