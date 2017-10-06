@@ -159,7 +159,7 @@
                 </Card>
             </Col>
         </Row>
-        <Row class="margin-top-10 margin-bottom-100">
+        <Row class="margin-top-10">
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="ios-shuffle-strong"></Icon>
