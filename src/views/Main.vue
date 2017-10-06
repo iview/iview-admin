@@ -5,7 +5,7 @@
     <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <sidebar-menu :routers="menuList" :iconSize="14">
-                <div slot="top" class="main-logo-left">logo</div>
+                <div slot="top" class="logo-con">i<i>V</i>iew admin</div>
             </sidebar-menu>
         </div>
         <div class="main-content-container":style="{left: hideMenuText?'80px':'200px'}">
