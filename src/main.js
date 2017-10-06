@@ -95,7 +95,6 @@ const store = new Vuex.Store({
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList); // 本地存储已打开页面
         },
         removeTag (state, name) {
-            console.log(name)
             state.pageOpenedList.map((item, index) => {
                 if (item.name === name) {
                     state.pageOpenedList.splice(index, 1);
