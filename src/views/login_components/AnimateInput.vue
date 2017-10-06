@@ -5,7 +5,7 @@
 <template>
     <div @click="handleClick" class="animate-input-con">
         <span ref="animateInputLabel" class="animate-input-label" :style="{color: color}"><span v-if="icon" class="animate-input-icon-wrap"><Icon :type="icon"></Icon></span>{{ label }}</span>
-        <input ref="animateInputInput" @input="handleInput" v-model="value" @blur="handleBlur" class="animate-input-input" :style="{color: color, borderBottom: '2px solid ' + color, paddingRight: canclear ? '30px' : '5px'}" type="text" />
+        <input :type="type" ref="animateInputInput" @input="handleInput" @blur="handleBlur" class="animate-input-input" :style="{color: color, borderBottom: '2px solid ' + color, paddingRight: canclear ? '30px' : '5px'}"/>
         <transition name="animate-input-clearbtn">
             <span v-show="value.length !== 0 && canclear" @click="clearValue" :style="{color: color}" class="animate-input-clear-btn"><Icon :size="20" type="close-circled"></Icon></span>
         </transition>
@@ -13,6 +13,15 @@
 </template>
 
 <script>
+const inOf = (arr, targetArr) => {
+    let res = true;
+    arr.map(item => {
+        if (targetArr.indexOf(item) < 0) {
+            res = false;
+        }
+    });
+    return res;
+};
 export default {
     name: 'AnimateInput',
     data () {
@@ -27,7 +36,14 @@ export default {
             type: String,
             default: '#fff'
         },
-        canclear: Boolean
+        canclear: Boolean,
+        type: {
+            type: String,
+            validator (value) {
+                return inOf(value, ['text', 'password']);
+            },
+            default: 'text'
+        }
     },
     methods: {
         handleClick () {
@@ -40,6 +56,7 @@ export default {
             }
         },
         handleInput () {
+            this.value = this.$refs.animateInputInput.value;
             this.$emit('input', this.value);
         },
         clearValue () {
