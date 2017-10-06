@@ -13,14 +13,12 @@
 </template>
 
 <script>
-const inOf = (arr, targetArr) => {
-    let res = true;
-    arr.map(item => {
-        if (targetArr.indexOf(item) < 0) {
-            res = false;
-        }
-    });
-    return res;
+const inOf = (value, targetArr) => {
+    if (targetArr.indexOf(value) > -1) {
+        return true;
+    } else {
+        return false;
+    }
 };
 export default {
     name: 'AnimateInput',
