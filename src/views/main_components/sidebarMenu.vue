@@ -68,7 +68,6 @@ export default {
             this.$router.push({
                 name: active
             });
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList); // 本地存储已打开页面
         }
     },
     watch: {

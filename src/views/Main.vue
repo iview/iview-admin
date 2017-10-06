@@ -47,7 +47,7 @@
                 
                 <div class="main-content">
                     <div class="tags-con">
-                        <tags-page-opened :pageTagsList="pagePagsList"></tags-page-opened>
+                        <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
                     </div>
                     <div class="single-page-con">
                         <router-view></router-view>
@@ -78,7 +78,7 @@
                 spanRight: 20,
                 menuList: this.$store.state.appRouter,
                 tagsList: this.$store.state.tagsList,  // 所有页面的页面对象
-                pagePagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
+                pageTagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
                 hideMenuText: false,
@@ -109,7 +109,18 @@
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
-                    //
+                    this.$router.push({
+                        name: 'ownspace_index'
+                    });
+                    let hasOpened = false;
+                    this.pageTagsList.forEach(item => {
+                        if (item.name === 'ownspace_index') {
+                            hasOpened = true;
+                        }
+                    });
+                    if (!hasOpened) {
+                        this.$store.commit('increateTag', {name: 'ownspace_index', title: '个人中心'});
+                    }
                 } else if (name === 'loginout') {
                     Cookies.remove('user');
                     this.$router.push({

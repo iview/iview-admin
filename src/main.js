@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import iView from 'iview';
 import VueRouter from 'vue-router';
-import {routers, homeRouter, appRouter} from './router';
+import {routers, otherRouter, appRouter} from './router';
 // import appRouter from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
@@ -65,12 +65,12 @@ router.afterEach(() => {
 const store = new Vuex.Store({
     state: {
         routers: [
-            homeRouter,
+            otherRouter,
             ...appRouter
         ],
         appRouter: appRouter,
         tagsList: [],
-        pageOpenedList: localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [homeRouter.children[0]],
+        pageOpenedList: localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]],
         currentPageName: '',
         currentPath: [
             {
@@ -92,6 +92,7 @@ const store = new Vuex.Store({
         },
         increateTag (state, tagObj) {
             state.pageOpenedList.splice(1, 0, tagObj);
+            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList); // 本地存储已打开页面
         },
         removeTag (state, name) {
             state.pageOpenedList.map((item, index) => {

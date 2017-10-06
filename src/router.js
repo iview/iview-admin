@@ -9,14 +9,15 @@ export const loginRouter = {
     component: require('./views/login.vue')
 };
 
-export const homeRouter = {
+export const otherRouter = {
     path: '/',
     redirect: '/home',
     name: 'home',
     title: '首页',
     component: Main,
     children: [
-        { path: 'home', title: '首页', name: 'home_index', component: require('./views/home/home.vue') }
+        { path: 'home', title: '首页', name: 'home_index', component: require('./views/home/home.vue') },
+        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: require('./views/own-space/own-space.vue') }
     ]
 };
 
@@ -123,7 +124,7 @@ export const appRouter = [
 
 export const routers = [
     loginRouter,
-    homeRouter,
+    otherRouter,
     preview,
     ...appRouter
 ];
