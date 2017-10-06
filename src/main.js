@@ -6,6 +6,7 @@ import {routers, homeRouter, appRouter} from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
+import Cookies from 'js-cookie';
 import 'iview/dist/styles/iview.css';
 
 import VueI18n from 'vue-i18n';
@@ -43,7 +44,13 @@ const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
-    next();
+    if (!Cookies.get('user') && to.name !== 'login') {
+        next({
+            name: 'login'
+        });
+    } else {
+        next();
+    }
 });
 
 router.afterEach(() => {
