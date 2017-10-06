@@ -91,6 +91,7 @@ const store = new Vuex.Store({
             state.tagsList.push(...list);
         },
         increateTag (state, tagObj) {
+            console.log(state.pageOpenedList)
             state.pageOpenedList.splice(1, 0, tagObj);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList); // 本地存储已打开页面
         },
@@ -106,6 +107,7 @@ const store = new Vuex.Store({
             let openedPage = state.pageOpenedList[index];
             state.pageOpenedList.splice(index, 1);
             state.pageOpenedList.splice(1, 0, openedPage);
+            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         setCurrentPath (state, pathArr) {
             state.currentPath = pathArr;
