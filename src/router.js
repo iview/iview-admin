@@ -6,7 +6,7 @@ export const loginRouter = {
     meta: {
         title: 'Login - 登录'
     },
-    component: require('./login.vue')
+    component: require('./views/login.vue')
 };
 
 export const homeRouter = {
