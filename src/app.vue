@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div id="main" class="main">
         <router-view></router-view>
     </div>
 </template>
@@ -23,7 +23,7 @@
     };
 </script>
 
-<style scoped>
+<style>
 .main{
     width: 100%;
     height: 100%;

@@ -22,6 +22,11 @@
                         </div>
                     </div>
                     <div class="header-avator-con">
+                        <div @click="handleFullScreen" v-if="showFullScreenBtn" class="full-screen-btn-con">
+                            <Tooltip content="全屏" placement="bottom">
+                                <Icon :type="isFullScreen ? 'arrow-shrink' : 'arrow-expand'" :size="23"></Icon>
+                            </Tooltip>
+                        </div>
                         <div class="switch-theme-con">
                             <Row class="switch-theme" type="flex" justify="center" align="middle">
                                 <theme-dropdown-menu></theme-dropdown-menu>
@@ -82,7 +87,9 @@
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
                 hideMenuText: false,
-                userName: ''
+                userName: '',
+                showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
+                isFullScreen: false
             };
         },
         methods: {
@@ -127,6 +134,30 @@
                         name: 'login'
                     });
                 }
+            },
+            handleFullScreen () {
+                let main = document.getElementById('main');
+                if (this.isFullScreen) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitCancelFullScreen) {
+                        document.webkitCancelFullScreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                } else {
+                    if (main.requestFullscreen) {
+                        main.requestFullscreen();
+                    } else if (main.mozRequestFullScreen) {
+                        main.mozRequestFullScreen();
+                    } else if (main.webkitRequestFullScreen) {
+                        main.webkitRequestFullScreen();
+                    } else if (main.msRequestFullscreen) {
+                        main.msRequestFullscreen();
+                    }
+                }
             }
         },
         watch: {
@@ -136,6 +167,18 @@
         },
         mounted () {
             this.init();
+            document.addEventListener('fullscreenchange', () => {
+                this.isFullScreen = !this.isFullScreen;
+            });
+            document.addEventListener('mozfullscreenchange', () => {
+                this.isFullScreen = !this.isFullScreen;
+            });
+            document.addEventListener('webkitfullscreenchange', () => {
+                this.isFullScreen = !this.isFullScreen;
+            });
+            document.addEventListener('msfullscreenchange', () => {
+                this.isFullScreen = !this.isFullScreen;
+            });
         }
     };
 </script>
