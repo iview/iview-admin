@@ -13,6 +13,9 @@
             <div class="login-submit-con">
                 <div @click="handleSubmit" class="login-submit-btn"><Icon type="checkmark-circled"></Icon><span>登录</span></div>
             </div>
+            <div class="login-tips">
+                输入任意用户名和密码即可登录
+            </div>
         </div>
     </div>
 </template>
