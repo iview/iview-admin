@@ -82,7 +82,7 @@
             position: absolute;
             left: 60px;
             top: 0;
-            right: 200px;
+            right: 300px;
             bottom: 0;
             padding: 10px;
             overflow: hidden;
@@ -92,7 +92,7 @@
             right: 0;
             top: 0;
             height: 100%;
-            width: 200px;
+            width: 300px;
             .switch-theme-con{
                 width: 120px;
                 height: 100%;
@@ -104,6 +104,26 @@
             }
             .switch-theme{
                 height: 100%;
+            }
+            .user-dropdown{
+                &-menu-con{
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    width: 180px;
+                    height: 100%;
+                    .main-user-name{
+                        display: inline-block;
+                        width: 80px;
+                        vertical-align: middle;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+                &-innercon{
+                    height: 100%;
+                    padding-right: 14px;
+                }
             }
         }
     }

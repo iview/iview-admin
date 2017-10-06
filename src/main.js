@@ -48,6 +48,10 @@ router.beforeEach((to, from, next) => {
         next({
             name: 'login'
         });
+    } else if (Cookies.get('user') && to.name === 'login') {
+        next({
+            name: 'home'
+        });
     } else {
         next();
     }

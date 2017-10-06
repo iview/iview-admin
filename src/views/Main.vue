@@ -27,6 +27,21 @@
                                 <theme-dropdown-menu></theme-dropdown-menu>
                             </Row>
                         </div>
+                        <div class="user-dropdown-menu-con">
+                            <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
+                                <Dropdown @on-click="handleClickUserDropdown">
+                                    <a href="javascript:void(0)">
+                                        <span class="main-user-name">{{ userName }}</span>
+                                        <Icon type="arrow-down-b"></Icon>
+                                    </a>
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem name="ownSpace">个人中心</DropdownItem>
+                                        <DropdownItem name="loginout" divided>退出登录</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                <Avatar icon="person" style="background: #619fe7;margin-left: 10px;"></Avatar>
+                            </Row>
+                        </div>
                     </div>
                 </div>
                 
@@ -38,9 +53,6 @@
                         <router-view></router-view>
                     </div>
                 </div>
-                <!-- <div class="main-copy">
-                    2011-2016 &copy; TalkingData
-                </div> -->
             </div>
         </div>
     </div>
@@ -50,6 +62,7 @@
     import tagsPageOpened from './main_components/tagsPageopened.vue';
     import breadcrumbNav from './main_components/breadcrumbNav.vue';
     import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
+    import Cookies from 'js-cookie';
     import util from './util.js';
     
     export default {
@@ -68,13 +81,9 @@
                 pagePagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
-                hideMenuText: false
+                hideMenuText: false,
+                userName: ''
             };
-        },
-        computed: {
-            // iconSize () {
-            //     return this.hideMenuText ? 24 : 14;
-            // }
         },
         methods: {
             init () {
@@ -93,9 +102,20 @@
                 if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
+                this.userName = Cookies.get('user');
             },
             toggleClick () {
                 this.hideMenuText = !this.hideMenuText;
+            },
+            handleClickUserDropdown (name) {
+                if (name === 'ownSpace') {
+                    //
+                } else if (name === 'loginout') {
+                    Cookies.remove('user');
+                    this.$router.push({
+                        name: 'login'
+                    });
+                }
             }
         },
         watch: {
