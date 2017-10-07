@@ -6,34 +6,28 @@
     <div class="message-main-con">
         <div class="message-mainlist-con">
             <div>
-                <Button size="large" long type="text">未读消息<Badge class="message-count-badge-outer" class-name="message-count-badge" count="100"></Badge></Button>
+                <Button @click="setCurrentMesType('unread')" size="large" long type="text"><transition name="mes-current-type-btn"><Icon v-show="currentMessageType === 'unread'" type="checkmark"></Icon></transition><span class="mes-type-btn-text">未读消息</span><Badge class="message-count-badge-outer" class-name="message-count-badge" :count="unreadCount"></Badge></Button>
             </div>
             <div>
-                <Button size="large" long type="text">已读消息<Badge class="message-count-badge-outer" class-name="message-count-badge" count="100"></Badge></Button>
+                <Button @click="setCurrentMesType('hasread')" size="large" long type="text"><transition name="mes-current-type-btn"><Icon v-show="currentMessageType === 'hasread'" type="checkmark"></Icon></transition><span class="mes-type-btn-text">已读消息</span><Badge class="message-count-badge-outer" class-name="message-count-badge" :count="hasreadCount"></Badge></Button>
             </div>
             <div>
-                <Button size="large" long type="text">回收站<Badge class="message-count-badge-outer" class-name="message-count-badge" count="100"></Badge></Button>
+                <Button @click="setCurrentMesType('recyclebin')" size="large" long type="text"><transition name="mes-current-type-btn"><Icon v-show="currentMessageType === 'recyclebin'" type="checkmark"></Icon></transition><span class="mes-type-btn-text">回收站</span><Badge class="message-count-badge-outer" class-name="message-count-badge" :count="recyclebinCount"></Badge></Button>
             </div>
         </div>
         <div class="message-content-con">
-            <div v-if="showMesTitleList" class="message-title-list-con">
-                <div class="message-title-handle-con">
-                    <div class="message-title-handle-con-check-con">
-                        <Checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全选</Checkbox>
+            <transition name="view-message">
+                <div v-if="showMesTitleList" class="message-title-list-con">
+                    <Table ref="messageList" :columns="mesTitleColumns" :data="currentMesList"></Table>
+                </div>
+            </transition>
+            <transition name="back-message-list">
+                <div v-if="!showMesTitleList" class="message-view-content-con">
+                    <div class="message-content-top-bar">
+                        <Button type="text" @click="backMesTitleList"><Icon type="chevron-left"></Icon>&nbsp;&nbsp;返回</Button>
                     </div>
                 </div>
-                <ul class="message-title-list">
-                    <li v-for="(item, index) in unreadMesTitleList" :key="index">
-                        <div class="message-title-list-checkbox-con"><Checkbox></Checkbox></div>
-                        <div class="message-title-list-title-con"><a>{{ item.title }}</a></div>
-                        <div class="message-title-list-time-con" v-once><span><Icon :size="12" type="android-time"></Icon></span>{{ formatDate(item.time) }}</div>
-                        <div class="message-title-list-asread-con"><Button size="small">标为已读</Button></div>
-                    </li>
-                </ul>
-            </div>
-            <div v-else class="message-view-content-con">
-                s
-            </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -41,9 +35,122 @@
 <script>
 export default {
     data () {
+        const markAsreadBtn = (h, params) => {
+            return h('Button', {
+                props: {
+                    size: 'small'
+                },
+                on: {
+                    click: () => {
+                        //
+                    }
+                }
+            }, '标为已读');
+        };
+        const deleteMesBtn = (h, params) => {
+            return h('Button', {
+                props: {
+                    size: 'small',
+                    type: 'error'
+                },
+                on: {
+                    click: () => {
+                        //
+                    }
+                }
+            }, '删除');
+        };
+        const restoreBtn = (h, params) => {
+            return h('Button', {
+                props: {
+                    size: 'small'
+                },
+                on: {
+                    click: () => {
+                        //
+                    }
+                }
+            }, '还原');
+        };
         return {
-            unreadMesTitleList: [],
-            showMesTitleList: true
+            currentMesList: [],
+            unreadMesList: [],
+            hasreadMesList: [],
+            recyclebinList: [],
+            currentMessageType: 'unread',
+            showMesTitleList: true,
+            unreadCount: 0,
+            hasreadCount: 0,
+            recyclebinCount: 0,
+            mesTitleColumns: [
+                {
+                    type: 'selection',
+                    width: 50,
+                    align: 'center'
+                },
+                {
+                    title: ' ',
+                    key: 'title',
+                    align: 'left',
+                    ellipsis: true,
+                    render: (h, params) => {
+                        return h('a', {
+                            on: {
+                                click: () => {
+                                    // console.log(params.index)
+                                    this.showMesTitleList = false;
+                                }
+                            }
+                        }, params.row.title);
+                    }
+                },
+                {
+                    title: ' ',
+                    key: 'time',
+                    align: 'center',
+                    width: 180,
+                    render: (h, params) => {
+                        return h('span', [
+                            h('Icon', {
+                                props: {
+                                    type: 'android-time',
+                                    size: 12
+                                },
+                                style: {
+                                    margin: '0 5px'
+                                }
+                            }),
+                            h('span', {
+                                props: {
+                                    type: 'android-time',
+                                    size: 12
+                                }
+                            }, this.formatDate(params.row.time))
+                        ]);
+                    }
+                },
+                {
+                    title: ' ',
+                    key: 'asread',
+                    align: 'center',
+                    width: 100,
+                    render: (h, params) => {
+                        if (this.currentMessageType === 'unread') {
+                            return h('div', [
+                                markAsreadBtn(h, params)
+                            ]);
+                        } else if (this.currentMessageType === 'hasread') {
+                            return h('div', [
+                                deleteMesBtn(h, params)
+                            ]);
+                        } else {
+                            return h('div', [
+                                restoreBtn(h, params)
+                            ]);
+                        }
+                    }
+                }
+            ]
         };
     },
     methods: {
@@ -56,26 +163,51 @@ export default {
             let minute = date.getMinutes();
             let second = date.getSeconds();
             return year + '/' + month + '/' + day + '  ' + hour + ':' + minute + ':' + second;
+        },
+        backMesTitleList () {
+            this.showMesTitleList = true;
+        },
+        setCurrentMesType (type) {
+            this.currentMessageType = type;
+            if (type === 'unread') {
+                this.currentMesList = this.unreadMesList;
+            } else if (type === 'hasread') {
+                this.currentMesList = this.hasreadMesList;
+            } else {
+                this.currentMesList = this.recyclebinList;
+            }
         }
     },
     mounted () {
-        this.unreadMesTitleList = [
+        this.currentMesList = this.unreadMesList = [
             {
                 title: '欢迎登录iView-admin后台管理系统，来了解他的用途吧',
-                hasread: false,
                 time: 1507390106000
             },
             {
                 title: '使用iView-admin和iView-ui组件库快速搭建你的后台系统吧',
-                hasread: false,
                 time: 1507390106000
             },
             {
                 title: '喜欢iView-admin的话，欢迎到github主页给个star吧',
-                hasread: false,
                 time: 1507390106000
             }
         ];
+        this.hasreadMesList = [
+            {
+                title: '这是一条您已经读过的消息',
+                time: 1507330106000
+            }
+        ];
+        this.recyclebinList = [
+            {
+                title: '这是一条被删除的消息',
+                time: 1506390106000
+            }
+        ];
+        this.unreadCount = 3;
+        this.hasreadCount = 1;
+        this.recyclebinCount = 1;
     }
 };
 </script>

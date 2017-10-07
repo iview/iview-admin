@@ -25,6 +25,9 @@
             &:first-child .message-count-badge{
                 background: #ed3f14;
             }
+            .mes-type-btn-text{
+                margin-left: 10px;
+            }
         }
     }
     &-content-con{
@@ -33,76 +36,47 @@
         right: 10px;
         bottom: 10px;
         left: 300px;
-        padding: 10px;
         background: white;
         border-radius: 3px;
         box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, .1);
+        overflow: auto;
         .message-title-list-con{
-            position: relative;
-            .message-title-handle-con{
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 40px;
-                width: 100%;
-                border-bottom: 1px solid #dededb;
-                &-check-con{
-                    display: inline-block;
-                    margin: 6px 0 0 16px;
-                }
-            }
-            .message-title-list{
-                padding-top: 40px;
-                li{
-                    position: relative;
-                    height: 40px;
-                    border-bottom: 1px dashed #e8e8e5;
-                    div{
-                        
-                    }
-                    .message-title-list{
-                        &-checkbox-con{
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            padding-top: 10px;
-                            padding-left: 16px; 
-                            width: 20px;
-                        }
-                        &-title-con{
-                            position: absolute;
-                            left: 40px;
-                            top: 0;
-                            right: 240px;
-                            bottom: 0;
-                            padding-left: 10px;
-                            line-height: 40px;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-                        &-time-con{
-                            position: absolute;
-                            right: 100px;
-                            top: 0;
-                            height: 40px;
-                            width: 140px;
-                            line-height: 40px;
-                            span{
-                                margin: 0 5px;
-                            }
-                        }
-                        &-asread-con{
-                            position: absolute;
-                            right: 0;
-                            top: 0;
-                            width: 100px;
-                            height: 30px;
-                            padding-top: 8px;
-                            text-align: center;
-                        }
-                    }
-                }
-            }
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        .message-content-top-bar{
+            padding: 10px 0;
+            border-bottom: 1px solid #dededb;
         }
     }
+}
+.back-message-list-enter, .back-message-list-leave-to{
+    transform: translateX(100%);
+}
+.back-message-list-enter-active, .back-message-list-leave-active{
+    transition: transform .5s;
+}
+.back-message-list-enter-to, .back-message-list-leave{
+    transform: translateX(0);
+}
+.view-message-enter, .view-message-leave-to{
+    transform: translateX(-100%);
+}
+.view-message-enter-active, .view-message-leave-active{
+    transition: transform .5s;
+}
+.view-message-enter-to, .view-message-leave{
+    transform: translateX(0);
+}
+.mes-current-type-btn-enter, .mes-current-type-btn-leave-to{
+    opacity: 0;
+    width: 0;
+}
+.mes-current-type-btn-enter-active, .mes-current-type-btn-leave-active{
+    transition: all .3s;
+}
+.mes-current-type-btn-enter-to, .mes-current-type-btn-leave{
+    opacity: 1;
+    width: 12px;
 }
