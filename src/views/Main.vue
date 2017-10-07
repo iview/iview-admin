@@ -82,7 +82,7 @@
                 spanLeft: 4,
                 spanRight: 20,
                 menuList: this.$store.state.appRouter,
-                tagsList: this.$store.state.tagsList,  // 所有页面的页面对象
+                tagsList: [],  // 所有页面的页面对象
                 pageTagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
@@ -104,7 +104,6 @@
                 });
                 this.$store.commit('setTagsList', tagsList);
                 this.$store.commit('setCurrentPageName', this.$route.name);
-
                 let pathArr = util.setCurrentPath(this, this.$route.name);
                 if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
@@ -164,6 +163,13 @@
         watch: {
             '$route' (to) {
                 this.$store.commit('setCurrentPageName', to.name);
+                let currentTitle = this.$store.state.tagsList.filter(item => {
+                    return item.name === to.name;
+                })[0].title;
+                let pathArr = util.setCurrentPath(this, to.name, currentTitle);
+                if (pathArr.length > 2) {
+                    this.$store.commit('addOpenSubmenu', pathArr[1].name);
+                }
             }
         },
         mounted () {

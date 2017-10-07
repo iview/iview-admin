@@ -11,7 +11,7 @@
                 :key="item.name" 
                 :name="item.name" 
                 @on-close="closePage"
-                @click.native="linkTo(item.name)"
+                @click.native="linkTo(item.name, item.title)"
                 :closable="item.name==='home_index'?false:true"
                 :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
             >{{ item.title }}</Tag>
@@ -20,13 +20,12 @@
 </template>
 
 <script>
-import util from '../util.js';
-
 export default {
     name: 'tagsPageOpened',
     data () {
         return {
-            currentPageName: this.$route.name
+            currentPageName: this.$route.name,
+            title: this.$store.state.currentTitle
         };
     },
     props: {
@@ -47,11 +46,7 @@ export default {
                 });
             }
         },
-        linkTo (name) {
-            let pathArr = util.setCurrentPath(this, name);
-            if (pathArr.length > 2) {
-                this.$store.commit('addOpenSubmenu', pathArr[1].name);
-            }
+        linkTo (name, title) {
             this.$router.push({
                 name: name
             });
@@ -60,10 +55,6 @@ export default {
     watch: {
         '$route' (to) {
             this.currentPageName = to.name;
-            let pathArr = util.setCurrentPath(this, to.name);
-            if (pathArr.length > 2) {
-                this.$store.commit('addOpenSubmenu', pathArr[1].name);
-            }
         }
     }
 };

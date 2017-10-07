@@ -69,7 +69,7 @@ const store = new Vuex.Store({
             ...appRouter
         ],
         appRouter: appRouter,
-        tagsList: [],
+        tagsList: [...otherRouter.children],
         pageOpenedList: localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]],
         currentPageName: '',
         currentPath: [

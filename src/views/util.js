@@ -22,7 +22,7 @@ util.getPathObjByName = function (vm, name) {
     return pathObj;
 };
 
-util.setCurrentPath = function (vm, name) {
+util.setCurrentPath = function (vm, name, title) {
     let currentPathArr = [];
     if (name === 'home_index') {
         currentPathArr = [
@@ -32,7 +32,7 @@ util.setCurrentPath = function (vm, name) {
                 name: 'home_index'
             }
         ];
-    } else if (name === 'ownspace_index') {
+    } else if (name.indexOf('_index') >= 0 && name !== 'home_index') {
         currentPathArr = [
             {
                 title: '首页',
@@ -40,9 +40,9 @@ util.setCurrentPath = function (vm, name) {
                 name: 'home_index'
             },
             {
-                title: '个人中心',
+                title: title,
                 path: '',
-                name: 'ownspace_index'
+                name: name
             }
         ];
     } else {
