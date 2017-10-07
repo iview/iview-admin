@@ -32,9 +32,16 @@
                                 <theme-dropdown-menu></theme-dropdown-menu>
                             </Row>
                         </div>
+                        <div @click="showMessage" class="message-con">
+                            <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
+                                <Badge :count="messageCount" dot>
+                                    <Icon type="ios-bell-outline" size="20"></Icon>
+                                </Badge>
+                            </Tooltip>
+                        </div>
                         <div class="user-dropdown-menu-con">
                             <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
-                                <Dropdown @on-click="handleClickUserDropdown">
+                                <Dropdown trigger="click" @on-click="handleClickUserDropdown">
                                     <a href="javascript:void(0)">
                                         <span class="main-user-name">{{ userName }}</span>
                                         <Icon type="arrow-down-b"></Icon>
@@ -89,7 +96,8 @@
                 hideMenuText: false,
                 userName: '',
                 showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
-                isFullScreen: false
+                isFullScreen: false,
+                messageCount: 0
             };
         },
         methods: {
@@ -109,6 +117,8 @@
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.userName = Cookies.get('user');
+                let messageCount = 12;
+                this.messageCount = messageCount.toString();
             },
             toggleClick () {
                 this.hideMenuText = !this.hideMenuText;
@@ -158,6 +168,9 @@
                         main.msRequestFullscreen();
                     }
                 }
+            },
+            showMessage () {
+                console.log(123)
             }
         },
         watch: {
