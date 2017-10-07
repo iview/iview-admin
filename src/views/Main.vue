@@ -125,19 +125,7 @@
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
-                    this.$router.push({
-                        name: 'ownspace_index'
-                    });
-                    let hasOpened = false;
-                    this.pageTagsList.forEach((item, index) => {
-                        if (item.name === 'ownspace_index') {
-                            hasOpened = true;
-                            this.$store.commit('moveToSecond', index);
-                        }
-                    });
-                    if (!hasOpened) {
-                        this.$store.commit('increateTag', {name: 'ownspace_index', title: '个人中心'});
-                    }
+                    util.openPage(this, 'ownspace_index', '个人中心');
                 } else if (name === 'loginout') {
                     Cookies.remove('user');
                     this.$router.push({
@@ -170,7 +158,7 @@
                 }
             },
             showMessage () {
-                //
+                util.openPage(this, 'message_index', '消息中心');
             }
         },
         watch: {

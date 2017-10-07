@@ -12,12 +12,11 @@ export const loginRouter = {
 export const otherRouter = {
     path: '/',
     redirect: '/home',
-    name: 'home',
-    title: '首页',
     component: Main,
     children: [
         { path: 'home', title: '首页', name: 'home_index', component: require('./views/home/home.vue') },
-        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: require('./views/own-space/own-space.vue') }
+        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: require('./views/own-space/own-space.vue') },
+        { path: 'message', title: '消息中心', name: 'message_index', component: require('./views/message/message.vue') }
     ]
 };
 

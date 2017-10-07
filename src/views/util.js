@@ -111,13 +111,20 @@ util.setCurrentPath = function (vm, name, title) {
     return currentPathArr;
 };
 
-util.getParentName = (vm, child) => {
-    const parent = vm.$store.state.routers.filter((parent) => {
-        return parent.children.length > 1 && parent.children.filter((item) => {
-            return item.name === child;
-        });
+util.openPage = function (vm, name, title) {
+    vm.$router.push({
+        name: name
     });
-    return parent.name;
+    let hasOpened = false;
+    vm.pageTagsList.forEach((item, index) => {
+        if (item.name === name) {
+            hasOpened = true;
+            vm.$store.commit('moveToSecond', index);
+        }
+    });
+    if (!hasOpened) {
+        vm.$store.commit('increateTag', {name: name, title: title});
+    }
 };
 
 export default util;
