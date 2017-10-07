@@ -424,11 +424,6 @@ export default {
                 width: '100%',
                 borderCollapse: 'collapse'
             }
-            // init_instance_callback (editor) {
-            //     editor.on('keyup', () => {
-            //         localStorage.content = tinymce.activeEditor.getContent();
-            //     });
-            // }
         });
     },
     destroyed () {
