@@ -39,7 +39,7 @@ export default {
                 if (this.password.length !== 0) {
                     Cookies.set('user', this.userName);
                     this.$router.push({
-                        name: 'home'
+                        name: 'home_index'
                     });
                 } else {
                     this.$Message.error('请输入密码');
