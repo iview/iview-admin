@@ -58,7 +58,7 @@ export default {
             this.$emit('input', this.value);
         },
         clearValue () {
-            this.value = '';
+            this.value = this.$refs.animateInputInput.value = '';
         }
     }
 };
