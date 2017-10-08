@@ -117,7 +117,7 @@
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.userName = Cookies.get('user');
-                let messageCount = 12;
+                let messageCount = 3;
                 this.messageCount = messageCount.toString();
             },
             toggleClick () {

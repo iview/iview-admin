@@ -18,13 +18,18 @@
         <div class="message-content-con">
             <transition name="view-message">
                 <div v-if="showMesTitleList" class="message-title-list-con">
-                    <Table ref="messageList" :columns="mesTitleColumns" :data="currentMesList"></Table>
+                    <Table ref="messageList" :columns="mesTitleColumns" :data="currentMesList" :no-data-text="noDataText"></Table>
                 </div>
             </transition>
             <transition name="back-message-list">
                 <div v-if="!showMesTitleList" class="message-view-content-con">
                     <div class="message-content-top-bar">
-                        <Button type="text" @click="backMesTitleList"><Icon type="chevron-left"></Icon>&nbsp;&nbsp;返回</Button>
+                        <span class="mes-back-btn-con"><Button type="text" @click="backMesTitleList"><Icon type="chevron-left"></Icon>&nbsp;&nbsp;返回</Button></span>
+                        <h3 class="mes-title">{{ mes.title }}</h3>
+                    </div>
+                    <p class="mes-time-con"><Icon type="android-time"></Icon>&nbsp;&nbsp;{{ mes.time }}</p>
+                    <div class="message-content-body">
+                        <p class="message-content">{{ mes.content }}</p>
                     </div>
                 </div>
             </transition>
@@ -42,7 +47,7 @@ export default {
                 },
                 on: {
                     click: () => {
-                        //
+                        this.hasreadMesList.unshift(this.currentMesList.splice(params.index, 1)[0]);
                     }
                 }
             }, '标为已读');
@@ -55,7 +60,7 @@ export default {
                 },
                 on: {
                     click: () => {
-                        //
+                        this.recyclebinList.unshift(this.hasreadMesList.splice(params.index, 1)[0]);
                     }
                 }
             }, '删除');
@@ -67,7 +72,7 @@ export default {
                 },
                 on: {
                     click: () => {
-                        //
+                        this.hasreadMesList.unshift(this.recyclebinList.splice(params.index, 1)[0]);
                     }
                 }
             }, '还原');
@@ -82,12 +87,18 @@ export default {
             unreadCount: 0,
             hasreadCount: 0,
             recyclebinCount: 0,
+            noDataText: '暂无未读消息',
+            mes: {
+                title: '',
+                time: '',
+                content: ''
+            },
             mesTitleColumns: [
-                {
-                    type: 'selection',
-                    width: 50,
-                    align: 'center'
-                },
+                // {
+                //     type: 'selection',
+                //     width: 50,
+                //     align: 'center'
+                // },
                 {
                     title: ' ',
                     key: 'title',
@@ -97,8 +108,10 @@ export default {
                         return h('a', {
                             on: {
                                 click: () => {
-                                    // console.log(params.index)
                                     this.showMesTitleList = false;
+                                    this.mes.title = params.row.title;
+                                    this.mes.time = this.formatDate(params.row.time);
+                                    this.getContent(params.index);
                                 }
                             }
                         }, params.row.title);
@@ -170,12 +183,25 @@ export default {
         setCurrentMesType (type) {
             this.currentMessageType = type;
             if (type === 'unread') {
+                this.noDataText = '暂无未读消息';
                 this.currentMesList = this.unreadMesList;
             } else if (type === 'hasread') {
+                this.noDataText = '暂无已读消息';
                 this.currentMesList = this.hasreadMesList;
             } else {
+                this.noDataText = '回收站无消息';
                 this.currentMesList = this.recyclebinList;
             }
+        },
+        getContent (index) {
+            // you can write ajax request here to get message content
+            let mesContent = '';
+            switch (index) {
+                case 0: mesContent = '这是您点击的《欢迎登录iView-admin后台管理系统，来了解他的用途吧》的相关内容。'; break;
+                case 1: mesContent = '这是您点击的《使用iView-admin和iView-ui组件库快速搭建你的后台系统吧》的相关内容。'; break;
+                case 2: mesContent = '这是您点击的《喜欢iView-admin的话，欢迎到github主页给个star吧》的相关内容。'; break;
+            }
+            this.mes.content = mesContent;
         }
     },
     mounted () {
@@ -205,9 +231,20 @@ export default {
                 time: 1506390106000
             }
         ];
-        this.unreadCount = 3;
-        this.hasreadCount = 1;
-        this.recyclebinCount = 1;
+        this.unreadCount = this.unreadMesList.length;
+        this.hasreadCount = this.hasreadMesList.length;
+        this.recyclebinCount = this.recyclebinList.length;
+    },
+    watch: {
+        unreadMesList (arr) {
+            this.unreadCount = arr.length;
+        },
+        hasreadMesList (arr) {
+            this.hasreadCount = arr.length;
+        },
+        recyclebinList (arr) {
+            this.recyclebinCount = arr.length;
+        }
     }
 };
 </script>

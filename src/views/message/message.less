@@ -43,11 +43,56 @@
         .message-title-list-con{
             width: 100%;
             height: 100%;
-            overflow: auto;
         }
         .message-content-top-bar{
-            padding: 10px 0;
+            height: 40px;
+            width: 100%;
+            background: white;
+            position: absolute;
+            left: 0;
+            top: 0;
             border-bottom: 1px solid #dededb;
+            .mes-back-btn-con{
+                position: absolute;
+                width: 70px;
+                height: 30px;
+                left: 0;
+                top: 5px;
+            }
+            .mes-title{
+                position: absolute;
+                top: 0;
+                right: 70px;
+                bottom: 0;
+                left: 70px;
+                line-height: 40px;
+                padding: 0 30px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+        }
+        .mes-time-con{
+            position: absolute;
+            width: 100%;
+            top: 40px;
+            left: 0;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #b7b7b5;
+        }
+        .message-content-body{
+            position: absolute;
+            top: 101px;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            .message-content{
+                padding: 10px 20px;
+            }
         }
     }
 }
