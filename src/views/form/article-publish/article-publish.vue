@@ -191,7 +191,7 @@ export default {
                     let date = new Date();
                     let year = date.getFullYear();
                     let month = date.getMonth() + 1;
-                    let day = date.getDay() + 1;
+                    let day = date.getDate();
                     this.fixedLink = window.location.host + '/' + year + '/' + month + '/' + day + '/';
                     this.articlePath = this.articleTitle;
                     this.articlePathHasEdited = true;
@@ -273,7 +273,7 @@ export default {
                     let date = new Date();
                     let year = date.getFullYear();
                     let month = date.getMonth() + 1;
-                    let day = date.getDay() + 1;
+                    let day = date.getDate();
                     let hour = date.getHours();
                     let minute = date.getMinutes();
                     let second = date.getSeconds();
