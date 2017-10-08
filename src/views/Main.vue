@@ -3,6 +3,7 @@
 </style>
 <template>
     <div class="main" :class="{'main-hide-text': hideMenuText}">
+        <div class="lock-screen-back" id="lock_screen_back"></div>
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <sidebar-menu :routers="menuList" :iconSize="14">
                 <div slot="top" class="logo-con">i<i>V</i>iew admin</div>
@@ -25,6 +26,11 @@
                         <div @click="handleFullScreen" v-if="showFullScreenBtn" class="full-screen-btn-con">
                             <Tooltip :content="isFullScreen ? '退出全屏' : '全屏'" placement="bottom">
                                 <Icon :type="isFullScreen ? 'arrow-shrink' : 'arrow-expand'" :size="23"></Icon>
+                            </Tooltip>
+                        </div>
+                        <div @click="lockScreen" class="lock-screen-btn-con">
+                            <Tooltip content="锁屏" placement="bottom">
+                                <Icon type="locked" :size="20"></Icon>
                             </Tooltip>
                         </div>
                         <div class="switch-theme-con">
@@ -51,7 +57,7 @@
                                         <DropdownItem name="loginout" divided>退出登录</DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
-                                <Avatar icon="person" style="background: #619fe7;margin-left: 10px;"></Avatar>
+                                <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" style="background: #619fe7;margin-left: 10px;"></Avatar>
                             </Row>
                         </div>
                     </div>
@@ -74,6 +80,7 @@
     import tagsPageOpened from './main_components/tagsPageopened.vue';
     import breadcrumbNav from './main_components/breadcrumbNav.vue';
     import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
+    import unlock from './main_components/unlock.vue';
     import Cookies from 'js-cookie';
     import util from './util.js';
     
@@ -82,7 +89,8 @@
             sidebarMenu,
             tagsPageOpened,
             breadcrumbNav,
-            themeDropdownMenu
+            themeDropdownMenu,
+            unlock
         },
         data () {
             return {
@@ -97,7 +105,8 @@
                 userName: '',
                 showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
                 isFullScreen: false,
-                messageCount: 0
+                messageCount: 0,
+                lockScreenSize: 0
             };
         },
         methods: {
@@ -159,6 +168,11 @@
             },
             showMessage () {
                 util.openPage(this, 'message_index', '消息中心');
+            },
+            lockScreen () {
+                let lockScreenBack = document.getElementById('lock_screen_back');
+                lockScreenBack.style.zIndex = 10000;
+                lockScreenBack.style.boxShadow = '0 0 0 ' + this.lockScreenSize + 'px #667aa6 inset';
             }
         },
         watch: {
@@ -187,6 +201,22 @@
             document.addEventListener('msfullscreenchange', () => {
                 this.isFullScreen = !this.isFullScreen;
             });
+            let lockScreenBack = document.getElementById('lock_screen_back');
+            let x = document.body.clientWidth;
+            let y = document.body.clientHeight;
+            let r = Math.sqrt(x * x + y * y);
+            let size = parseInt(r);
+            this.lockScreenSize = size;
+            window.addEventListener('resize', () => {
+                let x = document.body.clientWidth;
+                let y = document.body.clientHeight;
+                let r = Math.sqrt(x * x + y * y);
+                let size = parseInt(r);
+                this.lockScreenSize = size;
+                lockScreenBack.style.transition = 'all 0s';
+                lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
+            });
+            lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
         }
     };
 </script>

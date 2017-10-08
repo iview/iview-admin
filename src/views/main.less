@@ -6,6 +6,24 @@
     overflow: hidden;
     height: 100%;
     width: 100%;
+    .lock-screen-back{
+        border-radius: 50%;
+        z-index: -1;
+        box-shadow: 0 0 0 0 #667aa6 inset;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        transition: all 3s;
+    }
+    .unlock-con{
+        width: 0px;
+        height: 0px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 11000;
+    }
     .sidebar-menu-con{
         height: 100%;
         position: absolute;
@@ -78,7 +96,7 @@
             position: absolute;
             left: 60px;
             top: 0;
-            right: 300px;
+            right: 340px;
             bottom: 0;
             padding: 10px;
             overflow: hidden;
@@ -88,7 +106,7 @@
             right: 0;
             top: 0;
             height: 100%;
-            width: 300px;
+            width: 340px;
             .switch-theme-con{
                 display: inline-block;
                 width: 80px;
@@ -129,6 +147,16 @@
                 }
             }
             .full-screen-btn-con{
+                display: inline-block;
+                width: 30px;
+                padding: 18px 0;
+                text-align: center;
+                cursor: pointer;
+                i{
+                    vertical-align: middle;
+                }
+            }
+            .lock-screen-btn-con{
                 display: inline-block;
                 width: 30px;
                 padding: 18px 0;
