@@ -29,7 +29,6 @@
     "sortablejs": "^1.6.1",
     "tinymce": "^4.6.7",
     "vue": "^2.2.6",
-    "vue-baidu-map": "^0.16.3",
     "vue-i18n": "^5.0.3",
     "vue-router": "^2.3.1",
     "vuex": "^2.4.1"
