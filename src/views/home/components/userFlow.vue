@@ -72,11 +72,6 @@ export default {
         option.series[0].data[0].value = (Math.random() * 1000).toFixed(2) - 0;
         option.series[1].data[0].value = (Math.random() * 1000).toFixed(2) - 0;
         userFlow.setOption(option);
-        setInterval(function () {
-            option.series[0].data[0].value = (Math.random() * 1000).toFixed(2) - 0;
-            option.series[1].data[0].value = (Math.random() * 1000).toFixed(2) - 0;
-            userFlow.setOption(option);
-        }, 2000);
 
         window.addEventListener('resize', function () {
             userFlow.resize();

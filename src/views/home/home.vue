@@ -247,18 +247,7 @@ export default {
         cancelAdd () {
             this.showAddNewTodo = false;
             this.newToDoItemValue = '';
-        },
-        init () {
-            setInterval(() => {
-                this.count.createUser += parseInt(Math.random() * 10);
-                this.count.visit += parseInt(Math.random() * 100);
-                this.count.collection += parseInt(Math.random() * 10000);
-                this.count.transfer += parseInt(Math.random() * 100000);
-            }, 10000);
         }
-    },
-    mounted () {
-        this.init();
     }
 };
 </script>
