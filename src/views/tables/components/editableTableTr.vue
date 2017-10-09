@@ -60,7 +60,7 @@ const deleteButton = (vm, h, currentRow, index) => {
     ]);
 };
 export default {
-    name: 'EditableTable',
+    name: 'EditableTableTr',
     props: {
         refs: String,
         columnsList: Array,
@@ -96,22 +96,23 @@ export default {
         this.columnsList.forEach(item => {
             if (item.editable) {
                 item.render = (h, param) => {
-                    return h('div', {
-                        attrs: {
-                            contenteditable: this.tableData[param.index].editting
-                        },
-                        style: {
-                            width: '100%',
-                            outline: 'none'
-                        },
-                        on: {
-                            'blur' (event) {
-                                event = event || window.event;
-                                let thisTd = event.srcElement || event.target;
-                                vm.tableData[param.index][item.key] = thisTd.innerHTML;
+                    if (!this.tableData[param.index].editting) {
+                        return h('span', this.tableData[param.index][item.key]);
+                    } else {
+                        return h('Input', {
+                            props: {
+                                type: 'text',
+                                value: this.tableData[param.index][item.key]
+                            },
+                            on: {
+                                'on-blur' (event) {
+                                    event = event || window.event;
+                                    let thisTd = event.srcElement || event.target;
+                                    vm.tableData[param.index][item.key] = thisTd.value;
+                                }
                             }
-                        }
-                    }, param.row[item.key]);
+                        });
+                    }
                 };
             }
             if (item.handle) {

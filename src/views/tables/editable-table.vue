@@ -34,12 +34,12 @@
             <Col span="18" class="padding-left-10">
                 <Card>
                     <div class="edittable-con-1">
-                        <EditableTable refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></EditableTable>
+                        <editable-table-tr refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></editable-table-tr>
                     </div>
                 </Card>
             </Col>
         </Row>
-        <Row class="margin-top-10">
+        <!-- <Row class="margin-top-10">
             <Card>
                 <p slot="title">
                     <Icon type="load-b"></Icon>
@@ -47,17 +47,17 @@
                 </p>
                 <multiPageTable></multiPageTable>
             </Card>
-        </Row>
+        </Row> -->
     </div>
 </template>
 
 <script>
-import EditableTable from './components/editableTable.vue';
-import multiPageTable from './components/multiPageTable.vue';
+import EditableTableTr from './components/editableTableTr.vue';
+// import multiPageTable from './components/multiPageTable.vue';
 export default {
     components: {
-        EditableTable,
-        multiPageTable
+        EditableTableTr
+        // multiPageTable
     },
     data () {
         return {
