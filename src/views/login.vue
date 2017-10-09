@@ -38,6 +38,7 @@ export default {
             if (this.userName.length !== 0) {
                 if (this.password.length !== 0) {
                     Cookies.set('user', this.userName);
+                    Cookies.set('password', this.password);
                     this.$router.push({
                         name: 'home_index'
                     });

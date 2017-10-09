@@ -44,16 +44,22 @@ const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
-    if (!Cookies.get('user') && to.name !== 'login') {
+    if (Cookies.get('locking') === '1' && to.name !== 'locking') {
         next({
-            name: 'login'
-        });
-    } else if (Cookies.get('user') && to.name === 'login') {
-        next({
-            name: 'home'
+            name: 'locking'
         });
     } else {
-        next();
+        if (!Cookies.get('user') && to.name !== 'login') {
+            next({
+                name: 'login'
+            });
+        } else if (Cookies.get('user') && to.name === 'login') {
+            next({
+                name: 'home'
+            });
+        } else {
+            next();
+        }
     }
 });
 
@@ -129,6 +135,12 @@ const store = new Vuex.Store({
         },
         changeTheme (state, theme) {
             state.menuTheme = theme;
+        },
+        lock (state) {
+            Cookies.set('locking', '1');
+        },
+        unlock (state) {
+            Cookies.set('locking', '0');
         }
     },
     actions: {

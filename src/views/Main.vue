@@ -80,7 +80,6 @@
     import tagsPageOpened from './main_components/tagsPageopened.vue';
     import breadcrumbNav from './main_components/breadcrumbNav.vue';
     import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
-    import unlock from './main_components/unlock.vue';
     import Cookies from 'js-cookie';
     import util from './util.js';
     
@@ -89,8 +88,7 @@
             sidebarMenu,
             tagsPageOpened,
             breadcrumbNav,
-            themeDropdownMenu,
-            unlock
+            themeDropdownMenu
         },
         data () {
             return {
@@ -173,6 +171,13 @@
                 let lockScreenBack = document.getElementById('lock_screen_back');
                 lockScreenBack.style.zIndex = 10000;
                 lockScreenBack.style.boxShadow = '0 0 0 ' + this.lockScreenSize + 'px #667aa6 inset';
+                this.showUnlock = true;
+                this.$store.commit('lock');
+                setTimeout(() => {
+                    this.$router.push({
+                        name: 'locking'
+                    });
+                }, 800);
             }
         },
         watch: {

@@ -26,6 +26,12 @@ export const preview = {
     component: require('./views/form/article-publish/preview.vue')
 };
 
+export const locking = {
+    path: '/locking',
+    name: 'locking',
+    component: require('./views/main_components/locking-page.vue')
+};
+
 export const appRouter = [
     // {
     //     path: '/access',
@@ -125,5 +131,6 @@ export const routers = [
     loginRouter,
     otherRouter,
     preview,
+    locking,
     ...appRouter
 ];
