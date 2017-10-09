@@ -21,6 +21,7 @@
                     </div>
                 </div>
             </div>
+            <div class="unlock-locking-tip-con">已锁定</div>
         </div>
     </transition>
 </template>
@@ -55,6 +56,8 @@ export default {
                 this.password = '';
                 this.$store.commit('unlock');
                 this.$emit('on-unlock');
+            } else {
+                this.$Message.error('密码错误,请重新输入');
             }
         },
         unlockMousedown () {

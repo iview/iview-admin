@@ -135,6 +135,7 @@
                     util.openPage(this, 'ownspace_index', '个人中心');
                 } else if (name === 'loginout') {
                     Cookies.remove('user');
+                    Cookies.remove('password');
                     this.$router.push({
                         name: 'login'
                     });
