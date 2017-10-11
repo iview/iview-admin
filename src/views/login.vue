@@ -3,51 +3,70 @@
 </style>
 
 <template>
-    <div class="login">
-        <div class="login-box">
-            <h2>欢迎登录iView-admin</h2>
-            <animate-input color="#fff" icon="person" canclear label="账号" v-model="userName"></animate-input>
-            <div class="login-item-con">
-                <animate-input type="password" color="#fff" icon="ios-locked" canclear label="密码" v-model="password"></animate-input>            
-            </div>
-            <div class="login-submit-con">
-                <div @click="handleSubmit" class="login-submit-btn"><Icon type="checkmark-circled"></Icon><span>登录</span></div>
-            </div>
-            <div class="login-tips">
-                输入任意用户名和密码即可登录
-            </div>
+    <div class="login" @keydown.enter="handleSubmit">
+        <div class="login-con">
+            <Card>
+                <p slot="title">
+                    <Icon type="log-in"></Icon>
+                    欢迎登录
+                </p>
+                <div class="form-con">
+                    <Form ref="loginForm" :model="form" :rules="rules">
+                        <FormItem prop="userName">
+                            <Input v-model="form.userName">
+                                <span slot="prepend">
+                                    <Icon :size="16" type="person"></Icon>
+                                </span>
+                            </Input>
+                        </FormItem>
+                        <FormItem prop="password">
+                            <Input v-model="form.password">
+                                <span slot="prepend">
+                                    <Icon :size="14" type="locked"></Icon>
+                                </span>
+                            </Input>
+                        </FormItem>
+                        <FormItem>
+                            <Button @click="handleSubmit" type="primary" long>登录</Button>
+                        </FormItem>
+                    </Form>
+                    <p class="login-tip">输入任意用户名和密码即可</p>
+                </div>
+            </Card>
         </div>
     </div>
 </template>
 
 <script>
-import AnimateInput from './login_components/AnimateInput.vue';
 import Cookies from 'js-cookie';
 export default {
     data () {
         return {
-            userName: '',
-            password: ''
+            form: {
+                userName: 'iview_admin',
+                password: ''
+            },
+            rules: {
+                userName: [
+                    { required: true, message: '账号不能为空', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ]
+            }
         };
-    },
-    components: {
-        AnimateInput
     },
     methods: {
         handleSubmit () {
-            if (this.userName.length !== 0) {
-                if (this.password.length !== 0) {
-                    Cookies.set('user', this.userName);
-                    Cookies.set('password', this.password);
+            this.$refs.loginForm.validate((valid) => {
+                if (valid) {
+                    Cookies.set('user', this.form.userName);
+                    Cookies.set('password', this.form.password);
                     this.$router.push({
                         name: 'home_index'
                     });
-                } else {
-                    this.$Message.error('请输入密码');
                 }
-            } else {
-                this.$Message.error('请输入用户名');
-            }
+            });
         }
     }
 };
