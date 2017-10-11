@@ -151,17 +151,17 @@ export const appRouter = [
             { path: 'exportableTable', title: '表格导出数据', name: 'exportableTable', icon: 'code-download', component: require('./views/tables/exportable-table.vue') },
             { path: 'table2image', title: '表格转图片', name: 'table2image', icon: 'images', component: require('./views/tables/table-to-image.vue') }
         ]
-    },
-    {
-        path: '/error-page',
-        icon: 'android-sad',
-        title: '错误页面',
-        name: 'errorpage',
-        component: Main,
-        children: [
-            { path: 'index', title: '错误页面', name: 'errorpage_index', component: require('./views/error_page/error-page.vue') }
-        ]
     }
+    // {
+    //     path: '/error-page',
+    //     icon: 'android-sad',
+    //     title: '错误页面',
+    //     name: 'errorpage',
+    //     component: Main,
+    //     children: [
+    //         { path: 'index', title: '错误页面', name: 'errorpage_index', component: require('./views/error_page/error-page.vue') }
+    //     ]
+    // }
 ];
 
 export const routers = [
