@@ -55,7 +55,7 @@
                         <Icon type="android-more-horizontal"></Icon>
                         可编辑单元格
                     </p>
-                    <editable-table refs="table2" :editIncell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></editable-table>
+                    <editable-table refs="table2" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></editable-table>
                 </Card>
             </Col>
         </Row>

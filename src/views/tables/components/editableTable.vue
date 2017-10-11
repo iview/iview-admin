@@ -1,5 +1,5 @@
 <style lang="less">
-    @import '../../../styles/common.less';
+    @import './editable-table.less';
 </style>
 
 
@@ -67,18 +67,39 @@ const deleteButton = (vm, h, currentRow, index) => {
     ]);
 };
 const incellEditBtn = (vm, h, param) => {
-    return h('Button', {
-        props: {
-            type: 'text',
-            icon: 'edit'
-        },
-        on: {
-            click: (event) => {
-                vm.edittingStore[param.index].edittingCell[param.column.key] = true;
-                vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+    if (vm.hoverShow) {
+        return h('div', {
+            'class': {
+                'show-edit-btn': vm.hoverShow
             }
-        }
-    });
+        }, [
+            h('Button', {
+                props: {
+                    type: 'text',
+                    icon: 'edit'
+                },
+                on: {
+                    click: (event) => {
+                        vm.edittingStore[param.index].edittingCell[param.column.key] = true;
+                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                    }
+                }
+            })
+        ]);
+    } else {
+        return h('Button', {
+            props: {
+                type: 'text',
+                icon: 'edit'
+            },
+            on: {
+                click: (event) => {
+                    vm.edittingStore[param.index].edittingCell[param.column.key] = true;
+                    vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                }
+            }
+        });
+    }
 };
 const saveIncellEditBtn = (vm, h, param) => {
     return h('Button', {
@@ -128,6 +149,10 @@ export default {
             }
         },
         editIncell: {
+            type: Boolean,
+            default: false
+        },
+        hoverShow: {
             type: Boolean,
             default: false
         }
