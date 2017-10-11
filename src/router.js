@@ -13,7 +13,7 @@ export const page404 = {
     path: '/*',
     name: 'error_404',
     meta: {
-        title: '404'
+        title: '404-页面不存在'
     },
     component: require('./views/error_page/404.vue')
 };
