@@ -8,9 +8,11 @@
     <div>
         <Row class="margin-top-20">
             <Col span="16" offset="4">
-                <Card>
-                    <textarea  id="iview_admin_markdown_editor" style="display:none;"></textarea>                
-                </Card>
+                <div class="markdown-con">
+                    <Card>
+                        <textarea  id="iview_admin_markdown_editor" style="display:none;"></textarea>                
+                    </Card>
+                </div>
             </Col>
         </Row>
     </div>
@@ -19,20 +21,10 @@
 <script>
 import SimpleMDE from 'SimpleMDE';
 export default {
-    data () {
-        return {
-            editorContent: '',
-            simplemde: {},
-            simplemde_view: {}
-        };
-    },
     mounted () {
-        let vm = this;
-        let simplemde = new SimpleMDE({
-            element: document.getElementById('iview_admin_markdown_editor')
-        });
-        simplemde.codemirror.on('change', function () {
-            vm.editorContent = simplemde.value();
+        new SimpleMDE({
+            element: document.getElementById('iview_admin_markdown_editor'),
+            toolbar: ['bold', 'italic', 'strikethrough', 'heading', 'heading-smaller', 'heading-bigger', 'heading-1', 'heading-2', 'heading-3', '|', 'code', 'quote', 'unordered-list', 'clean-block', '|', 'link', 'image', 'table', 'horizontal-rule', '|', 'preview', 'guide']
         });
     }
 };
