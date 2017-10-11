@@ -60,6 +60,7 @@ export const editInlineColumns = [
         title: '姓名',
         align: 'center',
         key: 'name',
+        width: 90,
         editable: true
     },
     {
@@ -71,12 +72,13 @@ export const editInlineColumns = [
         title: '岗位',
         align: 'center',
         key: 'work',
+        width: 150,
         editable: true
     },
     {
         title: '操作',
         align: 'center',
-        width: 200,
+        width: 180,
         key: 'handle',
         handle: ['edit', 'delete']
     }
@@ -111,6 +113,7 @@ export const editIncellColumns = [
         title: '姓名',
         align: 'center',
         key: 'name',
+        width: 120,
         editable: true
     },
     {
@@ -121,6 +124,7 @@ export const editIncellColumns = [
     {
         title: '岗位',
         align: 'center',
+        width: 160,
         key: 'work',
         editable: true
     },
@@ -162,6 +166,7 @@ export const editInlineAndCellColumn = [
         title: '姓名',
         align: 'center',
         key: 'name',
+        width: 300,
         editable: true
     },
     {
@@ -172,6 +177,7 @@ export const editInlineAndCellColumn = [
     {
         title: '岗位',
         align: 'center',
+        width: 300,
         key: 'work',
         editable: true
     },

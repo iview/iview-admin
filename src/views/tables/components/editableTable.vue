@@ -16,6 +16,9 @@ const editButton = (vm, h, currentRow, index) => {
             type: currentRow.editting ? 'success' : (currentRow.saveFail ? 'error' : 'primary'),
             loading: currentRow.saving
         },
+        style: {
+            margin: '0 5px'
+        },
         on: {
             'click': () => {
                 if (currentRow.saveFail) {
@@ -56,7 +59,7 @@ const deleteButton = (vm, h, currentRow, index) => {
     }, [
         h('Button', {
             style: {
-                margin: '0 10px'
+                margin: '0 5px'
             },
             props: {
                 type: 'error',
