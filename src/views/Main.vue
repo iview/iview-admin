@@ -136,6 +136,8 @@
                 } else if (name === 'loginout') {
                     Cookies.remove('user');
                     Cookies.remove('password');
+                    Cookies.remove('hasGreet');
+                    this.$Notice.close('greeting');
                     this.$router.push({
                         name: 'login'
                     });
@@ -223,6 +225,43 @@
                 lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
             });
             lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
+
+            if (!Cookies.get('hasGreet')) {
+                let now = new Date();
+                let hour = now.getHours();
+                let greetingWord = {
+                    title: '',
+                    words: ''
+                };
+                let userName = Cookies.get('user');
+                if (hour < 6) {
+                    greetingWord = {title: '凌晨好~' + userName, words: '早起的鸟儿有虫吃~'};
+                } else if (hour >= 6 && hour < 9) {
+                    greetingWord = {title: '早上好~' + userName, words: '来一杯咖啡开启美好的一天~'};
+                } else if (hour >= 6 && hour < 9) {
+                    greetingWord = {title: '上午好~' + userName, words: '工作要加油哦~'};
+                } else if (hour >= 12 && hour < 14) {
+                    greetingWord = {title: '中午好~' + userName, words: '午饭要吃饱~'};
+                } else if (hour >= 14 && hour < 17) {
+                    greetingWord = {title: '下午好~' + userName, words: '下午也要活力满满哦~'};
+                } else if (hour >= 17 && hour < 19) {
+                    greetingWord = {title: '傍晚好~' + userName, words: '下班没事问候下爸妈吧~'};
+                } else if (hour >= 19 && hour < 21) {
+                    greetingWord = {title: '晚上好~' + userName, words: '工作之余品一品书香吧~'};
+                } else {
+                    greetingWord = {title: '深夜好~' + userName, words: '夜深了，注意休息哦~'};
+                }
+                this.$Notice.config({
+                    top: 130
+                });
+                this.$Notice.info({
+                    title: greetingWord.title,
+                    desc: greetingWord.words,
+                    duration: 4,
+                    name: 'greeting'
+                });
+                Cookies.set('hasGreet', 1);
+            }
         }
     };
 </script>
