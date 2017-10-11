@@ -34,90 +34,76 @@
             <Col span="18" class="padding-left-10">
                 <Card>
                     <div class="edittable-con-1">
-                        <editable-table-tr refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></editable-table-tr>
+                        <editable-table refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></editable-table>
                     </div>
                 </Card>
             </Col>
         </Row>
-        <!-- <Row class="margin-top-10">
-            <Card>
-                <p slot="title">
-                    <Icon type="load-b"></Icon>
-                    带有分页的可编辑、删除表格实例<span style="color: gray;">(示例代码来自iView官网，并根据需求做了部分修改)</span>
-                </p>
-                <multiPageTable></multiPageTable>
-            </Card>
-        </Row> -->
+        <Row class="margin-top-10">
+            <Col span="12">
+                <Card>
+                    <p slot="title">
+                        <Icon type="load-b"></Icon>
+                        可编辑单元行
+                    </p>
+                    <editable-table refs="table2" :columns-list="editInlineColumns" :table-data="editInlineData" :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></editable-table>
+                </Card>
+            </Col>
+            <Col span="12" class="padding-left-10">
+                <Card>
+                    <p slot="title">
+                        <Icon type="load-b"></Icon>
+                        可编辑单元格
+                    </p>
+                    <editable-table refs="table2" :editIncell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></editable-table>
+                </Card>
+            </Col>
+        </Row>
+        <Row class="margin-top-10">
+            <Col span="24">
+                <Card>
+                    <p slot="title">
+                        <Icon type="load-b"></Icon>
+                         单元行和单元格两种方式编辑
+                    </p>
+                    <editable-table refs="table3" :editIncell="true" :columns-list="editInlineAndCellColumn" :table-data="editInlineAndCellData" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></editable-table>
+                </Card>
+            </Col>
+        </Row>
     </div>
 </template>
 
 <script>
-import EditableTableTr from './components/editableTableTr.vue';
-// import multiPageTable from './components/multiPageTable.vue';
+import EditableTable from './components/editableTable.vue';
+import tableData from './components/table_data.js';
 export default {
     components: {
-        EditableTableTr
-        // multiPageTable
+        EditableTable
     },
     data () {
         return {
             columnsList: [],
             tableData: [],
             breakConnect: false,
-            lowNetSpeed: false
+            lowNetSpeed: false,
+            editInlineColumns: [],
+            editInlineData: [],
+            editIncellColumns: [],
+            editIncellData: [],
+            editInlineAndCellColumn: [],
+            editInlineAndCellData: []
         };
     },
     methods: {
         getData () {
-            this.columnsList = [
-                {
-                    title: '序号',
-                    type: 'index',
-                    width: 80,
-                    align: 'center'
-                },
-                {
-                    title: '姓名',
-                    align: 'center',
-                    key: 'name',
-                    editable: true
-                },
-                {
-                    title: '性别',
-                    align: 'center',
-                    key: 'sex'
-                },
-                {
-                    title: '岗位',
-                    align: 'center',
-                    key: 'work',
-                    editable: true
-                },
-                {
-                    title: '操作',
-                    align: 'center',
-                    width: 200,
-                    key: 'handle',
-                    handle: ['edit', 'delete']
-                }
-            ];
-            this.tableData = [
-                {
-                    name: 'Aresn',
-                    sex: '男',
-                    work: '前端开发'
-                },
-                {
-                    name: 'Lison',
-                    sex: '男',
-                    work: '前端开发'
-                },
-                {
-                    name: 'lisa',
-                    sex: '女',
-                    work: '程序员鼓励师'
-                }
-            ];
+            this.columnsList = tableData.table1Columns;
+            this.tableData = tableData.table1Data;
+            this.editInlineColumns = tableData.editInlineColumns;
+            this.editInlineData = tableData.editInlineData;
+            this.editIncellColumns = tableData.editIncellColumns;
+            this.editIncellData = tableData.editIncellData;
+            this.editInlineAndCellColumn = tableData.editInlineAndCellColumn;
+            this.editInlineAndCellData = tableData.editInlineAndCellData;
         },
         handleNetConnect (state) {
             this.breakConnect = state;
@@ -126,38 +112,137 @@ export default {
             this.lowNetSpeed = state;
         },
         saveEdit (index, success, fail) {
-            let vm = this;
             let delay = 0;
             if (this.lowNetSpeed) {
                 delay = 1000;
             }
-            setTimeout(function () {
-                if (vm.breakConnect) {
+            setTimeout(() => {
+                if (this.breakConnect) {
                     fail(() => {
-                        vm.$Message.error('服务器嫌弃你的网络，所以保存失败');
+                        this.$Message.error('服务器嫌弃你的网络，所以保存失败');
                     });
                 } else {
                     success(() => {
-                        vm.$Message.success('保存成功');
+                        this.$Message.success('保存成功');
                     });
                 }
             }, delay);
         },
         deleteRow (index, success, fail) {
-            let vm = this;
             let delay = 0;
             if (this.lowNetSpeed) {
                 delay = 1000;
             }
-            setTimeout(function () {
-                if (vm.breakConnect) {
+            setTimeout(() => {
+                if (this.breakConnect) {
                     fail(() => {
-                        vm.$Message.error('服务器嫌弃你的网络，所以删除失败');
+                        this.$Message.error('服务器嫌弃你的网络，所以删除失败');
                     });
                 } else {
-                    vm.tableData.splice(index, 1);
                     success(() => {
-                        vm.$Message.success('删除数据成功~');
+                        this.$Message.success('删除数据成功~');
+                    });
+                }
+            }, delay);
+        },
+        saveEditInline (index, success, fail) {
+            let delay = 0;
+            if (this.lowNetSpeed) {
+                delay = 1000;
+            }
+            setTimeout(() => {
+                if (this.breakConnect) {
+                    fail(() => {
+                        this.$Message.error('服务器嫌弃你的网络，所以保存失败');
+                    });
+                } else {
+                    success(() => {
+                        this.$Message.success('保存成功');
+                    });
+                }
+            }, delay);
+        },
+        deleteRowInline (index, success, fail) {
+            let delay = 0;
+            if (this.lowNetSpeed) {
+                delay = 1000;
+            }
+            setTimeout(() => {
+                if (this.breakConnect) {
+                    fail(() => {
+                        this.$Message.error('服务器嫌弃你的网络，所以删除失败');
+                    });
+                } else {
+                    success(() => {
+                        this.$Message.success('删除数据成功~');
+                    });
+                }
+            }, delay);
+        },
+        saveEditIncell (index, success, fail) {
+            let delay = 0;
+            if (this.lowNetSpeed) {
+                delay = 1000;
+            }
+            setTimeout(() => {
+                if (this.breakConnect) {
+                    fail(() => {
+                        this.$Message.error('服务器嫌弃你的网络，所以保存失败');
+                    });
+                } else {
+                    success(() => {
+                        this.$Message.success('保存成功');
+                    });
+                }
+            }, delay);
+        },
+        deleteRowIncell (index, success, fail) {
+            let delay = 0;
+            if (this.lowNetSpeed) {
+                delay = 1000;
+            }
+            setTimeout(() => {
+                if (this.breakConnect) {
+                    fail(() => {
+                        this.$Message.error('服务器嫌弃你的网络，所以删除失败');
+                    });
+                } else {
+                    success(() => {
+                        this.$Message.success('删除数据成功~');
+                    });
+                }
+            }, delay);
+        },
+        saveEditInlineIncell (index, success, fail) {
+            let delay = 0;
+            if (this.lowNetSpeed) {
+                delay = 1000;
+            }
+            setTimeout(() => {
+                if (this.breakConnect) {
+                    fail(() => {
+                        this.$Message.error('服务器嫌弃你的网络，所以保存失败');
+                    });
+                } else {
+                    success(() => {
+                        this.$Message.success('保存成功');
+                    });
+                }
+            }, delay);
+        },
+        deleteRowInlineIncell (index, success, fail) {
+            let delay = 0;
+            if (this.lowNetSpeed) {
+                delay = 1000;
+            }
+            setTimeout(() => {
+                if (this.breakConnect) {
+                    fail(() => {
+                        this.$Message.error('服务器嫌弃你的网络，所以删除失败');
+                    });
+                } else {
+                    success(() => {
+                        this.$Message.success('删除数据成功~');
                     });
                 }
             }, delay);
