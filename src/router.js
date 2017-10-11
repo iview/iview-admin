@@ -33,7 +33,7 @@ export const page500 = {
         title: '500-服务端错误'
     },
     name: 'error_500',
-    components: require('./views/error_page/500.vue')
+    component: require('./views/error_page/500.vue')
 };
 
 export const otherRouter = {
