@@ -46,16 +46,20 @@
                         <Icon type="android-remove"></Icon>
                         可编辑单元行
                     </p>
-                    <editable-table refs="table2" :columns-list="editInlineColumns" :table-data="editInlineData" :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></editable-table>
+                    <div class="edittable-table-height-con">
+                        <editable-table refs="table2" :columns-list="editInlineColumns" :table-data="editInlineData" :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></editable-table>
+                    </div>
                 </Card>
             </Col>
             <Col span="12" class="padding-left-10">
                 <Card>
                     <p slot="title">
                         <Icon type="android-more-horizontal"></Icon>
-                        可编辑单元格
+                        可编辑单元格(鼠标移入显示编辑单元格按钮)
                     </p>
-                    <editable-table refs="table2" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></editable-table>
+                    <div class="edittable-table-height-con">
+                        <editable-table refs="table2" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></editable-table>
+                    </div>
                 </Card>
             </Col>
         </Row>
@@ -64,9 +68,11 @@
                 <Card>
                     <p slot="title">
                         <Icon type="ios-keypad"></Icon>
-                         单元行和单元格两种方式编辑
+                         单元行和单元格两种方式编辑(始终显示编辑单元格按钮)
                     </p>
-                    <editable-table refs="table3" :editIncell="true" :columns-list="editInlineAndCellColumn" :table-data="editInlineAndCellData" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></editable-table>
+                    <div class="edittable-table-height-con">
+                        <editable-table refs="table3" :editIncell="true" :columns-list="editInlineAndCellColumn" :table-data="editInlineAndCellData" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></editable-table>
+                    </div>
                 </Card>
             </Col>
         </Row>

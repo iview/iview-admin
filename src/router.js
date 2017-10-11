@@ -120,7 +120,7 @@ export const appRouter = [
         component: Main,
         children: [
             { path: 'dragableTable', title: '可拖拽排序', name: 'dragableTable', icon: 'arrow-move', component: require('./views/tables/dragable-table.vue') },
-            { path: 'editableTable', title: '可编辑单元格', name: 'editableTable', icon: 'edit', component: require('./views/tables/editable-table.vue') },
+            { path: 'editableTable', title: '可编辑表格', name: 'editableTable', icon: 'edit', component: require('./views/tables/editable-table.vue') },
             { path: 'exportableTable', title: '表格导出数据', name: 'exportableTable', icon: 'code-download', component: require('./views/tables/exportable-table.vue') },
             { path: 'table2image', title: '表格转图片', name: 'table2image', icon: 'images', component: require('./views/tables/table-to-image.vue') }
         ]
