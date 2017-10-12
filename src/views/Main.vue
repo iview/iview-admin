@@ -94,10 +94,6 @@
             return {
                 spanLeft: 4,
                 spanRight: 20,
-                menuList: [],
-                tagsList: this.$store.state.tagsList,  // 所有页面的页面对象
-                pageTagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
-                currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
                 hideMenuText: false,
                 userName: '',
@@ -106,6 +102,20 @@
                 messageCount: 0,
                 lockScreenSize: 0
             };
+        },
+        computed: {
+            menuList () {
+                return this.$store.state.menuList;
+            },
+            tagsList () {
+                return this.$store.state.tagsList;  // 所有页面的页面对象
+            },
+            pageTagsList () {
+                return this.$store.state.pageOpenedList;  // 打开的页面的页面对象
+            },
+            currentPath () {
+                return this.$store.state.currentPath;  // 当前面包屑数组
+            }
         },
         methods: {
             init () {
@@ -260,7 +270,6 @@
         created () {
             // 权限菜单过滤相关
             this.$store.commit('updateMenulist');
-            this.menuList = this.$store.state.menuList;
         }
     };
 </script>
