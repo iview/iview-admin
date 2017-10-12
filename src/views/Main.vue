@@ -135,13 +135,19 @@
                 if (name === 'ownSpace') {
                     util.openPage(this, 'ownspace_index', '个人中心');
                 } else if (name === 'loginout') {
+                    // 退出登录
                     Cookies.remove('user');
                     Cookies.remove('password');
                     Cookies.remove('hasGreet');
                     Cookies.remove('access');
                     this.$Notice.close('greeting');
+                    // 回复默认样式
                     let themeLink = document.querySelector('link[name="theme"]');
                     themeLink.setAttribute('href', '');
+                    // 清空打开的页面等数据，但是保存主题数据
+                    let theme = localStorage.theme;
+                    localStorage.clear();
+                    localStorage.theme = theme;
                     this.$router.push({
                         name: 'login'
                     });
@@ -287,6 +293,9 @@
                     this.$store.commit('changeMenuTheme', 'dark');
                     this.$store.commit('changeMainTheme', 'b');
                 }
+            } else {
+                this.$store.commit('changeMenuTheme', 'dark');
+                this.$store.commit('changeMainTheme', 'b');
             }
             // 根据用户设置主题
             if (this.$store.state.theme !== 'b') {
@@ -294,6 +303,8 @@
                 let themeLink = document.querySelector('link[name="theme"]');
                 themeLink.setAttribute('href', stylesheetPath);
             }
+            // 显示打开的页面的列表
+            this.$store.commit('setOpenedList');
         }
     };
 </script>
