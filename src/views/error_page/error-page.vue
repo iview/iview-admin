@@ -33,7 +33,7 @@
         <Row class="margin-top-10">
             <Card>
                 <p slot="title">
-                    <Icon :size="14" type="ios-navigate-outline"></Icon>
+                    <Icon :size="14" type="android-lock"></Icon>
                     401-权限不足
                 </p>
                 <Row>
@@ -58,7 +58,7 @@
         <Row class="margin-top-10">
             <Card>
                 <p slot="title">
-                    <Icon :size="14" type="ios-navigate-outline"></Icon>
+                    <Icon :size="14" type="social-freebsd-devil"></Icon>
                     500-服务端错误
                 </p>
                 <Row>
