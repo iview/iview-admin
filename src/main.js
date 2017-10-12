@@ -74,7 +74,7 @@ const store = new Vuex.Store({
             otherRouter,
             ...appRouter
         ],
-        appRouter: appRouter,
+        menuList: [],
         tagsList: [...otherRouter.children],
         pageOpenedList: localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]],
         currentPageName: '',
@@ -141,6 +141,9 @@ const store = new Vuex.Store({
         },
         unlock (state) {
             Cookies.set('locking', '0');
+        },
+        setMenuList (state, menulist) {
+            state.menuList = menulist;
         }
     },
     actions: {
@@ -156,19 +159,26 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    methods: {
-        init () {
-            this.currentPageName = this.$route.name;
-            if (localStorage.theme) {
-                if (localStorage.theme !== 'b') {
-                    let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
-                    let themeLink = document.querySelector('link[name="theme"]');
-                    themeLink.setAttribute('href', stylesheetPath);
-                }
+    mounted () {
+        this.currentPageName = this.$route.name;
+        if (localStorage.theme) {
+            if (localStorage.theme !== 'b') {
+                let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
+                let themeLink = document.querySelector('link[name="theme"]');
+                themeLink.setAttribute('href', stylesheetPath);
             }
         }
     },
-    mounted () {
-        this.init();
+    created () {
+        let tagsList = [];
+        appRouter.map((item) => {
+            if (item.children.length <= 1) {
+                tagsList.push(item.children[0]);
+            } else {
+                tagsList.push(...item.children);
+            }
+        });
+        this.$store.commit('setTagsList', tagsList);
+        this.$store.commit('setMenuList', appRouter);
     }
 });

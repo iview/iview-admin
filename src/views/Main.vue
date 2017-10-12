@@ -94,8 +94,8 @@
             return {
                 spanLeft: 4,
                 spanRight: 20,
-                menuList: this.$store.state.appRouter,
-                tagsList: [],  // 所有页面的页面对象
+                menuList: this.$store.state.menuList,
+                tagsList: this.$store.state.tagsList,  // 所有页面的页面对象
                 pageTagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
                 currentPageName: '',
@@ -109,15 +109,6 @@
         },
         methods: {
             init () {
-                let tagsList = [];
-                this.menuList.map((item) => {
-                    if (item.children.length <= 1) {
-                        tagsList.push(item.children[0]);
-                    } else {
-                        tagsList.push(...item.children);
-                    }
-                });
-                this.$store.commit('setTagsList', tagsList);
                 this.$store.commit('setCurrentPageName', this.$route.name);
                 let pathArr = util.setCurrentPath(this, this.$route.name);
                 if (pathArr.length > 2) {
@@ -238,7 +229,7 @@
                     greetingWord = {title: '凌晨好~' + userName, words: '早起的鸟儿有虫吃~'};
                 } else if (hour >= 6 && hour < 9) {
                     greetingWord = {title: '早上好~' + userName, words: '来一杯咖啡开启美好的一天~'};
-                } else if (hour >= 6 && hour < 9) {
+                } else if (hour >= 9 && hour < 12) {
                     greetingWord = {title: '上午好~' + userName, words: '工作要加油哦~'};
                 } else if (hour >= 12 && hour < 14) {
                     greetingWord = {title: '中午好~' + userName, words: '午饭要吃饱~'};
