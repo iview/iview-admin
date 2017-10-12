@@ -140,6 +140,8 @@
                     Cookies.remove('hasGreet');
                     Cookies.remove('access');
                     this.$Notice.close('greeting');
+                    let themeLink = document.querySelector('link[name="theme"]');
+                    themeLink.setAttribute('href', '');
                     this.$router.push({
                         name: 'login'
                     });
@@ -270,6 +272,28 @@
         created () {
             // 权限菜单过滤相关
             this.$store.commit('updateMenulist');
+            // 查找当前用户之前登录时设置的主题
+            let name = Cookies.get('user');
+            if (localStorage.theme) {
+                let hasThisUser = false;
+                JSON.parse(localStorage.theme).forEach(item => {
+                    if (item.userName === name) {
+                        hasThisUser = true;
+                        this.$store.commit('changeMenuTheme', item.menuTheme);
+                        this.$store.commit('changeMainTheme', item.mainTheme);
+                    }
+                });
+                if (!hasThisUser) {
+                    this.$store.commit('changeMenuTheme', 'dark');
+                    this.$store.commit('changeMainTheme', 'b');
+                }
+            }
+            // 根据用户设置主题
+            if (this.$store.state.theme !== 'b') {
+                let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
+                let themeLink = document.querySelector('link[name="theme"]');
+                themeLink.setAttribute('href', stylesheetPath);
+            }
         }
     };
 </script>

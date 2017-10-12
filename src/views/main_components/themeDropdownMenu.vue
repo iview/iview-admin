@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie';
 export default {
     name: 'themeDropdownMenu',
     data () {
@@ -70,15 +71,43 @@ export default {
             let mainTheme = themeFile.substr(-1, 1);
             if (menuTheme === 'b') {
                 // 黑色菜单
-                this.$store.commit('changeTheme', 'dark');
-                localStorage.menuTheme = 'dark';
+                this.$store.commit('changeMenuTheme', 'dark');
+                menuTheme = 'dark';
             } else {
-                this.$store.commit('changeTheme', 'light');
-                localStorage.menuTheme = 'light';
+                this.$store.commit('changeMenuTheme', 'light');
+                menuTheme = 'light';
             }
             let path = '';
             let themeLink = document.querySelector('link[name="theme"]');
-            localStorage.theme = mainTheme;
+            let userName = Cookies.get('user');
+            if (localStorage.theme) {
+                let themeList = JSON.parse(localStorage.theme);
+                let hasThisUser = false;
+                let index = 0;
+                themeList.forEach((item, i) => {
+                    if (item.userName === userName) {
+                        hasThisUser = true;
+                        index = i;
+                    }
+                });
+                if (hasThisUser) {
+                    themeList[index].mainTheme = mainTheme;
+                    themeList[index].menuTheme = menuTheme;
+                } else {
+                    themeList.push({
+                        userName: userName,
+                        mainTheme: mainTheme,
+                        menuTheme: menuTheme
+                    });
+                }
+                localStorage.theme = JSON.stringify(themeList);
+            } else {
+                localStorage.theme = JSON.stringify([{
+                    userName: userName,
+                    mainTheme: mainTheme,
+                    menuTheme: menuTheme
+                }]);
+            }
             if (mainTheme !== 'b') {
                 path = '/src/styles/' + mainTheme + '.css';
             } else {

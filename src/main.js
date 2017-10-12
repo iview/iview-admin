@@ -85,8 +85,8 @@ const store = new Vuex.Store({
             }
         ],  // 面包屑数组
         openedSubmenuArr: [],  // 要展开的菜单数组
-        menuTheme: localStorage.menuTheme ? localStorage.menuTheme : 'dark', // 主题
-        theme: localStorage.theme ? localStorage.theme : 'b'
+        menuTheme: '', // 主题
+        theme: ''
     },
     getters: {
 
@@ -132,8 +132,11 @@ const store = new Vuex.Store({
                 state.openedSubmenuArr.push(name);
             }
         },
-        changeTheme (state, theme) {
+        changeMenuTheme (state, theme) {
             state.menuTheme = theme;
+        },
+        changeMainTheme (state, mainTheme) {
+            state.theme = mainTheme;
         },
         lock (state) {
             Cookies.set('locking', '1');
@@ -204,13 +207,6 @@ new Vue({
     },
     mounted () {
         this.currentPageName = this.$route.name;
-        if (localStorage.theme) {
-            if (localStorage.theme !== 'b') {
-                let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
-                let themeLink = document.querySelector('link[name="theme"]');
-                themeLink.setAttribute('href', stylesheetPath);
-            }
-        }
     },
     created () {
         let tagsList = [];
