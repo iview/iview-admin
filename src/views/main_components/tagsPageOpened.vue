@@ -24,12 +24,16 @@ export default {
     name: 'tagsPageOpened',
     data () {
         return {
-            currentPageName: this.$route.name,
-            title: this.$store.state.currentTitle
+            currentPageName: this.$route.name
         };
     },
     props: {
         pageTagsList: Array
+    },
+    computed: {
+        title () {
+            return this.$store.state.currentTitle;
+        }
     },
     methods: {
         closePage (event, name) {

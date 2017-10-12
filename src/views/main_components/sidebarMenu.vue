@@ -28,7 +28,6 @@ export default {
     data () {
         return {
             currentPageName: this.$route.name,
-            tagsList: this.$store.state.tagsList,
             openedSubmenuArr: this.$store.state.openedSubmenuArr
         };
     },
@@ -37,6 +36,11 @@ export default {
         slotTopClass: String,
         routers: Array,
         iconSize: Number
+    },
+    computed: {
+        tagsList () {
+            return this.$store.state.tagsList;
+        }
     },
     methods: {
         changeMenu (active) {
