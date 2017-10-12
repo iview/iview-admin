@@ -32,7 +32,7 @@
                         </Col>
                         <Col span="16" class="padding-left-10">
                             <Row type="flex" justify="center" align="middle" class="access-change-access-con-row">
-                                <p>您可以通过左侧的开关来切换当前用户的权限值，然后您可以观察左侧菜单栏的变化，如果当前用户的权限值是<b>0</b>，则左侧菜单栏会显示’权限测试页‘这一项。</p>
+                                <p>您可以通过左侧的开关来切换当前用户的权限值，然后您可以观察左侧菜单栏的变化，如果当前用户的权限值是<b> 0 </b>，则左侧菜单栏会显示’权限测试页‘这一项('权限测试页'只用于测试，点击不会跳转)。</p>
                             </Row>
                         </Col>
                     </div>
