@@ -22,7 +22,15 @@ util.getPathObjByName = function (vm, name) {
     return pathObj;
 };
 
-util.setCurrentPath = function (vm, name, title) {
+util.setCurrentPath = function (vm, name) {
+    let title = '';
+    vm.$store.state.routers.filter(item => {
+        if (item.children.length <= 1) {
+            if (item.children[0].name === name) {
+                title = item.children[0].title;
+            }
+        }
+    });
     let currentPathArr = [];
     if (name === 'home_index') {
         currentPathArr = [
@@ -46,7 +54,7 @@ util.setCurrentPath = function (vm, name, title) {
             }
         ];
     } else {
-        let currentPathObj = vm.$store.state.routers.filter((item) => {
+        let currentPathObj = vm.$store.state.routers.filter(item => {
             if (item.children.length <= 1) {
                 return item.children[0].name === name;
             } else {

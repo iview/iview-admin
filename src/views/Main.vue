@@ -121,7 +121,7 @@
             init () {
                 this.$store.commit('setCurrentPageName', this.$route.name);
                 let pathArr = util.setCurrentPath(this, this.$route.name);
-                if (pathArr.length > 2) {
+                if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.userName = Cookies.get('user');
@@ -196,10 +196,7 @@
         watch: {
             '$route' (to) {
                 this.$store.commit('setCurrentPageName', to.name);
-                let currentTitle = this.$store.state.tagsList.filter(item => {
-                    return item.name === to.name;
-                })[0].title;
-                let pathArr = util.setCurrentPath(this, to.name, currentTitle);
+                let pathArr = util.setCurrentPath(this, to.name);
                 if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
