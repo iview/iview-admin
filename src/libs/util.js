@@ -31,8 +31,6 @@ util.inOf = function (arr, targetArr) {
 };
 
 util.oneOf = function (ele, targetArr) {
-    console.log(ele);
-    console.log(targetArr);
     if (targetArr.indexOf(ele) >= 0) {
         return true;
     } else {
