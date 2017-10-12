@@ -2,7 +2,6 @@ import Vue from 'vue';
 import iView from 'iview';
 import VueRouter from 'vue-router';
 import {routers, otherRouter, appRouter} from './router';
-// import appRouter from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
@@ -144,6 +143,50 @@ const store = new Vuex.Store({
         },
         setMenuList (state, menulist) {
             state.menuList = menulist;
+        },
+        updateMenulist (state) {
+            let accessCode = parseInt(Cookies.get('access'));
+            let menuList = [];
+            appRouter.forEach((item, index) => {
+                if (item.access !== undefined) {
+                    if (Util.showThisRoute(item.access, accessCode)) {
+                        if (item.children.length <= 1) {
+                            menuList.push(item);
+                        } else {
+                            let i = menuList.push(item);
+                            let childrenArr = [];
+                            childrenArr = item.children.filter(child => {
+                                if (child.access !== undefined) {
+                                    if (child.access === accessCode) {
+                                        return child;
+                                    }
+                                } else {
+                                    return child;
+                                }
+                            });
+                            menuList[i - 1].children = childrenArr;
+                        }
+                    }
+                } else {
+                    if (item.children.length <= 1) {
+                        menuList.push(item);
+                    } else {
+                        let i = menuList.push(item);
+                        let childrenArr = [];
+                        childrenArr = item.children.filter(child => {
+                            if (child.access !== undefined) {
+                                if (Util.showThisRoute(child.access, accessCode)) {
+                                    return child;
+                                }
+                            } else {
+                                return child;
+                            }
+                        });
+                        menuList[i - 1].children = childrenArr;
+                    }
+                }
+            });
+            state.menuList = menuList;
         }
     },
     actions: {
@@ -179,6 +222,6 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
-        this.$store.commit('setMenuList', appRouter);
+        // this.$store.commit('setMenuList', appRouter);
     }
 });

@@ -40,34 +40,36 @@ export default {
     },
     methods: {
         changeMenu (active) {
-            let pageOpenedList = this.$store.state.pageOpenedList;
-            let openedPageLen = pageOpenedList.length;
-            let i = 0;
-            let tagHasOpened = false;
-            while (i < openedPageLen) {
-                if (active === pageOpenedList[i].name) {  // 页面已经打开
-                    this.$store.commit('moveToSecond', i);
-                    tagHasOpened = true;
-                    break;
-                }
-                i++;
-            }
-            if (!tagHasOpened) {
-                let tag = this.tagsList.filter((item) => {
-                    if (item.children) {
-                        return active === item.children[0].name;
-                    } else {
-                        return active === item.name;
+            if (active !== 'accesstest_index') {
+                let pageOpenedList = this.$store.state.pageOpenedList;
+                let openedPageLen = pageOpenedList.length;
+                let i = 0;
+                let tagHasOpened = false;
+                while (i < openedPageLen) {
+                    if (active === pageOpenedList[i].name) {  // 页面已经打开
+                        this.$store.commit('moveToSecond', i);
+                        tagHasOpened = true;
+                        break;
                     }
+                    i++;
+                }
+                if (!tagHasOpened) {
+                    let tag = this.tagsList.filter((item) => {
+                        if (item.children) {
+                            return active === item.children[0].name;
+                        } else {
+                            return active === item.name;
+                        }
+                    });
+                    tag = tag[0];
+                    tag = tag.children ? tag.children[0] : tag;
+                    this.$store.commit('increateTag', tag);
+                }
+                this.$store.commit('setCurrentPageName', active);
+                this.$router.push({
+                    name: active
                 });
-                tag = tag[0];
-                tag = tag.children ? tag.children[0] : tag;
-                this.$store.commit('increateTag', tag);
             }
-            this.$store.commit('setCurrentPageName', active);
-            this.$router.push({
-                name: active
-            });
         }
     },
     watch: {

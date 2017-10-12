@@ -62,6 +62,11 @@ export default {
                 if (valid) {
                     Cookies.set('user', this.form.userName);
                     Cookies.set('password', this.form.password);
+                    if (this.form.userName === 'iview_admin') {
+                        Cookies.set('access', 0);
+                    } else {
+                        Cookies.set('access', 1);
+                    }
                     this.$router.push({
                         name: 'home_index'
                     });

@@ -94,7 +94,7 @@
             return {
                 spanLeft: 4,
                 spanRight: 20,
-                menuList: this.$store.state.menuList,
+                menuList: [],
                 tagsList: this.$store.state.tagsList,  // 所有页面的页面对象
                 pageTagsList: this.$store.state.pageOpenedList,  // 打开的页面的页面对象
                 currentPath: this.$store.state.currentPath,  // 当前面包屑数组
@@ -128,6 +128,7 @@
                     Cookies.remove('user');
                     Cookies.remove('password');
                     Cookies.remove('hasGreet');
+                    Cookies.remove('access');
                     this.$Notice.close('greeting');
                     this.$router.push({
                         name: 'login'
@@ -188,6 +189,7 @@
         },
         mounted () {
             this.init();
+            // 全屏相关
             document.addEventListener('fullscreenchange', () => {
                 this.isFullScreen = !this.isFullScreen;
             });
@@ -200,6 +202,7 @@
             document.addEventListener('msfullscreenchange', () => {
                 this.isFullScreen = !this.isFullScreen;
             });
+            // 锁屏相关
             let lockScreenBack = document.getElementById('lock_screen_back');
             let x = document.body.clientWidth;
             let y = document.body.clientHeight;
@@ -216,7 +219,7 @@
                 lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
             });
             lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
-
+            // 问候信息相关
             if (!Cookies.get('hasGreet')) {
                 let now = new Date();
                 let hour = now.getHours();
@@ -253,6 +256,11 @@
                 });
                 Cookies.set('hasGreet', 1);
             }
+        },
+        created () {
+            // 权限菜单过滤相关
+            this.$store.commit('updateMenulist');
+            this.menuList = this.$store.state.menuList;
         }
     };
 </script>

@@ -30,4 +30,22 @@ util.inOf = function (arr, targetArr) {
     return res;
 };
 
+util.oneOf = function (ele, targetArr) {
+    console.log(ele);
+    console.log(targetArr);
+    if (targetArr.indexOf(ele) >= 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+util.showThisRoute = function (itAccess, currentAccess) {
+    if (typeof itAccess === 'object' && itAccess.isArray()) {
+        return util.oneOf(currentAccess, itAccess);
+    } else {
+        return itAccess === currentAccess;
+    }
+};
+
 export default util;
