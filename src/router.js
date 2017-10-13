@@ -126,7 +126,7 @@ export const appRouter = [
             },
             {
                 path: 'infor-card',
-                icon: 'arrow-graph-up-right',
+                icon: 'calendar',
                 name: 'infor-card',
                 title: '信息卡片',
                 component: require('./views/my_components/infor-card/infor-card.vue')
