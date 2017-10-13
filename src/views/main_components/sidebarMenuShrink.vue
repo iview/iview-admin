@@ -3,7 +3,7 @@
         <template v-for="(item, index) in menuList">
             <Dropdown v-if="item.children.length !== 1" placement="right-start" :key="index" @on-click="changeMenu">
                 <Button style="width: 70px;margin-left: -5px;padding:10px 0;" type="text">
-                    <Icon :size="20" color="white" :type="item.icon"></Icon>
+                    <Icon :size="20" :color="iconColor" :type="item.icon"></Icon>
                 </Button>
                 <DropdownMenu style="width: 200px;" slot="list">
                     <div style="padding:4px 5px 8px;margin-bottom:10px;font-size:14px;font-weight:500;border-bottom:1px solid #d0d2d6;color:#d0d2d6;" :name="item.name" :key="item.title"><Icon type="arrow-left-b"></Icon>&nbsp;&nbsp;{{ item.title }}</div>
@@ -14,7 +14,7 @@
             </Dropdown>
             <Dropdown v-else placement="right-start" :key="index" @on-click="changeMenu">
                 <Button @click="changeMenu(item.children[0].name)" style="width: 70px;margin-left: -5px;padding:10px 0;" type="text">
-                    <Icon :size="20" color="white" :type="item.icon"></Icon>
+                    <Icon :size="20" :color="iconColor" :type="item.icon"></Icon>
                 </Button>
                 <DropdownMenu style="width: 200px;" slot="list">
                     <DropdownItem :name="item.children[0].name" :key="item.children[0].title">{{ item.children[0].title }}</DropdownItem>
@@ -30,6 +30,10 @@ export default {
     props: {
         menuList: {
             type: Array
+        },
+        iconColor: {
+            type: String,
+            default: 'white'
         }
     },
     data () {

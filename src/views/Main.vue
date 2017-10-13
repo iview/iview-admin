@@ -8,7 +8,7 @@
             <div v-if="!hideMenuText" class="logo-con">i<i>V</i>iew admin</div>
             <div v-else class="logo-con">i<i>V</i>u</div>
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
-            <sidebar-menu-shrink v-else :menuList="menuList"/>
+            <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
         </div>
         <div class="main-content-container":style="{left: hideMenuText?'60px':'200px'}">
             <div class="main-content-out-container">
@@ -118,6 +118,9 @@
             },
             currentPath () {
                 return this.$store.state.currentPath;  // 当前面包屑数组
+            },
+            menuIconColor () {
+                return this.$store.state.menuTheme === 'dark' ? 'white' : '#495060';
             }
         },
         methods: {
