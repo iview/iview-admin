@@ -284,12 +284,13 @@
             // 查找当前用户之前登录时设置的主题
             let name = Cookies.get('user');
             if (localStorage.theme) {
-                let hasThisUser = false;
-                JSON.parse(localStorage.theme).forEach(item => {
+                let hasThisUser = JSON.parse(localStorage.theme).some(item => {
                     if (item.userName === name) {
-                        hasThisUser = true;
                         this.$store.commit('changeMenuTheme', item.menuTheme);
                         this.$store.commit('changeMainTheme', item.mainTheme);
+                        return true;
+                    } else {
+                        return false;
                     }
                 });
                 if (!hasThisUser) {

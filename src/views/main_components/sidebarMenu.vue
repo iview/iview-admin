@@ -82,15 +82,15 @@ export default {
         },
         currentPageName () {
             this.openedSubmenuArr = this.$store.state.openedSubmenuArr;
-            this.$nextTick(
-                this.$refs.sideMenu.updateOpened()
-            );
+            this.$nextTick(() => {
+                this.$refs.sideMenu.updateOpened();
+            });
         }
     },
     updated () {
-        this.$nextTick(
-            this.$refs.sideMenu.updateOpened()
-        );
+        this.$nextTick(() => {
+            this.$refs.sideMenu.updateOpened();
+        });
     }
 
 };

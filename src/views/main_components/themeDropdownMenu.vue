@@ -82,12 +82,13 @@ export default {
             let userName = Cookies.get('user');
             if (localStorage.theme) {
                 let themeList = JSON.parse(localStorage.theme);
-                let hasThisUser = false;
                 let index = 0;
-                themeList.forEach((item, i) => {
+                let hasThisUser = themeList.some((item, i) => {
                     if (item.userName === userName) {
-                        hasThisUser = true;
                         index = i;
+                        return true;
+                    } else {
+                        return false;
                     }
                 });
                 if (hasThisUser) {
