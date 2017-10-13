@@ -42,7 +42,7 @@
                         <div @click="showMessage" class="message-con">
                             <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
                                 <Badge :count="messageCount" dot>
-                                    <Icon type="ios-bell-outline" size="20"></Icon>
+                                    <Icon type="ios-bell" :size="22"></Icon>
                                 </Badge>
                             </Tooltip>
                         </div>
