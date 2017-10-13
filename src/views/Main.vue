@@ -147,6 +147,7 @@
                     Cookies.remove('hasGreet');
                     Cookies.remove('access');
                     this.$Notice.close('greeting');
+                    this.$store.commit('clearOpenedSubmenu');
                     // 回复默认样式
                     let themeLink = document.querySelector('link[name="theme"]');
                     themeLink.setAttribute('href', '');

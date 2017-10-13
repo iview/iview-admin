@@ -173,6 +173,7 @@ export default {
         },
         cancelEditUserInfor () {
             this.$store.commit('removeTag', 'ownspace_index');
+            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList);
             let lastPageName = '';
             if (this.$store.state.pageOpenedList.length > 1) {
                 lastPageName = this.$store.state.pageOpenedList[1].name;

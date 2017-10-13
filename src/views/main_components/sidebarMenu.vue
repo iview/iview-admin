@@ -67,6 +67,7 @@ export default {
                     tag = tag[0];
                     tag = tag.children ? tag.children[0] : tag;
                     this.$store.commit('increateTag', tag);
+                    localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList); // 本地存储已打开页面
                 }
                 this.$store.commit('setCurrentPageName', active);
                 this.$router.push({

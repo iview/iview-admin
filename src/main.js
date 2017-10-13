@@ -97,7 +97,6 @@ const store = new Vuex.Store({
         },
         increateTag (state, tagObj) {
             state.pageOpenedList.splice(1, 0, tagObj);
-            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList); // 本地存储已打开页面
         },
         removeTag (state, name) {
             state.pageOpenedList.map((item, index) => {
@@ -105,7 +104,6 @@ const store = new Vuex.Store({
                     state.pageOpenedList.splice(index, 1);
                 }
             });
-            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         moveToSecond (state, index) {
             let openedPage = state.pageOpenedList[index];
@@ -134,6 +132,9 @@ const store = new Vuex.Store({
             if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
             }
+        },
+        clearOpenedSubmenu (state) {
+            state.openedSubmenuArr.length = 0;
         },
         changeMenuTheme (state, theme) {
             state.menuTheme = theme;
