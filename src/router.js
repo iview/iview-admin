@@ -123,13 +123,6 @@ export const appRouter = [
                 name: 'count-to',
                 title: '数字渐变',
                 component: require('./views/my_components/count-to/count-to.vue')
-            },
-            {
-                path: 'infor-card',
-                icon: 'calendar',
-                name: 'infor-card',
-                title: '信息卡片',
-                component: require('./views/my_components/infor-card/infor-card.vue')
             }
         ]
     },
