@@ -4,11 +4,13 @@
 <template>
     <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="lock-screen-back" id="lock_screen_back"></div>
-        <div class="sidebar-menu-con" :style="{width: hideMenuText?'80px':'200px', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
-            <div class="logo-con">i<i>V</i>iew admin</div>
-            <sidebar-menu :routers="menuList" :iconSize="14"/>
+        <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
+            <div v-if="!hideMenuText" class="logo-con">i<i>V</i>iew admin</div>
+            <div v-else class="logo-con">i<i>V</i>u</div>
+            <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
+            <sidebar-menu-shrink v-else :menuList="menuList"/>
         </div>
-        <div class="main-content-container":style="{left: hideMenuText?'80px':'200px'}">
+        <div class="main-content-container":style="{left: hideMenuText?'60px':'200px'}">
             <div class="main-content-out-container">
                 <div class="main-header">
                     <div class="navicon-con">
@@ -79,6 +81,7 @@
     import tagsPageOpened from './main_components/tagsPageopened.vue';
     import breadcrumbNav from './main_components/breadcrumbNav.vue';
     import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
+    import sidebarMenuShrink from './main_components/sidebarMenuShrink.vue';
     import Cookies from 'js-cookie';
     import util from './util.js';
     
@@ -87,7 +90,8 @@
             sidebarMenu,
             tagsPageOpened,
             breadcrumbNav,
-            themeDropdownMenu
+            themeDropdownMenu,
+            sidebarMenuShrink
         },
         data () {
             return {

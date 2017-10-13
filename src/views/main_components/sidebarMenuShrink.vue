@@ -1,40 +1,36 @@
 <template>
-    <Menu ref="sideMenu" :active-name="currentPageName" :open-names="openedSubmenuArr" :theme="$store.state.menuTheme" width="auto" @on-select="changeMenu">
-        <template v-for="item in menuList">
-            <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="item.path">
-                <Icon :type="item.icon" :size="iconSize" :key="item.path"></Icon>
-                <span class="layout-text" :key="item.path">{{ item.title }}</span>
-            </MenuItem>
-
-            <Submenu v-if="item.children.length>1" :name="item.name" :key="item.path">
-                <template slot="title">
-                    <Icon :type="item.icon" :size="iconSize"></Icon>
-                    <span class="layout-text">{{ item.title }}</span>
-                </template>
-                <template v-for="child in item.children">
-                    <MenuItem :name="child.name" :key="child.name">
-                        <Icon :type="child.icon" :size="iconSize" :key="child.name"></Icon>
-                        <span class="layout-text" :key="child.name">{{ child.title }}</span>
-                    </MenuItem>
-                </template>
-            </Submenu>
+    <div>
+        <template v-for="(item, index) in menuList">
+            <Dropdown placement="right-start" :key="index" @on-click="changeMenu">
+                <Button style="width: 70px;margin-left: -5px;padding:10px 0;" type="text">
+                    <Icon :size="20" color="white" :type="item.icon"></Icon>
+                </Button>
+                <DropdownMenu style="width: 200px;" slot="list">
+                    <div style="position: relative;overflow:hidden;">
+                        <template v-for="child in item.children">
+                            <DropdownItem :name="child.name" :key="child.title">{{ child.title }}</DropdownItem>
+                        </template>
+                        <div v-if="item.children.length > 1" style="position: absolute;right:10px;bottom:-10px;z-index:-1;"><Icon color="#e0e1e6" :type="item.icon" :size="140"></Icon></div>
+                    </div>
+                </DropdownMenu>
+            </Dropdown>
         </template>
-    </Menu>
+    </div>
 </template>
 
 <script>
 export default {
+    name: 'sidebarMenuShrink',
+    props: {
+        menuList: {
+            type: Array
+        }
+    },
     data () {
         return {
             currentPageName: this.$route.name,
             openedSubmenuArr: this.$store.state.openedSubmenuArr
         };
-    },
-    name: 'sidebarMenu',
-    props: {
-        slotTopClass: String,
-        menuList: Array,
-        iconSize: Number
     },
     computed: {
         tagsList () {
@@ -79,19 +75,7 @@ export default {
         '$route' (to) {
             this.currentPageName = to.name;
             localStorage.currentPageName = to.name;
-        },
-        currentPageName () {
-            this.openedSubmenuArr = this.$store.state.openedSubmenuArr;
-            this.$nextTick(
-                this.$refs.sideMenu.updateOpened()
-            );
         }
-    },
-    updated () {
-        this.$nextTick(
-            this.$refs.sideMenu.updateOpened()
-        );
     }
-
 };
 </script>
