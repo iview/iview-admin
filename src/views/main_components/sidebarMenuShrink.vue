@@ -8,7 +8,7 @@
                 <DropdownMenu style="width: 200px;" slot="list">
                     <div style="padding:4px 5px 8px;margin-bottom:10px;font-size:14px;font-weight:500;border-bottom:1px solid #d0d2d6;color:#d0d2d6;" :name="item.name" :key="item.title"><Icon type="arrow-left-b"></Icon>&nbsp;&nbsp;{{ item.title }}</div>
                     <template v-for="child in item.children">
-                        <DropdownItem :name="child.name" :key="child.title">{{ child.title }}</DropdownItem>
+                        <DropdownItem :name="child.name" :key="child.title"><Icon :type="child.icon"></Icon><span style="padding-left:10px;">{{ child.title }}</span></DropdownItem>
                     </template>
                 </DropdownMenu>
             </Dropdown>
@@ -17,7 +17,7 @@
                     <Icon :size="20" :color="iconColor" :type="item.icon"></Icon>
                 </Button>
                 <DropdownMenu style="width: 200px;" slot="list">
-                    <DropdownItem :name="item.children[0].name" :key="item.children[0].title">{{ item.children[0].title }}</DropdownItem>
+                    <DropdownItem :name="item.children[0].name" :key="item.children[0].title"><Icon :type="item.icon"></Icon><span style="padding-left:10px;">{{ item.children[0].title }}</span></DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </template>
