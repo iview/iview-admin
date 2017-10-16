@@ -5,7 +5,7 @@
 <template>
     <div class="login" @keydown.enter="handleSubmit">
         <div class="login-con">
-            <Card>
+            <Card :bordered="false">
                 <p slot="title">
                     <Icon type="log-in"></Icon>
                     欢迎登录

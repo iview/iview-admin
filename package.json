@@ -27,11 +27,11 @@
     "rasterizehtml": "^1.2.4",
     "simplemde": "^1.11.2",
     "sortablejs": "^1.6.1",
-    "tinymce": "^4.6.7",
-    "vue": "^2.2.6",
+    "tinymce": "^4.7.1",
+    "vue": "^2.5.2",
     "vue-i18n": "^5.0.3",
-    "vue-router": "^2.3.1",
-    "vuex": "^2.4.1"
+    "vue-router": "^2.8.1",
+    "vuex": "^2.5.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
@@ -51,7 +51,7 @@
     "eslint-plugin-html": "^1.7.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
-    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.8.5",
@@ -66,9 +66,9 @@
     "vue-html-loader": "^1.2.3",
     "vue-loader": "^11.0.0",
     "vue-style-loader": "^1.0.0",
-    "vue-template-compiler": "^2.2.1",
+    "vue-template-compiler": "^2.5.2",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "^2.9.2",
     "webpack-merge": "^3.0.0"
   }
 }
