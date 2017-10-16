@@ -13,11 +13,22 @@
             width: 100%;
             height: 100%;
         }
+        .lock-screen-back{
+            border-radius: 50%;
+            z-index: -1;
+            box-shadow: 0 0 0 0 #667aa6 inset;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            transition: all 3s;
+        }
     </style>
 </head>
 
 <body>
     <div id="app"></div>
+    <div class="lock-screen-back" id="lock_screen_back"></div>
     <script type="text/javascript" src="/dist/vendors.js"></script>
     <script type="text/javascript" src="/dist/main.js"></script>
 </body>

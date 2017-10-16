@@ -20,6 +20,9 @@ export default {
     methods: {
         handleUnlock () {
             this.showUnlock = false;
+            let lockScreenBack = document.getElementById('lock_screen_back');
+            lockScreenBack.style.zIndex = -1;
+            lockScreenBack.style.boxShadow = '0 0 0 0 #667aa6 inset';
             this.$router.go(-1);
         }
     },

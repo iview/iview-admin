@@ -3,7 +3,6 @@
 </style>
 <template>
     <div class="main" :class="{'main-hide-text': hideMenuText}">
-        <div class="lock-screen-back" id="lock_screen_back"></div>
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
                 <img v-show="!hideMenuText"  src="../images/logo.jpg">
@@ -12,68 +11,65 @@
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
             <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
         </div>
-        <div class="main-content-container":style="{left: hideMenuText?'60px':'200px'}">
-            <div class="main-content-out-container">
-                <div class="main-header">
-                    <div class="navicon-con">
-                        <Button :style="{transform: 'rotateZ(' + (this.hideMenuText ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
-                            <Icon type="navicon" size="32"></Icon>
-                        </Button>
-                    </div>
-                    <div class="header-middle-con">
-                        <div class="main-breadcrumb">
-                            <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>
-                        </div>
-                    </div>
-                    <div class="header-avator-con">
-                        <div @click="handleFullScreen" v-if="showFullScreenBtn" class="full-screen-btn-con">
-                            <Tooltip :content="isFullScreen ? '退出全屏' : '全屏'" placement="bottom">
-                                <Icon :type="isFullScreen ? 'arrow-shrink' : 'arrow-expand'" :size="23"></Icon>
-                            </Tooltip>
-                        </div>
-                        <div @click="lockScreen" class="lock-screen-btn-con">
-                            <Tooltip content="锁屏" placement="bottom">
-                                <Icon type="locked" :size="20"></Icon>
-                            </Tooltip>
-                        </div>
-                        <div class="switch-theme-con">
-                            <Row class="switch-theme" type="flex" justify="center" align="middle">
-                                <theme-dropdown-menu></theme-dropdown-menu>
-                            </Row>
-                        </div>
-                        <div @click="showMessage" class="message-con">
-                            <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
-                                <Badge :count="messageCount" dot>
-                                    <Icon type="ios-bell" :size="22"></Icon>
-                                </Badge>
-                            </Tooltip>
-                        </div>
-                        <div class="user-dropdown-menu-con">
-                            <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
-                                <Dropdown trigger="click" @on-click="handleClickUserDropdown">
-                                    <a href="javascript:void(0)">
-                                        <span class="main-user-name">{{ userName }}</span>
-                                        <Icon type="arrow-down-b"></Icon>
-                                    </a>
-                                    <DropdownMenu slot="list">
-                                        <DropdownItem name="ownSpace">个人中心</DropdownItem>
-                                        <DropdownItem name="loginout" divided>退出登录</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                                <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" style="background: #619fe7;margin-left: 10px;"></Avatar>
-                            </Row>
-                        </div>
+        <div class="main-header-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
+            <div class="main-header">
+                <div class="navicon-con">
+                    <Button :style="{transform: 'rotateZ(' + (this.hideMenuText ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
+                        <Icon type="navicon" size="32"></Icon>
+                    </Button>
+                </div>
+                <div class="header-middle-con">
+                    <div class="main-breadcrumb">
+                        <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>
                     </div>
                 </div>
-                
-                <div class="main-content">
-                    <div class="tags-con">
-                        <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
+                <div class="header-avator-con">
+                    <div @click="handleFullScreen" v-if="showFullScreenBtn" class="full-screen-btn-con">
+                        <Tooltip :content="isFullScreen ? '退出全屏' : '全屏'" placement="bottom">
+                            <Icon :type="isFullScreen ? 'arrow-shrink' : 'arrow-expand'" :size="23"></Icon>
+                        </Tooltip>
                     </div>
-                    <div class="single-page-con">
-                        <router-view></router-view>
+                    <div @click="lockScreen" class="lock-screen-btn-con">
+                        <Tooltip content="锁屏" placement="bottom">
+                            <Icon type="locked" :size="20"></Icon>
+                        </Tooltip>
+                    </div>
+                    <div class="switch-theme-con">
+                        <Row class="switch-theme" type="flex" justify="center" align="middle">
+                            <theme-dropdown-menu></theme-dropdown-menu>
+                        </Row>
+                    </div>
+                    <div @click="showMessage" class="message-con">
+                        <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
+                            <Badge :count="messageCount" dot>
+                                <Icon type="ios-bell" :size="22"></Icon>
+                            </Badge>
+                        </Tooltip>
+                    </div>
+                    <div class="user-dropdown-menu-con">
+                        <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
+                            <Dropdown trigger="click" @on-click="handleClickUserDropdown">
+                                <a href="javascript:void(0)">
+                                    <span class="main-user-name">{{ userName }}</span>
+                                    <Icon type="arrow-down-b"></Icon>
+                                </a>
+                                <DropdownMenu slot="list">
+                                    <DropdownItem name="ownSpace">个人中心</DropdownItem>
+                                    <DropdownItem name="loginout" divided>退出登录</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                            <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" style="background: #619fe7;margin-left: 10px;"></Avatar>
+                        </Row>
                     </div>
                 </div>
+            </div>
+            <div class="tags-con">
+                <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
+            </div>
+        </div>
+        <div class="single-page-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
+            <div class="single-page">
+                <router-view></router-view>
             </div>
         </div>
     </div>
