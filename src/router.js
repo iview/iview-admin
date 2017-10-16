@@ -38,6 +38,7 @@ export const page500 = {
 
 export const otherRouter = {
     path: '/',
+    name: 'otherRouter',
     redirect: '/home',
     component: Main,
     children: [

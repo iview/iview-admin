@@ -81,7 +81,7 @@
     import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
     import sidebarMenuShrink from './main_components/sidebarMenuShrink.vue';
     import Cookies from 'js-cookie';
-    import util from './util.js';
+    import util from '../libs/util.js';
     
     export default {
         components: {
