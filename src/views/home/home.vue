@@ -11,7 +11,7 @@
                         <Row type="flex" class="user-infor">
                             <Col span="8">
                                 <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <img class="avator-img" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+                                    <img class="avator-img" src="https://avatars0.githubusercontent.com/u/5370542?s=400&v=4" />
                                 </Row>
                             </Col>
                             <Col span="16" style="padding-left:6px;">

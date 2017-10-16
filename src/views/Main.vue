@@ -58,7 +58,7 @@
                                     <DropdownItem name="loginout" divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" style="background: #619fe7;margin-left: 10px;"></Avatar>
+                            <Avatar src="https://avatars0.githubusercontent.com/u/5370542?s=400&v=4" style="background: #619fe7;margin-left: 10px;"></Avatar>
                         </Row>
                     </div>
                 </div>
@@ -150,9 +150,14 @@
                     let themeLink = document.querySelector('link[name="theme"]');
                     themeLink.setAttribute('href', '');
                     // 清空打开的页面等数据，但是保存主题数据
-                    let theme = localStorage.theme;
+                    let theme = '';
+                    if (localStorage.theme) {
+                        theme = localStorage.theme;
+                    }
                     localStorage.clear();
-                    localStorage.theme = theme;
+                    if (theme) {
+                        localStorage.theme = theme;
+                    }
                     this.$router.push({
                         name: 'login'
                     });

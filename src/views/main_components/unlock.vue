@@ -6,7 +6,7 @@
     <transition name="show-unlock">
         <div class="unlock-body-con" v-if="showUnlock">
             <div @click="handleClickAvator" class="unlock-avator-con" :style="{marginLeft: avatorLeft}">
-                <img class="unlock-avator-img" src="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                <img class="unlock-avator-img" src="https://avatars0.githubusercontent.com/u/5370542?s=400&v=4">
                 <div  class="unlock-avator-cover">
                     <span><Icon type="unlocked" :size="30"></Icon></span>
                     <p>解锁</p>

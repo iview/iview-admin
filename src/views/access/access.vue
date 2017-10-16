@@ -13,7 +13,7 @@
                         当前用户
                     </p>
                     <div class="access-user-con access-current-user-con">
-                        <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" alt="">
+                        <img src="https://avatars0.githubusercontent.com/u/5370542?s=400&v=4" alt="">
                         <p>当前用户权限值:<b>{{ accessCode }}</b></p>
                     </div>
                 </Card>
