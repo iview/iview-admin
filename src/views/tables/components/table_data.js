@@ -78,7 +78,7 @@ export const editInlineColumns = [
     {
         title: '操作',
         align: 'center',
-        width: 180,
+        width: 190,
         key: 'handle',
         handle: ['edit', 'delete']
     }
