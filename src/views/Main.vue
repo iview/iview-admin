@@ -34,17 +34,17 @@
                             <Icon type="locked" :size="20"></Icon>
                         </Tooltip>
                     </div>
-                    <div class="switch-theme-con">
-                        <Row class="switch-theme" type="flex" justify="center" align="middle">
-                            <theme-dropdown-menu></theme-dropdown-menu>
-                        </Row>
-                    </div>
                     <div @click="showMessage" class="message-con">
                         <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
                             <Badge :count="messageCount" dot>
                                 <Icon type="ios-bell" :size="22"></Icon>
                             </Badge>
                         </Tooltip>
+                    </div>
+                    <div class="switch-theme-con">
+                        <Row class="switch-theme" type="flex" justify="center" align="middle">
+                            <theme-dropdown-menu></theme-dropdown-menu>
+                        </Row>
                     </div>
                     <div class="user-dropdown-menu-con">
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
@@ -187,11 +187,13 @@
             },
             lockScreen () {
                 let lockScreenBack = document.getElementById('lock_screen_back');
+                lockScreenBack.style.transition = 'all 3s';
                 lockScreenBack.style.zIndex = 10000;
                 lockScreenBack.style.boxShadow = '0 0 0 ' + this.lockScreenSize + 'px #667aa6 inset';
                 this.showUnlock = true;
                 this.$store.commit('lock');
                 setTimeout(() => {
+                    lockScreenBack.style.transition = 'all 0s';
                     this.$router.push({
                         name: 'locking'
                     });
