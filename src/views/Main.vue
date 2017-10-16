@@ -5,8 +5,10 @@
     <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="lock-screen-back" id="lock_screen_back"></div>
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
-            <div v-if="!hideMenuText" class="logo-con">i<i>V</i>iew admin</div>
-            <div v-else class="logo-con">i<i>V</i>u</div>
+            <div class="logo-con">
+                <img v-show="!hideMenuText"  src="../images/logo.jpg">
+                <img v-show="hideMenuText" src="../images/logo-min.jpg">
+            </div>
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
             <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
         </div>
