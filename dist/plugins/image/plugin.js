@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.image.Plugin","tinymce.core.PluginManager","tinymce.core.util.Tools","tinymce.plugins.image.ui.Dialog","global!tinymce.util.Tools.resolve","global!document","global!Math","global!RegExp","tinymce.core.Env","tinymce.core.ui.Factory","tinymce.core.util.JSON","tinymce.core.util.XHR","tinymce.plugins.image.core.Uploader","tinymce.plugins.image.core.Utils","tinymce.core.util.Promise"]
+["tinymce.plugins.image.Plugin","tinymce.core.PluginManager","tinymce.plugins.image.api.Commands","tinymce.plugins.image.core.FilterContent","tinymce.plugins.image.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.image.ui.Dialog","tinymce.core.util.Tools","ephox.sand.api.URL","global!document","global!Math","global!RegExp","tinymce.core.Env","tinymce.core.ui.Factory","tinymce.core.util.JSON","tinymce.core.util.XHR","tinymce.plugins.image.api.Settings","tinymce.plugins.image.core.Uploader","tinymce.plugins.image.core.Utils","ephox.sand.util.Global","ephox.sand.api.XMLHttpRequest","global!window","tinymce.core.util.Promise","ephox.katamari.api.Resolve","ephox.katamari.api.Global"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -104,26 +104,134 @@ define(
   }
 );
 
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
 define(
-  'tinymce.core.util.Tools',
+  'ephox.katamari.api.Global',
+
   [
-    'global!tinymce.util.Tools.resolve'
   ],
-  function (resolve) {
-    return resolve('tinymce.util.Tools');
+
+  function () {
+    // Use window object as the global if it's available since CSP will block script evals
+    if (typeof window !== 'undefined') {
+      return window;
+    } else {
+      return Function('return this;')();
+    }
   }
 );
 
+
+define(
+  'ephox.katamari.api.Resolve',
+
+  [
+    'ephox.katamari.api.Global'
+  ],
+
+  function (Global) {
+    /** path :: ([String], JsObj?) -> JsObj */
+    var path = function (parts, scope) {
+      var o = scope !== undefined ? scope : Global;
+      for (var i = 0; i < parts.length && o !== undefined && o !== null; ++i)
+        o = o[parts[i]];
+      return o;
+    };
+
+    /** resolve :: (String, JsObj?) -> JsObj */
+    var resolve = function (p, scope) {
+      var parts = p.split('.');
+      return path(parts, scope);
+    };
+
+    /** step :: (JsObj, String) -> JsObj */
+    var step = function (o, part) {
+      if (o[part] === undefined || o[part] === null)
+        o[part] = {};
+      return o[part];
+    };
+
+    /** forge :: ([String], JsObj?) -> JsObj */
+    var forge = function (parts, target) {
+      var o = target !== undefined ? target : Global;      
+      for (var i = 0; i < parts.length; ++i)
+        o = step(o, parts[i]);
+      return o;
+    };
+
+    /** namespace :: (String, JsObj?) -> JsObj */
+    var namespace = function (name, target) {
+      var parts = name.split('.');
+      return forge(parts, target);
+    };
+
+    return {
+      path: path,
+      resolve: resolve,
+      forge: forge,
+      namespace: namespace
+    };
+  }
+);
+
+
+define(
+  'ephox.sand.util.Global',
+
+  [
+    'ephox.katamari.api.Resolve'
+  ],
+
+  function (Resolve) {
+    var unsafe = function (name, scope) {
+      return Resolve.resolve(name, scope);
+    };
+
+    var getOrDie = function (name, scope) {
+      var actual = unsafe(name, scope);
+
+      if (actual === undefined) throw name + ' not available on this browser';
+      return actual;
+    };
+
+    return {
+      getOrDie: getOrDie
+    };
+  }
+);
+define(
+  'ephox.sand.api.URL',
+
+  [
+    'ephox.sand.util.Global'
+  ],
+
+  function (Global) {
+    /*
+     * IE10 and above per
+     * https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL
+     *
+     * Also Safari 6.1+
+     * Safari 6.0 has 'webkitURL' instead, but doesn't support flexbox so we
+     * aren't supporting it anyway
+     */
+    var url = function () {
+      return Global.getOrDie('URL');
+    };
+
+    var createObjectURL = function (blob) {
+      return url().createObjectURL(blob);
+    };
+
+    var revokeObjectURL = function (u) {
+      url().revokeObjectURL(u);
+    };
+
+    return {
+      createObjectURL: createObjectURL,
+      revokeObjectURL: revokeObjectURL
+    };
+  }
+);
 defineGlobal("global!document", document);
 defineGlobal("global!Math", Math);
 defineGlobal("global!RegExp", RegExp);
@@ -198,6 +306,26 @@ define(
  */
 
 define(
+  'tinymce.core.util.Tools',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Tools');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
   'tinymce.core.util.XHR',
   [
     'global!tinymce.util.Tools.resolve'
@@ -207,6 +335,84 @@ define(
   }
 );
 
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.image.api.Settings',
+  [
+  ],
+  function () {
+    var hasDimensions = function (editor) {
+      return editor.getParam('image_dimensions', true);
+    };
+
+    var hasAdvTab = function (editor) {
+      return editor.getParam('image_advtab', false);
+    };
+
+    var getPrependUrl = function (editor) {
+      return editor.getParam('image_prepend_url', '');
+    };
+
+    var getClassList = function (editor) {
+      return editor.getParam('image_class_list');
+    };
+
+    var hasDescription = function (editor) {
+      return editor.getParam('image_description', true);
+    };
+
+    var hasImageTitle = function (editor) {
+      return editor.getParam('image_title', false);
+    };
+
+    var hasImageCaption = function (editor) {
+      return editor.getParam('image_caption', false);
+    };
+
+    var getImageList = function (editor) {
+      return editor.getParam('image_list', false);
+    };
+
+    return {
+      hasDimensions: hasDimensions,
+      hasAdvTab: hasAdvTab,
+      getPrependUrl: getPrependUrl,
+      getClassList: getClassList,
+      hasDescription: hasDescription,
+      hasImageTitle: hasImageTitle,
+      hasImageCaption: hasImageCaption,
+      getImageList: getImageList
+    };
+  }
+);
+define(
+  'ephox.sand.api.XMLHttpRequest',
+
+  [
+    'ephox.sand.util.Global'
+  ],
+
+  function (Global) {
+    /*
+     * IE8 and above per
+     * https://developer.mozilla.org/en/docs/XMLHttpRequest
+     */
+    return function () {
+      var f = Global.getOrDie('XMLHttpRequest');
+      return new f();
+    };
+  }
+);
+defineGlobal("global!window", window);
 /**
  * ResolveGlobal.js
  *
@@ -240,30 +446,29 @@ define(
 /**
  * This is basically cut down version of tinymce.core.file.Uploader, which we could use directly
  * if it wasn't marked as private.
- *
- * @class tinymce.image.core.Uploader
- * @private
  */
 define(
   'tinymce.plugins.image.core.Uploader',
   [
+    'ephox.sand.api.XMLHttpRequest',
+    'global!document',
+    'global!window',
     'tinymce.core.util.Promise',
-    'tinymce.core.util.Tools',
-    'global!document'
+    'tinymce.core.util.Tools'
   ],
-  function (Promise, Tools, document) {
-    return function (settings) {
-      var noop = function () {};
+  function (XMLHttpRequest, document, window, Promise, Tools) {
+    var noop = function () {};
 
-      function pathJoin(path1, path2) {
-        if (path1) {
-          return path1.replace(/\/$/, '') + '/' + path2.replace(/^\//, '');
-        }
-
-        return path2;
+    var pathJoin = function (path1, path2) {
+      if (path1) {
+        return path1.replace(/\/$/, '') + '/' + path2.replace(/^\//, '');
       }
 
-      function defaultHandler(blobInfo, success, failure, progress) {
+      return path2;
+    };
+
+    return function (settings) {
+      var defaultHandler = function (blobInfo, success, failure, progress) {
         var xhr, formData;
 
         xhr = new XMLHttpRequest();
@@ -275,34 +480,34 @@ define(
         };
 
         xhr.onerror = function () {
-          failure("Image upload failed due to a XHR Transport error. Code: " + xhr.status);
+          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
         };
 
         xhr.onload = function () {
           var json;
 
           if (xhr.status < 200 || xhr.status >= 300) {
-            failure("HTTP Error: " + xhr.status);
+            failure('HTTP Error: ' + xhr.status);
             return;
           }
 
           json = JSON.parse(xhr.responseText);
 
-          if (!json || typeof json.location != "string") {
-            failure("Invalid JSON: " + xhr.responseText);
+          if (!json || typeof json.location !== 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
             return;
           }
 
           success(pathJoin(settings.basePath, json.location));
         };
 
-        formData = new FormData();
+        formData = new window.FormData();
         formData.append('file', blobInfo.blob(), blobInfo.filename());
 
         xhr.send(formData);
-      }
+      };
 
-      function uploadBlob(blobInfo, handler) {
+      var uploadBlob = function (blobInfo, handler) {
         return new Promise(function (resolve, reject) {
           try {
             handler(blobInfo, resolve, reject, noop);
@@ -310,15 +515,15 @@ define(
             reject(ex.message);
           }
         });
-      }
+      };
 
-      function isDefaultHandler(handler) {
+      var isDefaultHandler = function (handler) {
         return handler === defaultHandler;
-      }
+      };
 
-      function upload(blobInfo) {
-        return (!settings.url && isDefaultHandler(settings.handler)) ? Promise.reject("Upload url missng from the settings.") : uploadBlob(blobInfo, settings.handler);
-      }
+      var upload = function (blobInfo) {
+        return (!settings.url && isDefaultHandler(settings.handler)) ? Promise.reject('Upload url missng from the settings.') : uploadBlob(blobInfo, settings.handler);
+      };
 
       settings = Tools.extend({
         credentials: false,
@@ -483,6 +688,7 @@ define(
 define(
   'tinymce.plugins.image.ui.Dialog',
   [
+    'ephox.sand.api.URL',
     'global!document',
     'global!Math',
     'global!RegExp',
@@ -491,23 +697,23 @@ define(
     'tinymce.core.util.JSON',
     'tinymce.core.util.Tools',
     'tinymce.core.util.XHR',
+    'tinymce.plugins.image.api.Settings',
     'tinymce.plugins.image.core.Uploader',
     'tinymce.plugins.image.core.Utils'
   ],
-  function (document, Math, RegExp, Env, Factory, JSON, Tools, XHR, Uploader, Utils) {
-
+  function (URL, document, Math, RegExp, Env, Factory, JSON, Tools, XHR, Settings, Uploader, Utils) {
     return function (editor) {
       function createImageList(callback) {
-        var imageList = editor.settings.image_list;
+        var imageList = Settings.getImageList(editor);
 
-        if (typeof imageList == "string") {
+        if (typeof imageList === "string") {
           XHR.send({
             url: imageList,
             success: function (text) {
               callback(JSON.parse(text));
             }
           });
-        } else if (typeof imageList == "function") {
+        } else if (typeof imageList === "function") {
           imageList(callback);
         } else {
           callback(imageList);
@@ -516,8 +722,7 @@ define(
 
       function showDialog(imageList) {
         var win, data = {}, imgElm, figureElm, dom = editor.dom, settings = editor.settings;
-        var width, height, imageListCtrl, classListCtrl, imageDimensions = settings.image_dimensions !== false;
-
+        var width, height, imageListCtrl, classListCtrl, imageDimensions = Settings.hasDimensions(editor);
 
         function onFileInput() {
           var Throbber = Factory.get('Throbber');
@@ -576,7 +781,7 @@ define(
           newHeight = heightCtrl.value();
 
           if (win.find('#constrain')[0].checked() && width && height && newWidth && newHeight) {
-            if (width != newWidth) {
+            if (width !== newWidth) {
               newHeight = Math.round((newWidth / width) * newHeight);
 
               if (!isNaN(newHeight)) {
@@ -596,7 +801,7 @@ define(
         }
 
         function updateStyle() {
-          if (!editor.settings.image_advtab) {
+          if (!Settings.hasAdvTab(editor)) {
             return;
           }
 
@@ -619,7 +824,7 @@ define(
         }
 
         function updateVSpaceHSpaceBorder() {
-          if (!editor.settings.image_advtab) {
+          if (!Settings.hasAdvTab(editor)) {
             return;
           }
 
@@ -804,7 +1009,7 @@ define(
             srcURL = editor.convertURL(this.value(), 'src');
 
             // Pattern test the src url and make sure we haven't already prepended the url
-            prependURL = editor.settings.image_prepend_url;
+            prependURL = Settings.getPrependUrl(editor);
             absoluteURLPattern = new RegExp('^(?:[a-z]+:)?//', 'i');
             if (prependURL && !absoluteURLPattern.test(srcURL) && srcURL.substring(0, prependURL.length) !== prependURL) {
               srcURL = prependURL + srcURL;
@@ -835,7 +1040,7 @@ define(
         }
 
         if (imgElm &&
-          (imgElm.nodeName != 'IMG' ||
+          (imgElm.nodeName !== 'IMG' ||
             imgElm.getAttribute('data-mce-object') ||
             imgElm.getAttribute('data-mce-placeholder'))) {
           imgElm = null;
@@ -871,7 +1076,7 @@ define(
             onselect: function (e) {
               var altCtrl = win.find('#alt');
 
-              if (!altCtrl.value() || (e.lastControl && altCtrl.value() == e.lastControl.text())) {
+              if (!altCtrl.value() || (e.lastControl && altCtrl.value() === e.lastControl.text())) {
                 altCtrl.value(e.control.text());
               }
 
@@ -884,13 +1089,13 @@ define(
           };
         }
 
-        if (editor.settings.image_class_list) {
+        if (Settings.getClassList(editor)) {
           classListCtrl = {
             name: 'class',
             type: 'listbox',
             label: 'Class',
             values: Utils.buildListItems(
-              editor.settings.image_class_list,
+              Settings.getClassList(editor),
               function (item) {
                 if (item.value) {
                   item.textStyle = function () {
@@ -916,11 +1121,11 @@ define(
           imageListCtrl
         ];
 
-        if (editor.settings.image_description !== false) {
+        if (Settings.hasDescription(editor)) {
           generalFormItems.push({ name: 'alt', type: 'textbox', label: 'Image description' });
         }
 
-        if (editor.settings.image_title) {
+        if (Settings.hasImageTitle(editor)) {
           generalFormItems.push({ name: 'title', type: 'textbox', label: 'Image Title' });
         }
 
@@ -943,11 +1148,11 @@ define(
 
         generalFormItems.push(classListCtrl);
 
-        if (editor.settings.image_caption && Env.ceFalse) {
+        if (Settings.hasImageCaption(editor)) {
           generalFormItems.push({ name: 'caption', type: 'checkbox', label: 'Caption' });
         }
 
-        if (editor.settings.image_advtab || editor.settings.images_upload_url) {
+        if (Settings.hasAdvTab(editor) || editor.settings.images_upload_url) {
           var body = [
             {
               title: 'General',
@@ -956,7 +1161,7 @@ define(
             }
           ];
 
-          if (editor.settings.image_advtab) {
+          if (Settings.hasAdvTab(editor)) {
             // Parse styles from img
             if (imgElm) {
               if (imgElm.style.marginLeft && imgElm.style.marginRight && imgElm.style.marginLeft === imgElm.style.marginRight) {
@@ -1079,7 +1284,7 @@ define(
 );
 
 /**
- * Plugin.js
+ * Commands.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -1088,52 +1293,91 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contains all core logic for the image plugin.
- *
- * @class tinymce.image.Plugin
- * @private
- */
 define(
-  'tinymce.plugins.image.Plugin',
+  'tinymce.plugins.image.api.Commands',
   [
-    'tinymce.core.PluginManager',
-    'tinymce.core.util.Tools',
     'tinymce.plugins.image.ui.Dialog'
   ],
-  function (PluginManager, Tools, Dialog) {
-    PluginManager.add('image', function (editor) {
+  function (Dialog) {
+    var register = function (editor) {
+      editor.addCommand('mceImage', Dialog(editor).open);
+    };
 
+    return {
+      register: register
+    };
+  }
+);
+/**
+ * FilterContent.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.image.core.FilterContent',
+  [
+    'tinymce.core.util.Tools'
+  ],
+  function (Tools) {
+    var hasImageClass = function (node) {
+      var className = node.attr('class');
+      return className && /\bimage\b/.test(className);
+    };
+
+    var toggleContentEditableState = function (state) {
+      return function (nodes) {
+        var i = nodes.length, node;
+
+        var toggleContentEditable = function (node) {
+          node.attr('contenteditable', state ? 'true' : null);
+        };
+
+        while (i--) {
+          node = nodes[i];
+
+          if (hasImageClass(node)) {
+            node.attr('contenteditable', state ? 'false' : null);
+            Tools.each(node.getAll('figcaption'), toggleContentEditable);
+            Tools.each(node.getAll('img'), toggleContentEditable);
+          }
+        }
+      };
+    };
+
+    var setup = function (editor) {
       editor.on('preInit', function () {
-        function hasImageClass(node) {
-          var className = node.attr('class');
-          return className && /\bimage\b/.test(className);
-        }
-
-        function toggleContentEditableState(state) {
-          return function (nodes) {
-            var i = nodes.length, node;
-
-            function toggleContentEditable(node) {
-              node.attr('contenteditable', state ? 'true' : null);
-            }
-
-            while (i--) {
-              node = nodes[i];
-
-              if (hasImageClass(node)) {
-                node.attr('contenteditable', state ? 'false' : null);
-                Tools.each(node.getAll('figcaption'), toggleContentEditable);
-                Tools.each(node.getAll('img'), toggleContentEditable);
-              }
-            }
-          };
-        }
-
         editor.parser.addNodeFilter('figure', toggleContentEditableState(true));
         editor.serializer.addNodeFilter('figure', toggleContentEditableState(false));
       });
+    };
 
+    return {
+      setup: setup
+    };
+  }
+);
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.image.ui.Buttons',
+  [
+    'tinymce.plugins.image.ui.Dialog'
+  ],
+  function (Dialog) {
+    var register = function (editor) {
       editor.addButton('image', {
         icon: 'image',
         tooltip: 'Insert/edit image',
@@ -1148,8 +1392,36 @@ define(
         context: 'insert',
         prependToContext: true
       });
+    };
 
-      editor.addCommand('mceImage', Dialog(editor).open);
+    return {
+      register: register
+    };
+  }
+);
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.image.Plugin',
+  [
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.image.api.Commands',
+    'tinymce.plugins.image.core.FilterContent',
+    'tinymce.plugins.image.ui.Buttons'
+  ],
+  function (PluginManager, Commands, FilterContent, Buttons) {
+    PluginManager.add('image', function (editor) {
+      FilterContent.setup(editor);
+      Buttons.register(editor);
+      Commands.register(editor);
     });
 
     return function () { };

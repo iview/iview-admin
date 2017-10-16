@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.table.Plugin","tinymce.core.dom.TreeWalker","tinymce.core.Env","tinymce.core.PluginManager","tinymce.core.util.Tools","tinymce.core.util.VK","tinymce.plugins.table.model.TableGrid","tinymce.plugins.table.selection.CellSelection","tinymce.plugins.table.ui.Dialogs","tinymce.plugins.table.ui.ResizeBars","tinymce.plugins.table.util.Utils","tinymce.plugins.table.util.Quirks","global!tinymce.util.Tools.resolve","tinymce.plugins.table.model.SplitCols","tinymce.core.util.Delay"]
+["tinymce.plugins.table.Plugin","tinymce.core.dom.TreeWalker","tinymce.core.Env","tinymce.core.PluginManager","tinymce.core.util.Tools","tinymce.core.util.VK","tinymce.plugins.table.model.TableGrid","tinymce.plugins.table.selection.CellSelection","tinymce.plugins.table.ui.Dialogs","tinymce.plugins.table.ui.ResizeBars","tinymce.plugins.table.util.Utils","tinymce.plugins.table.util.Quirks","global!tinymce.util.Tools.resolve","tinymce.plugins.table.model.SplitCols","global!clearTimeout","global!document","global!setTimeout","tinymce.core.util.Delay"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -2595,6 +2595,9 @@ define(
   }
 );
 
+defineGlobal("global!clearTimeout", clearTimeout);
+defineGlobal("global!document", document);
+defineGlobal("global!setTimeout", setTimeout);
 /**
  * ResizeBars.js
  *
@@ -2615,10 +2618,13 @@ define(
 define(
   'tinymce.plugins.table.ui.ResizeBars',
   [
+    'global!clearTimeout',
+    'global!document',
+    'global!setTimeout',
     'tinymce.core.util.Tools',
     'tinymce.core.util.VK'
   ],
-  function (Tools, VK) {
+  function (clearTimeout, document, setTimeout, Tools, VK) {
     var hoverTable;
 
     return function (editor) {

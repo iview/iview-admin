@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.help.Plugin","tinymce.core.PluginManager","tinymce.plugins.help.ui.Dialog","global!tinymce.util.Tools.resolve","tinymce.core.EditorManager","tinymce.plugins.help.ui.KeyboardShortcutsTab","tinymce.plugins.help.ui.PluginsTab","tinymce.plugins.help.ui.ButtonsRow","ephox.katamari.api.Arr","tinymce.core.util.I18n","tinymce.plugins.help.data.KeyboardShortcuts","ephox.katamari.api.Fun","ephox.katamari.api.Obj","ephox.katamari.api.Strings","tinymce.plugins.help.data.PluginUrls","ephox.katamari.api.Option","global!Array","global!Error","global!String","tinymce.core.Env","global!Object","ephox.katamari.str.StrAppend","ephox.katamari.str.StringParts"]
+["tinymce.plugins.help.Plugin","tinymce.core.PluginManager","tinymce.plugins.help.api.Commands","tinymce.plugins.help.ui.Buttons","tinymce.plugins.help.ui.Dialog","global!tinymce.util.Tools.resolve","tinymce.core.EditorManager","tinymce.plugins.help.ui.KeyboardShortcutsTab","tinymce.plugins.help.ui.PluginsTab","tinymce.plugins.help.ui.ButtonsRow","ephox.katamari.api.Arr","tinymce.core.util.I18n","tinymce.plugins.help.data.KeyboardShortcuts","ephox.katamari.api.Fun","ephox.katamari.api.Obj","ephox.katamari.api.Strings","tinymce.plugins.help.data.PluginUrls","ephox.katamari.api.Option","global!Array","global!Error","global!String","tinymce.core.Env","global!Object","ephox.katamari.str.StrAppend","ephox.katamari.str.StringParts"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -669,6 +669,14 @@ define(
       return copy;
     };
 
+    var head = function (xs) {
+      return xs.length === 0 ? Option.none() : Option.some(xs[0]);
+    };
+
+    var last = function (xs) {
+      return xs.length === 0 ? Option.none() : Option.some(xs[xs.length - 1]);
+    };
+
     return {
       map: map,
       each: each,
@@ -693,7 +701,9 @@ define(
       mapToObject: mapToObject,
       pure: pure,
       sort: sort,
-      range: range
+      range: range,
+      head: head,
+      last: last
     };
   }
 );
@@ -737,6 +747,16 @@ define(
   }
 );
 
+/**
+ * KeyboardShortcuts.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
 define(
   'tinymce.plugins.help.data.KeyboardShortcuts',
   [
@@ -778,6 +798,16 @@ define(
       shortcuts: shortcuts
     };
   });
+
+/**
+ * KeyboardShortcutsTab.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
 
 define(
   'tinymce.plugins.help.ui.KeyboardShortcutsTab',
@@ -1129,6 +1159,16 @@ define(
   }
 );
 
+/**
+ * PluginUrls.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
 define(
   'tinymce.plugins.help.data.PluginUrls',
   [
@@ -1186,8 +1226,18 @@ define(
     };
   });
 
+/**
+ * PluginsTab.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
 define(
-'tinymce.plugins.help.ui.PluginsTab',
+  'tinymce.plugins.help.ui.PluginsTab',
   [
     'ephox.katamari.api.Arr',
     'ephox.katamari.api.Fun',
@@ -1197,87 +1247,98 @@ define(
     'tinymce.core.util.I18n',
     'tinymce.plugins.help.data.PluginUrls'
   ],
-function (Arr, Fun, Obj, Strings, tinymce, I18n, PluginUrls) {
-  var makeLink = Fun.curry(Strings.supplant, '<a href="${url}" target="_blank" rel="noopener">${name}</a>');
+  function (Arr, Fun, Obj, Strings, tinymce, I18n, PluginUrls) {
+    var makeLink = Fun.curry(Strings.supplant, '<a href="${url}" target="_blank" rel="noopener">${name}</a>');
 
-  var maybeUrlize = function (editor, key) {
-    return Arr.find(PluginUrls.urls, function (x) {
-      return x.key === key;
-    }).fold(function () {
-      var getMetadata = editor.plugins[key].getMetadata;
-      return typeof getMetadata === 'function' ? makeLink(getMetadata()) : key;
-    }, function (x) {
-      return makeLink({ name: x.name, url: 'https://www.tinymce.com/docs/plugins/' + x.key });
-    });
-  };
-
-  var getPluginKeys = function (editor) {
-    var keys = Obj.keys(editor.plugins);
-    return editor.settings.forced_plugins === undefined ?
-      keys :
-      Arr.filter(keys, Fun.not(Fun.curry(Arr.contains, editor.settings.forced_plugins)));
-  };
-
-  var pluginLister = function (editor) {
-    var pluginKeys = getPluginKeys(editor);
-    var pluginLis = Arr.map(pluginKeys, function (key) {
-      return '<li>' + maybeUrlize(editor, key) + '</li>';
-    });
-    var count = pluginLis.length;
-    var pluginsString = pluginLis.join('');
-
-    return '<p><b>' + I18n.translate(['Plugins installed ({0}):', count ]) + '</b></p>' +
-            '<ul>' + pluginsString + '</ul>';
-  };
-
-  var installedPlugins = function (editor) {
-    return {
-      type: 'container',
-      html: '<div style="overflow-y: auto; overflow-x: hidden; max-height: 230px; height: 230px;" data-mce-tabstop="1" tabindex="-1">' +
-              pluginLister(editor) +
-            '</div>',
-      flex: 1
+    var maybeUrlize = function (editor, key) {
+      return Arr.find(PluginUrls.urls, function (x) {
+        return x.key === key;
+      }).fold(function () {
+        var getMetadata = editor.plugins[key].getMetadata;
+        return typeof getMetadata === 'function' ? makeLink(getMetadata()) : key;
+      }, function (x) {
+        return makeLink({ name: x.name, url: 'https://www.tinymce.com/docs/plugins/' + x.key });
+      });
     };
-  };
 
-  var availablePlugins = function () {
-    return {
-      type: 'container',
-      html: '<div style="padding: 10px; background: #e3e7f4; height: 100%;" data-mce-tabstop="1" tabindex="-1">' +
-              '<p><b>' + I18n.translate('Premium plugins:') + '</b></p>' +
-              '<ul>' +
-                '<li>PowerPaste</li>' +
-                '<li>Spell Checker Pro</li>' +
-                '<li>Accessibility Checker</li>' +
-                '<li>Advanced Code Editor</li>' +
-                '<li>Enhanced Media Embed</li>' +
-                '<li>Link Checker</li>' +
-              '</ul><br />' +
-              '<p style="float: right;"><a href="https://www.tinymce.com/pricing/" target="_blank">' + I18n.translate('Learn more...') + '</a></p>' +
-            '</div>',
-      flex: 1
+    var getPluginKeys = function (editor) {
+      var keys = Obj.keys(editor.plugins);
+      return editor.settings.forced_plugins === undefined ?
+        keys :
+        Arr.filter(keys, Fun.not(Fun.curry(Arr.contains, editor.settings.forced_plugins)));
     };
-  };
 
-  var makeTab = function (editor) {
-    return {
-      title: 'Plugins',
-      type: 'container',
-      style: 'overflow-y: auto; overflow-x: hidden;',
-      layout: 'flex',
-      padding: 10,
-      spacing: 10,
-      items: [
-        installedPlugins(editor),
-        availablePlugins()
-      ]
+    var pluginLister = function (editor) {
+      var pluginKeys = getPluginKeys(editor);
+      var pluginLis = Arr.map(pluginKeys, function (key) {
+        return '<li>' + maybeUrlize(editor, key) + '</li>';
+      });
+      var count = pluginLis.length;
+      var pluginsString = pluginLis.join('');
+
+      return '<p><b>' + I18n.translate(['Plugins installed ({0}):', count ]) + '</b></p>' +
+              '<ul>' + pluginsString + '</ul>';
     };
-  };
 
-  return {
-    makeTab: makeTab
-  };
-});
+    var installedPlugins = function (editor) {
+      return {
+        type: 'container',
+        html: '<div style="overflow-y: auto; overflow-x: hidden; max-height: 230px; height: 230px;" data-mce-tabstop="1" tabindex="-1">' +
+                pluginLister(editor) +
+              '</div>',
+        flex: 1
+      };
+    };
+
+    var availablePlugins = function () {
+      return {
+        type: 'container',
+        html: '<div style="padding: 10px; background: #e3e7f4; height: 100%;" data-mce-tabstop="1" tabindex="-1">' +
+                '<p><b>' + I18n.translate('Premium plugins:') + '</b></p>' +
+                '<ul>' +
+                  '<li>PowerPaste</li>' +
+                  '<li>Spell Checker Pro</li>' +
+                  '<li>Accessibility Checker</li>' +
+                  '<li>Advanced Code Editor</li>' +
+                  '<li>Enhanced Media Embed</li>' +
+                  '<li>Link Checker</li>' +
+                '</ul><br />' +
+                '<p style="float: right;"><a href="https://www.tinymce.com/pricing/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" target="_blank">' + I18n.translate('Learn more...') + '</a></p>' +
+              '</div>',
+        flex: 1
+      };
+    };
+
+    var makeTab = function (editor) {
+      return {
+        title: 'Plugins',
+        type: 'container',
+        style: 'overflow-y: auto; overflow-x: hidden;',
+        layout: 'flex',
+        padding: 10,
+        spacing: 10,
+        items: [
+          installedPlugins(editor),
+          availablePlugins()
+        ]
+      };
+    };
+
+    return {
+      makeTab: makeTab
+    };
+  }
+);
+
+/**
+ * ButtonsRow.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
 
 define(
   'tinymce.plugins.help.ui.ButtonsRow',
@@ -1292,7 +1353,7 @@ define(
 
     var makeRow = function () {
       var version = getVersion(EditorManager.majorVersion, EditorManager.minorVersion);
-      var changeLogLink = '<a href="https://www.tinymce.com/docs/changelog/" target="_blank">TinyMCE ' + version + '</a>';
+      var changeLogLink = '<a href="https://www.tinymce.com/docs/changelog/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" target="_blank">TinyMCE ' + version + '</a>';
 
       return [
         {
@@ -1318,6 +1379,16 @@ define(
   }
 );
 
+/**
+ * Dialog.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
 define(
   'tinymce.plugins.help.ui.Dialog',
   [
@@ -1327,7 +1398,7 @@ define(
     'tinymce.plugins.help.ui.ButtonsRow'
   ],
   function (EditorManager, KeyboardShortcutsTab, PluginsTab, ButtonsRow) {
-    var openDialog = function (editor, url) {
+    var open = function (editor, pluginUrl) {
       return function () {
         editor.windowManager.open({
           title: 'Help',
@@ -1335,48 +1406,110 @@ define(
           layout: 'flex',
           body: [
             KeyboardShortcutsTab.makeTab(),
-            PluginsTab.makeTab(editor, url)
+            PluginsTab.makeTab(editor, pluginUrl)
           ],
           buttons: ButtonsRow.makeRow(),
           onPostRender: function () {
             var title = this.getEl('title');
-            title.innerHTML = '<img src="' + url + '/img/logo.png" alt="TinyMCE Logo" style="width: 200px">';
+            title.innerHTML = '<img src="' + pluginUrl + '/img/logo.png" alt="TinyMCE Logo" style="display: inline-block; width: 200px; height: 50px">';
           }
         });
       };
     };
 
     return {
-      openDialog: openDialog
+      open: open
     };
   });
 
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
 define(
-  'tinymce.plugins.help.Plugin',
+  'tinymce.plugins.help.api.Commands',
   [
-    'tinymce.core.PluginManager',
     'tinymce.plugins.help.ui.Dialog'
   ],
-  function (PluginManager, Dialog) {
-    var Plugin = function (editor, url) {
+  function (Dialog) {
+    var register = function (editor, pluginUrl) {
+      editor.addCommand('mceHelp', Dialog.open(editor, pluginUrl));
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+
+
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.help.ui.Buttons',
+  [
+    'tinymce.plugins.help.ui.Dialog'
+  ],
+  function (Dialog) {
+    var register = function (editor, pluginUrl) {
       editor.addButton('help', {
         icon: 'help',
-        onclick: Dialog.openDialog(editor, url)
+        onclick: Dialog.open(editor, pluginUrl)
       });
 
       editor.addMenuItem('Help', {
         text: 'Help',
         icon: 'help',
-        context: 'view',
-        onclick: Dialog.openDialog(editor, url)
+        context: 'help',
+        onclick: Dialog.open(editor, pluginUrl)
       });
-
-      editor.addCommand('mceHelp', Dialog.openDialog(editor, url));
-
-      editor.shortcuts.add('Alt+0', 'Open help dialog', Dialog.openDialog(editor, url));
     };
 
-    PluginManager.add('help', Plugin);
+    return {
+      register: register
+    };
+  }
+);
+
+/**
+ * PLugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.help.Plugin',
+  [
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.help.api.Commands',
+    'tinymce.plugins.help.ui.Buttons',
+    'tinymce.plugins.help.ui.Dialog'
+  ],
+  function (PluginManager, Commands, Buttons, Dialog) {
+    PluginManager.add('help', function (editor, pluginUrl) {
+      Buttons.register(editor, pluginUrl);
+      Commands.register(editor, pluginUrl);
+      editor.shortcuts.add('Alt+0', 'Open help dialog', 'mceHelp');
+    });
 
     return function () {};
   }

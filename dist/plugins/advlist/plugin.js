@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.advlist.Plugin","tinymce.core.PluginManager","tinymce.core.util.Tools","global!tinymce.util.Tools.resolve"]
+["tinymce.plugins.advlist.Plugin","tinymce.core.PluginManager","tinymce.core.util.Tools","tinymce.plugins.advlist.api.Commands","tinymce.plugins.advlist.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.advlist.core.Actions","tinymce.plugins.advlist.api.Settings","tinymce.plugins.advlist.core.ListUtils","tinymce.plugins.advlist.ui.ListStyles"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -125,6 +125,252 @@ define(
 );
 
 /**
+ * Actions.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.advlist.core.Actions',
+  [
+  ],
+  function () {
+    var applyListFormat = function (editor, listName, styleValue) {
+      var cmd = listName === 'UL' ? 'InsertUnorderedList' : 'InsertOrderedList';
+      editor.execCommand(cmd, false, styleValue === false ? null : { 'list-style-type': styleValue });
+    };
+
+    return {
+      applyListFormat: applyListFormat
+    };
+  }
+);
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.advlist.api.Commands',
+  [
+    'tinymce.plugins.advlist.core.Actions'
+  ],
+  function (Actions) {
+    var register = function (editor) {
+      editor.addCommand('ApplyUnorderedListStyle', function (ui, value) {
+        Actions.applyListFormat(editor, 'UL', value['list-style-type']);
+      });
+
+      editor.addCommand('ApplyOrderedListStyle', function (ui, value) {
+        Actions.applyListFormat(editor, 'OL', value['list-style-type']);
+      });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.advlist.api.Settings',
+  [
+  ],
+  function () {
+    var getNumberStyles = function (editor) {
+      var styles = editor.getParam('advlist_number_styles', 'default,lower-alpha,lower-greek,lower-roman,upper-alpha,upper-roman');
+      return styles ? styles.split(/[ ,]/) : [];
+    };
+
+    var getBulletStyles = function (editor) {
+      var styles = editor.getParam('advlist_bullet_styles', 'default,circle,disc,square');
+      return styles ? styles.split(/[ ,]/) : [];
+    };
+
+    return {
+      getNumberStyles: getNumberStyles,
+      getBulletStyles: getBulletStyles
+    };
+  }
+);
+/**
+ * ListUtils.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.advlist.core.ListUtils',
+  [
+  ],
+  function () {
+    var isChildOfBody = function (editor, elm) {
+      return editor.$.contains(editor.getBody(), elm);
+    };
+
+    var isListNode = function (editor) {
+      return function (node) {
+        return node && (/^(OL|UL|DL)$/).test(node.nodeName) && isChildOfBody(editor, node);
+      };
+    };
+
+    var getSelectedStyleType = function (editor) {
+      var listElm = editor.dom.getParent(editor.selection.getNode(), 'ol,ul');
+      return editor.dom.getStyle(listElm, 'listStyleType') || '';
+    };
+
+    return {
+      isListNode: isListNode,
+      getSelectedStyleType: getSelectedStyleType
+    };
+  }
+);
+/**
+ * ListStyles.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.advlist.ui.ListStyles',
+  [
+    'tinymce.core.util.Tools'
+  ],
+  function (Tools) {
+    var styleValueToText = function (styleValue) {
+      return styleValue.replace(/\-/g, ' ').replace(/\b\w/g, function (chr) {
+        return chr.toUpperCase();
+      });
+    };
+
+    var toMenuItems = function (styles) {
+      return Tools.map(styles, function (styleValue) {
+        var text = styleValueToText(styleValue);
+        var data = styleValue === 'default' ? '' : styleValue;
+
+        return { text: text, data: data };
+      });
+    };
+
+    return {
+      toMenuItems: toMenuItems
+    };
+  }
+);
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.advlist.ui.Buttons',
+  [
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.advlist.api.Settings',
+    'tinymce.plugins.advlist.core.Actions',
+    'tinymce.plugins.advlist.core.ListUtils',
+    'tinymce.plugins.advlist.ui.ListStyles'
+  ],
+  function (Tools, Settings, Actions, ListUtils, ListStyles) {
+    var listState = function (editor, listName) {
+      return function (e) {
+        var ctrl = e.control;
+
+        editor.on('NodeChange', function (e) {
+          var lists = Tools.grep(e.parents, ListUtils.isListNode(editor));
+          ctrl.active(lists.length > 0 && lists[0].nodeName === listName);
+        });
+      };
+    };
+
+    var updateSelection = function (editor) {
+      return function (e) {
+        var listStyleType = ListUtils.getSelectedStyleType(editor);
+        e.control.items().each(function (ctrl) {
+          ctrl.active(ctrl.settings.data === listStyleType);
+        });
+      };
+    };
+
+    var addSplitButton = function (editor, id, tooltip, cmd, nodeName, styles) {
+      editor.addButton(id, {
+        type: 'splitbutton',
+        tooltip: tooltip,
+        menu: ListStyles.toMenuItems(styles),
+        onPostRender: listState(editor, nodeName),
+        onshow: updateSelection(editor),
+        onselect: function (e) {
+          Actions.applyListFormat(editor, nodeName, e.control.settings.data);
+        },
+        onclick: function () {
+          editor.execCommand(cmd);
+        }
+      });
+    };
+
+    var addButton = function (editor, id, tooltip, cmd, nodeName, styles) {
+      editor.addButton(id, {
+        type: 'button',
+        tooltip: tooltip,
+        onPostRender: listState(editor, nodeName),
+        onclick: function () {
+          editor.execCommand(cmd);
+        }
+      });
+    };
+
+    var addControl = function (editor, id, tooltip, cmd, nodeName, styles) {
+      if (styles.length > 0) {
+        addSplitButton(editor, id, tooltip, cmd, nodeName, styles);
+      } else {
+        addButton(editor, id, tooltip, cmd, nodeName, styles);
+      }
+    };
+
+    var register = function (editor) {
+      addControl(editor, 'numlist', 'Numbered list', 'InsertOrderedList', 'OL', Settings.getNumberStyles(editor));
+      addControl(editor, 'bullist', 'Bullet list', 'InsertUnorderedList', 'UL', Settings.getBulletStyles(editor));
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+/**
  * Plugin.js
  *
  * Released under LGPL License.
@@ -134,122 +380,28 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contains all core logic for the advlist plugin.
- *
- * @class tinymce.plugins.advlist.Plugin
- * @private
- */
 define(
   'tinymce.plugins.advlist.Plugin',
   [
     'tinymce.core.PluginManager',
-    'tinymce.core.util.Tools'
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.advlist.api.Commands',
+    'tinymce.plugins.advlist.ui.Buttons'
   ],
-  function (PluginManager, Tools) {
+  function (PluginManager, Tools, Commands, Buttons) {
     PluginManager.add('advlist', function (editor) {
-      var olMenuItems, ulMenuItems;
-
       var hasPlugin = function (editor, plugin) {
         var plugins = editor.settings.plugins ? editor.settings.plugins : '';
         return Tools.inArray(plugins.split(/[ ,]/), plugin) !== -1;
       };
 
-      function isChildOfBody(elm) {
-        return editor.$.contains(editor.getBody(), elm);
-      }
-
-      function isListNode(node) {
-        return node && (/^(OL|UL|DL)$/).test(node.nodeName) && isChildOfBody(node);
-      }
-
-      function buildMenuItems(listName, styleValues) {
-        var items = [];
-        if (styleValues) {
-          Tools.each(styleValues.split(/[ ,]/), function (styleValue) {
-            items.push({
-              text: styleValue.replace(/\-/g, ' ').replace(/\b\w/g, function (chr) {
-                return chr.toUpperCase();
-              }),
-              data: styleValue == 'default' ? '' : styleValue
-            });
-          });
-        }
-        return items;
-      }
-
-      olMenuItems = buildMenuItems('OL', editor.getParam(
-        "advlist_number_styles",
-        "default,lower-alpha,lower-greek,lower-roman,upper-alpha,upper-roman"
-      ));
-
-      ulMenuItems = buildMenuItems('UL', editor.getParam("advlist_bullet_styles", "default,circle,disc,square"));
-
-      function applyListFormat(listName, styleValue) {
-        var cmd = listName == 'UL' ? 'InsertUnorderedList' : 'InsertOrderedList';
-        editor.execCommand(cmd, false, styleValue === false ? null : { 'list-style-type': styleValue });
-      }
-
-      function updateSelection(e) {
-        var listStyleType = editor.dom.getStyle(editor.dom.getParent(editor.selection.getNode(), 'ol,ul'), 'listStyleType') || '';
-
-        e.control.items().each(function (ctrl) {
-          ctrl.active(ctrl.settings.data === listStyleType);
-        });
-      }
-
-      var listState = function (listName) {
-        return function () {
-          var self = this;
-
-          editor.on('NodeChange', function (e) {
-            var lists = Tools.grep(e.parents, isListNode);
-            self.active(lists.length > 0 && lists[0].nodeName === listName);
-          });
-        };
-      };
-
       if (hasPlugin(editor, "lists")) {
-        editor.addCommand('ApplyUnorderedListStyle', function (ui, value) {
-          applyListFormat('UL', value['list-style-type']);
-        });
-
-        editor.addCommand('ApplyOrderedListStyle', function (ui, value) {
-          applyListFormat('OL', value['list-style-type']);
-        });
-
-        editor.addButton('numlist', {
-          type: (olMenuItems.length > 0) ? 'splitbutton' : 'button',
-          tooltip: 'Numbered list',
-          menu: olMenuItems,
-          onPostRender: listState('OL'),
-          onshow: updateSelection,
-          onselect: function (e) {
-            applyListFormat('OL', e.control.settings.data);
-          },
-          onclick: function () {
-            editor.execCommand('InsertOrderedList');
-          }
-        });
-
-        editor.addButton('bullist', {
-          type: (ulMenuItems.length > 0) ? 'splitbutton' : 'button',
-          tooltip: 'Bullet list',
-          onPostRender: listState('UL'),
-          menu: ulMenuItems,
-          onshow: updateSelection,
-          onselect: function (e) {
-            applyListFormat('UL', e.control.settings.data);
-          },
-          onclick: function () {
-            editor.execCommand('InsertUnorderedList');
-          }
-        });
+        Buttons.register(editor);
+        Commands.register(editor);
       }
     });
 
     return function () { };
-
   }
 );
 dem('tinymce.plugins.advlist.Plugin')();

@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.tabfocus.Plugin","tinymce.core.PluginManager","tinymce.core.dom.DOMUtils","tinymce.core.util.Tools","tinymce.core.EditorManager","tinymce.core.util.Delay","tinymce.core.Env","global!tinymce.util.Tools.resolve"]
+["tinymce.plugins.tabfocus.Plugin","tinymce.core.PluginManager","tinymce.plugins.tabfocus.core.Keyboard","global!tinymce.util.Tools.resolve","global!window","tinymce.core.dom.DOMUtils","tinymce.core.EditorManager","tinymce.core.Env","tinymce.core.util.Delay","tinymce.core.util.Tools","tinymce.core.util.VK","tinymce.plugins.tabfocus.api.Settings"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -104,6 +104,7 @@ define(
   }
 );
 
+defineGlobal("global!window", window);
 /**
  * ResolveGlobal.js
  *
@@ -121,26 +122,6 @@ define(
   ],
   function (resolve) {
     return resolve('tinymce.dom.DOMUtils');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Tools',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Tools');
   }
 );
 
@@ -175,6 +156,26 @@ define(
  */
 
 define(
+  'tinymce.core.Env',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.Env');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
   'tinymce.core.util.Delay',
   [
     'global!tinymce.util.Tools.resolve'
@@ -195,17 +196,17 @@ define(
  */
 
 define(
-  'tinymce.core.Env',
+  'tinymce.core.util.Tools',
   [
     'global!tinymce.util.Tools.resolve'
   ],
   function (resolve) {
-    return resolve('tinymce.Env');
+    return resolve('tinymce.util.Tools');
   }
 );
 
 /**
- * Plugin.js
+ * ResolveGlobal.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -214,36 +215,81 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contains all core logic for the code plugin.
- *
- * @class tinymce.tabfocus.Plugin
- * @private
- */
 define(
-  'tinymce.plugins.tabfocus.Plugin',
+  'tinymce.core.util.VK',
   [
-    'tinymce.core.PluginManager',
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.core.util.Tools',
-    'tinymce.core.EditorManager',
-    'tinymce.core.util.Delay',
-    'tinymce.core.Env'
+    'global!tinymce.util.Tools.resolve'
   ],
-  function (PluginManager, DOMUtils, Tools, EditorManager, Delay, Env) {
-    PluginManager.add('tabfocus', function (editor) {
-      var DOM = DOMUtils.DOM;
+  function (resolve) {
+    return resolve('tinymce.util.VK');
+  }
+);
 
-      function tabCancel(e) {
-        if (e.keyCode === 9 && !e.ctrlKey && !e.altKey && !e.metaKey) {
-          e.preventDefault();
-        }
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.tabfocus.api.Settings',
+  [
+  ],
+  function () {
+    var getTabFocusElements = function (editor) {
+      return editor.getParam('tabfocus_elements', ':prev,:next');
+    };
+
+    var getTabFocus = function (editor) {
+      return editor.getParam('tab_focus', getTabFocusElements(editor));
+    };
+
+    return {
+      getTabFocus: getTabFocus
+    };
+  }
+);
+
+/**
+ * Keyboard.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.tabfocus.core.Keyboard',
+  [
+    'global!window',
+    'tinymce.core.dom.DOMUtils',
+    'tinymce.core.EditorManager',
+    'tinymce.core.Env',
+    'tinymce.core.util.Delay',
+    'tinymce.core.util.Tools',
+    'tinymce.core.util.VK',
+    'tinymce.plugins.tabfocus.api.Settings'
+  ],
+  function (window, DOMUtils, EditorManager, Env, Delay, Tools, VK, Settings) {
+    var DOM = DOMUtils.DOM;
+
+    var tabCancel = function (e) {
+      if (e.keyCode === VK.TAB && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        e.preventDefault();
       }
+    };
 
+    var setup = function (editor) {
       function tabHandler(e) {
         var x, el, v, i;
 
-        if (e.keyCode !== 9 || e.ctrlKey || e.altKey || e.metaKey || e.isDefaultPrevented()) {
+        if (e.keyCode !== VK.TAB || e.ctrlKey || e.altKey || e.metaKey || e.isDefaultPrevented()) {
           return;
         }
 
@@ -251,17 +297,17 @@ define(
           el = DOM.select(':input:enabled,*[tabindex]:not(iframe)');
 
           function canSelectRecursive(e) {
-            return e.nodeName === "BODY" || (e.type != 'hidden' &&
-              e.style.display != "none" &&
-              e.style.visibility != "hidden" && canSelectRecursive(e.parentNode));
+            return e.nodeName === "BODY" || (e.type !== 'hidden' &&
+              e.style.display !== "none" &&
+              e.style.visibility !== "hidden" && canSelectRecursive(e.parentNode));
           }
 
           function canSelect(el) {
-            return /INPUT|TEXTAREA|BUTTON/.test(el.tagName) && EditorManager.get(e.id) && el.tabIndex != -1 && canSelectRecursive(el);
+            return /INPUT|TEXTAREA|BUTTON/.test(el.tagName) && EditorManager.get(e.id) && el.tabIndex !== -1 && canSelectRecursive(el);
           }
 
           Tools.each(el, function (e, i) {
-            if (e.id == editor.id) {
+            if (e.id === editor.id) {
               x = i;
               return false;
             }
@@ -283,22 +329,22 @@ define(
           return null;
         }
 
-        v = Tools.explode(editor.getParam('tab_focus', editor.getParam('tabfocus_elements', ':prev,:next')));
+        v = Tools.explode(Settings.getTabFocus(editor));
 
-        if (v.length == 1) {
+        if (v.length === 1) {
           v[1] = v[0];
           v[0] = ':prev';
         }
 
         // Find element to focus
         if (e.shiftKey) {
-          if (v[0] == ':prev') {
+          if (v[0] === ':prev') {
             el = find(-1);
           } else {
             el = DOM.get(v[0]);
           }
         } else {
-          if (v[1] == ':next') {
+          if (v[1] === ':next') {
             el = find(1);
           } else {
             el = DOM.get(v[1]);
@@ -338,8 +384,33 @@ define(
           editor.on('keydown', tabHandler);
         }
       });
-    });
+    };
 
+    return {
+      setup: setup
+    };
+  }
+);
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.tabfocus.Plugin',
+  [
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.tabfocus.core.Keyboard'
+  ],
+  function (PluginManager, Keyboard) {
+    PluginManager.add('tabfocus', function (editor) {
+      Keyboard.setup(editor);
+    });
 
     return function () { };
   }

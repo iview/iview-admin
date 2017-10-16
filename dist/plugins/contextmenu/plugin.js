@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,14 +76,99 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.contextmenu.Plugin","tinymce.core.dom.DOMUtils","tinymce.core.Env","tinymce.core.PluginManager","tinymce.core.ui.Factory","tinymce.core.util.Tools","tinymce.plugins.contextmenu.RangePoint","global!tinymce.util.Tools.resolve","ephox.katamari.api.Arr","ephox.katamari.api.Option","global!Array","global!Error","global!String","ephox.katamari.api.Fun","global!Object"]
+["tinymce.plugins.contextmenu.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.contextmenu.api.Api","tinymce.plugins.contextmenu.core.Bind","global!tinymce.util.Tools.resolve","tinymce.core.dom.DOMUtils","tinymce.core.Env","tinymce.plugins.contextmenu.api.Settings","tinymce.plugins.contextmenu.core.RangePoint","tinymce.plugins.contextmenu.ui.ContextMenu","ephox.katamari.api.Arr","tinymce.core.ui.Factory","tinymce.core.util.Tools","ephox.katamari.api.Option","global!Array","global!Error","global!String","ephox.katamari.api.Fun","global!Object"]
 jsc*/
+define(
+  'ephox.katamari.api.Cell',
+
+  [
+  ],
+
+  function () {
+    var Cell = function (initial) {
+      var value = initial;
+
+      var get = function () {
+        return value;
+      };
+
+      var set = function (v) {
+        value = v;
+      };
+
+      var clone = function () {
+        return Cell(get());
+      };
+
+      return {
+        get: get,
+        set: set,
+        clone: clone
+      };
+    };
+
+    return Cell;
+  }
+);
+
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.PluginManager',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.PluginManager');
+  }
+);
+
+/**
+ * Api.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.contextmenu.api.Api',
+  [
+  ],
+  function () {
+    var get = function (visibleState) {
+      var isContextMenuVisible = function () {
+        return visibleState.get();
+      };
+
+      return {
+        isContextMenuVisible: isContextMenuVisible
+      };
+    };
+
+    return {
+      get: get
+    };
+  }
+);
+
+
 /**
  * ResolveGlobal.js
  *
@@ -125,7 +210,7 @@ define(
 );
 
 /**
- * ResolveGlobal.js
+ * Settings.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -135,55 +220,24 @@ define(
  */
 
 define(
-  'tinymce.core.PluginManager',
+  'tinymce.plugins.contextmenu.api.Settings',
   [
-    'global!tinymce.util.Tools.resolve'
   ],
-  function (resolve) {
-    return resolve('tinymce.PluginManager');
+  function () {
+    var shouldNeverUseNative = function (editor) {
+      return editor.settings.contextmenu_never_use_native;
+    };
+
+    var getContextMenu = function (editor) {
+      return editor.getParam('contextmenu', 'link openlink image inserttable | cell row column deletetable');
+    };
+
+    return {
+      shouldNeverUseNative: shouldNeverUseNative,
+      getContextMenu: getContextMenu
+    };
   }
 );
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.ui.Factory',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.ui.Factory');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Tools',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Tools');
-  }
-);
-
 defineGlobal("global!Array", Array);
 defineGlobal("global!Error", Error);
 define(
@@ -729,6 +783,14 @@ define(
       return copy;
     };
 
+    var head = function (xs) {
+      return xs.length === 0 ? Option.none() : Option.some(xs[0]);
+    };
+
+    var last = function (xs) {
+      return xs.length === 0 ? Option.none() : Option.some(xs[xs.length - 1]);
+    };
+
     return {
       map: map,
       each: each,
@@ -753,7 +815,9 @@ define(
       mapToObject: mapToObject,
       pure: pure,
       sort: sort,
-      range: range
+      range: range,
+      head: head,
+      last: last
     };
   }
 );
@@ -768,7 +832,7 @@ define(
  */
 
 define(
-  'tinymce.plugins.contextmenu.RangePoint',
+  'tinymce.plugins.contextmenu.core.RangePoint',
   [
     'ephox.katamari.api.Arr'
   ],
@@ -798,7 +862,7 @@ define(
   }
 );
 /**
- * Plugin.js
+ * ResolveGlobal.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -807,48 +871,152 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contains all core logic for the contextmenu plugin.
- *
- * @class tinymce.contextmenu.Plugin
- * @private
- */
 define(
-  'tinymce.plugins.contextmenu.Plugin',
+  'tinymce.core.ui.Factory',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.ui.Factory');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Tools',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Tools');
+  }
+);
+
+/**
+ * ContextMenu.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.contextmenu.ui.ContextMenu',
+  [
+    'tinymce.core.ui.Factory',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.contextmenu.api.Settings'
+  ],
+  function (Factory, Tools, Settings) {
+    var renderMenu = function (editor, visibleState) {
+      var menu, contextmenu, items = [];
+
+      contextmenu = Settings.getContextMenu(editor);
+      Tools.each(contextmenu.split(/[ ,]/), function (name) {
+        var item = editor.menuItems[name];
+
+        if (name === '|') {
+          item = { text: name };
+        }
+
+        if (item) {
+          item.shortcut = ''; // Hide shortcuts
+          items.push(item);
+        }
+      });
+
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].text === '|') {
+          if (i === 0 || i === items.length - 1) {
+            items.splice(i, 1);
+          }
+        }
+      }
+
+      menu = Factory.create('menu', {
+        items: items,
+        context: 'contextmenu',
+        classes: 'contextmenu'
+      }).renderTo();
+
+      menu.on('hide', function (e) {
+        if (e.control === this) {
+          visibleState.set(false);
+        }
+      });
+
+      editor.on('remove', function () {
+        menu.remove();
+        menu = null;
+      });
+
+      return menu;
+    };
+
+    var show = function (editor, x, y, visibleState, menu) {
+      if (menu.get() === null) {
+        menu.set(renderMenu(editor, visibleState));
+      } else {
+        menu.get().show();
+      }
+
+      menu.get().moveTo(x, y);
+      visibleState.set(true);
+    };
+
+    return {
+      show: show
+    };
+  }
+);
+/**
+ * Bind.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.contextmenu.core.Bind',
   [
     'tinymce.core.dom.DOMUtils',
     'tinymce.core.Env',
-    'tinymce.core.PluginManager',
-    'tinymce.core.ui.Factory',
-    'tinymce.core.util.Tools',
-    'tinymce.plugins.contextmenu.RangePoint'
+    'tinymce.plugins.contextmenu.api.Settings',
+    'tinymce.plugins.contextmenu.core.RangePoint',
+    'tinymce.plugins.contextmenu.ui.ContextMenu'
   ],
-  function (DOMUtils, Env, PluginManager, Factory, Tools, RangePoint) {
-    var DOM = DOMUtils.DOM;
+  function (DOMUtils, Env, Settings, RangePoint, ContextMenu) {
+    var isNativeOverrideKeyEvent = function (editor, e) {
+      return e.ctrlKey && !Settings.shouldNeverUseNative(editor);
+    };
 
-    PluginManager.add('contextmenu', function (editor) {
-      var menu, visibleState, contextmenuNeverUseNative = editor.settings.contextmenu_never_use_native;
+    var isMacWebKit = function () {
+      return Env.mac && Env.webkit;
+    };
 
-      var isNativeOverrideKeyEvent = function (e) {
-        return e.ctrlKey && !contextmenuNeverUseNative;
-      };
+    var isImage = function (elm) {
+      return elm && elm.nodeName === 'IMG';
+    };
 
-      var isMacWebKit = function () {
-        return Env.mac && Env.webkit;
-      };
+    var isEventOnImageOutsideRange = function (evt, range) {
+      return isImage(evt.target) && RangePoint.isXYWithinRange(evt.clientX, evt.clientY, range) === false;
+    };
 
-      var isContextMenuVisible = function () {
-        return visibleState === true;
-      };
-
-      var isImage = function (elm) {
-        return elm && elm.nodeName === 'IMG';
-      };
-
-      var isEventOnImageOutsideRange = function (evt, range) {
-        return isImage(evt.target) && RangePoint.isXYWithinRange(evt.clientX, evt.clientY, range) === false;
-      };
-
+    var setup = function (editor, visibleState, menu) {
       /**
        * This takes care of a os x native issue where it expands the selection
        * to the word at the caret position to do "lookups". Since we are overriding
@@ -856,7 +1024,7 @@ define(
        * normalized. Firefox on os x doesn't expand to the word when using the context menu.
        */
       editor.on('mousedown', function (e) {
-        if (isMacWebKit() && e.button === 2 && !isNativeOverrideKeyEvent(e) && editor.selection.isCollapsed()) {
+        if (isMacWebKit() && e.button === 2 && !isNativeOverrideKeyEvent(editor, e) && editor.selection.isCollapsed()) {
           editor.once('contextmenu', function (e2) {
             if (!isImage(e2.target)) {
               editor.selection.placeCaretAt(e2.clientX, e2.clientY);
@@ -866,9 +1034,15 @@ define(
       });
 
       editor.on('contextmenu', function (e) {
-        var contextmenu;
+        var x = e.pageX, y = e.pageY;
 
-        if (isNativeOverrideKeyEvent(e)) {
+        if (!editor.inline) {
+          var pos = DOMUtils.DOM.getPos(editor.getContentAreaContainer());
+          x = pos.x + e.clientX;
+          y = pos.y + e.clientY;
+        }
+
+        if (isNativeOverrideKeyEvent(editor, e)) {
           return;
         }
 
@@ -877,71 +1051,43 @@ define(
         }
 
         e.preventDefault();
-        contextmenu = editor.settings.contextmenu || 'link openlink image inserttable | cell row column deletetable';
 
-        // Render menu
-        if (!menu) {
-          var items = [];
-
-          Tools.each(contextmenu.split(/[ ,]/), function (name) {
-            var item = editor.menuItems[name];
-
-            if (name == '|') {
-              item = { text: name };
-            }
-
-            if (item) {
-              item.shortcut = ''; // Hide shortcuts
-              items.push(item);
-            }
-          });
-
-          for (var i = 0; i < items.length; i++) {
-            if (items[i].text == '|') {
-              if (i === 0 || i == items.length - 1) {
-                items.splice(i, 1);
-              }
-            }
-          }
-
-          menu = Factory.create('menu', {
-            items: items,
-            context: 'contextmenu',
-            classes: 'contextmenu'
-          }).renderTo();
-
-          menu.on('hide', function (e) {
-            if (e.control === this) {
-              visibleState = false;
-            }
-          });
-
-          editor.on('remove', function () {
-            menu.remove();
-            menu = null;
-          });
-
-        } else {
-          menu.show();
-        }
-
-        // Position menu
-        var pos = { x: e.pageX, y: e.pageY };
-
-        if (!editor.inline) {
-          pos = DOM.getPos(editor.getContentAreaContainer());
-          pos.x += e.clientX;
-          pos.y += e.clientY;
-        }
-
-        menu.moveTo(pos.x, pos.y);
-        visibleState = true;
+        ContextMenu.show(editor, x, y, visibleState, menu);
       });
+    };
 
-      return {
-        isContextMenuVisible: isContextMenuVisible
-      };
+    return {
+      setup: setup
+    };
+  }
+);
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.contextmenu.Plugin',
+  [
+    'ephox.katamari.api.Cell',
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.contextmenu.api.Api',
+    'tinymce.plugins.contextmenu.core.Bind'
+  ],
+  function (Cell, PluginManager, Api, Bind) {
+    PluginManager.add('contextmenu', function (editor) {
+      var menu = Cell(null), visibleState = Cell(false);
+
+      Bind.setup(editor, visibleState, menu);
+
+      return Api.get(visibleState);
     });
+
     return function () { };
   }
 );

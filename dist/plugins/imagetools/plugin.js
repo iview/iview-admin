@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,13 +76,87 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.imagetools.Plugin","ephox.imagetools.api.BlobConversions","ephox.imagetools.api.ImageTransformations","tinymce.core.Env","tinymce.core.PluginManager","tinymce.core.util.Delay","tinymce.core.util.Promise","tinymce.core.util.Tools","tinymce.core.util.URI","tinymce.plugins.imagetools.core.ImageSize","tinymce.plugins.imagetools.core.Proxy","tinymce.plugins.imagetools.ui.Dialog","ephox.imagetools.util.Conversions","ephox.imagetools.util.ImageResult","ephox.imagetools.transformations.Filters","ephox.imagetools.transformations.ImageTools","global!tinymce.util.Tools.resolve","tinymce.plugins.imagetools.core.Errors","tinymce.plugins.imagetools.core.Utils","global!Math","tinymce.core.dom.DOMUtils","tinymce.core.ui.Factory","tinymce.plugins.imagetools.core.UndoStack","tinymce.plugins.imagetools.ui.ImagePanel","ephox.imagetools.util.Promise","ephox.imagetools.util.Canvas","ephox.imagetools.util.Mime","ephox.imagetools.util.ImageSize","ephox.imagetools.transformations.ColorMatrix","ephox.imagetools.transformations.ImageResizerCanvas","ephox.katamari.api.Arr","ephox.katamari.api.Fun","tinymce.core.geom.Rect","tinymce.plugins.imagetools.ui.CropRect","ephox.katamari.api.Option","global!Array","global!Error","global!String","tinymce.core.dom.DomQuery","tinymce.core.util.Observable","tinymce.core.util.VK","global!Object"]
+["tinymce.plugins.imagetools.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.imagetools.api.Commands","tinymce.plugins.imagetools.core.UploadSelectedImage","tinymce.plugins.imagetools.ui.Buttons","tinymce.plugins.imagetools.ui.ContextToolbar","global!tinymce.util.Tools.resolve","tinymce.core.util.Tools","tinymce.plugins.imagetools.core.Actions","ephox.katamari.api.Fun","tinymce.plugins.imagetools.api.Settings","ephox.imagetools.api.BlobConversions","ephox.imagetools.api.ImageTransformations","global!Array","global!Error","ephox.sand.api.URL","global!clearTimeout","tinymce.core.util.Delay","tinymce.core.util.Promise","tinymce.core.util.URI","tinymce.plugins.imagetools.core.ImageSize","tinymce.plugins.imagetools.core.Proxy","tinymce.plugins.imagetools.ui.Dialog","ephox.imagetools.util.Conversions","ephox.imagetools.util.ImageResult","ephox.imagetools.transformations.Filters","ephox.imagetools.transformations.ImageTools","ephox.sand.util.Global","tinymce.plugins.imagetools.core.Errors","tinymce.plugins.imagetools.core.Utils","global!Math","global!setTimeout","tinymce.core.dom.DOMUtils","tinymce.core.ui.Factory","tinymce.plugins.imagetools.core.UndoStack","tinymce.plugins.imagetools.ui.ImagePanel","ephox.imagetools.util.Promise","ephox.imagetools.util.Canvas","ephox.imagetools.util.Mime","ephox.imagetools.util.ImageSize","ephox.imagetools.transformations.ColorMatrix","ephox.imagetools.transformations.ImageResizerCanvas","ephox.katamari.api.Resolve","ephox.katamari.api.Arr","ephox.sand.api.FileReader","ephox.sand.api.XMLHttpRequest","global!document","global!Image","tinymce.core.geom.Rect","tinymce.plugins.imagetools.core.LoadImage","tinymce.plugins.imagetools.ui.CropRect","ephox.katamari.api.Global","ephox.katamari.api.Option","global!String","tinymce.core.dom.DomQuery","tinymce.core.util.Observable","tinymce.core.util.VK","global!Object"]
 jsc*/
+define(
+  'ephox.katamari.api.Cell',
+
+  [
+  ],
+
+  function () {
+    var Cell = function (initial) {
+      var value = initial;
+
+      var get = function () {
+        return value;
+      };
+
+      var set = function (v) {
+        value = v;
+      };
+
+      var clone = function () {
+        return Cell(get());
+      };
+
+      return {
+        get: get,
+        set: set,
+        clone: clone
+      };
+    };
+
+    return Cell;
+  }
+);
+
+defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.PluginManager',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.PluginManager');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Tools',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Tools');
+  }
+);
+
 /* eslint-disable */
 /* jshint ignore:start */
 
@@ -1355,213 +1429,6 @@ define(
     };
   }
 );
-defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.Env',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.Env');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.PluginManager',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.PluginManager');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Delay',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Delay');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Promise',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Promise');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Tools',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Tools');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.URI',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.URI');
-  }
-);
-
-/**
- * ImageSize.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.imagetools.core.ImageSize',
-  [
-  ],
-  function () {
-    function getImageSize(img) {
-      var width, height;
-
-      function isPxValue(value) {
-        return /^[0-9\.]+px$/.test(value);
-      }
-
-      width = img.style.width;
-      height = img.style.height;
-      if (width || height) {
-        if (isPxValue(width) && isPxValue(height)) {
-          return {
-            w: parseInt(width, 10),
-            h: parseInt(height, 10)
-          };
-        }
-
-        return null;
-      }
-
-      width = img.width;
-      height = img.height;
-
-      if (width && height) {
-        return {
-          w: parseInt(width, 10),
-          h: parseInt(height, 10)
-        };
-      }
-
-      return null;
-    }
-
-    function setImageSize(img, size) {
-      var width, height;
-
-      if (size) {
-        width = img.style.width;
-        height = img.style.height;
-
-        if (width || height) {
-          img.style.width = size.w + 'px';
-          img.style.height = size.h + 'px';
-          img.removeAttribute('data-mce-style');
-        }
-
-        width = img.width;
-        height = img.height;
-
-        if (width || height) {
-          img.setAttribute('width', size.w);
-          img.setAttribute('height', size.h);
-        }
-      }
-    }
-
-    function getNaturalImageSize(img) {
-      return {
-        w: img.naturalWidth,
-        h: img.naturalHeight
-      };
-    }
-
-    return {
-      getImageSize: getImageSize,
-      setImageSize: setImageSize,
-      getNaturalImageSize: getNaturalImageSize
-    };
-  }
-);
-
 defineGlobal("global!Array", Array);
 defineGlobal("global!Error", Error);
 define(
@@ -1651,6 +1518,311 @@ define(
       call: call,
       never: never,
       always: always
+    };
+  }
+);
+
+define(
+  'ephox.katamari.api.Global',
+
+  [
+  ],
+
+  function () {
+    // Use window object as the global if it's available since CSP will block script evals
+    if (typeof window !== 'undefined') {
+      return window;
+    } else {
+      return Function('return this;')();
+    }
+  }
+);
+
+
+define(
+  'ephox.katamari.api.Resolve',
+
+  [
+    'ephox.katamari.api.Global'
+  ],
+
+  function (Global) {
+    /** path :: ([String], JsObj?) -> JsObj */
+    var path = function (parts, scope) {
+      var o = scope !== undefined ? scope : Global;
+      for (var i = 0; i < parts.length && o !== undefined && o !== null; ++i)
+        o = o[parts[i]];
+      return o;
+    };
+
+    /** resolve :: (String, JsObj?) -> JsObj */
+    var resolve = function (p, scope) {
+      var parts = p.split('.');
+      return path(parts, scope);
+    };
+
+    /** step :: (JsObj, String) -> JsObj */
+    var step = function (o, part) {
+      if (o[part] === undefined || o[part] === null)
+        o[part] = {};
+      return o[part];
+    };
+
+    /** forge :: ([String], JsObj?) -> JsObj */
+    var forge = function (parts, target) {
+      var o = target !== undefined ? target : Global;      
+      for (var i = 0; i < parts.length; ++i)
+        o = step(o, parts[i]);
+      return o;
+    };
+
+    /** namespace :: (String, JsObj?) -> JsObj */
+    var namespace = function (name, target) {
+      var parts = name.split('.');
+      return forge(parts, target);
+    };
+
+    return {
+      path: path,
+      resolve: resolve,
+      forge: forge,
+      namespace: namespace
+    };
+  }
+);
+
+
+define(
+  'ephox.sand.util.Global',
+
+  [
+    'ephox.katamari.api.Resolve'
+  ],
+
+  function (Resolve) {
+    var unsafe = function (name, scope) {
+      return Resolve.resolve(name, scope);
+    };
+
+    var getOrDie = function (name, scope) {
+      var actual = unsafe(name, scope);
+
+      if (actual === undefined) throw name + ' not available on this browser';
+      return actual;
+    };
+
+    return {
+      getOrDie: getOrDie
+    };
+  }
+);
+define(
+  'ephox.sand.api.URL',
+
+  [
+    'ephox.sand.util.Global'
+  ],
+
+  function (Global) {
+    /*
+     * IE10 and above per
+     * https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL
+     *
+     * Also Safari 6.1+
+     * Safari 6.0 has 'webkitURL' instead, but doesn't support flexbox so we
+     * aren't supporting it anyway
+     */
+    var url = function () {
+      return Global.getOrDie('URL');
+    };
+
+    var createObjectURL = function (blob) {
+      return url().createObjectURL(blob);
+    };
+
+    var revokeObjectURL = function (u) {
+      url().revokeObjectURL(u);
+    };
+
+    return {
+      createObjectURL: createObjectURL,
+      revokeObjectURL: revokeObjectURL
+    };
+  }
+);
+defineGlobal("global!clearTimeout", clearTimeout);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Delay',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Delay');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Promise',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Promise');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.URI',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.URI');
+  }
+);
+
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.api.Settings',
+  [
+  ],
+  function () {
+    var getToolbarItems = function (editor) {
+      return editor.getParam('imagetools_toolbar', 'rotateleft rotateright | flipv fliph | crop editimage imageoptions');
+    };
+
+    var getProxyUrl = function (editor) {
+      return editor.getParam('imagetools_proxy');
+    };
+
+    return {
+      getToolbarItems: getToolbarItems,
+      getProxyUrl: getProxyUrl
+    };
+  }
+);
+
+/**
+ * ImageSize.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.core.ImageSize',
+  [
+  ],
+  function () {
+    function getImageSize(img) {
+      var width, height;
+
+      function isPxValue(value) {
+        return /^[0-9\.]+px$/.test(value);
+      }
+
+      width = img.style.width;
+      height = img.style.height;
+      if (width || height) {
+        if (isPxValue(width) && isPxValue(height)) {
+          return {
+            w: parseInt(width, 10),
+            h: parseInt(height, 10)
+          };
+        }
+
+        return null;
+      }
+
+      width = img.width;
+      height = img.height;
+
+      if (width && height) {
+        return {
+          w: parseInt(width, 10),
+          h: parseInt(height, 10)
+        };
+      }
+
+      return null;
+    }
+
+    function setImageSize(img, size) {
+      var width, height;
+
+      if (size) {
+        width = img.style.width;
+        height = img.style.height;
+
+        if (width || height) {
+          img.style.width = size.w + 'px';
+          img.style.height = size.h + 'px';
+          img.removeAttribute('data-mce-style');
+        }
+
+        width = img.width;
+        height = img.height;
+
+        if (width || height) {
+          img.setAttribute('width', size.w);
+          img.setAttribute('height', size.h);
+        }
+      }
+    }
+
+    function getNaturalImageSize(img) {
+      return {
+        w: img.naturalWidth,
+        h: img.naturalHeight
+      };
+    }
+
+    return {
+      getImageSize: getImageSize,
+      setImageSize: setImageSize,
+      getNaturalImageSize: getNaturalImageSize
     };
   }
 );
@@ -2107,6 +2279,14 @@ define(
       return copy;
     };
 
+    var head = function (xs) {
+      return xs.length === 0 ? Option.none() : Option.some(xs[0]);
+    };
+
+    var last = function (xs) {
+      return xs.length === 0 ? Option.none() : Option.some(xs[xs.length - 1]);
+    };
+
     return {
       map: map,
       each: each,
@@ -2131,7 +2311,45 @@ define(
       mapToObject: mapToObject,
       pure: pure,
       sort: sort,
-      range: range
+      range: range,
+      head: head,
+      last: last
+    };
+  }
+);
+define(
+  'ephox.sand.api.FileReader',
+
+  [
+    'ephox.sand.util.Global'
+  ],
+
+  function (Global) {
+    /*
+     * IE10 and above per
+     * https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+     */
+    return function () {
+      var f = Global.getOrDie('FileReader');
+      return new f();
+    };
+  }
+);
+define(
+  'ephox.sand.api.XMLHttpRequest',
+
+  [
+    'ephox.sand.util.Global'
+  ],
+
+  function (Global) {
+    /*
+     * IE8 and above per
+     * https://developer.mozilla.org/en/docs/XMLHttpRequest
+     */
+    return function () {
+      var f = Global.getOrDie('XMLHttpRequest');
+      return new f();
     };
   }
 );
@@ -2148,10 +2366,12 @@ define(
 define(
   'tinymce.plugins.imagetools.core.Utils',
   [
+    'ephox.sand.api.FileReader',
+    'ephox.sand.api.XMLHttpRequest',
     'tinymce.core.util.Promise',
     'tinymce.core.util.Tools'
   ],
-  function (Promise, Tools) {
+  function (FileReader, XMLHttpRequest, Promise, Tools) {
     var isValue = function (obj) {
       return obj !== null && obj !== undefined;
     };
@@ -2369,6 +2589,7 @@ define(
 );
 
 defineGlobal("global!Math", Math);
+defineGlobal("global!setTimeout", setTimeout);
 /**
  * ResolveGlobal.js
  *
@@ -2456,7 +2677,7 @@ define(
       }
 
       function canRedo() {
-        return index != -1 && index < data.length - 1;
+        return index !== -1 && index < data.length - 1;
       }
 
       return {
@@ -2471,6 +2692,8 @@ define(
   }
 );
 
+defineGlobal("global!document", document);
+defineGlobal("global!Image", Image);
 /**
  * ResolveGlobal.js
  *
@@ -2488,6 +2711,43 @@ define(
   ],
   function (resolve) {
     return resolve('tinymce.geom.Rect');
+  }
+);
+
+/**
+ * LoadImage.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.core.LoadImage',
+  [
+    'tinymce.core.util.Promise'
+  ],
+  function (Promise) {
+    var loadImage = function (image) {
+      return new Promise(function (resolve) {
+        var loaded = function () {
+          image.removeEventListener('load', loaded);
+          resolve(image);
+        };
+
+        if (image.complete) {
+          resolve(image);
+        } else {
+          image.addEventListener('load', loaded);
+        }
+      });
+    };
+
+    return {
+      loadImage: loadImage
+    };
   }
 );
 
@@ -2630,7 +2890,7 @@ define(
           h = 20;
         }
 
-        rect = currentRect = Rect.clamp({ x: x, y: y, w: w, h: h }, clampRect, handle.name == 'move');
+        rect = currentRect = Rect.clamp({ x: x, y: y, w: w, h: h }, clampRect, handle.name === 'move');
         rect = getRelativeRect(clampRect, rect);
 
         instance.fire('updateRect', { rect: rect });
@@ -2688,7 +2948,7 @@ define(
           var activeHandle;
 
           Tools.each(handles, function (handle) {
-            if (e.target.id == id + '-' + handle.name) {
+            if (e.target.id === id + '-' + handle.name) {
               activeHandle = handle;
               return false;
             }
@@ -2837,28 +3097,16 @@ define(
 define(
   'tinymce.plugins.imagetools.ui.ImagePanel',
   [
+    'global!document',
+    'global!Image',
     'tinymce.core.geom.Rect',
     'tinymce.core.ui.Factory',
     'tinymce.core.util.Promise',
     'tinymce.core.util.Tools',
+    'tinymce.plugins.imagetools.core.LoadImage',
     'tinymce.plugins.imagetools.ui.CropRect'
   ],
-  function (Rect, Factory, Promise, Tools, CropRect) {
-    function loadImage(image) {
-      return new Promise(function (resolve) {
-        function loaded() {
-          image.removeEventListener('load', loaded);
-          resolve(image);
-        }
-
-        if (image.complete) {
-          resolve(image);
-        } else {
-          image.addEventListener('load', loaded);
-        }
-      });
-    }
-
+  function (document, Image, Rect, Factory, Promise, Tools, LoadImage, CropRect) {
     var create = function (settings) {
       var Control = Factory.get('Control');
       var ImagePanel = Control.extend({
@@ -2893,7 +3141,7 @@ define(
 
           img.src = url;
 
-          loadImage(img).then(function () {
+          LoadImage.loadImage(img).then(function () {
             var rect, $img, lastRect = self.state.get('viewRect');
 
             $img = self.$el.find('img');
@@ -2910,7 +3158,7 @@ define(
             self.state.set('viewRect', rect);
             self.state.set('rect', Rect.inflate(rect, -20, -20));
 
-            if (!lastRect || lastRect.w != rect.w || lastRect.h != rect.h) {
+            if (!lastRect || lastRect.w !== rect.w || lastRect.h !== rect.h) {
               self.zoomFit();
             }
 
@@ -3079,7 +3327,9 @@ define(
   [
     'ephox.imagetools.api.BlobConversions',
     'ephox.imagetools.api.ImageTransformations',
+    'ephox.sand.api.URL',
     'global!Math',
+    'global!setTimeout',
     'tinymce.core.dom.DOMUtils',
     'tinymce.core.ui.Factory',
     'tinymce.core.util.Promise',
@@ -3087,7 +3337,7 @@ define(
     'tinymce.plugins.imagetools.core.UndoStack',
     'tinymce.plugins.imagetools.ui.ImagePanel'
   ],
-  function (BlobConversions, ImageTransformations, Math, DOMUtils, Factory, Promise, Tools, UndoStack, ImagePanel) {
+  function (BlobConversions, ImageTransformations, URL, Math, setTimeout, DOMUtils, Factory, Promise, Tools, UndoStack, ImagePanel) {
     function createState(blob) {
       return {
         blob: blob,
@@ -3122,7 +3372,7 @@ define(
         newHeight = parseInt(heightCtrl.value(), 10);
 
         if (win.find('#constrain')[0].checked() && width && height && newWidth && newHeight) {
-          if (e.control.settings.name == 'w') {
+          if (e.control.settings.name === 'w') {
             newHeight = Math.round(newWidth * ratioW);
             heightCtrl.value(newHeight);
           } else {
@@ -3159,7 +3409,7 @@ define(
       function switchPanel(targetPanel) {
         return function () {
           var hidePanels = Tools.grep(panels, function (panel) {
-            return panel.settings.name != targetPanel;
+            return panel.settings.name !== targetPanel;
           });
 
           Tools.each(hidePanels, function (panel) {
@@ -3421,7 +3671,7 @@ define(
         { type: 'spacer', flex: 1 },
         { text: 'Apply', subtype: 'primary', onclick: crop }
       ]).hide().on('show hide', function (e) {
-        imagePanel.toggleCropRect(e.type == 'show');
+        imagePanel.toggleCropRect(e.type === 'show');
       }).on('show', disableUndoRedo);
 
       function toggleConstrain(e) {
@@ -3600,6 +3850,421 @@ define(
 );
 
 /**
+ * Actions.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.core.Actions',
+  [
+    'ephox.imagetools.api.BlobConversions',
+    'ephox.imagetools.api.ImageTransformations',
+    'ephox.katamari.api.Fun',
+    'ephox.sand.api.URL',
+    'global!clearTimeout',
+    'tinymce.core.util.Delay',
+    'tinymce.core.util.Promise',
+    'tinymce.core.util.Tools',
+    'tinymce.core.util.URI',
+    'tinymce.plugins.imagetools.api.Settings',
+    'tinymce.plugins.imagetools.core.ImageSize',
+    'tinymce.plugins.imagetools.core.Proxy',
+    'tinymce.plugins.imagetools.ui.Dialog'
+  ],
+  function (BlobConversions, ImageTransformations, Fun, URL, clearTimeout, Delay, Promise, Tools, URI, Settings, ImageSize, Proxy, Dialog) {
+    var count = 0;
+
+    var isEditableImage = function (editor, img) {
+      var selectorMatched = editor.dom.is(img, 'img:not([data-mce-object],[data-mce-placeholder])');
+
+      return selectorMatched && (isLocalImage(editor, img) || isCorsImage(editor, img) || editor.settings.imagetools_proxy);
+    };
+
+    var displayError = function (editor, error) {
+      editor.notificationManager.open({
+        text: error,
+        type: 'error'
+      });
+    };
+
+    var getSelectedImage = function (editor) {
+      return editor.selection.getNode();
+    };
+
+    var extractFilename = function (editor, url) {
+      var m = url.match(/\/([^\/\?]+)?\.(?:jpeg|jpg|png|gif)(?:\?|$)/i);
+      if (m) {
+        return editor.dom.encode(m[1]);
+      }
+      return null;
+    };
+
+    var createId = function () {
+      return 'imagetools' + count++;
+    };
+
+    var isLocalImage = function (editor, img) {
+      var url = img.src;
+
+      return url.indexOf('data:') === 0 || url.indexOf('blob:') === 0 || new URI(url).host === editor.documentBaseURI.host;
+    };
+
+    var isCorsImage = function (editor, img) {
+      return Tools.inArray(editor.settings.imagetools_cors_hosts, new URI(img.src).host) !== -1;
+    };
+
+    var getApiKey = function (editor) {
+      return editor.settings.api_key || editor.settings.imagetools_api_key;
+    };
+
+    var imageToBlob = function (editor, img) {
+      var src = img.src, apiKey;
+
+      if (isCorsImage(editor, img)) {
+        return Proxy.getUrl(img.src, null);
+      }
+
+      if (!isLocalImage(editor, img)) {
+        src = Settings.getProxyUrl(editor);
+        src += (src.indexOf('?') === -1 ? '?' : '&') + 'url=' + encodeURIComponent(img.src);
+        apiKey = getApiKey(editor);
+        return Proxy.getUrl(src, apiKey);
+      }
+
+      return BlobConversions.imageToBlob(img);
+    };
+
+    var findSelectedBlob = function (editor) {
+      var blobInfo;
+      blobInfo = editor.editorUpload.blobCache.getByUri(getSelectedImage(editor).src);
+      if (blobInfo) {
+        return Promise.resolve(blobInfo.blob());
+      }
+
+      return imageToBlob(editor, getSelectedImage(editor));
+    };
+
+    var startTimedUpload = function (editor, imageUploadTimerState) {
+      var imageUploadTimer = Delay.setEditorTimeout(editor, function () {
+        editor.editorUpload.uploadImagesAuto();
+      }, editor.settings.images_upload_timeout || 30000);
+
+      imageUploadTimerState.set(imageUploadTimer);
+    };
+
+    var cancelTimedUpload = function (imageUploadTimerState) {
+      clearTimeout(imageUploadTimerState.get());
+    };
+
+    var updateSelectedImage = function (editor, ir, uploadImmediately, imageUploadTimerState) {
+      return ir.toBlob().then(function (blob) {
+        var uri, name, blobCache, blobInfo, selectedImage;
+
+        blobCache = editor.editorUpload.blobCache;
+        selectedImage = getSelectedImage(editor);
+        uri = selectedImage.src;
+
+        if (editor.settings.images_reuse_filename) {
+          blobInfo = blobCache.getByUri(uri);
+          if (blobInfo) {
+            uri = blobInfo.uri();
+            name = blobInfo.name();
+          } else {
+            name = extractFilename(editor, uri);
+          }
+        }
+
+        blobInfo = blobCache.create({
+          id: createId(),
+          blob: blob,
+          base64: ir.toBase64(),
+          uri: uri,
+          name: name
+        });
+
+        blobCache.add(blobInfo);
+
+        editor.undoManager.transact(function () {
+          function imageLoadedHandler() {
+            editor.$(selectedImage).off('load', imageLoadedHandler);
+            editor.nodeChanged();
+
+            if (uploadImmediately) {
+              editor.editorUpload.uploadImagesAuto();
+            } else {
+              cancelTimedUpload(imageUploadTimerState);
+              startTimedUpload(editor, imageUploadTimerState);
+            }
+          }
+
+          editor.$(selectedImage).on('load', imageLoadedHandler);
+
+          editor.$(selectedImage).attr({
+            src: blobInfo.blobUri()
+          }).removeAttr('data-mce-src');
+        });
+
+        return blobInfo;
+      });
+    };
+
+    var selectedImageOperation = function (editor, imageUploadTimerState, fn) {
+      return function () {
+        return editor._scanForImages().
+          then(Fun.curry(findSelectedBlob, editor)).
+          then(BlobConversions.blobToImageResult).
+          then(fn).
+          then(function (imageResult) {
+            return updateSelectedImage(editor, imageResult, false, imageUploadTimerState);
+          }, function (error) {
+            displayError(editor, error);
+          });
+      };
+    };
+
+    var rotate = function (editor, imageUploadTimerState, angle) {
+      return function () {
+        return selectedImageOperation(editor, imageUploadTimerState, function (imageResult) {
+          var size = ImageSize.getImageSize(getSelectedImage(editor));
+
+          if (size) {
+            ImageSize.setImageSize(getSelectedImage(editor), {
+              w: size.h,
+              h: size.w
+            });
+          }
+
+          return ImageTransformations.rotate(imageResult, angle);
+        })();
+      };
+    };
+
+    var flip = function (editor, imageUploadTimerState, axis) {
+      return function () {
+        return selectedImageOperation(editor, imageUploadTimerState, function (imageResult) {
+          return ImageTransformations.flip(imageResult, axis);
+        })();
+      };
+    };
+
+    var editImageDialog = function (editor, imageUploadTimerState) {
+      return function () {
+        var img = getSelectedImage(editor), originalSize = ImageSize.getNaturalImageSize(img);
+
+        var handleDialogBlob = function (blob) {
+          return new Promise(function (resolve) {
+            BlobConversions.blobToImage(blob).
+              then(function (newImage) {
+                var newSize = ImageSize.getNaturalImageSize(newImage);
+
+                if (originalSize.w !== newSize.w || originalSize.h !== newSize.h) {
+                  if (ImageSize.getImageSize(img)) {
+                    ImageSize.setImageSize(img, newSize);
+                  }
+                }
+
+                URL.revokeObjectURL(newImage.src);
+                resolve(blob);
+              });
+          });
+        };
+
+        var openDialog = function (editor, imageResult) {
+          return Dialog.edit(editor, imageResult).then(handleDialogBlob).
+            then(BlobConversions.blobToImageResult).
+            then(function (imageResult) {
+              return updateSelectedImage(editor, imageResult, true, imageUploadTimerState);
+            }, function () {
+              // Close dialog
+            });
+        };
+
+        findSelectedBlob(editor).
+          then(BlobConversions.blobToImageResult).
+          then(Fun.curry(openDialog, editor), function (error) {
+            displayError(editor, error);
+          });
+      };
+    };
+
+    return {
+      rotate: rotate,
+      flip: flip,
+      editImageDialog: editImageDialog,
+      isEditableImage: isEditableImage,
+      cancelTimedUpload: cancelTimedUpload
+    };
+  }
+);
+
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.api.Commands',
+  [
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.imagetools.core.Actions'
+  ],
+  function (Tools, Actions) {
+    var register = function (editor, imageUploadTimerState) {
+      Tools.each({
+        mceImageRotateLeft: Actions.rotate(editor, imageUploadTimerState, -90),
+        mceImageRotateRight: Actions.rotate(editor, imageUploadTimerState, 90),
+        mceImageFlipVertical: Actions.flip(editor, imageUploadTimerState, 'v'),
+        mceImageFlipHorizontal: Actions.flip(editor, imageUploadTimerState, 'h'),
+        mceEditImage: Actions.editImageDialog(editor, imageUploadTimerState)
+      }, function (fn, cmd) {
+        editor.addCommand(cmd, fn);
+      });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.core.UploadSelectedImage',
+  [
+    'tinymce.plugins.imagetools.core.Actions'
+  ],
+  function (Actions) {
+    var setup = function (editor, imageUploadTimerState, lastSelectedImageState) {
+      editor.on('NodeChange', function (e) {
+        var lastSelectedImage = lastSelectedImageState.get();
+
+        // If the last node we selected was an image
+        // And had a source that doesn't match the current blob url
+        // We need to attempt to upload it
+        if (lastSelectedImage && lastSelectedImage.src !== e.element.src) {
+          Actions.cancelTimedUpload(imageUploadTimerState);
+          editor.editorUpload.uploadImagesAuto();
+          lastSelectedImageState.set(null);
+        }
+
+        // Set up the lastSelectedImage
+        if (Actions.isEditableImage(editor, e.element)) {
+          lastSelectedImageState.set(e.element);
+        }
+      });
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.ui.Buttons',
+  [
+  ],
+  function () {
+    var register = function (editor) {
+      editor.addButton('rotateleft', {
+        title: 'Rotate counterclockwise',
+        cmd: 'mceImageRotateLeft'
+      });
+
+      editor.addButton('rotateright', {
+        title: 'Rotate clockwise',
+        cmd: 'mceImageRotateRight'
+      });
+
+      editor.addButton('flipv', {
+        title: 'Flip vertically',
+        cmd: 'mceImageFlipVertical'
+      });
+
+      editor.addButton('fliph', {
+        title: 'Flip horizontally',
+        cmd: 'mceImageFlipHorizontal'
+      });
+
+      editor.addButton('editimage', {
+        title: 'Edit image',
+        cmd: 'mceEditImage'
+      });
+
+      editor.addButton('imageoptions', {
+        title: 'Image options',
+        icon: 'options',
+        cmd: 'mceImage'
+      });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+/**
+ * ContextToolbar.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.imagetools.ui.ContextToolbar',
+  [
+    'ephox.katamari.api.Fun',
+    'tinymce.plugins.imagetools.api.Settings',
+    'tinymce.plugins.imagetools.core.Actions'
+  ],
+  function (Fun, Settings, Actions) {
+    var register = function (editor) {
+      editor.addContextToolbar(
+        Fun.curry(Actions.isEditableImage, editor),
+        Settings.getToolbarItems(editor)
+      );
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+/**
  * Plugin.js
  *
  * Released under LGPL License.
@@ -3612,319 +4277,24 @@ define(
 define(
   'tinymce.plugins.imagetools.Plugin',
   [
-    'ephox.imagetools.api.BlobConversions',
-    'ephox.imagetools.api.ImageTransformations',
-    'tinymce.core.Env',
+    'ephox.katamari.api.Cell',
     'tinymce.core.PluginManager',
-    'tinymce.core.util.Delay',
-    'tinymce.core.util.Promise',
-    'tinymce.core.util.Tools',
-    'tinymce.core.util.URI',
-    'tinymce.plugins.imagetools.core.ImageSize',
-    'tinymce.plugins.imagetools.core.Proxy',
-    'tinymce.plugins.imagetools.ui.Dialog'
+    'tinymce.plugins.imagetools.api.Commands',
+    'tinymce.plugins.imagetools.core.UploadSelectedImage',
+    'tinymce.plugins.imagetools.ui.Buttons',
+    'tinymce.plugins.imagetools.ui.ContextToolbar'
   ],
-  function (
-    BlobConversions, ImageTransformations, Env, PluginManager, Delay, Promise, Tools,
-    URI, ImageSize, Proxy, Dialog
-  ) {
-    var plugin = function (editor) {
-      var count = 0, imageUploadTimer, lastSelectedImage;
+  function (Cell, PluginManager, Commands, UploadSelectedImage, Buttons, ContextToolbar) {
+    PluginManager.add('imagetools', function (editor) {
+      var imageUploadTimerState = Cell(0);
+      var lastSelectedImageState = Cell(null);
 
-      if (!Env.fileApi) {
-        return;
-      }
+      Commands.register(editor, imageUploadTimerState);
+      Buttons.register(editor);
+      ContextToolbar.register(editor);
 
-      function displayError(error) {
-        editor.notificationManager.open({
-          text: error,
-          type: 'error'
-        });
-      }
-
-      function getSelectedImage() {
-        return editor.selection.getNode();
-      }
-
-      function extractFilename(url) {
-        var m = url.match(/\/([^\/\?]+)?\.(?:jpeg|jpg|png|gif)(?:\?|$)/i);
-        if (m) {
-          return editor.dom.encode(m[1]);
-        }
-        return null;
-      }
-
-      function createId() {
-        return 'imagetools' + count++;
-      }
-
-      function isLocalImage(img) {
-        var url = img.src;
-
-        return url.indexOf('data:') === 0 || url.indexOf('blob:') === 0 || new URI(url).host === editor.documentBaseURI.host;
-      }
-
-      function isCorsImage(img) {
-        return Tools.inArray(editor.settings.imagetools_cors_hosts, new URI(img.src).host) !== -1;
-      }
-
-      function getApiKey() {
-        return editor.settings.api_key || editor.settings.imagetools_api_key;
-      }
-
-      function imageToBlob(img) {
-        var src = img.src, apiKey;
-
-        if (isCorsImage(img)) {
-          return Proxy.getUrl(img.src, null);
-        }
-
-        if (!isLocalImage(img)) {
-          src = editor.settings.imagetools_proxy;
-          src += (src.indexOf('?') === -1 ? '?' : '&') + 'url=' + encodeURIComponent(img.src);
-          apiKey = getApiKey();
-          return Proxy.getUrl(src, apiKey);
-        }
-
-        return BlobConversions.imageToBlob(img);
-      }
-
-      function findSelectedBlob() {
-        var blobInfo;
-        blobInfo = editor.editorUpload.blobCache.getByUri(getSelectedImage().src);
-        if (blobInfo) {
-          return Promise.resolve(blobInfo.blob());
-        }
-
-        return imageToBlob(getSelectedImage());
-      }
-
-      function startTimedUpload() {
-        imageUploadTimer = Delay.setEditorTimeout(editor, function () {
-          editor.editorUpload.uploadImagesAuto();
-        }, editor.settings.images_upload_timeout || 30000);
-      }
-
-      function cancelTimedUpload() {
-        clearTimeout(imageUploadTimer);
-      }
-
-      function updateSelectedImage(ir, uploadImmediately) {
-        return ir.toBlob().then(function (blob) {
-          var uri, name, blobCache, blobInfo, selectedImage;
-
-          blobCache = editor.editorUpload.blobCache;
-          selectedImage = getSelectedImage();
-          uri = selectedImage.src;
-
-          if (editor.settings.images_reuse_filename) {
-            blobInfo = blobCache.getByUri(uri);
-            if (blobInfo) {
-              uri = blobInfo.uri();
-              name = blobInfo.name();
-            } else {
-              name = extractFilename(uri);
-            }
-          }
-
-          blobInfo = blobCache.create({
-            id: createId(),
-            blob: blob,
-            base64: ir.toBase64(),
-            uri: uri,
-            name: name
-          });
-
-          blobCache.add(blobInfo);
-
-          editor.undoManager.transact(function () {
-            function imageLoadedHandler() {
-              editor.$(selectedImage).off('load', imageLoadedHandler);
-              editor.nodeChanged();
-
-              if (uploadImmediately) {
-                editor.editorUpload.uploadImagesAuto();
-              } else {
-                cancelTimedUpload();
-                startTimedUpload();
-              }
-            }
-
-            editor.$(selectedImage).on('load', imageLoadedHandler);
-
-            editor.$(selectedImage).attr({
-              src: blobInfo.blobUri()
-            }).removeAttr('data-mce-src');
-          });
-
-          return blobInfo;
-        });
-      }
-
-      function selectedImageOperation(fn) {
-        return function () {
-          return editor._scanForImages().
-            then(findSelectedBlob).
-            then(BlobConversions.blobToImageResult).
-            then(fn).
-            then(updateSelectedImage, displayError);
-        };
-      }
-
-      function rotate(angle) {
-        return function () {
-          return selectedImageOperation(function (imageResult) {
-            var size = ImageSize.getImageSize(getSelectedImage());
-
-            if (size) {
-              ImageSize.setImageSize(getSelectedImage(), {
-                w: size.h,
-                h: size.w
-              });
-            }
-
-            return ImageTransformations.rotate(imageResult, angle);
-          })();
-        };
-      }
-
-      function flip(axis) {
-        return function () {
-          return selectedImageOperation(function (imageResult) {
-            return ImageTransformations.flip(imageResult, axis);
-          })();
-        };
-      }
-
-      function editImageDialog() {
-        var img = getSelectedImage(), originalSize = ImageSize.getNaturalImageSize(img);
-
-        var handleDialogBlob = function (blob) {
-          return new Promise(function (resolve) {
-            BlobConversions.blobToImage(blob).
-              then(function (newImage) {
-                var newSize = ImageSize.getNaturalImageSize(newImage);
-
-                if (originalSize.w != newSize.w || originalSize.h != newSize.h) {
-                  if (ImageSize.getImageSize(img)) {
-                    ImageSize.setImageSize(img, newSize);
-                  }
-                }
-
-                URL.revokeObjectURL(newImage.src);
-                resolve(blob);
-              });
-          });
-        };
-
-        var openDialog = function (imageResult) {
-          return Dialog.edit(editor, imageResult).then(handleDialogBlob).
-            then(BlobConversions.blobToImageResult).
-            then(function (imageResult) {
-              return updateSelectedImage(imageResult, true);
-            }, function () {
-              // Close dialog
-            });
-        };
-
-        findSelectedBlob().
-          then(BlobConversions.blobToImageResult).
-          then(openDialog, displayError);
-      }
-
-      function addButtons() {
-        editor.addButton('rotateleft', {
-          title: 'Rotate counterclockwise',
-          cmd: 'mceImageRotateLeft'
-        });
-
-        editor.addButton('rotateright', {
-          title: 'Rotate clockwise',
-          cmd: 'mceImageRotateRight'
-        });
-
-        editor.addButton('flipv', {
-          title: 'Flip vertically',
-          cmd: 'mceImageFlipVertical'
-        });
-
-        editor.addButton('fliph', {
-          title: 'Flip horizontally',
-          cmd: 'mceImageFlipHorizontal'
-        });
-
-        editor.addButton('editimage', {
-          title: 'Edit image',
-          cmd: 'mceEditImage'
-        });
-
-        editor.addButton('imageoptions', {
-          title: 'Image options',
-          icon: 'options',
-          cmd: 'mceImage'
-        });
-
-        /*
-        editor.addButton('crop', {
-          title: 'Crop',
-          onclick: startCrop
-        });
-        */
-      }
-
-      function addEvents() {
-        editor.on('NodeChange', function (e) {
-          // If the last node we selected was an image
-          // And had a source that doesn't match the current blob url
-          // We need to attempt to upload it
-          if (lastSelectedImage && lastSelectedImage.src != e.element.src) {
-            cancelTimedUpload();
-            editor.editorUpload.uploadImagesAuto();
-            lastSelectedImage = undefined;
-          }
-
-          // Set up the lastSelectedImage
-          if (isEditableImage(e.element)) {
-            lastSelectedImage = e.element;
-          }
-        });
-      }
-
-      function isEditableImage(img) {
-        var selectorMatched = editor.dom.is(img, 'img:not([data-mce-object],[data-mce-placeholder])');
-
-        return selectorMatched && (isLocalImage(img) || isCorsImage(img) || editor.settings.imagetools_proxy);
-      }
-
-      function addToolbars() {
-        var toolbarItems = editor.settings.imagetools_toolbar;
-
-        if (!toolbarItems) {
-          toolbarItems = 'rotateleft rotateright | flipv fliph | crop editimage imageoptions';
-        }
-
-        editor.addContextToolbar(
-          isEditableImage,
-          toolbarItems
-        );
-      }
-
-      Tools.each({
-        mceImageRotateLeft: rotate(-90),
-        mceImageRotateRight: rotate(90),
-        mceImageFlipVertical: flip('v'),
-        mceImageFlipHorizontal: flip('h'),
-        mceEditImage: editImageDialog
-      }, function (fn, cmd) {
-        editor.addCommand(cmd, fn);
-      });
-
-      addButtons();
-      addToolbars();
-      addEvents();
-    };
-
-    PluginManager.add('imagetools', plugin);
+      UploadSelectedImage.setup(editor, imageUploadTimerState, lastSelectedImageState);
+    });
 
     return function () { };
   }

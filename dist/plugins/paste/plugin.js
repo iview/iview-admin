@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,13 +76,46 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.paste.Plugin","tinymce.core.PluginManager","tinymce.plugins.paste.api.Events","tinymce.plugins.paste.core.Clipboard","tinymce.plugins.paste.core.CutCopy","tinymce.plugins.paste.core.Quirks","global!tinymce.util.Tools.resolve","tinymce.core.dom.RangeUtils","tinymce.core.Env","tinymce.core.util.Delay","tinymce.core.util.Tools","tinymce.core.util.VK","tinymce.plugins.paste.core.InternalHtml","tinymce.plugins.paste.core.Newlines","tinymce.plugins.paste.core.PasteBin","tinymce.plugins.paste.core.ProcessFilters","tinymce.plugins.paste.core.SmartPaste","tinymce.plugins.paste.core.Utils","tinymce.plugins.paste.core.WordFilter","tinymce.core.html.Entities","tinymce.core.html.DomParser","tinymce.core.html.Schema","tinymce.core.html.Serializer","tinymce.core.html.Node"]
+["tinymce.plugins.paste.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.paste.alien.DetectProPlugin","tinymce.plugins.paste.api.Api","tinymce.plugins.paste.api.Commands","tinymce.plugins.paste.core.Clipboard","tinymce.plugins.paste.core.CutCopy","tinymce.plugins.paste.core.DragDrop","tinymce.plugins.paste.core.PrePostProcess","tinymce.plugins.paste.core.Quirks","tinymce.plugins.paste.ui.Buttons","global!tinymce.util.Tools.resolve","global!window","tinymce.plugins.paste.core.Actions","global!Image","global!navigator","tinymce.core.Env","tinymce.core.util.Delay","tinymce.core.util.Tools","tinymce.core.util.VK","tinymce.plugins.paste.api.Events","tinymce.plugins.paste.api.Settings","tinymce.plugins.paste.core.InternalHtml","tinymce.plugins.paste.core.Newlines","tinymce.plugins.paste.core.PasteBin","tinymce.plugins.paste.core.ProcessFilters","tinymce.plugins.paste.core.SmartPaste","tinymce.plugins.paste.core.Utils","global!setTimeout","tinymce.core.dom.RangeUtils","tinymce.plugins.paste.core.WordFilter","ephox.katamari.api.Fun","tinymce.core.html.Entities","tinymce.core.html.DomParser","tinymce.core.html.Node","tinymce.core.html.Schema","tinymce.core.html.Serializer","global!Array","global!Error"]
 jsc*/
+define(
+  'ephox.katamari.api.Cell',
+
+  [
+  ],
+
+  function () {
+    var Cell = function (initial) {
+      var value = initial;
+
+      var get = function () {
+        return value;
+      };
+
+      var set = function (v) {
+        value = v;
+      };
+
+      var clone = function () {
+        return Cell(get());
+      };
+
+      return {
+        get: get,
+        set: set,
+        clone: clone
+      };
+    };
+
+    return Cell;
+  }
+);
+
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
  * ResolveGlobal.js
@@ -101,6 +134,71 @@ define(
   ],
   function (resolve) {
     return resolve('tinymce.PluginManager');
+  }
+);
+
+defineGlobal("global!window", window);
+/**
+ * DetectProPlugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.alien.DetectProPlugin',
+  [
+    'global!window',
+    'tinymce.core.PluginManager'
+  ],
+  function (window, PluginManager) {
+    var hasProPlugin = function (editor) {
+      // draw back if power version is requested and registered
+      if (/(^|[ ,])powerpaste([, ]|$)/.test(editor.settings.plugins) && PluginManager.get('powerpaste')) {
+        /*eslint no-console:0 */
+        if (typeof window.console !== "undefined" && window.console.log) {
+          window.console.log("PowerPaste is incompatible with Paste plugin! Remove 'paste' from the 'plugins' option.");
+        }
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    return {
+      hasProPlugin: hasProPlugin
+    };
+  }
+);
+
+/**
+ * Api.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.api.Api',
+  [
+  ],
+  function (Actions) {
+    var get = function (clipboard, quirks) {
+      return {
+        clipboard: clipboard,
+        quirks: quirks
+      };
+    };
+
+    return {
+      get: get
+    };
   }
 );
 
@@ -131,16 +229,21 @@ define(
       return editor.fire('PastePlainTextToggle', { state: state });
     };
 
+    var firePaste = function (editor, ieFake) {
+      return editor.fire('paste', { ieFake: ieFake });
+    };
+
     return {
       firePastePreProcess: firePastePreProcess,
       firePastePostProcess: firePastePostProcess,
-      firePastePlainTextToggle: firePastePlainTextToggle
+      firePastePlainTextToggle: firePastePlainTextToggle,
+      firePaste: firePaste
     };
   }
 );
 
 /**
- * ResolveGlobal.js
+ * Settings.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -150,15 +253,186 @@ define(
  */
 
 define(
-  'tinymce.core.dom.RangeUtils',
+  'tinymce.plugins.paste.api.Settings',
   [
-    'global!tinymce.util.Tools.resolve'
   ],
-  function (resolve) {
-    return resolve('tinymce.dom.RangeUtils');
+  function () {
+    var shouldPlainTextInform = function (editor) {
+      return editor.getParam('paste_plaintext_inform', true);
+    };
+
+    var shouldBlockDrop = function (editor) {
+      return editor.getParam('paste_block_drop', false);
+    };
+
+    var shouldPasteDataImages = function (editor) {
+      return editor.getParam('paste_data_images', false);
+    };
+
+    var shouldFilterDrop = function (editor) {
+      return editor.getParam('paste_filter_drop', true);
+    };
+
+    var getPreProcess = function (editor) {
+      return editor.getParam('paste_preprocess');
+    };
+
+    var getPostProcess = function (editor) {
+      return editor.getParam('paste_postprocess');
+    };
+
+    var getWebkitStyles = function (editor) {
+      return editor.getParam('paste_webkit_styles');
+    };
+
+    var shouldRemoveWebKitStyles = function (editor) {
+      return editor.getParam('paste_remove_styles_if_webkit', true);
+    };
+
+    var shouldMergeFormats = function (editor) {
+      return editor.getParam('paste_merge_formats', true);
+    };
+
+    var isSmartPasteEnabled = function (editor) {
+      return editor.getParam('smart_paste', true);
+    };
+
+    var isPasteAsTextEnabled = function (editor) {
+      return editor.getParam('paste_as_text', false);
+    };
+
+    var getRetainStyleProps = function (editor) {
+      return editor.getParam('paste_retain_style_properties');
+    };
+
+    var getWordValidElements = function (editor) {
+      var defaultValidElements = (
+        '-strong/b,-em/i,-u,-span,-p,-ol,-ul,-li,-h1,-h2,-h3,-h4,-h5,-h6,' +
+        '-p/div,-a[href|name],sub,sup,strike,br,del,table[width],tr,' +
+        'td[colspan|rowspan|width],th[colspan|rowspan|width],thead,tfoot,tbody'
+      );
+
+      return editor.getParam('paste_word_valid_elements', defaultValidElements);
+    };
+
+    var shouldConvertWordFakeLists = function (editor) {
+      return editor.getParam('paste_convert_word_fake_lists', true);
+    };
+
+    var shouldUseDefaultFilters = function (editor) {
+      return editor.getParam('paste_enable_default_filters', true);
+    };
+
+    return {
+      shouldPlainTextInform: shouldPlainTextInform,
+      shouldBlockDrop: shouldBlockDrop,
+      shouldPasteDataImages: shouldPasteDataImages,
+      shouldFilterDrop: shouldFilterDrop,
+      getPreProcess: getPreProcess,
+      getPostProcess: getPostProcess,
+      getWebkitStyles: getWebkitStyles,
+      shouldRemoveWebKitStyles: shouldRemoveWebKitStyles,
+      shouldMergeFormats: shouldMergeFormats,
+      isSmartPasteEnabled: isSmartPasteEnabled,
+      isPasteAsTextEnabled: isPasteAsTextEnabled,
+      getRetainStyleProps: getRetainStyleProps,
+      getWordValidElements: getWordValidElements,
+      shouldConvertWordFakeLists: shouldConvertWordFakeLists,
+      shouldUseDefaultFilters: shouldUseDefaultFilters
+    };
   }
 );
 
+/**
+ * Actions.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.core.Actions',
+  [
+    'tinymce.plugins.paste.api.Events',
+    'tinymce.plugins.paste.api.Settings'
+  ],
+  function (Events, Settings) {
+    var shouldInformUserAboutPlainText = function (editor, userIsInformedState) {
+      return userIsInformedState.get() === false && Settings.shouldPlainTextInform(editor);
+    };
+
+    var displayNotification = function (editor, message) {
+      editor.notificationManager.open({
+        text: editor.translate(message),
+        type: 'info'
+      });
+    };
+
+    var togglePlainTextPaste = function (editor, clipboard, userIsInformedState) {
+      if (clipboard.pasteFormat === "text") {
+        clipboard.pasteFormat = "html";
+        Events.firePastePlainTextToggle(editor, false);
+      } else {
+        clipboard.pasteFormat = "text";
+        Events.firePastePlainTextToggle(editor, true);
+
+        if (shouldInformUserAboutPlainText(editor, userIsInformedState)) {
+          displayNotification(editor, 'Paste is now in plain text mode. Contents will now be pasted as plain text until you toggle this option off.');
+          userIsInformedState.set(true);
+        }
+      }
+
+      editor.focus();
+    };
+
+    return {
+      togglePlainTextPaste: togglePlainTextPaste
+    };
+  }
+);
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.api.Commands',
+  [
+    'tinymce.plugins.paste.core.Actions'
+  ],
+  function (Actions) {
+    var register = function (editor, clipboard, userIsInformedState) {
+      editor.addCommand('mceTogglePlainTextPaste', function () {
+        Actions.togglePlainTextPaste(editor, clipboard, userIsInformedState);
+      });
+
+      editor.addCommand('mceInsertClipboardContent', function (ui, value) {
+        if (value.content) {
+          clipboard.pasteHtml(value.content, value.internal);
+        }
+
+        if (value.text) {
+          clipboard.pasteText(value.text);
+        }
+      });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+defineGlobal("global!Image", Image);
+defineGlobal("global!navigator", navigator);
 /**
  * ResolveGlobal.js
  *
@@ -447,14 +721,14 @@ define(
             return rects[0];
           }
 
-          if (!rng.collapsed || container.nodeType != 1) {
+          if (!rng.collapsed || container.nodeType !== 1) {
             return;
           }
 
           node = container.childNodes[lastRng.startOffset];
 
           // Skip empty whitespace nodes
-          while (node && node.nodeType == 3 && !node.data.length) {
+          while (node && node.nodeType === 3 && !node.data.length) {
             node = node.nextSibling;
           }
 
@@ -464,7 +738,7 @@ define(
 
           // Check if the location is |<br>
           // TODO: Might need to expand this to say |<table>
-          if (node.tagName == 'BR') {
+          if (node.tagName === 'BR') {
             textNode = dom.doc.createTextNode('\uFEFF');
             node.parentNode.insertBefore(textNode, node);
 
@@ -496,11 +770,11 @@ define(
             // Check if we can find a closer location by checking the range element
             var container = lastRng.startContainer;
             if (container) {
-              if (container.nodeType == 3 && container.parentNode != body) {
+              if (container.nodeType === 3 && container.parentNode !== body) {
                 container = container.parentNode;
               }
 
-              if (container.nodeType == 1) {
+              if (container.nodeType === 1) {
                 top = dom.getPos(container, scrollContainer || body).y;
               }
             }
@@ -517,7 +791,7 @@ define(
 
         // Move paste bin out of sight since the controlSelection rect gets displayed otherwise on IE and Gecko
         if (Env.ie || Env.gecko) {
-          dom.setStyle(pasteBinElm, 'left', dom.getStyle(body, 'direction', true) == 'rtl' ? 0xFFFF : -0xFFFF);
+          dom.setStyle(pasteBinElm, 'left', dom.getStyle(body, 'direction', true) === 'rtl' ? 0xFFFF : -0xFFFF);
         }
 
         // Prevent focus events from bubbeling fixed FocusManager issues
@@ -664,6 +938,26 @@ define(
  */
 
 define(
+  'tinymce.core.html.Node',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.html.Node');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
   'tinymce.core.html.Schema',
   [
     'global!tinymce.util.Tools.resolve'
@@ -694,26 +988,6 @@ define(
 );
 
 /**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.html.Node',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.html.Node');
-  }
-);
-
-/**
  * Utils.js
  *
  * Released under LGPL License.
@@ -731,14 +1005,15 @@ define(
 define(
   'tinymce.plugins.paste.core.Utils',
   [
-    'tinymce.core.util.Tools',
+    'global!navigator',
     'tinymce.core.html.DomParser',
-    'tinymce.core.html.Schema'
+    'tinymce.core.html.Schema',
+    'tinymce.core.util.Tools'
   ],
-  function (Tools, DomParser, Schema) {
+  function (navigator, DomParser, Schema, Tools) {
     function filter(content, items) {
       Tools.each(items, function (v) {
-        if (v.constructor == RegExp) {
+        if (v.constructor === RegExp) {
           content = content.replace(v, '');
         } else {
           content = content.replace(v[0], v[1]);
@@ -780,7 +1055,7 @@ define(
           return;
         }
 
-        if (node.type == 3) {
+        if (node.type === 3) {
           text += node.value;
         }
 
@@ -797,7 +1072,7 @@ define(
         if (blockElements[name] && currentNode.next) {
           text += '\n';
 
-          if (name == 'p') {
+          if (name === 'p') {
             text += '\n';
           }
         }
@@ -882,14 +1157,15 @@ define(
 define(
   'tinymce.plugins.paste.core.WordFilter',
   [
-    'tinymce.core.util.Tools',
     'tinymce.core.html.DomParser',
+    'tinymce.core.html.Node',
     'tinymce.core.html.Schema',
     'tinymce.core.html.Serializer',
-    'tinymce.core.html.Node',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.paste.api.Settings',
     'tinymce.plugins.paste.core.Utils'
   ],
-  function (Tools, DomParser, Schema, Serializer, Node, Utils) {
+  function (DomParser, Node, Schema, Serializer, Tools, Settings, Utils) {
     /**
      * Checks if the specified content is from any of the following sources: MS Word/Office 365/Google docs.
      */
@@ -993,7 +1269,7 @@ define(
         var level = paragraphNode._listLevel || lastLevel;
 
         // Handle list nesting
-        if (level != lastLevel) {
+        if (level !== lastLevel) {
           if (level < lastLevel) {
             // Move to parent list
             if (currentListNode) {
@@ -1006,7 +1282,7 @@ define(
           }
         }
 
-        if (!currentListNode || currentListNode.name != listName) {
+        if (!currentListNode || currentListNode.name !== listName) {
           prevListNode = prevListNode || currentListNode;
           currentListNode = new Node(listName, 1);
 
@@ -1052,7 +1328,7 @@ define(
       for (var i = 0; i < elements.length; i++) {
         node = elements[i];
 
-        if (node.name == 'p' && node.firstChild) {
+        if (node.name === 'p' && node.firstChild) {
           // Find first text node in paragraph
           var nodeText = getText(node);
 
@@ -1135,7 +1411,7 @@ define(
 
           case "font-weight":
           case "font-style":
-            if (value != "normal") {
+            if (value !== "normal") {
               outputStyles[name] = value;
             }
             return;
@@ -1161,7 +1437,7 @@ define(
         }
 
         // Output only valid styles
-        if (editor.settings.paste_retain_style_properties == "all" || (validStyles && validStyles[name])) {
+        if (Settings.getRetainStyleProps(editor) === "all" || (validStyles && validStyles[name])) {
           outputStyles[name] = value;
         }
       });
@@ -1190,7 +1466,7 @@ define(
     var filterWordContent = function (editor, content) {
       var retainStyleProperties, validStyles;
 
-      retainStyleProperties = editor.settings.paste_retain_style_properties;
+      retainStyleProperties = Settings.getRetainStyleProps(editor);
       if (retainStyleProperties) {
         validStyles = Tools.makeMap(retainStyleProperties.split(/[, ]/));
       }
@@ -1226,14 +1502,7 @@ define(
         ]
       ]);
 
-      var validElements = editor.settings.paste_word_valid_elements;
-      if (!validElements) {
-        validElements = (
-          '-strong/b,-em/i,-u,-span,-p,-ol,-ul,-li,-h1,-h2,-h3,-h4,-h5,-h6,' +
-          '-p/div,-a[href|name],sub,sup,strike,br,del,table[width],tr,' +
-          'td[colspan|rowspan|width],th[colspan|rowspan|width],thead,tfoot,tbody'
-        );
-      }
+      var validElements = Settings.getWordValidElements(editor);
 
       // Setup strict schema
       var schema = new Schema({
@@ -1268,7 +1537,7 @@ define(
           node.attr('style', filterStyles(editor, validStyles, node, node.attr('style')));
 
           // Remove pointess spans
-          if (node.name == 'span' && node.parent && !node.attributes.length) {
+          if (node.name === 'span' && node.parent && !node.attributes.length) {
             node.unwrap();
           }
         }
@@ -1308,7 +1577,7 @@ define(
           href = node.attr('href');
           name = node.attr('name');
 
-          if (href && href.indexOf('#_msocom_') != -1) {
+          if (href && href.indexOf('#_msocom_') !== -1) {
             node.remove();
             continue;
           }
@@ -1341,7 +1610,7 @@ define(
       var rootNode = domParser.parse(content);
 
       // Process DOM
-      if (editor.settings.paste_convert_word_fake_lists !== false) {
+      if (Settings.shouldConvertWordFakeLists(editor)) {
         convertFakeListsToProperLists(rootNode);
       }
 
@@ -1354,7 +1623,7 @@ define(
     };
 
     var preProcess = function (editor, content) {
-      return editor.settings.paste_enable_default_filters === false ? content : filterWordContent(editor, content);
+      return Settings.shouldUseDefaultFilters(editor) ? filterWordContent(editor, content) : content;
     };
 
     return {
@@ -1435,9 +1704,10 @@ define(
 define(
   'tinymce.plugins.paste.core.SmartPaste',
   [
-    'tinymce.core.util.Tools'
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.paste.api.Settings'
   ],
-  function (Tools) {
+  function (Tools, Settings) {
     var isAbsoluteUrl = function (url) {
       return /^https?:\/\/[\w\?\-\/+=.&%@~#]+$/i.test(url);
     };
@@ -1476,7 +1746,7 @@ define(
 
     var pasteHtml = function (editor, html) {
       editor.insertContent(html, {
-        merge: editor.settings.paste_merge_formats !== false,
+        merge: Settings.shouldMergeFormats(editor),
         paste: true
       });
 
@@ -1494,7 +1764,7 @@ define(
     };
 
     var insertContent = function (editor, html) {
-      if (editor.settings.smart_paste === false) {
+      if (Settings.isSmartPasteEnabled(editor) === false) {
         pasteHtml(editor, html);
       } else {
         smartInsertContent(editor, html);
@@ -1541,11 +1811,15 @@ define(
 define(
   'tinymce.plugins.paste.core.Clipboard',
   [
-    'tinymce.core.dom.RangeUtils',
+    'global!Image',
+    'global!navigator',
+    'global!window',
     'tinymce.core.Env',
     'tinymce.core.util.Delay',
     'tinymce.core.util.Tools',
     'tinymce.core.util.VK',
+    'tinymce.plugins.paste.api.Events',
+    'tinymce.plugins.paste.api.Settings',
     'tinymce.plugins.paste.core.InternalHtml',
     'tinymce.plugins.paste.core.Newlines',
     'tinymce.plugins.paste.core.PasteBin',
@@ -1553,13 +1827,15 @@ define(
     'tinymce.plugins.paste.core.SmartPaste',
     'tinymce.plugins.paste.core.Utils'
   ],
-  function (RangeUtils, Env, Delay, Tools, VK, InternalHtml, Newlines, PasteBin, ProcessFilters, SmartPaste, Utils) {
+  function (Image, navigator, window, Env, Delay, Tools, VK, Events, Settings, InternalHtml, Newlines, PasteBin, ProcessFilters, SmartPaste, Utils) {
     return function (editor) {
-      var self = this, keyboardPasteTimeStamp = 0, draggingInternally = false;
+      var self = this, keyboardPasteTimeStamp = 0;
       var pasteBin = new PasteBin(editor);
       var keyboardPastePlainTextState;
       var mceInternalUrlPrefix = 'data:text/mce-internal,';
       var uniqueId = Utils.createIdGenerator("mceclip");
+
+      self.pasteFormat = Settings.isPasteAsTextEnabled(editor) ? 'text' : 'html';
 
       /**
        * Pastes the specified HTML. This means that the HTML is filtered and then
@@ -1606,7 +1882,7 @@ define(
           if (dataTransfer.getData) {
             var legacyText = dataTransfer.getData('Text');
             if (legacyText && legacyText.length > 0) {
-              if (legacyText.indexOf(mceInternalUrlPrefix) == -1) {
+              if (legacyText.indexOf(mceInternalUrlPrefix) === -1) {
                 items['text/plain'] = legacyText;
               }
             }
@@ -1722,7 +1998,7 @@ define(
               if (/^image\/(jpeg|png|gif|bmp)$/.test(item.type)) {
                 var blob = item.getAsFile ? item.getAsFile() : item;
 
-                reader = new FileReader();
+                reader = new window.FileReader();
                 reader.onload = pasteImage.bind(null, rng, reader, blob);
                 reader.readAsDataURL(blob);
 
@@ -1749,11 +2025,7 @@ define(
       function isBrokenAndroidClipboardEvent(e) {
         var clipboardData = e.clipboardData;
 
-        return navigator.userAgent.indexOf('Android') != -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
-      }
-
-      function getCaretRangeFromEvent(e) {
-        return RangeUtils.getCaretRangeFromPoint(e.clientX, e.clientY, editor.getDoc());
+        return navigator.userAgent.indexOf('Android') !== -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
       }
 
       function hasContentType(clipboardContent, mimeType) {
@@ -1761,7 +2033,7 @@ define(
       }
 
       function isKeyboardPasteEvent(e) {
-        return (VK.metaKeyPressed(e) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45);
+        return (VK.metaKeyPressed(e) && e.keyCode === 86) || (e.shiftKey && e.keyCode === 45);
       }
 
       function registerEventHandlers() {
@@ -1775,11 +2047,11 @@ define(
 
           // Ctrl+V or Shift+Insert
           if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
-            keyboardPastePlainTextState = e.shiftKey && e.keyCode == 86;
+            keyboardPastePlainTextState = e.shiftKey && e.keyCode === 86;
 
             // Edge case on Safari on Mac where it doesn't handle Cmd+Shift+V correctly
             // it fires the keydown but no paste or keyup so we are left with a paste bin
-            if (keyboardPastePlainTextState && Env.webkit && navigator.userAgent.indexOf('Version/') != -1) {
+            if (keyboardPastePlainTextState && Env.webkit && navigator.userAgent.indexOf('Version/') !== -1) {
               return;
             }
 
@@ -1792,7 +2064,7 @@ define(
             // so lets fake a paste event and let IE use the execCommand/dataTransfer methods
             if (Env.ie && keyboardPastePlainTextState) {
               e.preventDefault();
-              editor.fire('paste', { ieFake: true });
+              Events.firePaste(editor, true);
               return;
             }
 
@@ -1876,7 +2148,7 @@ define(
           var clipboardDelay = new Date().getTime() - clipboardTimer;
 
           var isKeyBoardPaste = (new Date().getTime() - keyboardPasteTimeStamp - clipboardDelay) < 1000;
-          var plainTextMode = self.pasteFormat == "text" || keyboardPastePlainTextState;
+          var plainTextMode = self.pasteFormat === "text" || keyboardPastePlainTextState;
           var internal = hasContentType(clipboardContent, InternalHtml.internalHtmlMime());
 
           keyboardPastePlainTextState = false;
@@ -1924,70 +2196,14 @@ define(
             }, 0);
           }
         });
-
-        editor.on('dragstart dragend', function (e) {
-          draggingInternally = e.type == 'dragstart';
-        });
-
-        function isPlainTextFileUrl(content) {
-          var plainTextContent = content['text/plain'];
-          return plainTextContent ? plainTextContent.indexOf('file://') === 0 : false;
-        }
-
-        editor.on('drop', function (e) {
-          var dropContent, rng;
-
-          rng = getCaretRangeFromEvent(e);
-
-          if (e.isDefaultPrevented() || draggingInternally) {
-            return;
-          }
-
-          dropContent = getDataTransferItems(e.dataTransfer);
-          var internal = hasContentType(dropContent, InternalHtml.internalHtmlMime());
-
-          if ((!hasHtmlOrText(dropContent) || isPlainTextFileUrl(dropContent)) && pasteImageData(e, rng)) {
-            return;
-          }
-
-          if (rng && editor.settings.paste_filter_drop !== false) {
-            var content = dropContent['mce-internal'] || dropContent['text/html'] || dropContent['text/plain'];
-
-            if (content) {
-              e.preventDefault();
-
-              // FF 45 doesn't paint a caret when dragging in text in due to focus call by execCommand
-              Delay.setEditorTimeout(editor, function () {
-                editor.undoManager.transact(function () {
-                  if (dropContent['mce-internal']) {
-                    editor.execCommand('Delete');
-                  }
-
-                  editor.selection.setRng(rng);
-
-                  content = Utils.trimHtml(content);
-
-                  if (!dropContent['text/html']) {
-                    pasteText(content);
-                  } else {
-                    pasteHtml(content, internal);
-                  }
-                });
-              });
-            }
-          }
-        });
-
-        editor.on('dragover dragend', function (e) {
-          if (editor.settings.paste_data_images) {
-            e.preventDefault();
-          }
-        });
       }
 
       self.pasteHtml = pasteHtml;
       self.pasteText = pasteText;
       self.pasteImageData = pasteImageData;
+      self.getDataTransferItems = getDataTransferItems;
+      self.hasHtmlOrText = hasHtmlOrText;
+      self.hasContentType = hasContentType;
 
       editor.on('preInit', function () {
         registerEventHandlers();
@@ -2037,6 +2253,7 @@ define(
   }
 );
 
+defineGlobal("global!setTimeout", setTimeout);
 /**
  * CutCopy.js
  *
@@ -2050,11 +2267,12 @@ define(
 define(
   'tinymce.plugins.paste.core.CutCopy',
   [
+    'global!setTimeout',
     'tinymce.core.Env',
     'tinymce.plugins.paste.core.InternalHtml',
     'tinymce.plugins.paste.core.Utils'
   ],
-  function (Env, InternalHtml, Utils) {
+  function (setTimeout, Env, InternalHtml, Utils) {
     var noop = function () {
     };
 
@@ -2161,6 +2379,185 @@ define(
   }
 );
 /**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.dom.RangeUtils',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.dom.RangeUtils');
+  }
+);
+
+/**
+ * DragDrop.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.core.DragDrop',
+  [
+    'tinymce.core.dom.RangeUtils',
+    'tinymce.core.util.Delay',
+    'tinymce.plugins.paste.api.Settings',
+    'tinymce.plugins.paste.core.InternalHtml',
+    'tinymce.plugins.paste.core.Utils'
+  ],
+  function (RangeUtils, Delay, Settings, InternalHtml, Utils) {
+    var getCaretRangeFromEvent = function (editor, e) {
+      return RangeUtils.getCaretRangeFromPoint(e.clientX, e.clientY, editor.getDoc());
+    };
+
+    var isPlainTextFileUrl = function (content) {
+      var plainTextContent = content['text/plain'];
+      return plainTextContent ? plainTextContent.indexOf('file://') === 0 : false;
+    };
+
+    var setFocusedRange = function (editor, rng) {
+      editor.focus();
+      editor.selection.setRng(rng);
+    };
+
+    var setup = function (editor, clipboard, draggingInternallyState) {
+      // Block all drag/drop events
+      if (Settings.shouldBlockDrop(editor)) {
+        editor.on('dragend dragover draggesture dragdrop drop drag', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      }
+
+      // Prevent users from dropping data images on Gecko
+      if (!Settings.shouldPasteDataImages(editor)) {
+        editor.on('drop', function (e) {
+          var dataTransfer = e.dataTransfer;
+
+          if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
+            e.preventDefault();
+          }
+        });
+      }
+
+      editor.on('drop', function (e) {
+        var dropContent, rng;
+
+        rng = getCaretRangeFromEvent(editor, e);
+
+        if (e.isDefaultPrevented() || draggingInternallyState.get()) {
+          return;
+        }
+
+        dropContent = clipboard.getDataTransferItems(e.dataTransfer);
+        var internal = clipboard.hasContentType(dropContent, InternalHtml.internalHtmlMime());
+
+        if ((!clipboard.hasHtmlOrText(dropContent) || isPlainTextFileUrl(dropContent)) && clipboard.pasteImageData(e, rng)) {
+          return;
+        }
+
+        if (rng && Settings.shouldFilterDrop(editor)) {
+          var content = dropContent['mce-internal'] || dropContent['text/html'] || dropContent['text/plain'];
+
+          if (content) {
+            e.preventDefault();
+
+            // FF 45 doesn't paint a caret when dragging in text in due to focus call by execCommand
+            Delay.setEditorTimeout(editor, function () {
+              editor.undoManager.transact(function () {
+                if (dropContent['mce-internal']) {
+                  editor.execCommand('Delete');
+                }
+
+                setFocusedRange(editor, rng);
+
+                content = Utils.trimHtml(content);
+
+                if (!dropContent['text/html']) {
+                  clipboard.pasteText(content);
+                } else {
+                  clipboard.pasteHtml(content, internal);
+                }
+              });
+            });
+          }
+        }
+      });
+
+      editor.on('dragstart', function (e) {
+        draggingInternallyState.set(true);
+      });
+
+      editor.on('dragover dragend', function (e) {
+        if (Settings.shouldPasteDataImages(editor) && draggingInternallyState.get() === false) {
+          e.preventDefault();
+          setFocusedRange(editor, getCaretRangeFromEvent(editor, e));
+        }
+
+        if (e.type === 'dragend') {
+          draggingInternallyState.set(false);
+        }
+      });
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.core.PrePostProcess',
+  [
+    'tinymce.plugins.paste.api.Settings'
+  ],
+  function (Settings) {
+    var setup = function (editor) {
+      var plugin = editor.plugins.paste;
+
+      var preProcess = Settings.getPreProcess(editor);
+      if (preProcess) {
+        editor.on('PastePreProcess', function (e) {
+          preProcess.call(plugin, plugin, e);
+        });
+      }
+
+      var postProcess = Settings.getPostProcess(editor);
+      if (postProcess) {
+        editor.on('PastePostProcess', function (e) {
+          postProcess.call(plugin, plugin, e);
+        });
+      }
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
+/**
  * Quirks.js
  *
  * Released under LGPL License.
@@ -2183,10 +2580,11 @@ define(
   [
     'tinymce.core.Env',
     'tinymce.core.util.Tools',
-    'tinymce.plugins.paste.core.WordFilter',
-    'tinymce.plugins.paste.core.Utils'
+    'tinymce.plugins.paste.api.Settings',
+    'tinymce.plugins.paste.core.Utils',
+    'tinymce.plugins.paste.core.WordFilter'
   ],
-  function (Env, Tools, WordFilter, Utils) {
+  function (Env, Tools, Settings, Utils, WordFilter) {
     function addPreProcessFilter(editor, filterFunc) {
       editor.on('PastePreProcess', function (e) {
         e.content = filterFunc(editor, e.content, e.internal, e.wordContent);
@@ -2258,9 +2656,9 @@ define(
       }
 
       // Filter away styles that isn't matching the target node
-      var webKitStyles = editor.settings.paste_webkit_styles;
+      var webKitStyles = Settings.getWebkitStyles(editor);
 
-      if (editor.settings.paste_remove_styles_if_webkit === false || webKitStyles == "all") {
+      if (Settings.shouldRemoveWebKitStyles(editor) === false || webKitStyles === "all") {
         return content;
       }
 
@@ -2288,7 +2686,7 @@ define(
               currentValue = dom.toHex(currentValue);
             }
 
-            if (currentValue != inputValue) {
+            if (currentValue !== inputValue) {
               outputStyles[webKitStyles[i]] = inputValue;
             }
           }
@@ -2335,6 +2733,149 @@ define(
     };
   }
 );
+defineGlobal("global!Array", Array);
+defineGlobal("global!Error", Error);
+define(
+  'ephox.katamari.api.Fun',
+
+  [
+    'global!Array',
+    'global!Error'
+  ],
+
+  function (Array, Error) {
+
+    var noop = function () { };
+
+    var compose = function (fa, fb) {
+      return function () {
+        return fa(fb.apply(null, arguments));
+      };
+    };
+
+    var constant = function (value) {
+      return function () {
+        return value;
+      };
+    };
+
+    var identity = function (x) {
+      return x;
+    };
+
+    var tripleEquals = function(a, b) {
+      return a === b;
+    };
+
+    // Don't use array slice(arguments), makes the whole function unoptimisable on Chrome
+    var curry = function (f) {
+      // equivalent to arguments.slice(1)
+      // starting at 1 because 0 is the f, makes things tricky.
+      // Pay attention to what variable is where, and the -1 magic.
+      // thankfully, we have tests for this.
+      var args = new Array(arguments.length - 1);
+      for (var i = 1; i < arguments.length; i++) args[i-1] = arguments[i];
+
+      return function () {
+        var newArgs = new Array(arguments.length);
+        for (var j = 0; j < newArgs.length; j++) newArgs[j] = arguments[j];
+
+        var all = args.concat(newArgs);
+        return f.apply(null, all);
+      };
+    };
+
+    var not = function (f) {
+      return function () {
+        return !f.apply(null, arguments);
+      };
+    };
+
+    var die = function (msg) {
+      return function () {
+        throw new Error(msg);
+      };
+    };
+
+    var apply = function (f) {
+      return f();
+    };
+
+    var call = function(f) {
+      f();
+    };
+
+    var never = constant(false);
+    var always = constant(true);
+    
+
+    return {
+      noop: noop,
+      compose: compose,
+      constant: constant,
+      identity: identity,
+      tripleEquals: tripleEquals,
+      curry: curry,
+      not: not,
+      die: die,
+      apply: apply,
+      call: call,
+      never: never,
+      always: always
+    };
+  }
+);
+
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.paste.ui.Buttons',
+  [
+    'ephox.katamari.api.Fun'
+  ],
+  function (Fun) {
+    var stateChange = function (editor, clipboard, e) {
+      var ctrl = e.control;
+
+      ctrl.active(clipboard.pasteFormat === 'text');
+
+      editor.on('PastePlainTextToggle', function (e) {
+        ctrl.active(e.state);
+      });
+    };
+
+    var register = function (editor, clipboard) {
+      var postRender = Fun.curry(stateChange, editor, clipboard);
+
+      editor.addButton('pastetext', {
+        icon: 'pastetext',
+        tooltip: 'Paste as text',
+        cmd: 'mceTogglePlainTextPaste',
+        onPostRender: postRender
+      });
+
+      editor.addMenuItem('pastetext', {
+        text: 'Paste as text',
+        selectable: true,
+        active: clipboard.pasteFormat,
+        cmd: 'mceTogglePlainTextPaste',
+        onPostRender: postRender
+      });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
 /**
  * Plugin.js
  *
@@ -2345,140 +2886,38 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contains all core logic for the paste plugin.
- *
- * @class tinymce.paste.Plugin
- * @private
- */
 define(
   'tinymce.plugins.paste.Plugin',
   [
+    'ephox.katamari.api.Cell',
     'tinymce.core.PluginManager',
-    'tinymce.plugins.paste.api.Events',
+    'tinymce.plugins.paste.alien.DetectProPlugin',
+    'tinymce.plugins.paste.api.Api',
+    'tinymce.plugins.paste.api.Commands',
     'tinymce.plugins.paste.core.Clipboard',
     'tinymce.plugins.paste.core.CutCopy',
-    'tinymce.plugins.paste.core.Quirks'
+    'tinymce.plugins.paste.core.DragDrop',
+    'tinymce.plugins.paste.core.PrePostProcess',
+    'tinymce.plugins.paste.core.Quirks',
+    'tinymce.plugins.paste.ui.Buttons'
   ],
-  function (PluginManager, Events, Clipboard, CutCopy, Quirks) {
-    var userIsInformed;
+  function (Cell, PluginManager, DetectProPlugin, Api, Commands, Clipboard, CutCopy, DragDrop, PrePostProcess, Quirks, Buttons) {
+    var userIsInformedState = Cell(false);
 
     PluginManager.add('paste', function (editor) {
-      var self = this, clipboard, settings = editor.settings;
+      var clipboard = new Clipboard(editor);
+      var quirks = Quirks.setup(editor);
+      var draggingInternallyState = Cell(false);
 
-      function isUserInformedAboutPlainText() {
-        return userIsInformed || editor.settings.paste_plaintext_inform === false;
+      if (DetectProPlugin.hasProPlugin(editor) === false) {
+        Buttons.register(editor, clipboard);
+        Commands.register(editor, clipboard, userIsInformedState);
+        PrePostProcess.setup(editor);
+        CutCopy.register(editor);
+        DragDrop.setup(editor, clipboard, draggingInternallyState);
       }
 
-      function togglePlainTextPaste() {
-        if (clipboard.pasteFormat == "text") {
-          clipboard.pasteFormat = "html";
-          Events.firePastePlainTextToggle(editor, false);
-        } else {
-          clipboard.pasteFormat = "text";
-          Events.firePastePlainTextToggle(editor, true);
-
-          if (!isUserInformedAboutPlainText()) {
-            var message = editor.translate('Paste is now in plain text mode. Contents will now ' +
-              'be pasted as plain text until you toggle this option off.');
-
-            editor.notificationManager.open({
-              text: message,
-              type: 'info'
-            });
-
-            userIsInformed = true;
-          }
-        }
-
-        editor.focus();
-      }
-
-      function stateChange() {
-        var self = this;
-
-        self.active(clipboard.pasteFormat === 'text');
-
-        editor.on('PastePlainTextToggle', function (e) {
-          self.active(e.state);
-        });
-      }
-
-      // draw back if power version is requested and registered
-      if (/(^|[ ,])powerpaste([, ]|$)/.test(settings.plugins) && PluginManager.get('powerpaste')) {
-        /*eslint no-console:0 */
-        if (typeof console !== "undefined" && console.log) {
-          console.log("PowerPaste is incompatible with Paste plugin! Remove 'paste' from the 'plugins' option.");
-        }
-        return;
-      }
-
-      self.clipboard = clipboard = new Clipboard(editor);
-      self.quirks = Quirks.setup(editor);
-
-      if (editor.settings.paste_as_text) {
-        self.clipboard.pasteFormat = "text";
-      }
-
-      if (settings.paste_preprocess) {
-        editor.on('PastePreProcess', function (e) {
-          settings.paste_preprocess.call(self, self, e);
-        });
-      }
-
-      if (settings.paste_postprocess) {
-        editor.on('PastePostProcess', function (e) {
-          settings.paste_postprocess.call(self, self, e);
-        });
-      }
-
-      editor.addCommand('mceInsertClipboardContent', function (ui, value) {
-        if (value.content) {
-          self.clipboard.pasteHtml(value.content, value.internal);
-        }
-
-        if (value.text) {
-          self.clipboard.pasteText(value.text);
-        }
-      });
-
-      // Block all drag/drop events
-      if (editor.settings.paste_block_drop) {
-        editor.on('dragend dragover draggesture dragdrop drop drag', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-        });
-      }
-
-      // Prevent users from dropping data images on Gecko
-      if (!editor.settings.paste_data_images) {
-        editor.on('drop', function (e) {
-          var dataTransfer = e.dataTransfer;
-
-          if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
-            e.preventDefault();
-          }
-        });
-      }
-
-      editor.addCommand('mceTogglePlainTextPaste', togglePlainTextPaste);
-
-      editor.addButton('pastetext', {
-        icon: 'pastetext',
-        tooltip: 'Paste as text',
-        onclick: togglePlainTextPaste,
-        onPostRender: stateChange
-      });
-
-      editor.addMenuItem('pastetext', {
-        text: 'Paste as text',
-        selectable: true,
-        active: clipboard.pasteFormat,
-        onclick: togglePlainTextPaste,
-        onPostRender: stateChange
-      });
-
-      CutCopy.register(editor);
+      return Api.get(clipboard, quirks);
     });
 
     return function () { };

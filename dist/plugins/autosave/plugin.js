@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,34 +76,47 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.autosave.Plugin","tinymce.core.EditorManager","tinymce.core.PluginManager","tinymce.core.util.LocalStorage","tinymce.core.util.Tools","global!window","global!tinymce.util.Tools.resolve"]
+["tinymce.plugins.autosave.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.autosave.api.Api","tinymce.plugins.autosave.core.BeforeUnload","tinymce.plugins.autosave.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.autosave.core.Storage","global!window","tinymce.core.EditorManager","tinymce.core.util.Tools","tinymce.plugins.autosave.api.Settings","global!setInterval","tinymce.core.util.LocalStorage","tinymce.plugins.autosave.api.Events","global!document","tinymce.plugins.autosave.core.Time"]
 jsc*/
-defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
 define(
-  'tinymce.core.EditorManager',
+  'ephox.katamari.api.Cell',
+
   [
-    'global!tinymce.util.Tools.resolve'
   ],
-  function (resolve) {
-    return resolve('tinymce.EditorManager');
+
+  function () {
+    var Cell = function (initial) {
+      var value = initial;
+
+      var get = function () {
+        return value;
+      };
+
+      var set = function (v) {
+        value = v;
+      };
+
+      var clone = function () {
+        return Cell(get());
+      };
+
+      return {
+        get: get,
+        set: set,
+        clone: clone
+      };
+    };
+
+    return Cell;
   }
 );
 
+defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
  * ResolveGlobal.js
  *
@@ -124,6 +137,7 @@ define(
   }
 );
 
+defineGlobal("global!setInterval", setInterval);
 /**
  * ResolveGlobal.js
  *
@@ -164,7 +178,393 @@ define(
   }
 );
 
+/**
+ * Events.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.api.Events',
+  [
+  ],
+  function () {
+    var fireRestoreDraft = function (editor) {
+      return editor.fire('RestoreDraft');
+    };
+
+    var fireStoreDraft = function (editor) {
+      return editor.fire('StoreDraft');
+    };
+
+    var fireRemoveDraft = function (editor) {
+      return editor.fire('RemoveDraft');
+    };
+
+    return {
+      fireRestoreDraft: fireRestoreDraft,
+      fireStoreDraft: fireStoreDraft,
+      fireRemoveDraft: fireRemoveDraft
+    };
+  }
+);
+
+defineGlobal("global!document", document);
+/**
+ * Time.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.core.Time',
+  [
+  ],
+  function () {
+    var parse = function (time, defaultTime) {
+      var multiples = {
+        s: 1000,
+        m: 60000
+      };
+
+      time = /^(\d+)([ms]?)$/.exec('' + (time || defaultTime));
+
+      return (time[2] ? multiples[time[2]] : 1) * parseInt(time, 10);
+    };
+
+    return {
+      parse: parse
+    };
+  }
+);
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.api.Settings',
+  [
+    'global!document',
+    'tinymce.plugins.autosave.core.Time'
+  ],
+  function (document, Time) {
+    var shouldAskBeforeUnload = function (editor) {
+      return editor.getParam("autosave_ask_before_unload", true);
+    };
+
+    var getAutoSavePrefix = function (editor) {
+      var prefix = editor.getParam('autosave_prefix', 'tinymce-autosave-{path}{query}-{id}-');
+
+      prefix = prefix.replace(/\{path\}/g, document.location.pathname);
+      prefix = prefix.replace(/\{query\}/g, document.location.search);
+      prefix = prefix.replace(/\{id\}/g, editor.id);
+
+      return prefix;
+    };
+
+    var shouldRestoreWhenEmpty = function (editor) {
+      return editor.getParam('autosave_restore_when_empty', false);
+    };
+
+    var getAutoSaveInterval = function (editor) {
+      return Time.parse(editor.settings.autosave_interval, '30s');
+    };
+
+    var getAutoSaveRetention = function (editor) {
+      return Time.parse(editor.settings.autosave_retention, '20m');
+    };
+
+    return {
+      shouldAskBeforeUnload: shouldAskBeforeUnload,
+      getAutoSavePrefix: getAutoSavePrefix,
+      shouldRestoreWhenEmpty: shouldRestoreWhenEmpty,
+      getAutoSaveInterval: getAutoSaveInterval,
+      getAutoSaveRetention: getAutoSaveRetention
+    };
+  }
+);
+/**
+ * Storage.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.core.Storage',
+  [
+    'global!setInterval',
+    'tinymce.core.util.LocalStorage',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.autosave.api.Events',
+    'tinymce.plugins.autosave.api.Settings'
+  ],
+  function (setInterval, LocalStorage, Tools, Events, Settings) {
+    var isEmpty = function (editor, html) {
+      var forcedRootBlockName = editor.settings.forced_root_block;
+
+      html = Tools.trim(typeof html === "undefined" ? editor.getBody().innerHTML : html);
+
+      return html === '' || new RegExp(
+        '^<' + forcedRootBlockName + '[^>]*>((\u00a0|&nbsp;|[ \t]|<br[^>]*>)+?|)<\/' + forcedRootBlockName + '>|<br>$', 'i'
+      ).test(html);
+    };
+
+    var hasDraft = function (editor) {
+      var time = parseInt(LocalStorage.getItem(Settings.getAutoSavePrefix(editor) + "time"), 10) || 0;
+
+      if (new Date().getTime() - time > Settings.getAutoSaveRetention(editor)) {
+        removeDraft(editor, false);
+        return false;
+      }
+
+      return true;
+    };
+
+    var removeDraft = function (editor, fire) {
+      var prefix = Settings.getAutoSavePrefix(editor);
+
+      LocalStorage.removeItem(prefix + "draft");
+      LocalStorage.removeItem(prefix + "time");
+
+      if (fire !== false) {
+        Events.fireRemoveDraft(editor);
+      }
+    };
+
+    var storeDraft = function (editor) {
+      var prefix = Settings.getAutoSavePrefix(editor);
+
+      if (!isEmpty(editor) && editor.isDirty()) {
+        LocalStorage.setItem(prefix + "draft", editor.getContent({ format: 'raw', no_events: true }));
+        LocalStorage.setItem(prefix + "time", new Date().getTime());
+        Events.fireStoreDraft(editor);
+      }
+    };
+
+    var restoreDraft = function (editor) {
+      var prefix = Settings.getAutoSavePrefix(editor);
+
+      if (hasDraft(editor)) {
+        editor.setContent(LocalStorage.getItem(prefix + "draft"), { format: 'raw' });
+        Events.fireRestoreDraft(editor);
+      }
+    };
+
+    var startStoreDraft = function (editor, started) {
+      var interval = Settings.getAutoSaveInterval(editor);
+
+      if (!started.get()) {
+        setInterval(function () {
+          if (!editor.removed) {
+            storeDraft(editor);
+          }
+        }, interval);
+
+        started.set(true);
+      }
+    };
+
+    var restoreLastDraft = function (editor) {
+      editor.undoManager.transact(function () {
+        restoreDraft(editor);
+        removeDraft(editor);
+      });
+
+      editor.focus();
+    };
+
+    return {
+      isEmpty: isEmpty,
+      hasDraft: hasDraft,
+      removeDraft: removeDraft,
+      storeDraft: storeDraft,
+      restoreDraft: restoreDraft,
+      startStoreDraft: startStoreDraft,
+      restoreLastDraft: restoreLastDraft
+    };
+  }
+);
+/**
+ * Api.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.api.Api',
+  [
+    'tinymce.plugins.autosave.core.Storage'
+  ],
+  function (Storage) {
+    // Inlined the curry function since adding Fun without tree shaking to every plugin would produce a lot of bloat
+    var curry = function (f, editor) {
+      return function () {
+        var args = Array.prototype.slice.call(arguments);
+        return f.apply(null, [editor].concat(args));
+      };
+    };
+
+    var get = function (editor) {
+      return {
+        hasDraft: curry(Storage.hasDraft, editor),
+        storeDraft: curry(Storage.storeDraft, editor),
+        restoreDraft: curry(Storage.restoreDraft, editor),
+        removeDraft: curry(Storage.removeDraft, editor),
+        isEmpty: curry(Storage.isEmpty, editor)
+      };
+    };
+
+    return {
+      get: get
+    };
+  }
+);
 defineGlobal("global!window", window);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.EditorManager',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.EditorManager');
+  }
+);
+
+/**
+ * BeforeUnload.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.core.BeforeUnload',
+  [
+    'global!window',
+    'tinymce.core.EditorManager',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.autosave.api.Settings'
+  ],
+  function (window, EditorManager, Tools, Settings) {
+    EditorManager._beforeUnloadHandler = function () {
+      var msg;
+
+      Tools.each(EditorManager.get(), function (editor) {
+        // Store a draft for each editor instance
+        if (editor.plugins.autosave) {
+          editor.plugins.autosave.storeDraft();
+        }
+
+        // Setup a return message if the editor is dirty
+        if (!msg && editor.isDirty() && Settings.shouldAskBeforeUnload(editor)) {
+          msg = editor.translate("You have unsaved changes are you sure you want to navigate away?");
+        }
+      });
+
+      return msg;
+    };
+
+    var setup = function (editor) {
+      window.onbeforeunload = EditorManager._beforeUnloadHandler;
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.autosave.ui.Buttons',
+  [
+    'tinymce.plugins.autosave.core.Storage'
+  ],
+  function (Storage) {
+    var postRender = function (editor, started) {
+      return function (e) {
+        var ctrl = e.control;
+
+        ctrl.disabled(!Storage.hasDraft(editor));
+
+        editor.on('StoreDraft RestoreDraft RemoveDraft', function () {
+          ctrl.disabled(!Storage.hasDraft(editor));
+        });
+
+        // TODO: Investigate why this is only done on postrender that would
+        // make the feature broken if only the menu item was rendered since
+        // it is rendered when the menu appears
+        Storage.startStoreDraft(editor, started);
+      };
+    };
+
+    var register = function (editor, started) {
+      editor.addButton('restoredraft', {
+        title: 'Restore last draft',
+        onclick: function () {
+          Storage.restoreLastDraft(editor);
+        },
+        onPostRender: postRender(editor, started)
+      });
+
+      editor.addMenuItem('restoredraft', {
+        text: 'Restore last draft',
+        onclick: function () {
+          Storage.restoreLastDraft(editor);
+        },
+        onPostRender: postRender(editor, started),
+        context: 'file'
+      });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
 /**
  * Plugin.js
  *
@@ -184,161 +584,20 @@ defineGlobal("global!window", window);
 define(
   'tinymce.plugins.autosave.Plugin',
   [
-    'tinymce.core.EditorManager',
+    'ephox.katamari.api.Cell',
     'tinymce.core.PluginManager',
-    'tinymce.core.util.LocalStorage',
-    'tinymce.core.util.Tools',
-    'global!window'
+    'tinymce.plugins.autosave.api.Api',
+    'tinymce.plugins.autosave.core.BeforeUnload',
+    'tinymce.plugins.autosave.ui.Buttons'
   ],
-  function (EditorManager, PluginManager, LocalStorage, Tools, window) {
-    EditorManager._beforeUnloadHandler = function () {
-      var msg;
-
-      Tools.each(EditorManager.get(), function (editor) {
-        // Store a draft for each editor instance
-        if (editor.plugins.autosave) {
-          editor.plugins.autosave.storeDraft();
-        }
-
-        // Setup a return message if the editor is dirty
-        if (!msg && editor.isDirty() && editor.getParam("autosave_ask_before_unload", true)) {
-          msg = editor.translate("You have unsaved changes are you sure you want to navigate away?");
-        }
-      });
-
-      return msg;
-    };
-
+  function (Cell, PluginManager, Api, BeforeUnload, Buttons) {
     PluginManager.add('autosave', function (editor) {
-      var settings = editor.settings, prefix, started;
+      var started = Cell(false);
 
-      prefix = settings.autosave_prefix || 'tinymce-autosave-{path}{query}-{id}-';
-      prefix = prefix.replace(/\{path\}/g, document.location.pathname);
-      prefix = prefix.replace(/\{query\}/g, document.location.search);
-      prefix = prefix.replace(/\{id\}/g, editor.id);
+      BeforeUnload.setup(editor);
+      Buttons.register(editor, started);
 
-      function parseTime(time, defaultTime) {
-        var multipels = {
-          s: 1000,
-          m: 60000
-        };
-
-        time = /^(\d+)([ms]?)$/.exec('' + (time || defaultTime));
-
-        return (time[2] ? multipels[time[2]] : 1) * parseInt(time, 10);
-      }
-
-      function hasDraft() {
-        var time = parseInt(LocalStorage.getItem(prefix + "time"), 10) || 0;
-
-        if (new Date().getTime() - time > settings.autosave_retention) {
-          removeDraft(false);
-          return false;
-        }
-
-        return true;
-      }
-
-      function removeDraft(fire) {
-        LocalStorage.removeItem(prefix + "draft");
-        LocalStorage.removeItem(prefix + "time");
-
-        if (fire !== false) {
-          editor.fire('RemoveDraft');
-        }
-      }
-
-      function storeDraft() {
-        if (!isEmpty() && editor.isDirty()) {
-          LocalStorage.setItem(prefix + "draft", editor.getContent({ format: 'raw', no_events: true }));
-          LocalStorage.setItem(prefix + "time", new Date().getTime());
-          editor.fire('StoreDraft');
-        }
-      }
-
-      function restoreDraft() {
-        if (hasDraft()) {
-          editor.setContent(LocalStorage.getItem(prefix + "draft"), { format: 'raw' });
-          editor.fire('RestoreDraft');
-        }
-      }
-
-      function startStoreDraft() {
-        if (!started) {
-          setInterval(function () {
-            if (!editor.removed) {
-              storeDraft();
-            }
-          }, settings.autosave_interval);
-
-          started = true;
-        }
-      }
-
-      settings.autosave_interval = parseTime(settings.autosave_interval, '30s');
-      settings.autosave_retention = parseTime(settings.autosave_retention, '20m');
-
-      function postRender() {
-        var self = this;
-
-        self.disabled(!hasDraft());
-
-        editor.on('StoreDraft RestoreDraft RemoveDraft', function () {
-          self.disabled(!hasDraft());
-        });
-
-        startStoreDraft();
-      }
-
-      function restoreLastDraft() {
-        editor.undoManager.beforeChange();
-        restoreDraft();
-        removeDraft();
-        editor.undoManager.add();
-      }
-
-      editor.addButton('restoredraft', {
-        title: 'Restore last draft',
-        onclick: restoreLastDraft,
-        onPostRender: postRender
-      });
-
-      editor.addMenuItem('restoredraft', {
-        text: 'Restore last draft',
-        onclick: restoreLastDraft,
-        onPostRender: postRender,
-        context: 'file'
-      });
-
-      function isEmpty(html) {
-        var forcedRootBlockName = editor.settings.forced_root_block;
-
-        html = Tools.trim(typeof html == "undefined" ? editor.getBody().innerHTML : html);
-
-        return html === '' || new RegExp(
-          '^<' + forcedRootBlockName + '[^>]*>((\u00a0|&nbsp;|[ \t]|<br[^>]*>)+?|)<\/' + forcedRootBlockName + '>|<br>$', 'i'
-        ).test(html);
-      }
-
-      if (editor.settings.autosave_restore_when_empty !== false) {
-        editor.on('init', function () {
-          if (hasDraft() && isEmpty()) {
-            restoreDraft();
-          }
-        });
-
-        editor.on('saveContent', function () {
-          removeDraft();
-        });
-      }
-
-      window.onbeforeunload = EditorManager._beforeUnloadHandler;
-
-      this.hasDraft = hasDraft;
-      this.storeDraft = storeDraft;
-      this.restoreDraft = restoreDraft;
-      this.removeDraft = removeDraft;
-      this.isEmpty = isEmpty;
+      return Api.get(editor);
     });
 
     return function () { };

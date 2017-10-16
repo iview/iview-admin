@@ -11,7 +11,7 @@ import tinymce from 'tinymce';
 export default {
     mounted () {
         this.$nextTick(() => {
-            var height = document.querySelector('.single-page-con').offsetHeight - 250;
+            var height = document.body.offsetHeight - 300;
             tinymce.init({
                 selector: '#tinymceEditer',
                 branding: false,

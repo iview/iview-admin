@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,34 +76,14 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.media.Plugin","tinymce.core.html.Node","tinymce.core.PluginManager","tinymce.core.util.Tools","tinymce.plugins.media.core.Nodes","tinymce.plugins.media.core.Sanitize","tinymce.plugins.media.core.UpdateHtml","tinymce.plugins.media.ui.Dialog","global!tinymce.util.Tools.resolve","tinymce.core.html.Writer","tinymce.core.html.SaxParser","tinymce.core.html.Schema","tinymce.plugins.media.core.VideoScript","tinymce.core.Env","tinymce.core.dom.DOMUtils","tinymce.plugins.media.core.Size","tinymce.core.util.Delay","tinymce.plugins.media.core.HtmlToData","tinymce.plugins.media.core.Service","tinymce.plugins.media.ui.SizeManager","tinymce.plugins.media.core.DataToHtml","tinymce.core.util.Promise","tinymce.plugins.media.core.Mime","tinymce.plugins.media.core.UrlPatterns"]
+["tinymce.plugins.media.Plugin","tinymce.core.PluginManager","tinymce.plugins.media.api.Api","tinymce.plugins.media.api.Commands","tinymce.plugins.media.core.FilterContent","tinymce.plugins.media.core.ResolveName","tinymce.plugins.media.core.Selection","tinymce.plugins.media.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.media.ui.Dialog","tinymce.core.html.Node","tinymce.core.util.Tools","tinymce.plugins.media.core.Nodes","tinymce.plugins.media.core.Sanitize","tinymce.plugins.media.core.UpdateHtml","tinymce.core.Env","tinymce.core.util.Delay","tinymce.plugins.media.api.Settings","tinymce.plugins.media.core.HtmlToData","tinymce.plugins.media.core.Service","tinymce.plugins.media.core.Size","tinymce.core.html.Writer","tinymce.core.html.SaxParser","tinymce.core.html.Schema","tinymce.core.dom.DOMUtils","tinymce.plugins.media.ui.SizeManager","tinymce.plugins.media.core.VideoScript","tinymce.core.util.Promise","tinymce.plugins.media.core.DataToHtml","tinymce.plugins.media.core.Mime","tinymce.plugins.media.core.UrlPatterns"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.html.Node',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.html.Node');
-  }
-);
-
 /**
  * ResolveGlobal.js
  *
@@ -135,12 +115,12 @@ define(
  */
 
 define(
-  'tinymce.core.util.Tools',
+  'tinymce.core.Env',
   [
     'global!tinymce.util.Tools.resolve'
   ],
   function (resolve) {
-    return resolve('tinymce.util.Tools');
+    return resolve('tinymce.Env');
   }
 );
 
@@ -155,12 +135,97 @@ define(
  */
 
 define(
-  'tinymce.core.html.Writer',
+  'tinymce.core.util.Delay',
   [
     'global!tinymce.util.Tools.resolve'
   ],
   function (resolve) {
-    return resolve('tinymce.html.Writer');
+    return resolve('tinymce.util.Delay');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Tools',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Tools');
+  }
+);
+
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.api.Settings',
+  [
+  ],
+  function () {
+    var getScripts = function (editor) {
+      return editor.getParam('media_scripts');
+    };
+
+    var getAudioTemplateCallback = function (editor) {
+      return editor.getParam('audio_template_callback');
+    };
+
+    var getVideoTemplateCallback = function (editor) {
+      return editor.getParam('video_template_callback');
+    };
+
+    var hasLiveEmbeds = function (editor) {
+      return editor.getParam('media_live_embeds', true);
+    };
+
+    var shouldFilterHtml = function (editor) {
+      return editor.getParam('media_filter_html', true);
+    };
+
+    var getUrlResolver = function (editor) {
+      return editor.getParam('media_url_resolver');
+    };
+
+    var hasAltSource = function (editor) {
+      return editor.getParam('media_alt_source', true);
+    };
+
+    var hasPoster = function (editor) {
+      return editor.getParam('media_poster', true);
+    };
+
+    var hasDimensions = function (editor) {
+      return editor.getParam('media_dimensions', true);
+    };
+
+    return {
+      getScripts: getScripts,
+      getAudioTemplateCallback: getAudioTemplateCallback,
+      getVideoTemplateCallback: getVideoTemplateCallback,
+      hasLiveEmbeds: hasLiveEmbeds,
+      shouldFilterHtml: shouldFilterHtml,
+      getUrlResolver: getUrlResolver,
+      hasAltSource: hasAltSource,
+      hasPoster: hasPoster,
+      hasDimensions: hasDimensions
+    };
   }
 );
 
@@ -205,309 +270,6 @@ define(
 );
 
 /**
- * Sanitize.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.media.core.Sanitize',
-  [
-    'tinymce.core.util.Tools',
-    'tinymce.core.html.Writer',
-    'tinymce.core.html.SaxParser',
-    'tinymce.core.html.Schema'
-  ],
-  function (Tools, Writer, SaxParser, Schema) {
-    var sanitize = function (editor, html) {
-      if (editor.settings.media_filter_html === false) {
-        return html;
-      }
-
-      var writer = new Writer();
-      var blocked;
-
-      new SaxParser({
-        validate: false,
-        allow_conditional_comments: false,
-        special: 'script,noscript',
-
-        comment: function (text) {
-          writer.comment(text);
-        },
-
-        cdata: function (text) {
-          writer.cdata(text);
-        },
-
-        text: function (text, raw) {
-          writer.text(text, raw);
-        },
-
-        start: function (name, attrs, empty) {
-          blocked = true;
-
-          if (name === 'script' || name === 'noscript') {
-            return;
-          }
-
-          for (var i = 0; i < attrs.length; i++) {
-            if (attrs[i].name.indexOf('on') === 0) {
-              return;
-            }
-
-            if (attrs[i].name === 'style') {
-              attrs[i].value = editor.dom.serializeStyle(editor.dom.parseStyle(attrs[i].value), name);
-            }
-          }
-
-          writer.start(name, attrs, empty);
-          blocked = false;
-        },
-
-        end: function (name) {
-          if (blocked) {
-            return;
-          }
-
-          writer.end(name);
-        }
-      }, new Schema({})).parse(html);
-
-      return writer.getContent();
-    };
-
-    return {
-      sanitize: sanitize
-    };
-  }
-);
-/**
- * VideoScript.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.media.core.VideoScript',
-  [
-  ],
-  function () {
-    var getVideoScriptMatch = function (prefixes, src) {
-      // var prefixes = editor.settings.media_scripts;
-      if (prefixes) {
-        for (var i = 0; i < prefixes.length; i++) {
-          if (src.indexOf(prefixes[i].filter) !== -1) {
-            return prefixes[i];
-          }
-        }
-      }
-    };
-
-    return {
-      getVideoScriptMatch: getVideoScriptMatch
-    };
-  }
-);
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.Env',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.Env');
-  }
-);
-
-/**
- * Nodes.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.media.core.Nodes',
-  [
-    'tinymce.plugins.media.core.Sanitize',
-    'tinymce.plugins.media.core.VideoScript',
-    'tinymce.core.html.Node',
-    'tinymce.core.Env'
-  ],
-  function (Sanitize, VideoScript, Node, Env) {
-    var createPlaceholderNode = function (editor, node) {
-      var placeHolder;
-      var name = node.name;
-
-      placeHolder = new Node('img', 1);
-      placeHolder.shortEnded = true;
-
-      retainAttributesAndInnerHtml(editor, node, placeHolder);
-
-      placeHolder.attr({
-        width: node.attr('width') || "300",
-        height: node.attr('height') || (name === "audio" ? "30" : "150"),
-        style: node.attr('style'),
-        src: Env.transparentSrc,
-        "data-mce-object": name,
-        "class": "mce-object mce-object-" + name
-      });
-
-      return placeHolder;
-    };
-
-    var createPreviewIframeNode = function (editor, node) {
-      var previewWrapper;
-      var previewNode;
-      var shimNode;
-      var name = node.name;
-
-      previewWrapper = new Node('span', 1);
-      previewWrapper.attr({
-        contentEditable: 'false',
-        style: node.attr('style'),
-        "data-mce-object": name,
-        "class": "mce-preview-object mce-object-" + name
-      });
-
-      retainAttributesAndInnerHtml(editor, node, previewWrapper);
-
-      previewNode = new Node(name, 1);
-      previewNode.attr({
-        src: node.attr('src'),
-        allowfullscreen: node.attr('allowfullscreen'),
-        width: node.attr('width') || "300",
-        height: node.attr('height') || (name === "audio" ? "30" : "150"),
-        frameborder: '0'
-      });
-
-      shimNode = new Node('span', 1);
-      shimNode.attr('class', 'mce-shim');
-
-      previewWrapper.append(previewNode);
-      previewWrapper.append(shimNode);
-
-      return previewWrapper;
-    };
-
-    var retainAttributesAndInnerHtml = function (editor, sourceNode, targetNode) {
-      var attrName;
-      var attrValue;
-      var attribs;
-      var ai;
-      var innerHtml;
-
-      // Prefix all attributes except width, height and style since we
-      // will add these to the placeholder
-      attribs = sourceNode.attributes;
-      ai = attribs.length;
-      while (ai--) {
-        attrName = attribs[ai].name;
-        attrValue = attribs[ai].value;
-
-        if (attrName !== "width" && attrName !== "height" && attrName !== "style") {
-          if (attrName === "data" || attrName === "src") {
-            attrValue = editor.convertURL(attrValue, attrName);
-          }
-
-          targetNode.attr('data-mce-p-' + attrName, attrValue);
-        }
-      }
-
-      // Place the inner HTML contents inside an escaped attribute
-      // This enables us to copy/paste the fake object
-      innerHtml = sourceNode.firstChild && sourceNode.firstChild.value;
-      if (innerHtml) {
-        targetNode.attr("data-mce-html", escape(Sanitize.sanitize(editor, innerHtml)));
-        targetNode.firstChild = null;
-      }
-    };
-
-    var isWithinEphoxEmbed = function (node) {
-      while ((node = node.parent)) {
-        if (node.attr('data-ephox-embed-iri')) {
-          return true;
-        }
-      }
-
-      return false;
-    };
-
-    var placeHolderConverter = function (editor) {
-      return function (nodes) {
-        var i = nodes.length;
-        var node;
-        var videoScript;
-
-        while (i--) {
-          node = nodes[i];
-          if (!node.parent) {
-            continue;
-          }
-
-          if (node.parent.attr('data-mce-object')) {
-            continue;
-          }
-
-          if (node.name === 'script') {
-            videoScript = VideoScript.getVideoScriptMatch(editor.settings.media_scripts, node.attr('src'));
-            if (!videoScript) {
-              continue;
-            }
-          }
-
-          if (videoScript) {
-            if (videoScript.width) {
-              node.attr('width', videoScript.width.toString());
-            }
-
-            if (videoScript.height) {
-              node.attr('height', videoScript.height.toString());
-            }
-          }
-
-          if (node.name === 'iframe' && editor.settings.media_live_embeds !== false && Env.ceFalse) {
-            if (!isWithinEphoxEmbed(node)) {
-              node.replace(createPreviewIframeNode(editor, node));
-            }
-          } else {
-            if (!isWithinEphoxEmbed(node)) {
-              node.replace(createPlaceholderNode(editor, node));
-            }
-          }
-        }
-      };
-    };
-
-    return {
-      createPreviewIframeNode: createPreviewIframeNode,
-      createPlaceholderNode: createPlaceholderNode,
-      placeHolderConverter: placeHolderConverter
-    };
-  }
-);
-/**
  * ResolveGlobal.js
  *
  * Released under LGPL License.
@@ -527,6 +289,37 @@ define(
   }
 );
 
+/**
+ * VideoScript.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.VideoScript',
+  [
+  ],
+  function () {
+    var getVideoScriptMatch = function (prefixes, src) {
+      // var prefixes = Settings.getScripts(editor);
+      if (prefixes) {
+        for (var i = 0; i < prefixes.length; i++) {
+          if (src.indexOf(prefixes[i].filter) !== -1) {
+            return prefixes[i];
+          }
+        }
+      }
+    };
+
+    return {
+      getVideoScriptMatch: getVideoScriptMatch
+    };
+  }
+);
 /**
  * Size.js
  *
@@ -572,6 +365,191 @@ define(
     };
   }
 );
+/**
+ * HtmlToData.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.HtmlToData',
+  [
+    'tinymce.core.util.Tools',
+    'tinymce.core.html.SaxParser',
+    'tinymce.core.html.Schema',
+    'tinymce.core.dom.DOMUtils',
+    'tinymce.plugins.media.core.VideoScript',
+    'tinymce.plugins.media.core.Size'
+  ],
+  function (Tools, SaxParser, Schema, DOMUtils, VideoScript, Size) {
+    var DOM = DOMUtils.DOM;
+
+    var getEphoxEmbedIri = function (elm) {
+      return DOM.getAttrib(elm, 'data-ephox-embed-iri');
+    };
+
+    var isEphoxEmbed = function (html) {
+      var fragment = DOM.createFragment(html);
+      return getEphoxEmbedIri(fragment.firstChild) !== '';
+    };
+
+    var htmlToDataSax = function (prefixes, html) {
+      var data = {};
+
+      new SaxParser({
+        validate: false,
+        allow_conditional_comments: true,
+        special: 'script,noscript',
+        start: function (name, attrs) {
+          if (!data.source1 && name === "param") {
+            data.source1 = attrs.map.movie;
+          }
+
+          if (name === "iframe" || name === "object" || name === "embed" || name === "video" || name === "audio") {
+            if (!data.type) {
+              data.type = name;
+            }
+
+            data = Tools.extend(attrs.map, data);
+          }
+
+          if (name === "script") {
+            var videoScript = VideoScript.getVideoScriptMatch(prefixes, attrs.map.src);
+            if (!videoScript) {
+              return;
+            }
+
+            data = {
+              type: "script",
+              source1: attrs.map.src,
+              width: videoScript.width,
+              height: videoScript.height
+            };
+          }
+
+          if (name === "source") {
+            if (!data.source1) {
+              data.source1 = attrs.map.src;
+            } else if (!data.source2) {
+              data.source2 = attrs.map.src;
+            }
+          }
+
+          if (name === "img" && !data.poster) {
+            data.poster = attrs.map.src;
+          }
+        }
+      }).parse(html);
+
+      data.source1 = data.source1 || data.src || data.data;
+      data.source2 = data.source2 || '';
+      data.poster = data.poster || '';
+
+      return data;
+    };
+
+    var ephoxEmbedHtmlToData = function (html) {
+      var fragment = DOM.createFragment(html);
+      var div = fragment.firstChild;
+
+      return {
+        type: 'ephox-embed-iri',
+        source1: getEphoxEmbedIri(div),
+        source2: '',
+        poster: '',
+        width: Size.getMaxWidth(div),
+        height: Size.getMaxHeight(div)
+      };
+    };
+
+    var htmlToData = function (prefixes, html) {
+      return isEphoxEmbed(html) ? ephoxEmbedHtmlToData(html) : htmlToDataSax(prefixes, html);
+    };
+
+    return {
+      htmlToData: htmlToData
+    };
+  }
+);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Promise',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Promise');
+  }
+);
+
+/**
+ * Mime.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.Mime',
+  [
+  ],
+  function () {
+    var guess = function (url) {
+      var mimes = {
+        'mp3': 'audio/mpeg',
+        'wav': 'audio/wav',
+        'mp4': 'video/mp4',
+        'webm': 'video/webm',
+        'ogg': 'video/ogg',
+        'swf': 'application/x-shockwave-flash'
+      };
+      var fileEnd = url.toLowerCase().split('.').pop();
+      var mime = mimes[fileEnd];
+
+      return mime ? mime : '';
+    };
+
+    return {
+      guess: guess
+    };
+  }
+);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.html.Writer',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.html.Writer');
+  }
+);
+
 /**
  * UpdateHtml.js
  *
@@ -787,171 +765,6 @@ define(
   }
 );
 /**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Delay',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Delay');
-  }
-);
-
-/**
- * HtmlToData.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.media.core.HtmlToData',
-  [
-    'tinymce.core.util.Tools',
-    'tinymce.core.html.SaxParser',
-    'tinymce.core.html.Schema',
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.plugins.media.core.VideoScript',
-    'tinymce.plugins.media.core.Size'
-  ],
-  function (Tools, SaxParser, Schema, DOMUtils, VideoScript, Size) {
-    var DOM = DOMUtils.DOM;
-
-    var getEphoxEmbedIri = function (elm) {
-      return DOM.getAttrib(elm, 'data-ephox-embed-iri');
-    };
-
-    var isEphoxEmbed = function (html) {
-      var fragment = DOM.createFragment(html);
-      return getEphoxEmbedIri(fragment.firstChild) !== '';
-    };
-
-    var htmlToDataSax = function (prefixes, html) {
-      var data = {};
-
-      new SaxParser({
-        validate: false,
-        allow_conditional_comments: true,
-        special: 'script,noscript',
-        start: function (name, attrs) {
-          if (!data.source1 && name === "param") {
-            data.source1 = attrs.map.movie;
-          }
-
-          if (name === "iframe" || name === "object" || name === "embed" || name === "video" || name === "audio") {
-            if (!data.type) {
-              data.type = name;
-            }
-
-            data = Tools.extend(attrs.map, data);
-          }
-
-          if (name === "script") {
-            var videoScript = VideoScript.getVideoScriptMatch(prefixes, attrs.map.src);
-            if (!videoScript) {
-              return;
-            }
-
-            data = {
-              type: "script",
-              source1: attrs.map.src,
-              width: videoScript.width,
-              height: videoScript.height
-            };
-          }
-
-          if (name === "source") {
-            if (!data.source1) {
-              data.source1 = attrs.map.src;
-            } else if (!data.source2) {
-              data.source2 = attrs.map.src;
-            }
-          }
-
-          if (name === "img" && !data.poster) {
-            data.poster = attrs.map.src;
-          }
-        }
-      }).parse(html);
-
-      data.source1 = data.source1 || data.src || data.data;
-      data.source2 = data.source2 || '';
-      data.poster = data.poster || '';
-
-      return data;
-    };
-
-    var ephoxEmbedHtmlToData = function (html) {
-      var fragment = DOM.createFragment(html);
-      var div = fragment.firstChild;
-
-      return {
-        type: 'ephox-embed-iri',
-        source1: getEphoxEmbedIri(div),
-        source2: '',
-        poster: '',
-        width: Size.getMaxWidth(div),
-        height: Size.getMaxHeight(div)
-      };
-    };
-
-    var htmlToData = function (prefixes, html) {
-      return isEphoxEmbed(html) ? ephoxEmbedHtmlToData(html) : htmlToDataSax(prefixes, html);
-    };
-
-    return {
-      htmlToData: htmlToData
-    };
-  }
-);
-/**
- * Mime.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.media.core.Mime',
-  [
-  ],
-  function () {
-    var guess = function (url) {
-      var mimes = {
-        'mp3': 'audio/mpeg',
-        'wav': 'audio/wav',
-        'mp4': 'video/mp4',
-        'webm': 'video/webm',
-        'ogg': 'video/ogg',
-        'swf': 'application/x-shockwave-flash'
-      };
-      var fileEnd = url.toLowerCase().split('.').pop();
-      var mime = mimes[fileEnd];
-
-      return mime ? mime : '';
-    };
-
-    return {
-      guess: guess
-    };
-  }
-);
-/**
  * UrlPatterns.js
  *
  * Released under LGPL License.
@@ -1029,20 +842,74 @@ define(
 define(
   'tinymce.plugins.media.core.DataToHtml',
   [
-    'tinymce.plugins.media.core.Mime',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.media.api.Settings',
     'tinymce.plugins.media.core.HtmlToData',
-    'tinymce.plugins.media.core.UrlPatterns',
-    'tinymce.plugins.media.core.VideoScript',
+    'tinymce.plugins.media.core.Mime',
     'tinymce.plugins.media.core.UpdateHtml',
-    'tinymce.core.util.Tools'
+    'tinymce.plugins.media.core.UrlPatterns',
+    'tinymce.plugins.media.core.VideoScript'
   ],
-  function (Mime, HtmlToData, UrlPatterns, VideoScript, UpdateHtml, Tools) {
+  function (Tools, Settings, HtmlToData, Mime, UpdateHtml, UrlPatterns, VideoScript) {
+    var getIframeHtml = function (data) {
+      var allowFullscreen = data.allowFullscreen ? ' allowFullscreen="1"' : '';
+      return '<iframe src="' + data.source1 + '" width="' + data.width + '" height="' + data.height + '"' + allowFullscreen + '></iframe>';
+    };
+
+    var getFlashHtml = function (data) {
+      var html = '<object data="' + data.source1 + '" width="' + data.width + '" height="' + data.height + '" type="application/x-shockwave-flash">';
+
+      if (data.poster) {
+        html += '<img src="' + data.poster + '" width="' + data.width + '" height="' + data.height + '" />';
+      }
+
+      html += '</object>';
+
+      return html;
+    };
+
+    var getAudioHtml = function (data, audioTemplateCallback) {
+      if (audioTemplateCallback) {
+        return audioTemplateCallback(data);
+      } else {
+        return (
+          '<audio controls="controls" src="' + data.source1 + '">' +
+          (
+            data.source2 ?
+              '\n<source src="' + data.source2 + '"' +
+              (data.source2mime ? ' type="' + data.source2mime + '"' : '') +
+              ' />\n' : '') +
+          '</audio>'
+        );
+      }
+    };
+
+    var getVideoHtml = function (data, videoTemplateCallback) {
+      if (videoTemplateCallback) {
+        return videoTemplateCallback(data);
+      } else {
+        return (
+          '<video width="' + data.width +
+          '" height="' + data.height + '"' +
+          (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
+          '<source src="' + data.source1 + '"' +
+          (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
+          (data.source2 ? '<source src="' + data.source2 + '"' +
+            (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
+          '</video>'
+        );
+      }
+    };
+
+    var getScriptHtml = function (data) {
+      return '<script src="' + data.source1 + '"></script>';
+    };
+
     var dataToHtml = function (editor, dataIn) {
-      var html = '';
       var data = Tools.extend({}, dataIn);
 
       if (!data.source1) {
-        Tools.extend(data, HtmlToData.htmlToData(editor.settings.media_scripts, data.embed));
+        Tools.extend(data, HtmlToData.htmlToData(Settings.getScripts(editor), data.embed));
         if (!data.source1) {
           return '';
         }
@@ -1088,14 +955,17 @@ define(
       });
 
       if (data.embed) {
-        html = UpdateHtml.updateHtml(data.embed, data, true);
+        return UpdateHtml.updateHtml(data.embed, data, true);
       } else {
-        var videoScript = VideoScript.getVideoScriptMatch(editor.settings.media_scripts, data.source1);
+        var videoScript = VideoScript.getVideoScriptMatch(Settings.getScripts(editor), data.source1);
         if (videoScript) {
           data.type = 'script';
           data.width = videoScript.width;
           data.height = videoScript.height;
         }
+
+        var audioTemplateCallback = Settings.getAudioTemplateCallback(editor);
+        var videoTemplateCallback = Settings.getVideoTemplateCallback(editor);
 
         data.width = data.width || 300;
         data.height = data.height || 150;
@@ -1105,59 +975,17 @@ define(
         });
 
         if (data.type === "iframe") {
-          var allowFullscreen = data.allowFullscreen ? ' allowFullscreen="1"' : '';
-          html +=
-            '<iframe src="' + data.source1 +
-            '" width="' + data.width +
-            '" height="' + data.height +
-            '"' + allowFullscreen + '></iframe>';
+          return getIframeHtml(data);
         } else if (data.source1mime === "application/x-shockwave-flash") {
-          html +=
-            '<object data="' + data.source1 +
-            '" width="' + data.width +
-            '" height="' + data.height +
-            '" type="application/x-shockwave-flash">';
-
-          if (data.poster) {
-            html += '<img src="' + data.poster + '" width="' + data.width + '" height="' + data.height + '" />';
-          }
-
-          html += '</object>';
+          return getFlashHtml(data);
         } else if (data.source1mime.indexOf('audio') !== -1) {
-          if (editor.settings.audio_template_callback) {
-            html = editor.settings.audio_template_callback(data);
-          } else {
-            html += (
-              '<audio controls="controls" src="' + data.source1 + '">' +
-              (
-                data.source2 ?
-                  '\n<source src="' + data.source2 + '"' +
-                  (data.source2mime ? ' type="' + data.source2mime + '"' : '') +
-                  ' />\n' : '') +
-              '</audio>'
-            );
-          }
+          return getAudioHtml(data, audioTemplateCallback);
         } else if (data.type === "script") {
-          html += '<script src="' + data.source1 + '"></script>';
+          return getScriptHtml(data);
         } else {
-          if (editor.settings.video_template_callback) {
-            html = editor.settings.video_template_callback(data);
-          } else {
-            html = (
-              '<video width="' + data.width +
-              '" height="' + data.height + '"' +
-              (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
-              '<source src="' + data.source1 + '"' +
-              (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
-              (data.source2 ? '<source src="' + data.source2 + '"' +
-                (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
-              '</video>'
-            );
-          }
+          return getVideoHtml(data, videoTemplateCallback);
         }
       }
-
-      return html;
     };
 
     return {
@@ -1165,26 +993,6 @@ define(
     };
   }
 );
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Promise',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Promise');
-  }
-);
-
 /**
  * Service.js
  *
@@ -1198,10 +1006,11 @@ define(
 define(
   'tinymce.plugins.media.core.Service',
   [
-    'tinymce.plugins.media.core.DataToHtml',
-    'tinymce.core.util.Promise'
+    'tinymce.core.util.Promise',
+    'tinymce.plugins.media.api.Settings',
+    'tinymce.plugins.media.core.DataToHtml'
   ],
-  function (DataToHtml, Promise) {
+  function (Promise, Settings, DataToHtml) {
     var embedPromise = function (data, dataToHtml, handler) {
       var cache = {};
       return new Promise(function (res, rej) {
@@ -1235,7 +1044,7 @@ define(
     };
 
     var getEmbedHtml = function (editor, data) {
-      var embedHandler = editor.settings.media_url_resolver;
+      var embedHandler = Settings.getUrlResolver(editor);
 
       return embedHandler ? embedPromise(data, loadedData(editor), embedHandler) : defaultPromise(data, loadedData(editor));
     };
@@ -1354,16 +1163,17 @@ define(
 define(
   'tinymce.plugins.media.ui.Dialog',
   [
+    'tinymce.core.Env',
     'tinymce.core.util.Delay',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.media.api.Settings',
     'tinymce.plugins.media.core.HtmlToData',
-    'tinymce.plugins.media.core.UpdateHtml',
     'tinymce.plugins.media.core.Service',
     'tinymce.plugins.media.core.Size',
-    'tinymce.core.util.Tools',
-    'tinymce.core.Env',
+    'tinymce.plugins.media.core.UpdateHtml',
     'tinymce.plugins.media.ui.SizeManager'
   ],
-  function (Delay, HtmlToData, UpdateHtml, Service, Size, Tools, Env, SizeManager) {
+  function (Env, Delay, Tools, Settings, HtmlToData, Service, Size, UpdateHtml, SizeManager) {
     var embedChange = (Env.ie && Env.ie <= 8) ? 'onChange' : 'onInput';
 
     var handleError = function (editor) {
@@ -1389,7 +1199,7 @@ define(
       }
 
       return element.getAttribute('data-mce-object') ?
-        HtmlToData.htmlToData(editor.settings.media_scripts, editor.serializer.serialize(element, { selection: true })) :
+        HtmlToData.htmlToData(Settings.getScripts(editor), editor.serializer.serialize(element, { selection: true })) :
         {};
     };
 
@@ -1405,7 +1215,7 @@ define(
       return function (response) {
         var html = response.html;
         var embed = win.find('#embed')[0];
-        var data = Tools.extend(HtmlToData.htmlToData(editor.settings.media_scripts, html), { source1: response.url });
+        var data = Tools.extend(HtmlToData.htmlToData(Settings.getScripts(editor), html), { source1: response.url });
         win.fromJSON(data);
 
         if (embed) {
@@ -1503,15 +1313,15 @@ define(
         win.find('#embed').value(UpdateHtml.updateHtml(data.embed, data));
       };
 
-      if (editor.settings.media_alt_source !== false) {
+      if (Settings.hasAltSource(editor)) {
         advancedFormItems.push({ name: 'source2', type: 'filepicker', filetype: 'media', size: 40, label: 'Alternative source' });
       }
 
-      if (editor.settings.media_poster !== false) {
+      if (Settings.hasPoster(editor)) {
         advancedFormItems.push({ name: 'poster', type: 'filepicker', filetype: 'image', size: 40, label: 'Poster' });
       }
 
-      if (editor.settings.media_dimensions !== false) {
+      if (Settings.hasDimensions(editor)) {
         var control = SizeManager.createUi(reserialise);
         generalFormItems.push(control);
       }
@@ -1530,7 +1340,7 @@ define(
       };
 
       var updateValueOnChange = function () {
-        data = Tools.extend({}, HtmlToData.htmlToData(editor.settings.media_scripts, this.value()));
+        data = Tools.extend({}, HtmlToData.htmlToData(Settings.getScripts(editor), this.value()));
         this.parent().parent().fromJSON(data);
       };
 
@@ -1586,7 +1396,7 @@ define(
   }
 );
 /**
- * Plugin.js
+ * Api.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -1596,26 +1406,353 @@ define(
  */
 
 define(
-  'tinymce.plugins.media.Plugin',
+  'tinymce.plugins.media.api.Api',
   [
-    'tinymce.core.html.Node',
-    'tinymce.core.PluginManager',
-    'tinymce.core.util.Tools',
-    'tinymce.plugins.media.core.Nodes',
-    'tinymce.plugins.media.core.Sanitize',
-    'tinymce.plugins.media.core.UpdateHtml',
     'tinymce.plugins.media.ui.Dialog'
   ],
-  function (Node, PluginManager, Tools, Nodes, Sanitize, UpdateHtml, Dialog) {
-    var Plugin = function (editor) {
-      editor.on('ResolveName', function (e) {
-        var name;
+  function (Dialog) {
+    var get = function (editor) {
+      var showDialog = function () {
+        Dialog.showDialog(editor);
+      };
 
-        if (e.target.nodeType === 1 && (name = e.target.getAttribute("data-mce-object"))) {
-          e.name = name;
+      return {
+        showDialog: showDialog
+      };
+    };
+
+    return {
+      get: get
+    };
+  }
+);
+
+
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.api.Commands',
+  [
+    'tinymce.plugins.media.ui.Dialog'
+  ],
+  function (Dialog) {
+    var register = function (editor) {
+      var showDialog = function () {
+        Dialog.showDialog(editor);
+      };
+
+      editor.addCommand('mceMedia', showDialog);
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.html.Node',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.html.Node');
+  }
+);
+
+/**
+ * Sanitize.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.Sanitize',
+  [
+    'tinymce.core.html.SaxParser',
+    'tinymce.core.html.Schema',
+    'tinymce.core.html.Writer',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.media.api.Settings'
+  ],
+  function (SaxParser, Schema, Writer, Tools, Settings) {
+    var sanitize = function (editor, html) {
+      if (Settings.shouldFilterHtml(editor) === false) {
+        return html;
+      }
+
+      var writer = new Writer();
+      var blocked;
+
+      new SaxParser({
+        validate: false,
+        allow_conditional_comments: false,
+        special: 'script,noscript',
+
+        comment: function (text) {
+          writer.comment(text);
+        },
+
+        cdata: function (text) {
+          writer.cdata(text);
+        },
+
+        text: function (text, raw) {
+          writer.text(text, raw);
+        },
+
+        start: function (name, attrs, empty) {
+          blocked = true;
+
+          if (name === 'script' || name === 'noscript') {
+            return;
+          }
+
+          for (var i = 0; i < attrs.length; i++) {
+            if (attrs[i].name.indexOf('on') === 0) {
+              return;
+            }
+
+            if (attrs[i].name === 'style') {
+              attrs[i].value = editor.dom.serializeStyle(editor.dom.parseStyle(attrs[i].value), name);
+            }
+          }
+
+          writer.start(name, attrs, empty);
+          blocked = false;
+        },
+
+        end: function (name) {
+          if (blocked) {
+            return;
+          }
+
+          writer.end(name);
         }
+      }, new Schema({})).parse(html);
+
+      return writer.getContent();
+    };
+
+    return {
+      sanitize: sanitize
+    };
+  }
+);
+/**
+ * Nodes.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.Nodes',
+  [
+    'tinymce.core.Env',
+    'tinymce.core.html.Node',
+    'tinymce.plugins.media.api.Settings',
+    'tinymce.plugins.media.core.Sanitize',
+    'tinymce.plugins.media.core.VideoScript'
+  ],
+  function (Env, Node, Settings, Sanitize, VideoScript) {
+    var createPlaceholderNode = function (editor, node) {
+      var placeHolder;
+      var name = node.name;
+
+      placeHolder = new Node('img', 1);
+      placeHolder.shortEnded = true;
+
+      retainAttributesAndInnerHtml(editor, node, placeHolder);
+
+      placeHolder.attr({
+        width: node.attr('width') || "300",
+        height: node.attr('height') || (name === "audio" ? "30" : "150"),
+        style: node.attr('style'),
+        src: Env.transparentSrc,
+        "data-mce-object": name,
+        "class": "mce-object mce-object-" + name
       });
 
+      return placeHolder;
+    };
+
+    var createPreviewIframeNode = function (editor, node) {
+      var previewWrapper;
+      var previewNode;
+      var shimNode;
+      var name = node.name;
+
+      previewWrapper = new Node('span', 1);
+      previewWrapper.attr({
+        contentEditable: 'false',
+        style: node.attr('style'),
+        "data-mce-object": name,
+        "class": "mce-preview-object mce-object-" + name
+      });
+
+      retainAttributesAndInnerHtml(editor, node, previewWrapper);
+
+      previewNode = new Node(name, 1);
+      previewNode.attr({
+        src: node.attr('src'),
+        allowfullscreen: node.attr('allowfullscreen'),
+        width: node.attr('width') || "300",
+        height: node.attr('height') || (name === "audio" ? "30" : "150"),
+        frameborder: '0'
+      });
+
+      shimNode = new Node('span', 1);
+      shimNode.attr('class', 'mce-shim');
+
+      previewWrapper.append(previewNode);
+      previewWrapper.append(shimNode);
+
+      return previewWrapper;
+    };
+
+    var retainAttributesAndInnerHtml = function (editor, sourceNode, targetNode) {
+      var attrName;
+      var attrValue;
+      var attribs;
+      var ai;
+      var innerHtml;
+
+      // Prefix all attributes except width, height and style since we
+      // will add these to the placeholder
+      attribs = sourceNode.attributes;
+      ai = attribs.length;
+      while (ai--) {
+        attrName = attribs[ai].name;
+        attrValue = attribs[ai].value;
+
+        if (attrName !== "width" && attrName !== "height" && attrName !== "style") {
+          if (attrName === "data" || attrName === "src") {
+            attrValue = editor.convertURL(attrValue, attrName);
+          }
+
+          targetNode.attr('data-mce-p-' + attrName, attrValue);
+        }
+      }
+
+      // Place the inner HTML contents inside an escaped attribute
+      // This enables us to copy/paste the fake object
+      innerHtml = sourceNode.firstChild && sourceNode.firstChild.value;
+      if (innerHtml) {
+        targetNode.attr("data-mce-html", escape(Sanitize.sanitize(editor, innerHtml)));
+        targetNode.firstChild = null;
+      }
+    };
+
+    var isWithinEphoxEmbed = function (node) {
+      while ((node = node.parent)) {
+        if (node.attr('data-ephox-embed-iri')) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    var placeHolderConverter = function (editor) {
+      return function (nodes) {
+        var i = nodes.length;
+        var node;
+        var videoScript;
+
+        while (i--) {
+          node = nodes[i];
+          if (!node.parent) {
+            continue;
+          }
+
+          if (node.parent.attr('data-mce-object')) {
+            continue;
+          }
+
+          if (node.name === 'script') {
+            videoScript = VideoScript.getVideoScriptMatch(Settings.getScripts(editor), node.attr('src'));
+            if (!videoScript) {
+              continue;
+            }
+          }
+
+          if (videoScript) {
+            if (videoScript.width) {
+              node.attr('width', videoScript.width.toString());
+            }
+
+            if (videoScript.height) {
+              node.attr('height', videoScript.height.toString());
+            }
+          }
+
+          if (node.name === 'iframe' && Settings.hasLiveEmbeds(editor) && Env.ceFalse) {
+            if (!isWithinEphoxEmbed(node)) {
+              node.replace(createPreviewIframeNode(editor, node));
+            }
+          } else {
+            if (!isWithinEphoxEmbed(node)) {
+              node.replace(createPlaceholderNode(editor, node));
+            }
+          }
+        }
+      };
+    };
+
+    return {
+      createPreviewIframeNode: createPreviewIframeNode,
+      createPlaceholderNode: createPlaceholderNode,
+      placeHolderConverter: placeHolderConverter
+    };
+  }
+);
+/**
+ * FilterContent.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.FilterContent',
+  [
+    'tinymce.core.html.Node',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.media.core.Nodes',
+    'tinymce.plugins.media.core.Sanitize'
+  ],
+  function (Node, Tools, Nodes, Sanitize) {
+    var setup = function (editor) {
       editor.on('preInit', function () {
         // Make sure that any messy HTML is retained inside these
         var specialElements = editor.schema.getSpecialElements();
@@ -1708,6 +1845,75 @@ define(
         });
       });
 
+      editor.on('setContent', function () {
+        // TODO: This shouldn't be needed there should be a way to mark bogus
+        // elements so they are never removed except external save
+        editor.$('span.mce-preview-object').each(function (index, elm) {
+          var $elm = editor.$(elm);
+
+          if ($elm.find('span.mce-shim', elm).length === 0) {
+            $elm.append('<span class="mce-shim"></span>');
+          }
+        });
+      });
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
+
+/**
+ * ResolveName.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.ResolveName',
+  [
+  ],
+  function () {
+    var setup = function (editor) {
+      editor.on('ResolveName', function (e) {
+        var name;
+
+        if (e.target.nodeType === 1 && (name = e.target.getAttribute("data-mce-object"))) {
+          e.name = name;
+        }
+      });
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
+
+/**
+ * Selection.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.core.Selection',
+  [
+    'tinymce.plugins.media.core.UpdateHtml'
+  ],
+  function (UpdateHtml) {
+    var setup = function (editor) {
       editor.on('click keyup', function () {
         var selectedNode = editor.selection.getNode();
 
@@ -1743,41 +1949,83 @@ define(
           }
         }
       });
+    };
 
-      this.showDialog = function () {
-        Dialog.showDialog(editor);
-      };
+    return {
+      setup: setup
+    };
+  }
+);
 
+
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.ui.Buttons',
+  [
+  ],
+  function () {
+    var register = function (editor) {
       editor.addButton('media', {
         tooltip: 'Insert/edit media',
-        onclick: this.showDialog,
+        cmd: 'mceMedia',
         stateSelector: ['img[data-mce-object]', 'span[data-mce-object]', 'div[data-ephox-embed-iri]']
       });
 
       editor.addMenuItem('media', {
         icon: 'media',
         text: 'Media',
-        onclick: this.showDialog,
+        cmd: 'mceMedia',
         context: 'insert',
         prependToContext: true
       });
-
-      editor.on('setContent', function () {
-        // TODO: This shouldn't be needed there should be a way to mark bogus
-        // elements so they are never removed except external save
-        editor.$('span.mce-preview-object').each(function (index, elm) {
-          var $elm = editor.$(elm);
-
-          if ($elm.find('span.mce-shim', elm).length === 0) {
-            $elm.append('<span class="mce-shim"></span>');
-          }
-        });
-      });
-
-      editor.addCommand('mceMedia', this.showDialog);
     };
 
-    PluginManager.add('media', Plugin);
+    return {
+      register: register
+    };
+  }
+);
+
+
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.media.Plugin',
+  [
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.media.api.Api',
+    'tinymce.plugins.media.api.Commands',
+    'tinymce.plugins.media.core.FilterContent',
+    'tinymce.plugins.media.core.ResolveName',
+    'tinymce.plugins.media.core.Selection',
+    'tinymce.plugins.media.ui.Buttons'
+  ],
+  function (PluginManager, Api, Commands, FilterContent, ResolveName, Selection, Buttons) {
+    PluginManager.add('media', function (editor) {
+      Commands.register(editor);
+      Buttons.register(editor);
+      ResolveName.setup(editor);
+      FilterContent.setup(editor);
+      Selection.setup(editor);
+      return Api.get(editor);
+    });
 
     return function () { };
   }

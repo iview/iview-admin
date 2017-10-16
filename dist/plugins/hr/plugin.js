@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.hr.Plugin","tinymce.core.PluginManager","global!tinymce.util.Tools.resolve"]
+["tinymce.plugins.hr.Plugin","tinymce.core.PluginManager","tinymce.plugins.hr.api.Commands","tinymce.plugins.hr.ui.Buttons","global!tinymce.util.Tools.resolve"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -105,7 +105,7 @@ define(
 );
 
 /**
- * Plugin.js
+ * Commands.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -114,23 +114,38 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contains all core logic for the hr plugin.
- *
- * @class tinymce.hr.Plugin
- * @private
- */
 define(
-  'tinymce.plugins.hr.Plugin',
+  'tinymce.plugins.hr.api.Commands',
   [
-    'tinymce.core.PluginManager'
   ],
-  function (PluginManager) {
-    PluginManager.add('hr', function (editor) {
+  function () {
+    var register = function (editor) {
       editor.addCommand('InsertHorizontalRule', function () {
         editor.execCommand('mceInsertContent', false, '<hr />');
       });
+    };
 
+    return {
+      register: register
+    };
+  }
+);
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.hr.ui.Buttons',
+  [
+  ],
+  function () {
+    var register = function (editor) {
       editor.addButton('hr', {
         icon: 'hr',
         tooltip: 'Horizontal line',
@@ -143,6 +158,34 @@ define(
         cmd: 'InsertHorizontalRule',
         context: 'insert'
       });
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.hr.Plugin',
+  [
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.hr.api.Commands',
+    'tinymce.plugins.hr.ui.Buttons'
+  ],
+  function (PluginManager, Commands, Buttons) {
+    PluginManager.add('hr', function (editor) {
+      Commands.register(editor);
+      Buttons.register(editor);
     });
 
     return function () { };

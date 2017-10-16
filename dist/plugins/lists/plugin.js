@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.lists.Plugin","tinymce.core.PluginManager","tinymce.core.util.Tools","tinymce.core.util.VK","tinymce.plugins.lists.actions.Indent","tinymce.plugins.lists.actions.Outdent","tinymce.plugins.lists.actions.ToggleList","tinymce.plugins.lists.core.Delete","tinymce.plugins.lists.core.NodeType","tinymce.plugins.lists.core.Selection","global!tinymce.util.Tools.resolve","tinymce.core.dom.DOMUtils","tinymce.plugins.lists.core.Bookmark","tinymce.core.dom.DomQuery","tinymce.plugins.lists.core.NormalizeLists","tinymce.plugins.lists.core.SplitList","tinymce.plugins.lists.core.TextBlock","tinymce.core.dom.BookmarkManager","tinymce.core.dom.RangeUtils","tinymce.core.dom.TreeWalker","tinymce.plugins.lists.core.Range","tinymce.core.Env"]
+["tinymce.plugins.lists.Plugin","tinymce.core.PluginManager","tinymce.plugins.lists.api.Api","tinymce.plugins.lists.api.Commands","tinymce.plugins.lists.core.Keyboard","tinymce.plugins.lists.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.lists.core.Delete","tinymce.plugins.lists.actions.Indent","tinymce.plugins.lists.actions.Outdent","tinymce.plugins.lists.actions.ToggleList","tinymce.core.util.VK","tinymce.plugins.lists.api.Settings","tinymce.core.util.Tools","tinymce.plugins.lists.core.NodeType","tinymce.plugins.lists.core.Selection","tinymce.core.dom.RangeUtils","tinymce.core.dom.TreeWalker","tinymce.core.dom.BookmarkManager","tinymce.core.dom.DOMUtils","tinymce.plugins.lists.core.Bookmark","tinymce.plugins.lists.core.NormalizeLists","tinymce.core.dom.DomQuery","tinymce.plugins.lists.core.SplitList","tinymce.plugins.lists.core.TextBlock","tinymce.plugins.lists.core.Range","tinymce.core.Env"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -115,12 +115,32 @@ define(
  */
 
 define(
-  'tinymce.core.util.Tools',
+  'tinymce.core.dom.RangeUtils',
   [
     'global!tinymce.util.Tools.resolve'
   ],
   function (resolve) {
-    return resolve('tinymce.util.Tools');
+    return resolve('tinymce.dom.RangeUtils');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.dom.TreeWalker',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.dom.TreeWalker');
   }
 );
 
@@ -141,6 +161,46 @@ define(
   ],
   function (resolve) {
     return resolve('tinymce.util.VK');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.dom.BookmarkManager',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.dom.BookmarkManager');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Tools',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Tools');
   }
 );
 
@@ -253,26 +313,6 @@ define(
   }
 );
 
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.dom.RangeUtils',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.dom.RangeUtils');
-  }
-);
 
 /**
  * Range.js
@@ -457,6 +497,66 @@ define(
 
 
 /**
+ * NormalizeLists.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.core.NormalizeLists',
+  [
+    'tinymce.core.dom.DOMUtils',
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.lists.core.NodeType'
+  ],
+  function (DOMUtils, Tools, NodeType) {
+    var DOM = DOMUtils.DOM;
+
+    var normalizeList = function (dom, ul) {
+      var sibling, parentNode = ul.parentNode;
+
+      // Move UL/OL to previous LI if it's the only child of a LI
+      if (parentNode.nodeName === 'LI' && parentNode.firstChild === ul) {
+        sibling = parentNode.previousSibling;
+        if (sibling && sibling.nodeName === 'LI') {
+          sibling.appendChild(ul);
+
+          if (NodeType.isEmpty(dom, parentNode)) {
+            DOM.remove(parentNode);
+          }
+        } else {
+          DOM.setStyle(parentNode, 'listStyleType', 'none');
+        }
+      }
+
+      // Append OL/UL to previous LI if it's in a parent OL/UL i.e. old HTML4
+      if (NodeType.isListNode(parentNode)) {
+        sibling = parentNode.previousSibling;
+        if (sibling && sibling.nodeName === 'LI') {
+          sibling.appendChild(ul);
+        }
+      }
+    };
+
+    var normalizeLists = function (dom, element) {
+      Tools.each(Tools.grep(dom.select('ol,ul', element)), function (ul) {
+        normalizeList(dom, ul);
+      });
+    };
+
+    return {
+      normalizeList: normalizeList,
+      normalizeLists: normalizeLists
+    };
+  }
+);
+
+
+/**
  * ResolveGlobal.js
  *
  * Released under LGPL License.
@@ -526,173 +626,6 @@ define(
       getParentList: getParentList,
       getSelectedSubLists: getSelectedSubLists,
       getSelectedListItems: getSelectedListItems
-    };
-  }
-);
-
-
-/**
- * Indent.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.lists.actions.Indent',
-  [
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.plugins.lists.core.Bookmark',
-    'tinymce.plugins.lists.core.NodeType',
-    'tinymce.plugins.lists.core.Selection'
-  ],
-  function (DOMUtils, Bookmark, NodeType, Selection) {
-    var DOM = DOMUtils.DOM;
-
-    var mergeLists = function (from, to) {
-      var node;
-
-      if (NodeType.isListNode(from)) {
-        while ((node = from.firstChild)) {
-          to.appendChild(node);
-        }
-
-        DOM.remove(from);
-      }
-    };
-
-    var indent = function (li) {
-      var sibling, newList, listStyle;
-
-      if (li.nodeName === 'DT') {
-        DOM.rename(li, 'DD');
-        return true;
-      }
-
-      sibling = li.previousSibling;
-
-      if (sibling && NodeType.isListNode(sibling)) {
-        sibling.appendChild(li);
-        return true;
-      }
-
-      if (sibling && sibling.nodeName === 'LI' && NodeType.isListNode(sibling.lastChild)) {
-        sibling.lastChild.appendChild(li);
-        mergeLists(li.lastChild, sibling.lastChild);
-        return true;
-      }
-
-      sibling = li.nextSibling;
-
-      if (sibling && NodeType.isListNode(sibling)) {
-        sibling.insertBefore(li, sibling.firstChild);
-        return true;
-      }
-
-      /*if (sibling && sibling.nodeName === 'LI' && isListNode(li.lastChild)) {
-        return false;
-      }*/
-
-      sibling = li.previousSibling;
-      if (sibling && sibling.nodeName === 'LI') {
-        newList = DOM.create(li.parentNode.nodeName);
-        listStyle = DOM.getStyle(li.parentNode, 'listStyleType');
-        if (listStyle) {
-          DOM.setStyle(newList, 'listStyleType', listStyle);
-        }
-        sibling.appendChild(newList);
-        newList.appendChild(li);
-        mergeLists(li.lastChild, newList);
-        return true;
-      }
-
-      return false;
-    };
-
-    var indentSelection = function (editor) {
-      var listElements = Selection.getSelectedListItems(editor);
-
-      if (listElements.length) {
-        var bookmark = Bookmark.createBookmark(editor.selection.getRng(true));
-
-        for (var i = 0; i < listElements.length; i++) {
-          if (!indent(listElements[i]) && i === 0) {
-            break;
-          }
-        }
-
-        editor.selection.setRng(Bookmark.resolveBookmark(bookmark));
-        editor.nodeChanged();
-
-        return true;
-      }
-    };
-
-    return {
-      indentSelection: indentSelection
-    };
-  }
-);
-
-
-/**
- * NormalizeLists.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.lists.core.NormalizeLists',
-  [
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.core.util.Tools',
-    'tinymce.plugins.lists.core.NodeType'
-  ],
-  function (DOMUtils, Tools, NodeType) {
-    var DOM = DOMUtils.DOM;
-
-    var normalizeList = function (dom, ul) {
-      var sibling, parentNode = ul.parentNode;
-
-      // Move UL/OL to previous LI if it's the only child of a LI
-      if (parentNode.nodeName === 'LI' && parentNode.firstChild === ul) {
-        sibling = parentNode.previousSibling;
-        if (sibling && sibling.nodeName === 'LI') {
-          sibling.appendChild(ul);
-
-          if (NodeType.isEmpty(dom, parentNode)) {
-            DOM.remove(parentNode);
-          }
-        } else {
-          DOM.setStyle(parentNode, 'listStyleType', 'none');
-        }
-      }
-
-      // Append OL/UL to previous LI if it's in a parent OL/UL i.e. old HTML4
-      if (NodeType.isListNode(parentNode)) {
-        sibling = parentNode.previousSibling;
-        if (sibling && sibling.nodeName === 'LI') {
-          sibling.appendChild(ul);
-        }
-      }
-    };
-
-    var normalizeLists = function (dom, element) {
-      Tools.each(Tools.grep(dom.select('ol,ul', element)), function (ul) {
-        normalizeList(dom, ul);
-      });
-    };
-
-    return {
-      normalizeList: normalizeList,
-      normalizeLists: normalizeLists
     };
   }
 );
@@ -1014,26 +947,6 @@ define(
 
 
 /**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.dom.BookmarkManager',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.dom.BookmarkManager');
-  }
-);
-
-/**
  * ToggleList.js
  *
  * Released under LGPL License.
@@ -1352,26 +1265,6 @@ define(
 
 
 /**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.dom.TreeWalker',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.dom.TreeWalker');
-  }
-);
-
-/**
  * Delete.js
  *
  * Released under LGPL License.
@@ -1628,7 +1521,7 @@ define(
 
 
 /**
- * plugin.js
+ * Api.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -1638,19 +1531,151 @@ define(
  */
 
 define(
-  'tinymce.plugins.lists.Plugin',
+  'tinymce.plugins.lists.api.Api',
   [
-    'tinymce.core.PluginManager',
-    'tinymce.core.util.Tools',
-    'tinymce.core.util.VK',
-    'tinymce.plugins.lists.actions.Indent',
-    'tinymce.plugins.lists.actions.Outdent',
-    'tinymce.plugins.lists.actions.ToggleList',
-    'tinymce.plugins.lists.core.Delete',
+    'tinymce.plugins.lists.core.Delete'
+  ],
+  function (Delete) {
+    var get = function (editor) {
+      return {
+        backspaceDelete: function (isForward) {
+          Delete.backspaceDelete(editor, isForward);
+        }
+      };
+    };
+
+    return {
+      get: get
+    };
+  }
+);
+
+
+/**
+ * Indent.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.actions.Indent',
+  [
+    'tinymce.core.dom.DOMUtils',
+    'tinymce.plugins.lists.core.Bookmark',
     'tinymce.plugins.lists.core.NodeType',
     'tinymce.plugins.lists.core.Selection'
   ],
-  function (PluginManager, Tools, VK, Indent, Outdent, ToggleList, Delete, NodeType, Selection) {
+  function (DOMUtils, Bookmark, NodeType, Selection) {
+    var DOM = DOMUtils.DOM;
+
+    var mergeLists = function (from, to) {
+      var node;
+
+      if (NodeType.isListNode(from)) {
+        while ((node = from.firstChild)) {
+          to.appendChild(node);
+        }
+
+        DOM.remove(from);
+      }
+    };
+
+    var indent = function (li) {
+      var sibling, newList, listStyle;
+
+      if (li.nodeName === 'DT') {
+        DOM.rename(li, 'DD');
+        return true;
+      }
+
+      sibling = li.previousSibling;
+
+      if (sibling && NodeType.isListNode(sibling)) {
+        sibling.appendChild(li);
+        return true;
+      }
+
+      if (sibling && sibling.nodeName === 'LI' && NodeType.isListNode(sibling.lastChild)) {
+        sibling.lastChild.appendChild(li);
+        mergeLists(li.lastChild, sibling.lastChild);
+        return true;
+      }
+
+      sibling = li.nextSibling;
+
+      if (sibling && NodeType.isListNode(sibling)) {
+        sibling.insertBefore(li, sibling.firstChild);
+        return true;
+      }
+
+      /*if (sibling && sibling.nodeName === 'LI' && isListNode(li.lastChild)) {
+        return false;
+      }*/
+
+      sibling = li.previousSibling;
+      if (sibling && sibling.nodeName === 'LI') {
+        newList = DOM.create(li.parentNode.nodeName);
+        listStyle = DOM.getStyle(li.parentNode, 'listStyleType');
+        if (listStyle) {
+          DOM.setStyle(newList, 'listStyleType', listStyle);
+        }
+        sibling.appendChild(newList);
+        newList.appendChild(li);
+        mergeLists(li.lastChild, newList);
+        return true;
+      }
+
+      return false;
+    };
+
+    var indentSelection = function (editor) {
+      var listElements = Selection.getSelectedListItems(editor);
+
+      if (listElements.length) {
+        var bookmark = Bookmark.createBookmark(editor.selection.getRng(true));
+
+        for (var i = 0; i < listElements.length; i++) {
+          if (!indent(listElements[i]) && i === 0) {
+            break;
+          }
+        }
+
+        editor.selection.setRng(Bookmark.resolveBookmark(bookmark));
+        editor.nodeChanged();
+
+        return true;
+      }
+    };
+
+    return {
+      indentSelection: indentSelection
+    };
+  }
+);
+
+
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.api.Commands',
+  [
+    'tinymce.plugins.lists.actions.Indent',
+    'tinymce.plugins.lists.actions.Outdent',
+    'tinymce.plugins.lists.actions.ToggleList'
+  ],
+  function (Indent, Outdent, ToggleList) {
     var queryListCommandState = function (editor, listName) {
       return function () {
         var parentList = editor.dom.getParent(editor.selection.getStart(), 'UL,OL,DL');
@@ -1658,7 +1683,7 @@ define(
       };
     };
 
-    var setupCommands = function (editor) {
+    var register = function (editor) {
       editor.on('BeforeExecCommand', function (e) {
         var cmd = e.command.toLowerCase(), isHandled;
 
@@ -1690,18 +1715,69 @@ define(
       editor.addCommand('InsertDefinitionList', function (ui, detail) {
         ToggleList.toggleList(editor, 'DL', detail);
       });
-    };
 
-    var setupStateHandlers = function (editor) {
       editor.addQueryStateHandler('InsertUnorderedList', queryListCommandState(editor, 'UL'));
       editor.addQueryStateHandler('InsertOrderedList', queryListCommandState(editor, 'OL'));
       editor.addQueryStateHandler('InsertDefinitionList', queryListCommandState(editor, 'DL'));
     };
 
+    return {
+      register: register
+    };
+  }
+);
+
+
+/**
+ * Settings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.api.Settings',
+  [
+  ],
+  function () {
+    var shouldIndentOnTab = function (editor) {
+      return editor.getParam('lists_indent_on_tab', true);
+    };
+
+    return {
+      shouldIndentOnTab: shouldIndentOnTab
+    };
+  }
+);
+
+
+/**
+ * Keyboard.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.core.Keyboard',
+  [
+    'tinymce.core.util.VK',
+    'tinymce.plugins.lists.actions.Indent',
+    'tinymce.plugins.lists.actions.Outdent',
+    'tinymce.plugins.lists.api.Settings',
+    'tinymce.plugins.lists.core.Delete'
+  ],
+  function (VK, Indent, Outdent, Settings, Delete) {
     var setupTabKey = function (editor) {
       editor.on('keydown', function (e) {
         // Check for tab but not ctrl/cmd+tab since it switches browser tabs
-        if (e.keyCode !== 9 || VK.metaKeyPressed(e)) {
+        if (e.keyCode !== VK.TAB || VK.metaKeyPressed(e)) {
           return;
         }
 
@@ -1717,18 +1793,63 @@ define(
       });
     };
 
-    var setupUi = function (editor) {
-      var listState = function (listName) {
-        return function () {
-          var self = this;
+    var setup = function (editor) {
+      if (Settings.shouldIndentOnTab(editor)) {
+        setupTabKey(editor);
+      }
 
-          editor.on('NodeChange', function (e) {
-            var lists = Tools.grep(e.parents, NodeType.isListNode);
-            self.active(lists.length > 0 && lists[0].nodeName === listName);
-          });
-        };
+      Delete.setup(editor);
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
+
+/**
+ * Buttons.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.ui.Buttons',
+  [
+    'tinymce.core.util.Tools',
+    'tinymce.plugins.lists.core.NodeType',
+    'tinymce.plugins.lists.core.Selection'
+  ],
+  function (Tools, NodeType, Selection) {
+    var listState = function (editor, listName) {
+      return function (e) {
+        var ctrl = e.control;
+
+        editor.on('NodeChange', function (e) {
+          var lists = Tools.grep(e.parents, NodeType.isListNode);
+          ctrl.active(lists.length > 0 && lists[0].nodeName === listName);
+        });
       };
+    };
 
+    var indentPostRender = function (editor) {
+      return function (e) {
+        var ctrl = e.control;
+
+        editor.on('nodechange', function () {
+          var listItemBlocks = Selection.getSelectedListItems(editor);
+          var disable = listItemBlocks.length > 0 && NodeType.isFirstChild(listItemBlocks[0]);
+          ctrl.disabled(disable);
+        });
+      };
+    };
+
+    var register = function (editor) {
       var hasPlugin = function (editor, plugin) {
         var plugins = editor.settings.plugins ? editor.settings.plugins : '';
         return Tools.inArray(plugins.split(/[ ,]/), plugin) !== -1;
@@ -1738,13 +1859,13 @@ define(
         editor.addButton('numlist', {
           title: 'Numbered list',
           cmd: 'InsertOrderedList',
-          onPostRender: listState('OL')
+          onPostRender: listState(editor, 'OL')
         });
 
         editor.addButton('bullist', {
           title: 'Bullet list',
           cmd: 'InsertUnorderedList',
-          onPostRender: listState('UL')
+          onPostRender: listState(editor, 'UL')
         });
       }
 
@@ -1752,35 +1873,43 @@ define(
         icon: 'indent',
         title: 'Increase indent',
         cmd: 'Indent',
-        onPostRender: function (e) {
-          var ctrl = e.control;
-
-          editor.on('nodechange', function () {
-            var listItemBlocks = Selection.getSelectedListItems(editor);
-            var disable = listItemBlocks.length > 0 && NodeType.isFirstChild(listItemBlocks[0]);
-            ctrl.disabled(disable);
-          });
-        }
+        onPostRender: indentPostRender(editor)
       });
     };
 
+    return {
+      register: register
+    };
+  }
+);
+
+
+/**
+ * Plugin.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.lists.Plugin',
+  [
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.lists.api.Api',
+    'tinymce.plugins.lists.api.Commands',
+    'tinymce.plugins.lists.core.Keyboard',
+    'tinymce.plugins.lists.ui.Buttons'
+  ],
+  function (PluginManager, Api, Commands, Keyboard, Buttons) {
     PluginManager.add('lists', function (editor) {
-      setupUi(editor);
-      Delete.setup(editor);
+      Keyboard.setup(editor);
+      Buttons.register(editor);
+      Commands.register(editor);
 
-      editor.on('init', function () {
-        setupCommands(editor);
-        setupStateHandlers(editor);
-        if (editor.getParam('lists_indent_on_tab', true)) {
-          setupTabKey(editor);
-        }
-      });
-
-      return {
-        backspaceDelete: function (isForward) {
-          Delete.backspaceDelete(editor, isForward);
-        }
-      };
+      return Api.get(editor);
     });
 
     return function () { };

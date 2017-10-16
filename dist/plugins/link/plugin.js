@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.link.Plugin","tinymce.core.PluginManager","tinymce.plugins.link.core.Actions","tinymce.plugins.link.ui.Controls","global!tinymce.util.Tools.resolve","tinymce.core.util.VK","tinymce.plugins.link.ui.Dialog","tinymce.plugins.link.core.OpenUrl","tinymce.plugins.link.core.Utils","tinymce.plugins.link.core.Settings","tinymce.core.util.Delay","tinymce.core.util.Tools","tinymce.core.util.XHR","global!RegExp","tinymce.core.dom.DOMUtils","tinymce.core.Env"]
+["tinymce.plugins.link.Plugin","tinymce.core.PluginManager","tinymce.plugins.link.api.Commands","tinymce.plugins.link.core.Actions","tinymce.plugins.link.core.Keyboard","tinymce.plugins.link.ui.Controls","global!tinymce.util.Tools.resolve","tinymce.core.util.VK","tinymce.plugins.link.api.Settings","tinymce.plugins.link.core.OpenUrl","tinymce.plugins.link.core.Utils","tinymce.plugins.link.ui.Dialog","global!document","global!window","tinymce.core.dom.DOMUtils","tinymce.core.Env","global!RegExp","tinymce.core.util.Tools","tinymce.core.util.Delay","tinymce.core.util.XHR"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -125,7 +125,7 @@ define(
 );
 
 /**
- * ResolveGlobal.js
+ * Settings.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
@@ -135,59 +135,8 @@ define(
  */
 
 define(
-  'tinymce.core.util.Delay',
+  'tinymce.plugins.link.api.Settings',
   [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Delay');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Tools',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Tools');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.XHR',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.XHR');
-  }
-);
-
-define(
-  'tinymce.plugins.link.core.Settings',
-  [
-
   ],
   function () {
     var assumeExternalTargets = function (editorSettings) {
@@ -265,7 +214,126 @@ define(
   }
 );
 
+defineGlobal("global!document", document);
+defineGlobal("global!window", window);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.dom.DOMUtils',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.dom.DOMUtils');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.Env',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.Env');
+  }
+);
+
+/**
+ * OpenUrl.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.link.core.OpenUrl',
+  [
+    'global!document',
+    'global!window',
+    'tinymce.core.dom.DOMUtils',
+    'tinymce.core.Env'
+  ],
+  function (document, window, DOMUtils, Env) {
+    var appendClickRemove = function (link, evt) {
+      document.body.appendChild(link);
+      link.dispatchEvent(evt);
+      document.body.removeChild(link);
+    };
+
+    var open = function (url) {
+      // Chrome and Webkit has implemented noopener and works correctly with/without popup blocker
+      // Firefox has it implemented noopener but when the popup blocker is activated it doesn't work
+      // Edge has only implemented noreferrer and it seems to remove opener as well
+      // Older IE versions pre IE 11 falls back to a window.open approach
+      if (!Env.ie || Env.ie > 10) {
+        var link = document.createElement('a');
+        link.target = '_blank';
+        link.href = url;
+        link.rel = 'noreferrer noopener';
+
+        var evt = document.createEvent('MouseEvents');
+        evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+        appendClickRemove(link, evt);
+      } else {
+        var win = window.open('', '_blank');
+        if (win) {
+          win.opener = null;
+          var doc = win.document;
+          doc.open();
+          doc.write('<meta http-equiv="refresh" content="0; url=' + DOMUtils.DOM.encode(url) + '">');
+          doc.close();
+        }
+      }
+    };
+
+    return {
+      open: open
+    };
+  }
+);
 defineGlobal("global!RegExp", RegExp);
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Tools',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Tools');
+  }
+);
+
 /**
  * Utils.js
  *
@@ -279,12 +347,11 @@ defineGlobal("global!RegExp", RegExp);
 define(
   'tinymce.plugins.link.core.Utils',
   [
+    'global!RegExp',
     'tinymce.core.util.Tools',
-    'tinymce.plugins.link.core.Settings',
-    'global!RegExp'
+    'tinymce.plugins.link.api.Settings'
   ],
-  function (Tools, Settings, RegExp) {
-
+  function (RegExp, Tools, Settings) {
     var toggleTargetRules = function (rel, isUnsafe) {
       var rules = ['noopener'];
       var newRel = rel ? rel.split(/\s+/) : [];
@@ -308,11 +375,9 @@ define(
       return newRel.length ? toString(newRel) : null;
     };
 
-
     var trimCaretContainers = function (text) {
       return text.replace(/\uFEFF/g, '');
     };
-
 
     var getAnchorElement = function (editor, selectedElm) {
       selectedElm = selectedElm || editor.selection.getStart();
@@ -324,12 +389,10 @@ define(
       }
     };
 
-
     var getAnchorText = function (selection, anchorElm) {
       var text = anchorElm ? (anchorElm.innerText || anchorElm.textContent) : selection.getContent({ format: 'text' });
       return trimCaretContainers(text);
     };
-
 
     var isLink = function (elm) {
       return elm && elm.nodeName === 'A' && elm.href;
@@ -339,21 +402,18 @@ define(
       return Tools.grep(elements, isLink).length > 0;
     };
 
-
     var isOnlyTextSelected = function (html) {
       // Partial html and not a fully selected anchor element
-      if (/</.test(html) && (!/^<a [^>]+>[^<]+<\/a>$/.test(html) || html.indexOf('href=') == -1)) {
+      if (/</.test(html) && (!/^<a [^>]+>[^<]+<\/a>$/.test(html) || html.indexOf('href=') === -1)) {
         return false;
       }
 
       return true;
     };
 
-
     var isImageFigure = function (node) {
       return node && node.nodeName === 'FIGURE' && /\bimage\b/i.test(node.className);
     };
-
 
     var link = function (editor, attachState) {
       return function (data) {
@@ -370,7 +430,7 @@ define(
           };
 
           if (!Settings.hasRelList(editor.settings) && Settings.allowUnsafeLinkTarget(editor.settings) === false) {
-            linkAttrs.rel = toggleTargetRules(linkAttrs.rel, linkAttrs.target == '_blank');
+            linkAttrs.rel = toggleTargetRules(linkAttrs.rel, linkAttrs.target === '_blank');
           }
 
           if (data.href === attachState.href) {
@@ -406,7 +466,6 @@ define(
       };
     };
 
-
     var unlink = function (editor) {
       return function () {
         editor.undoManager.transact(function () {
@@ -420,7 +479,6 @@ define(
       };
     };
 
-
     var unlinkImageFigure = function (editor, fig) {
       var a, img;
       img = editor.dom.select('img', fig)[0];
@@ -432,7 +490,6 @@ define(
         }
       }
     };
-
 
     var linkImageFigure = function (editor, fig, attrs) {
       var a, img;
@@ -457,6 +514,46 @@ define(
   }
 );
 /**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Delay',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Delay');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.XHR',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.XHR');
+  }
+);
+
+/**
  * Dialog.js
  *
  * Released under LGPL License.
@@ -472,23 +569,23 @@ define(
     'tinymce.core.util.Delay',
     'tinymce.core.util.Tools',
     'tinymce.core.util.XHR',
-    'tinymce.plugins.link.core.Utils',
-    'tinymce.plugins.link.core.Settings'
+    'tinymce.plugins.link.api.Settings',
+    'tinymce.plugins.link.core.Utils'
   ],
-  function (Delay, Tools, XHR, Utils, Settings) {
+  function (Delay, Tools, XHR, Settings, Utils) {
     var attachState = {};
 
     var createLinkList = function (editor, callback) {
       var linkList = Settings.getLinkList(editor.settings);
 
-      if (typeof linkList == "string") {
+      if (typeof linkList === "string") {
         XHR.send({
           url: linkList,
           success: function (text) {
             callback(editor, JSON.parse(text));
           }
         });
-      } else if (typeof linkList == "function") {
+      } else if (typeof linkList === "function") {
         linkList(function (list) {
           callback(editor, list);
         });
@@ -542,7 +639,7 @@ define(
       var linkListChangeHandler = function (e) {
         var textCtrl = win.find('#text');
 
-        if (!textCtrl.value() || (e.lastControl && textCtrl.value() == e.lastControl.text())) {
+        if (!textCtrl.value() || (e.lastControl && textCtrl.value() === e.lastControl.text())) {
           textCtrl.value(e.control.text());
         }
 
@@ -559,7 +656,7 @@ define(
             anchorList.push({
               text: id,
               value: '#' + id,
-              selected: url.indexOf('#' + id) != -1
+              selected: url.indexOf('#' + id) !== -1
             });
           }
         });
@@ -776,7 +873,7 @@ define(
           }
 
           // Is email and not //user@domain.com
-          if (href.indexOf('@') > 0 && href.indexOf('//') == -1 && href.indexOf('mailto:') == -1) {
+          if (href.indexOf('@') > 0 && href.indexOf('//') === -1 && href.indexOf('mailto:') === -1) {
             delayedConfirm(
               editor,
               'The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?',
@@ -821,101 +918,6 @@ define(
   }
 );
 /**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.dom.DOMUtils',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.dom.DOMUtils');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.Env',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.Env');
-  }
-);
-
-/**
- * OpenUrl.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.plugins.link.core.OpenUrl',
-  [
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.core.Env'
-  ],
-  function (DOMUtils, Env) {
-    var appendClickRemove = function (link, evt) {
-      document.body.appendChild(link);
-      link.dispatchEvent(evt);
-      document.body.removeChild(link);
-    };
-
-    var open = function (url) {
-      // Chrome and Webkit has implemented noopener and works correctly with/without popup blocker
-      // Firefox has it implemented noopener but when the popup blocker is activated it doesn't work
-      // Edge has only implemented noreferrer and it seems to remove opener as well
-      // Older IE versions pre IE 11 falls back to a window.open approach
-      if (!Env.ie || Env.ie > 10) {
-        var link = document.createElement('a');
-        link.target = '_blank';
-        link.href = url;
-        link.rel = 'noreferrer noopener';
-
-        var evt = document.createEvent('MouseEvents');
-        evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-
-        appendClickRemove(link, evt);
-      } else {
-        var win = window.open('', '_blank');
-        if (win) {
-          win.opener = null;
-          var doc = win.document;
-          doc.open();
-          doc.write('<meta http-equiv="refresh" content="0; url=' + DOMUtils.DOM.encode(url) + '">');
-          doc.close();
-        }
-      }
-    };
-
-    return {
-      open: open
-    };
-  }
-);
-/**
  * Actions.js
  *
  * Released under LGPL License.
@@ -929,12 +931,12 @@ define(
   'tinymce.plugins.link.core.Actions',
   [
     'tinymce.core.util.VK',
-    'tinymce.plugins.link.ui.Dialog',
+    'tinymce.plugins.link.api.Settings',
     'tinymce.plugins.link.core.OpenUrl',
     'tinymce.plugins.link.core.Utils',
-    'tinymce.plugins.link.core.Settings'
+    'tinymce.plugins.link.ui.Dialog'
   ],
-  function (VK, Dialog, OpenUrl, Utils, Settings) {
+  function (VK, Settings, OpenUrl, Utils, Dialog) {
     var getLink = function (editor, elm) {
       return editor.dom.getParent(elm, 'a[href]');
     };
@@ -992,7 +994,7 @@ define(
           rng = sel.getRng();
           node = rng.startContainer;
           // ignore cursor positions at the beginning/end (to make context toolbar less noisy)
-          if (node.nodeType == 3 && sel.isCollapsed() && rng.startOffset > 0 && rng.startOffset < node.data.length) {
+          if (node.nodeType === 3 && sel.isCollapsed() && rng.startOffset > 0 && rng.startOffset < node.data.length) {
             return true;
           }
         }
@@ -1061,6 +1063,58 @@ define(
     };
   }
 );
+/**
+ * Commands.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.link.api.Commands',
+  [
+    'tinymce.plugins.link.core.Actions'
+  ],
+  function (Actions) {
+    var register = function (editor) {
+      editor.addCommand('mceLink', Actions.openDialog(editor));
+    };
+
+    return {
+      register: register
+    };
+  }
+);
+
+/**
+ * Keyboard.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.link.core.Keyboard',
+  [
+    'tinymce.plugins.link.core.Actions'
+  ],
+  function (Actions) {
+    var setup = function (editor) {
+      editor.addShortcut('Meta+K', '', Actions.openDialog(editor));
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
 /**
  * Controls.js
  *
@@ -1154,17 +1208,19 @@ define(
   'tinymce.plugins.link.Plugin',
   [
     'tinymce.core.PluginManager',
+    'tinymce.plugins.link.api.Commands',
     'tinymce.plugins.link.core.Actions',
+    'tinymce.plugins.link.core.Keyboard',
     'tinymce.plugins.link.ui.Controls'
   ],
-  function (PluginManager, Actions, Controls) {
+  function (PluginManager, Commands, Actions, Keyboard, Controls) {
     PluginManager.add('link', function (editor) {
       Controls.setupButtons(editor);
       Controls.setupMenuItems(editor);
       Controls.setupContextToolbars(editor);
       Actions.setupGotoLinks(editor);
-      editor.addShortcut('Meta+K', '', Actions.openDialog(editor));
-      editor.addCommand('mceLink', Actions.openDialog(editor));
+      Commands.register(editor);
+      Keyboard.setup(editor);
     });
 
     return function () { };

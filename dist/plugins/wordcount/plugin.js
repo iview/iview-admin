@@ -57,8 +57,8 @@ var req = function (ids, callback) {
   var len = ids.length;
   var instances = new Array(len);
   for (var i = 0; i < len; ++i)
-    instances.push(dem(ids[i]));
-  callback.apply(null, callback);
+    instances[i] = dem(ids[i]);
+  callback.apply(null, instances);
 };
 
 var ephox = {};
@@ -76,12 +76,12 @@ ephox.bolt = {
 var define = def;
 var require = req;
 var demand = dem;
-// this helps with minificiation when using a lot of global references
+// this helps with minification when using a lot of global references
 var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.plugins.wordcount.Plugin","tinymce.core.PluginManager","tinymce.core.util.Delay","tinymce.plugins.wordcount.text.WordGetter","global!tinymce.util.Tools.resolve","tinymce.plugins.wordcount.text.UnicodeData","tinymce.plugins.wordcount.text.StringMapper","tinymce.plugins.wordcount.text.WordBoundary","tinymce.plugins.wordcount.alien.Arr"]
+["tinymce.plugins.wordcount.Plugin","tinymce.core.PluginManager","tinymce.plugins.wordcount.api.Api","tinymce.plugins.wordcount.ui.Statusbar","global!tinymce.util.Tools.resolve","tinymce.plugins.wordcount.text.WordCount","tinymce.core.util.Delay","tinymce.core.util.I18n","tinymce.plugins.wordcount.text.WordGetter","tinymce.plugins.wordcount.text.UnicodeData","tinymce.plugins.wordcount.text.StringMapper","tinymce.plugins.wordcount.text.WordBoundary","tinymce.plugins.wordcount.alien.Arr"]
 jsc*/
 defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
 /**
@@ -101,26 +101,6 @@ define(
   ],
   function (resolve) {
     return resolve('tinymce.PluginManager');
-  }
-);
-
-/**
- * ResolveGlobal.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.util.Delay',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
-  function (resolve) {
-    return resolve('tinymce.util.Delay');
   }
 );
 
@@ -324,7 +304,7 @@ define(
 );
 
 /**
- * IsWordBoundary.js
+ * WordBoundary.js
  *
  * Released under LGPL License.
  * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
@@ -336,7 +316,7 @@ define(
 define(
   'tinymce.plugins.wordcount.text.WordBoundary',
   [
-    "tinymce.plugins.wordcount.text.UnicodeData"
+    'tinymce.plugins.wordcount.text.UnicodeData'
   ],
   function (UnicodeData) {
     var ci = UnicodeData.characterIndices;
@@ -464,9 +444,9 @@ define(
 define(
   'tinymce.plugins.wordcount.text.WordGetter',
   [
-    "tinymce.plugins.wordcount.text.UnicodeData",
-    "tinymce.plugins.wordcount.text.StringMapper",
-    "tinymce.plugins.wordcount.text.WordBoundary"
+    'tinymce.plugins.wordcount.text.UnicodeData',
+    'tinymce.plugins.wordcount.text.StringMapper',
+    'tinymce.plugins.wordcount.text.WordBoundary'
   ],
   function (UnicodeData, StringMapper, WordBoundary) {
     var EMPTY_STRING = UnicodeData.EMPTY_STRING;
@@ -570,6 +550,161 @@ define(
   }
 );
 /**
+ * WordCount.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.wordcount.text.WordCount',
+  [
+    'tinymce.plugins.wordcount.text.WordGetter'
+  ],
+  function (WordGetter) {
+    var getTextContent = function (editor) {
+      return editor.removed ? '' : editor.getBody().innerText;
+    };
+
+    var getCount = function (editor) {
+      return WordGetter.getWords(getTextContent(editor)).length;
+    };
+
+    return {
+      getCount: getCount
+    };
+  }
+);
+
+/**
+ * Api.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.wordcount.api.Api',
+  [
+    'tinymce.plugins.wordcount.text.WordCount'
+  ],
+  function (WordCount) {
+    var get = function (editor) {
+      var getCount = function () {
+        return WordCount.getCount(editor);
+      };
+
+      return {
+        getCount: getCount
+      };
+    };
+
+    return {
+      get: get
+    };
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.Delay',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.Delay');
+  }
+);
+
+/**
+ * ResolveGlobal.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.util.I18n',
+  [
+    'global!tinymce.util.Tools.resolve'
+  ],
+  function (resolve) {
+    return resolve('tinymce.util.I18n');
+  }
+);
+
+/**
+ * Statusbar.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.plugins.wordcount.ui.Statusbar',
+  [
+    'tinymce.core.util.Delay',
+    'tinymce.core.util.I18n',
+    'tinymce.plugins.wordcount.text.WordCount'
+  ],
+  function (Delay, I18n, WordCount) {
+    var setup = function (editor) {
+      var wordsToText = function (editor) {
+        return I18n.translate(['{0} words', WordCount.getCount(editor)]);
+      };
+
+      var update = function () {
+        editor.theme.panel.find('#wordcount').text(wordsToText(editor));
+      };
+
+      editor.on('init', function () {
+        var statusbar = editor.theme.panel && editor.theme.panel.find('#statusbar')[0];
+        var debouncedUpdate = Delay.debounce(update, 300);
+
+        if (statusbar) {
+          Delay.setEditorTimeout(editor, function () {
+            statusbar.insert({
+              type: 'label',
+              name: 'wordcount',
+              text: wordsToText(editor),
+              classes: 'wordcount',
+              disabled: editor.settings.readonly
+            }, 0);
+
+            editor.on('setcontent beforeaddundo undo redo keyup', debouncedUpdate);
+          }, 0);
+        }
+      });
+    };
+
+    return {
+      setup: setup
+    };
+  }
+);
+
+/**
  * Plugin.js
  *
  * Released under LGPL License.
@@ -582,46 +717,14 @@ define(
 define(
   'tinymce.plugins.wordcount.Plugin',
   [
-    "tinymce.core.PluginManager",
-    "tinymce.core.util.Delay",
-    "tinymce.plugins.wordcount.text.WordGetter"
+    'tinymce.core.PluginManager',
+    'tinymce.plugins.wordcount.api.Api',
+    'tinymce.plugins.wordcount.ui.Statusbar'
   ],
-  function (PluginManager, Delay, WordGetter) {
+  function (PluginManager, Api, Statusbar) {
     PluginManager.add('wordcount', function (editor) {
-      var getTextContent = function (editor) {
-        return editor.removed ? '' : editor.getBody().innerText;
-      };
-
-      var getCount = function () {
-        return WordGetter.getWords(getTextContent(editor)).length;
-      };
-
-      var update = function () {
-        editor.theme.panel.find('#wordcount').text(['Words: {0}', getCount()]);
-      };
-
-      editor.on('init', function () {
-        var statusbar = editor.theme.panel && editor.theme.panel.find('#statusbar')[0];
-        var debouncedUpdate = Delay.debounce(update, 300);
-
-        if (statusbar) {
-          Delay.setEditorTimeout(editor, function () {
-            statusbar.insert({
-              type: 'label',
-              name: 'wordcount',
-              text: ['Words: {0}', getCount()],
-              classes: 'wordcount',
-              disabled: editor.settings.readonly
-            }, 0);
-
-            editor.on('setcontent beforeaddundo undo redo keyup', debouncedUpdate);
-          }, 0);
-        }
-      });
-
-      return {
-        getCount: getCount
-      };
+      Statusbar.setup(editor);
+      return Api.get(editor);
     });
 
     return function () { };
