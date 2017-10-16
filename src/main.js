@@ -44,9 +44,14 @@ router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
     if (Cookies.get('locking') === '1' && to.name !== 'locking') {  // 判断当前是否是锁定状态
-        next({
+        iView.LoadingBar.finish();
+        router.replace({
             name: 'locking'
         });
+        next();
+    } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
+        iView.LoadingBar.finish();
+        next(false);
     } else {
         if (!Cookies.get('user') && to.name !== 'login') {  // 判断是否已经登录且前往的页面不是登录页
             next({
