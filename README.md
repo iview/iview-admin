@@ -61,6 +61,54 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 - 登录
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
+- 标签导航
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/tags.gif)
+
+- 权限管理
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/access.gif)
+
+- 可拖拽列表
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/dragable-list.gif)
+
+- 文件上传
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/upload.gif)
+
+- 数字渐变
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
+
+- 文章发布
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/article-publish.gif)
+
+- 工作流
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/workflow.gif)
+
+- 可拖拽表格
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/dragable-table.gif)
+
+- 可编辑表格
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/editable-table.gif)
+
+- 表格导出数据
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/exportable-table.gif)
+
+- 表格转图片
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/table2image.gif)
+
+- 错误页面
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/error-page.gif)
+
+- 锁屏
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/locking.gif)
+
+- 可收缩侧边栏
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)
+
+- 主题切换
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/theme.gif)
+
+- 消息中心
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/message.gif)
+
 ## Links
 
 - [TalkingData](https://github.com/TalkingData)
