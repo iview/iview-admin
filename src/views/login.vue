@@ -62,6 +62,7 @@ export default {
                 if (valid) {
                     Cookies.set('user', this.form.userName);
                     Cookies.set('password', this.form.password);
+                    this.$store.commit('setAvator', 'https://i.loli.net/2017/08/21/599a521472424.jpg');
                     if (this.form.userName === 'iview_admin') {
                         Cookies.set('access', 0);
                     } else {

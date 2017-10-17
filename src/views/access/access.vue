@@ -13,7 +13,7 @@
                         当前用户
                     </p>
                     <div class="access-user-con access-current-user-con">
-                        <img src="https://avatars0.githubusercontent.com/u/5370542?s=400&v=4" alt="">
+                        <img :src="avatorPath" alt="">
                         <p>当前用户权限值:<b>{{ accessCode }}</b></p>
                     </div>
                 </Card>
@@ -50,6 +50,11 @@ export default {
             accessCode: parseInt(Cookies.get('access')),
             switchValue: parseInt(Cookies.get('access')) === 1
         };
+    },
+    computed: {
+        avatorPath () {
+            return localStorage.avatorImgPath;
+        }
     },
     methods: {
         changeAccess (res) {

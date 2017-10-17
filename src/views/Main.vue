@@ -58,7 +58,7 @@
                                     <DropdownItem name="loginout" divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <Avatar src="https://avatars0.githubusercontent.com/u/5370542?s=400&v=4" style="background: #619fe7;margin-left: 10px;"></Avatar>
+                            <Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>
                         </Row>
                     </div>
                 </div>
@@ -119,6 +119,9 @@
             },
             menuIconColor () {
                 return this.$store.state.menuTheme === 'dark' ? 'white' : '#495060';
+            },
+            avatorPath () {
+                return localStorage.avatorImgPath;
             }
         },
         methods: {
