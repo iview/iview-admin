@@ -5,8 +5,6 @@
 <script>
 import echarts from 'echarts';
 import geoData from '../map-data/get-geography-value.js';
-const path = require('path');
-const axios = require('axios');
 export default {
     name: 'homeMap',
     props: {
