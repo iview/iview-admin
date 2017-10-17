@@ -110,7 +110,7 @@ export default {
                 }]);
             }
             if (mainTheme !== 'b') {
-                path = '/src/styles/' + mainTheme + '.css';
+                path = '/dist/' + mainTheme + '.css';
             } else {
                 path = '';
             }

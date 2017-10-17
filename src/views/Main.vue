@@ -313,7 +313,7 @@
             }
             // 根据用户设置主题
             if (this.$store.state.theme !== 'b') {
-                let stylesheetPath = '../src/styles/' + this.$store.state.theme + '.css';
+                let stylesheetPath = '../dist/' + this.$store.state.theme + '.css';
                 let themeLink = document.querySelector('link[name="theme"]');
                 themeLink.setAttribute('href', stylesheetPath);
             }
