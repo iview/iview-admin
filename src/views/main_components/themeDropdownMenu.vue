@@ -110,7 +110,7 @@ export default {
                 }]);
             }
             if (mainTheme !== 'b') {
-                path = '/dist/' + mainTheme + '.css';
+                path = 'dist/' + mainTheme + '.css';
             } else {
                 path = '';
             }
