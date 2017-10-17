@@ -61,10 +61,10 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 ```shell
 .
 ├── dist
-│   ├── langs    TimyMCE富文本编辑器语言包
-│   ├── plugins    TimyMCE富文本编辑器组件
-│   ├── skins    TimyMCE富文本编辑器皮肤
-│   └── themes    TimyMCE富文本编辑器主题
+│   ├── langs    TinyMCE富文本编辑器语言包
+│   ├── plugins    TinyMCE富文本编辑器组件
+│   ├── skins    TinyMCE富文本编辑器皮肤
+│   └── themes    TinyMCE富文本编辑器主题
 └── src
     ├── config    项目配置
     ├── images    图片文件
