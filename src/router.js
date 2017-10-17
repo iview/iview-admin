@@ -6,7 +6,7 @@ export const loginRouter = {
     meta: {
         title: 'Login - 登录'
     },
-    component: require('./views/login.vue')
+    component: require(['./views/login.vue'], resolve)
 };
 
 export const page404 = {
@@ -15,7 +15,7 @@ export const page404 = {
     meta: {
         title: '404-页面不存在'
     },
-    component: require('./views/error_page/404.vue')
+    component: require(['./views/error_page/404.vue'], resolve)
 };
 
 export const page401 = {
@@ -24,7 +24,7 @@ export const page401 = {
         title: '401-权限不足'
     },
     name: 'error_401',
-    component: require('./views/error_page/401.vue')
+    component: require(['./views/error_page/401.vue'], resolve)
 };
 
 export const page500 = {
@@ -33,7 +33,7 @@ export const page500 = {
         title: '500-服务端错误'
     },
     name: 'error_500',
-    component: require('./views/error_page/500.vue')
+    component: require(['./views/error_page/500.vue'], resolve)
 };
 
 export const otherRouter = {
@@ -42,22 +42,22 @@ export const otherRouter = {
     redirect: '/home',
     component: Main,
     children: [
-        { path: 'home', title: '首页', name: 'home_index', component: require('./views/home/home.vue') },
-        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: require('./views/own-space/own-space.vue') },
-        { path: 'message', title: '消息中心', name: 'message_index', component: require('./views/message/message.vue') }
+        { path: 'home', title: '首页', name: 'home_index', component: require(['./views/home/home.vue'], resolve) },
+        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: require(['./views/own-space/own-space.vue'], resolve) },
+        { path: 'message', title: '消息中心', name: 'message_index', component: require(['./views/message/message.vue'], resolve) }
     ]
 };
 
 export const preview = {
     path: '/preview',
     name: 'preview',
-    component: require('./views/form/article-publish/preview.vue')
+    component: require(['./views/form/article-publish/preview.vue'], resolve)
 };
 
 export const locking = {
     path: '/locking',
     name: 'locking',
-    component: require('./views/main_components/locking-page.vue')
+    component: require(['./views/main_components/locking-page.vue'], resolve)
 };
 
 export const appRouter = [
@@ -69,7 +69,7 @@ export const appRouter = [
         title: '权限管理',
         component: Main,
         children: [
-            { path: 'index', title: '权限管理', name: 'access_index', component: require('./views/access/access.vue') }
+            { path: 'index', title: '权限管理', name: 'access_index', component: require(['./views/access/access.vue'], resolve) }
         ]
     },
     {
@@ -95,35 +95,35 @@ export const appRouter = [
                 icon: 'compose',
                 name: 'text-editer',
                 title: '富文本编辑器',
-                component: require('./views/my_components/text-editer/textEditer.vue')
+                component: require(['./views/my_components/text-editer/textEditer.vue'], resolve)
             },
             {
                 path: 'md-editor',
                 icon: 'pound',
                 name: 'md-editor',
                 title: 'Markdown编辑器',
-                component: require('./views/my_components/markdown-editor/markdown-editor.vue')
+                component: require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve)
             },
             {
                 path: 'draggable-list',
                 icon: 'arrow-move',
                 name: 'draggable-list',
                 title: '可拖拽列表',
-                component: require('./views/my_components/draggable-list/draggable-list.vue')
+                component: require(['./views/my_components/draggable-list/draggable-list.vue'], resolve)
             },
             {
                 path: 'file-upload',
                 icon: 'android-upload',
                 name: 'file-upload',
                 title: '文件上传',
-                component: require('./views/my_components/file-upload/file-upload.vue')
+                component: require(['./views/my_components/file-upload/file-upload.vue'], resolve)
             },
             {
                 path: 'count-to',
                 icon: 'arrow-graph-up-right',
                 name: 'count-to',
                 title: '数字渐变',
-                component: require('./views/my_components/count-to/count-to.vue')
+                component: require(['./views/my_components/count-to/count-to.vue'], resolve)
             }
         ]
     },
@@ -134,8 +134,8 @@ export const appRouter = [
         title: '表单编辑',
         component: Main,
         children: [
-            { path: 'artical-publish', title: '文章发布', name: 'articalpublish', icon: 'compose', component: require('./views/form/article-publish/article-publish.vue') },
-            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: require('./views/form/work-flow/work-flow.vue') }
+            { path: 'artical-publish', title: '文章发布', name: 'articalpublish', icon: 'compose', component: require(['./views/form/article-publish/article-publish.vue'], resolve) },
+            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: require(['./views/form/work-flow/work-flow.vue'], resolve) }
 
         ]
     },
@@ -158,10 +158,10 @@ export const appRouter = [
         title: '表格',
         component: Main,
         children: [
-            { path: 'dragableTable', title: '可拖拽排序', name: 'dragableTable', icon: 'arrow-move', component: require('./views/tables/dragable-table.vue') },
-            { path: 'editableTable', title: '可编辑表格', name: 'editableTable', icon: 'edit', component: require('./views/tables/editable-table.vue') },
-            { path: 'exportableTable', title: '表格导出数据', name: 'exportableTable', icon: 'code-download', component: require('./views/tables/exportable-table.vue') },
-            { path: 'table2image', title: '表格转图片', name: 'table2image', icon: 'images', component: require('./views/tables/table-to-image.vue') }
+            { path: 'dragableTable', title: '可拖拽排序', name: 'dragableTable', icon: 'arrow-move', component: require(['./views/tables/dragable-table.vue'], resolve) },
+            { path: 'editableTable', title: '可编辑表格', name: 'editableTable', icon: 'edit', component: require(['./views/tables/editable-table.vue'], resolve) },
+            { path: 'exportableTable', title: '表格导出数据', name: 'exportableTable', icon: 'code-download', component: require(['./views/tables/exportable-table.vue'], resolve) },
+            { path: 'table2image', title: '表格转图片', name: 'table2image', icon: 'images', component: require(['./views/tables/table-to-image.vue'], resolve) }
         ]
     },
     {
@@ -171,7 +171,7 @@ export const appRouter = [
         name: 'errorpage',
         component: Main,
         children: [
-            { path: 'index', title: '错误页面', name: 'errorpage_index', component: require('./views/error_page/error-page.vue') }
+            { path: 'index', title: '错误页面', name: 'errorpage_index', component: require(['./views/error_page/error-page.vue'], resolve) }
         ]
     }
 ];
