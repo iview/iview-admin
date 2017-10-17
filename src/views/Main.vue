@@ -2,7 +2,7 @@
     @import "./main.less";
 </style>
 <template>
-    <div class="main" :class="{'main-hide-text': hideMenuText}">
+    <div id="main" class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
                 <img v-show="!hideMenuText"  src="../images/logo.jpg">
