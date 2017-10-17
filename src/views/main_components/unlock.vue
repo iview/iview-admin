@@ -4,7 +4,7 @@
 
 <template>
     <transition name="show-unlock">
-        <div class="unlock-body-con" v-if="showUnlock">
+        <div class="unlock-body-con" v-if="showUnlock" @keydown.enter="handleUnlock">
             <div @click="handleClickAvator" class="unlock-avator-con" :style="{marginLeft: avatorLeft}">
                 <img class="unlock-avator-img" :src="avatorPath">
                 <div  class="unlock-avator-cover">
