@@ -87,6 +87,14 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
         ├── screen-shorts    锁屏
         └── tables    表格
 ```
+
+## Links
+
+- [TalkingData](https://github.com/TalkingData)
+- [iView](https://github.com/iview/iview)
+- [Vue](https://github.com/vuejs/vue)
+- [Webpack](https://github.com/webpack/webpack)
+
 ## 效果展示
 
 - 登录
@@ -139,12 +147,6 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 
 - 消息中心
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/message.gif)
-
-## Links
-
-- [TalkingData](https://github.com/TalkingData)
-- [Vue](https://github.com/vuejs/vue)
-- [Webpack](https://github.com/webpack/webpack)
 
 ## License
 [MIT](http://opensource.org/licenses/MIT)
