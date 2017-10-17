@@ -56,6 +56,11 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 
 ## 文件结构
 
+## 效果展示
+
+- 登录
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
+
 ## Links
 
 - [TalkingData](https://github.com/TalkingData)
