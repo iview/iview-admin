@@ -55,7 +55,99 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 - 个人中心
 
 ## 文件结构
-
+```shell
+.
+├── dist
+│   ├── langs
+│   ├── plugins
+│   │   ├── advlist
+│   │   ├── anchor
+│   │   ├── autolink
+│   │   ├── autoresize
+│   │   ├── autosave
+│   │   ├── bbcode
+│   │   ├── charmap
+│   │   ├── code
+│   │   ├── codesample
+│   │   │   └── css
+│   │   ├── colorpicker
+│   │   ├── contextmenu
+│   │   ├── directionality
+│   │   ├── emoticons
+│   │   │   └── img
+│   │   ├── fullpage
+│   │   ├── fullscreen
+│   │   ├── help
+│   │   │   └── img
+│   │   ├── hr
+│   │   ├── image
+│   │   ├── imagetools
+│   │   ├── importcss
+│   │   ├── insertdatetime
+│   │   ├── legacyoutput
+│   │   ├── link
+│   │   ├── lists
+│   │   ├── media
+│   │   ├── nonbreaking
+│   │   ├── noneditable
+│   │   ├── pagebreak
+│   │   ├── paste
+│   │   ├── preview
+│   │   ├── print
+│   │   ├── save
+│   │   ├── searchreplace
+│   │   ├── spellchecker
+│   │   ├── tabfocus
+│   │   ├── table
+│   │   ├── template
+│   │   ├── textcolor
+│   │   ├── textpattern
+│   │   ├── toc
+│   │   ├── visualblocks
+│   │   │   └── css
+│   │   ├── visualchars
+│   │   └── wordcount
+│   ├── skins
+│   │   └── lightgray
+│   │       ├── fonts
+│   │       └── img
+│   └── themes
+│       ├── inlite
+│       ├── mobile
+│       └── modern
+├── github-gif
+└── src
+    ├── config
+    ├── images
+    ├── libs
+    ├── styles
+    │   └── fonts
+    ├── template
+    └── views
+        ├── access
+        ├── error_page
+        ├── form
+        │   ├── article-publish
+        │   └── work-flow
+        ├── home
+        │   ├── components
+        │   │   └── styles
+        │   └── map-data
+        ├── main_components
+        ├── message
+        ├── my_components
+        │   ├── avator-editer
+        │   ├── count-to
+        │   ├── draggable-list
+        │   ├── file-upload
+        │   ├── markdown-editor
+        │   └── text-editer
+        ├── own-space
+        ├── screen-shorts
+        └── tables
+            ├── components
+            └── data
+```
 ## 效果展示
 
 - 登录
@@ -101,7 +193,7 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/locking.gif)
 
 - 可收缩侧边栏
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)s
 
 - 主题切换
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/theme.gif)
