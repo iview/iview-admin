@@ -16,7 +16,7 @@
             <div class="unlock-input-con">
                 <div class="unlock-input-overflow-con">
                     <div class="unlock-overflow-body" :style="{right: inputLeft}">
-                        <input ref="inputEle" v-model="password" class="unlock-input" type="password" />
+                        <input ref="inputEle" v-model="password" class="unlock-input" type="password" placeholder="密码同登录密码" />
                         <button ref="unlockBtn" @mousedown="unlockMousedown" @mouseup="unlockMouseup" @click="handleUnlock" class="unlock-btn"><Icon color="white" type="key"></Icon></button>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ export default {
                 this.$store.commit('unlock');
                 this.$emit('on-unlock');
             } else {
-                this.$Message.error('密码错误,请重新输入');
+                this.$Message.error('密码错误,请重新输入。如果忘了密码，清除浏览器缓存重新登录即可，这里没有做后端验证');
             }
         },
         unlockMousedown () {
