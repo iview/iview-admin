@@ -155,6 +155,24 @@
 
 
 
+.demo-spin-icon-load{-webkit-animation:ani-demo-spin 1s linear infinite;animation:ani-demo-spin 1s linear infinite}@-webkit-keyframes ani-demo-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}50%{-webkit-transform:rotate(180deg);transform:rotate(180deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes ani-demo-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}50%{-webkit-transform:rotate(180deg);transform:rotate(180deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
