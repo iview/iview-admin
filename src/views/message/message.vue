@@ -181,6 +181,9 @@ export default {
             this.showMesTitleList = true;
         },
         setCurrentMesType (type) {
+            if (this.currentMessageType !== type) {
+                this.showMesTitleList = true;
+            }
             this.currentMessageType = type;
             if (type === 'unread') {
                 this.noDataText = '暂无未读消息';
