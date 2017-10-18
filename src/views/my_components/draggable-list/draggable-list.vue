@@ -157,6 +157,10 @@ export default {
         };
     },
     mounted () {
+        document.body.ondrop = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        };
         let vm = this;
         let todoList = document.getElementById('todoList');
         Sortable.create(todoList, {
