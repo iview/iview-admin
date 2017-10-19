@@ -29,7 +29,8 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 - 组件
     - 富文本编辑器
     - Markdown编辑器
-    - 可拖拽列表
+    - 图片预览编辑
+    - 可拖拽列表
     - 文件上传
     - 数字渐变
 - 表单编辑
@@ -84,6 +85,7 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
         │   ├── count-to    数字渐变
         │   ├── draggable-list    可拖拽列表
         │   ├── file-upload    文件上传
+        |   ├── image-editor    图片预览编辑
         │   ├── markdown-editor    markdown编辑器
         │   └── text-editer    富文本编辑器
         ├── own-space    个人中心
