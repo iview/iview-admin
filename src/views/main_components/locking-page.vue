@@ -31,6 +31,8 @@ export default {
     },
     mounted () {
         this.showUnlock = true;
+        let lockScreenBack = document.getElementById('lock_screen_back');
+        lockScreenBack.style.zIndex = -1;
     }
 };
 </script>
