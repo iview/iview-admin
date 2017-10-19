@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import SimpleMDE from 'SimpleMDE';
+import SimpleMDE from 'simplemde';
 export default {
     mounted () {
         new SimpleMDE({

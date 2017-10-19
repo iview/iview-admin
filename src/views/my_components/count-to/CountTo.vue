@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import CountUp from 'countUp';
+import CountUp from 'countup';
 export default {
     name: 'CountTo',
     data () {
