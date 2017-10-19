@@ -30,7 +30,7 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
     - 富文本编辑器
     - Markdown编辑器
     - 图片预览编辑
-    - 可拖拽列表
+    - 可拖拽列表
     - 文件上传
     - 数字渐变
 - 表单编辑
