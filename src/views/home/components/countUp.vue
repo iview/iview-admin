@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import CountUp from 'countUp';
+import CountUp from 'countup';
 
 function transformValue (val) {
     let endVal = 0;
