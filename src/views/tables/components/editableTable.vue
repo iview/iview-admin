@@ -163,104 +163,109 @@ export default {
     data () {
         return {
             columns: [],
-            thisTableData: this.tableData,
+            thisTableData: [],
             edittingStore: []
         };
     },
     created () {
-        let vm = this;
-        let editableCell = this.columnsList.filter(item => {
-            if (item.editable) {
-                if (item.editable === true) {
-                    return item;
-                }
-            }
-        });
-        let cloneData = JSON.parse(JSON.stringify(this.thisTableData));
-        this.thisTableData = cloneData.map(item => {
-            this.$set(item, 'editting', false);
-            this.$set(item, 'saving', false);
-            this.$set(item, 'saveFail', false);
-            this.$set(item, 'isDeleting', false);
-            let edittingCell = {};
-            editableCell.forEach(item => {
-                edittingCell[item.key] = false;
-            });
-            this.$set(item, 'edittingCell', edittingCell);
-            return item;
-        });
-        this.edittingStore = JSON.parse(JSON.stringify(this.thisTableData));
-        this.columnsList.forEach(item => {
-            if (item.editable) {
-                item.render = (h, param) => {
-                    let currentRow = this.thisTableData[param.index];
-                    if (!currentRow.editting) {
-                        if (this.editIncell) {
-                            return h('Row', {
-                                props: {
-                                    type: 'flex',
-                                    align: 'middle',
-                                    justify: 'center'
-                                }
-                            }, [
-                                h('Col', {
-                                    props: {
-                                        span: '22'
-                                    }
-                                }, [
-                                    !currentRow.edittingCell[param.column.key] ? h('span', currentRow[item.key]) : cellInput(this, h, param, item)
-                                ]),
-                                h('Col', {
-                                    props: {
-                                        span: '2'
-                                    }
-                                }, [
-                                    currentRow.edittingCell[param.column.key] ? saveIncellEditBtn(this, h, param) : incellEditBtn(this, h, param)
-                                ])
-                            ]);
-                        } else {
-                            return h('span', currentRow[item.key]);
-                        }
-                    } else {
-                        return h('Input', {
-                            props: {
-                                type: 'text',
-                                value: currentRow[item.key]
-                            },
-                            on: {
-                                'on-change' (event) {
-                                    let key = param.column.key;
-                                    vm.edittingStore[param.index][key] = event.target.value;
-                                }
-                            }
-                        });
-                    }
-                };
-            }
-            if (item.handle) {
-                item.render = (h, param) => {
-                    let currentRowData = this.thisTableData[param.index];
-                    if (item.handle.length === 2) {
-                        return h('div', [
-                            editButton(this, h, currentRowData, param.index),
-                            deleteButton(this, h, currentRowData, param.index)
-                        ]);
-                    } else if (item.handle.length === 1) {
-                        if (item.handle[0] === 'edit') {
-                            return h('div', [
-                                editButton(this, h, currentRowData, param.index)
-                            ]);
-                        } else {
-                            return h('div', [
-                                deleteButton(this, h, currentRowData, param.index)
-                            ]);
-                        }
-                    }
-                };
-            }
-        });
+        this.init();
     },
     methods: {
+        init () {
+            let vm = this;
+            let editableCell = this.columnsList.filter(item => {
+                if (item.editable) {
+                    if (item.editable === true) {
+                        return item;
+                    }
+                }
+            });
+            let cloneData = JSON.parse(JSON.stringify(this.tableData));
+            let res = [];
+            res = cloneData.map(item => {
+                this.$set(item, 'editting', false);
+                this.$set(item, 'saving', false);
+                this.$set(item, 'saveFail', false);
+                this.$set(item, 'isDeleting', false);
+                let edittingCell = {};
+                editableCell.forEach(item => {
+                    edittingCell[item.key] = false;
+                });
+                this.$set(item, 'edittingCell', edittingCell);
+                return item;
+            });
+            this.thisTableData = res;
+            this.edittingStore = JSON.parse(JSON.stringify(this.thisTableData));
+            this.columnsList.forEach(item => {
+                if (item.editable) {
+                    item.render = (h, param) => {
+                        let currentRow = this.thisTableData[param.index];
+                        if (!currentRow.editting) {
+                            if (this.editIncell) {
+                                return h('Row', {
+                                    props: {
+                                        type: 'flex',
+                                        align: 'middle',
+                                        justify: 'center'
+                                    }
+                                }, [
+                                    h('Col', {
+                                        props: {
+                                            span: '22'
+                                        }
+                                    }, [
+                                        !currentRow.edittingCell[param.column.key] ? h('span', currentRow[item.key]) : cellInput(this, h, param, item)
+                                    ]),
+                                    h('Col', {
+                                        props: {
+                                            span: '2'
+                                        }
+                                    }, [
+                                        currentRow.edittingCell[param.column.key] ? saveIncellEditBtn(this, h, param) : incellEditBtn(this, h, param)
+                                    ])
+                                ]);
+                            } else {
+                                return h('span', currentRow[item.key]);
+                            }
+                        } else {
+                            return h('Input', {
+                                props: {
+                                    type: 'text',
+                                    value: currentRow[item.key]
+                                },
+                                on: {
+                                    'on-change' (event) {
+                                        let key = param.column.key;
+                                        vm.edittingStore[param.index][key] = event.target.value;
+                                    }
+                                }
+                            });
+                        }
+                    };
+                }
+                if (item.handle) {
+                    item.render = (h, param) => {
+                        let currentRowData = this.thisTableData[param.index];
+                        if (item.handle.length === 2) {
+                            return h('div', [
+                                editButton(this, h, currentRowData, param.index),
+                                deleteButton(this, h, currentRowData, param.index)
+                            ]);
+                        } else if (item.handle.length === 1) {
+                            if (item.handle[0] === 'edit') {
+                                return h('div', [
+                                    editButton(this, h, currentRowData, param.index)
+                                ]);
+                            } else {
+                                return h('div', [
+                                    deleteButton(this, h, currentRowData, param.index)
+                                ]);
+                            }
+                        }
+                    };
+                }
+            });
+        },
         editIndex (index) {
             return (() => {
                 return index;
@@ -307,6 +312,11 @@ export default {
                 edittingRow.isDeleting = false;
                 vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
             };
+        }
+    },
+    watch: {
+        tableData (data) {
+            this.init();
         }
     }
 };
