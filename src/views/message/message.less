@@ -101,23 +101,24 @@
     }
 }
 .back-message-list-enter, .back-message-list-leave-to{
-    transform: translateX(100%);
+    opacity: 0;
 }
 .back-message-list-enter-active, .back-message-list-leave-active{
-    transition: transform .5s;
+    transition: all .5s;
 }
 .back-message-list-enter-to, .back-message-list-leave{
-    transform: translateX(0);
+    opacity: 1;
 }
 .view-message-enter, .view-message-leave-to{
-    transform: translateX(-100%);
+    opacity: 0;
 }
 .view-message-enter-active, .view-message-leave-active{
-    transition: transform .5s;
+    transition: all .5s;
 }
 .view-message-enter-to, .view-message-leave{
-    transform: translateX(0);
+    opacity: 1;
 }
+
 .mes-current-type-btn-enter, .mes-current-type-btn-leave-to{
     opacity: 0;
     width: 0;
