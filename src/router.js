@@ -91,11 +91,11 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'text-editer',
+                path: 'text-editor',
                 icon: 'compose',
-                name: 'text-editer',
+                name: 'text-editor',
                 title: '富文本编辑器',
-                component: resolve => { require(['./views/my_components/text-editer/textEditer.vue'], resolve); }
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
             },
             {
                 path: 'md-editor',
@@ -103,6 +103,13 @@ export const appRouter = [
                 name: 'md-editor',
                 title: 'Markdown编辑器',
                 component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+            },
+            {
+                path: 'image-editor',
+                icon: 'crop',
+                name: 'image-editor',
+                title: '图片预览编辑',
+                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
             },
             {
                 path: 'draggable-list',

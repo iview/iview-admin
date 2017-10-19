@@ -20,6 +20,7 @@
     "axios": "^0.15.3",
     "clipboard": "^1.5.12",
     "countup": "^1.8.2",
+    "cropperjs": "^1.1.2",
     "echarts": "^3.7.2",
     "html2canvas": "^0.5.0-beta4",
     "iview": "^2.5.0-beta.1",
