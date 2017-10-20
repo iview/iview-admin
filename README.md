@@ -114,6 +114,9 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 - 可拖拽列表
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/dragable-list.gif)
 
+- 图片预览编辑
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/image-editor.gif)
+
 - 文件上传
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/upload.gif)
 
