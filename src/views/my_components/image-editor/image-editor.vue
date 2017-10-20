@@ -55,13 +55,15 @@
                             <p><b>deg:</b>{{ cropdata2.deg }}</p>
                             <p><b>scaleX:</b>{{ cropdata2.scaleX }}</p>
                             <p><b>scaleY:</b>{{ cropdata2.scaleY }}</p>
-                            <div class="margin-top-10">
-                                <Col span="4"><Button long @click="cropper2.rotate(-90)" type="primary"><Icon :size="20" type="arrow-return-left"></Icon></Button></Col>
-                                <Col span="4"><Button long @click="cropper2.rotate(90)" type="primary"><Icon :size="20" type="arrow-return-right"></Icon></Button></Col>
-                                <Col span="4"><Button long @click="cropper2.zoom(0.1)" type="primary"><Icon :size="20" type="plus-round"></Icon></Button></Col>
-                                <Col span="4"><Button long @click="cropper2.zoom(-0.1)" type="primary"><Icon :size="20" type="minus-round"></Icon></Button></Col>
-                                <Col span="4"><Button long @click="cropper2.scaleX(-cropper2.getData().scaleX)" type="primary"><Icon :size="20" type="android-more-horizontal"></Icon></Button></Col>
-                                <Col span="4"><Button long @click="cropper2.scaleY(-cropper2.getData().scaleY)" type="primary"><Icon :size="20" type="android-more-vertical"></Icon></Button></Col>
+                            <div class="margin-top-10" style="text-align: center;">
+                                <ButtonGroup>
+                                    <Button @click="cropper2.rotate(-90)" type="primary"><Icon :size="20" type="arrow-return-left"></Icon></Button>
+                                    <Button @click="cropper2.rotate(90)" type="primary"><Icon :size="20" type="arrow-return-right"></Icon></Button>
+                                    <Button @click="cropper2.zoom(0.1)" type="primary"><Icon :size="20" type="plus-round"></Icon></Button>
+                                    <Button @click="cropper2.zoom(-0.1)" type="primary"><Icon :size="20" type="minus-round"></Icon></Button>
+                                    <Button @click="cropper2.scaleX(-cropper2.getData().scaleX)" type="primary"><Icon :size="20" type="android-more-horizontal"></Icon></Button>
+                                    <Button @click="cropper2.scaleY(-cropper2.getData().scaleY)" type="primary"><Icon :size="20" type="android-more-vertical"></Icon></Button>
+                                </ButtonGroup>
                             </div>
                         </Col>
                     </Row>
@@ -82,11 +84,13 @@
                     </Col>
                     <Col span="6" class="image-editor-con3">
                         <Row>
-                            <Col span="12">
+                            <Col span="24" class="image-editor-con3-btn-box">
                                 <input type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="handleChange3" id="fileinput3" class="fileinput" />
                                 <label class="filelabel filelabel3" for="fileinput3"><Icon type="image"></Icon>&nbsp;选择图片</label>
                             </Col>
-                            <Col span="12" class="crop3-btn-box">
+                        </Row>
+                        <Row class="margin-top-10">
+                            <Col span="24" class="crop3-btn-box">
                                 <Tooltip content="开始裁剪" placement="bottom">
                                     <Button @click="cropper3.crop()" type="primary"><Icon :size="18" type="checkmark-round"></Icon></Button>
                                 </Tooltip>
@@ -102,7 +106,7 @@
                             </Col>
                         </Row>
                         <Row class="margin-top-10" :gutter="10">
-                            <Col span="12" class="crop3-btn-box">
+                            <Col span="24" class="crop3-btn-box">
                                 <Tooltip content="放大" placement="bottom">
                                     <Button @click="handlezooml" type="primary"><Icon :size="16" type="plus-round"></Icon></Button>
                                 </Tooltip>
@@ -116,7 +120,9 @@
                                     <Button @click="handlerotater" type="primary"><Icon :size="16" type="arrow-return-right"></Icon></Button>
                                 </Tooltip>
                             </Col>
-                            <Col span="12" class="crop3-btn-box">
+                        </Row>
+                        <Row class="margin-top-10" :gutter="10">
+                            <Col span="24" class="crop3-btn-box">
                                 <Tooltip content="左移" placement="bottom">
                                     <Button @click="handlemovel" type="primary"><Icon :size="18" type="android-arrow-back"></Icon></Button>
                                 </Tooltip>
@@ -133,7 +139,7 @@
                         </Row>
                         <Row class="margin-top-10">
                             <Col span="24" class="crop3-btn-box">
-                                <Button @click="handlecrop3" long icon="crop" type="primary">裁剪</Button>
+                                <Button @click="handlecrop3" style="width: 190px;" icon="crop" type="primary">裁剪</Button>
                             </Col>
                             <Modal v-model="option3.showCropedImage">
                                 <p slot="header">预览裁剪之后的图片</p>
