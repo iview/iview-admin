@@ -110,9 +110,12 @@ const store = new Vuex.Store({
                 }
             });
         },
-        moveToSecond (state, index) {
-            let openedPage = state.pageOpenedList[index];
-            state.pageOpenedList.splice(index, 1);
+        moveToSecond (state, get) {
+            let openedPage = state.pageOpenedList[get.index];
+            if (get.argu) {
+                openedPage.argu = get.argu;
+            }
+            state.pageOpenedList.splice(get.index, 1);
             state.pageOpenedList.splice(1, 0, openedPage);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },

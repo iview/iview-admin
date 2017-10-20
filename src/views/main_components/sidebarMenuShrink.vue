@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import util from '@/libs/util';
 export default {
     name: 'sidebarMenuShrink',
     props: {
@@ -49,32 +50,7 @@ export default {
     methods: {
         changeMenu (active) {
             if (active !== 'accesstest_index') {
-                let pageOpenedList = this.$store.state.pageOpenedList;
-                let openedPageLen = pageOpenedList.length;
-                let i = 0;
-                let tagHasOpened = false;
-                while (i < openedPageLen) {
-                    if (active === pageOpenedList[i].name) {  // 页面已经打开
-                        this.$store.commit('moveToSecond', i);
-                        tagHasOpened = true;
-                        break;
-                    }
-                    i++;
-                }
-                if (!tagHasOpened) {
-                    let tag = this.tagsList.filter((item) => {
-                        if (item.children) {
-                            return active === item.children[0].name;
-                        } else {
-                            return active === item.name;
-                        }
-                    });
-                    tag = tag[0];
-                    tag = tag.children ? tag.children[0] : tag;
-                    this.$store.commit('increateTag', tag);
-                    localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList); // 本地存储已打开页面
-                }
-                this.$store.commit('setCurrentPageName', active);
+                util.openNewPage(this, active);
                 this.$router.push({
                     name: active
                 });

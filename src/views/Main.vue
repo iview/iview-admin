@@ -81,7 +81,7 @@
     import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
     import sidebarMenuShrink from './main_components/sidebarMenuShrink.vue';
     import Cookies from 'js-cookie';
-    import util from '../libs/util.js';
+    import util from '@/libs/util.js';
     
     export default {
         components: {
@@ -140,7 +140,10 @@
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
-                    util.openPage(this, 'ownspace_index', '个人中心');
+                    util.openNewPage(this, 'ownspace_index');
+                    this.$router.push({
+                        name: 'ownspace_index'
+                    });
                 } else if (name === 'loginout') {
                     // 退出登录
                     Cookies.remove('user');
@@ -191,7 +194,10 @@
                 }
             },
             showMessage () {
-                util.openPage(this, 'message_index', '消息中心');
+                util.openNewPage(this, 'message_index');
+                this.$router.push({
+                    name: 'message_index'
+                });
             },
             lockScreen () {
                 let lockScreenBack = document.getElementById('lock_screen_back');

@@ -11,7 +11,7 @@
                 :key="item.name" 
                 :name="item.name" 
                 @on-close="closePage"
-                @click.native="linkTo(item.name, item.title)"
+                @click.native="linkTo(item)"
                 :closable="item.name==='home_index'?false:true"
                 :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
             >{{ item.title }}</Tag>
@@ -51,10 +51,17 @@ export default {
                 });
             }
         },
-        linkTo (name, title) {
-            this.$router.push({
-                name: name
-            });
+        linkTo (item) {
+            if (item.path.indexOf(':') > -1) {
+                this.$router.push({
+                    name: item.name,
+                    params: item.argu
+                });
+            } else {
+                this.$router.push({
+                    name: item.name
+                });
+            }
         }
     },
     watch: {

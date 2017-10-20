@@ -68,15 +68,22 @@ util.getPathObjByName = function (vm, name) {
 
 util.setCurrentPath = function (vm, name) {
     let title = '';
+    let isOtherRouter = false;
     vm.$store.state.routers.forEach(item => {
         if (item.children.length === 1) {
             if (item.children[0].name === name) {
                 title = item.title;
+                if (item.name === 'otherRouter') {
+                    isOtherRouter = true;
+                }
             }
         } else {
             item.children.forEach(child => {
                 if (child.name === name) {
                     title = child.title;
+                    if (item.name === 'otherRouter') {
+                        isOtherRouter = true;
+                    }
                 }
             });
         }
@@ -90,7 +97,7 @@ util.setCurrentPath = function (vm, name) {
                 name: 'home_index'
             }
         ];
-    } else if (name.indexOf('_index') >= 0 && name !== 'home_index') {
+    } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
         currentPathArr = [
             {
                 title: '首页',
@@ -169,20 +176,39 @@ util.setCurrentPath = function (vm, name) {
     return currentPathArr;
 };
 
-util.openPage = function (vm, name, title) {
-    vm.$router.push({
-        name: name
-    });
-    let hasOpened = false;
-    vm.pageTagsList.forEach((item, index) => {
-        if (item.name === name) {
-            hasOpened = true;
-            vm.$store.commit('moveToSecond', index);
+util.openNewPage = function (vm, name, argu) {
+    let pageOpenedList = vm.$store.state.pageOpenedList;
+    let openedPageLen = pageOpenedList.length;
+    let i = 0;
+    let tagHasOpened = false;
+    while (i < openedPageLen) {
+        if (name === pageOpenedList[i].name) {  // 页面已经打开
+            vm.$store.commit('moveToSecond', {
+                index: i,
+                argu: argu
+            });
+            tagHasOpened = true;
+            break;
         }
-    });
-    if (!hasOpened) {
-        vm.$store.commit('increateTag', {name: name, title: title});
+        i++;
     }
+    if (!tagHasOpened) {
+        let tag = vm.$store.state.tagsList.filter((item) => {
+            if (item.children) {
+                return name === item.children[0].name;
+            } else {
+                return name === item.name;
+            }
+        });
+        tag = tag[0];
+        tag = tag.children ? tag.children[0] : tag;
+        if (argu) {
+            tag.argu = argu;
+        }
+        vm.$store.commit('increateTag', tag);
+        localStorage.pageOpenedList = JSON.stringify(vm.$store.state.pageOpenedList); // 本地存储已打开页面
+    }
+    vm.$store.commit('setCurrentPageName', name);
 };
 
 export default util;
