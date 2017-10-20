@@ -1,5 +1,6 @@
 import Main from './views/Main.vue';
 
+// 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
     path: '/login',
     name: 'login',
@@ -36,18 +37,6 @@ export const page500 = {
     component: resolve => { require(['./views/error_page/500.vue'], resolve); }
 };
 
-export const otherRouter = {
-    path: '/',
-    name: 'otherRouter',
-    redirect: '/home',
-    component: Main,
-    children: [
-        { path: 'home', title: '首页', name: 'home_index', component: resolve => { require(['./views/home/home.vue'], resolve); } },
-        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: resolve => { require(['./views/own-space/own-space.vue'], resolve); } },
-        { path: 'message', title: '消息中心', name: 'message_index', component: resolve => { require(['./views/message/message.vue'], resolve); } }
-    ]
-};
-
 export const preview = {
     path: '/preview',
     name: 'preview',
@@ -60,6 +49,22 @@ export const locking = {
     component: resolve => { require(['./views/main_components/locking-page.vue'], resolve); }
 };
 
+// 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
+export const otherRouter = {
+    path: '/',
+    name: 'otherRouter',
+    redirect: '/home',
+    component: Main,
+    children: [
+        { path: 'home', title: '首页', name: 'home_index', component: resolve => { require(['./views/home/home.vue'], resolve); } },
+        { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: resolve => { require(['./views/own-space/own-space.vue'], resolve); } },
+        { path: 'ownspace/:username', title: '带参个人中心', name: 'ownspace_with_name', component: resolve => { require(['./views/own-space/own-space.vue'], resolve); } },  // 用于展示带参路由
+        { path: 'order/:order_id', title: '订单详情', name: 'order_info', component: resolve => { require(['./views/argument-page/order-info.vue'], resolve); } },  // 用于展示带参路由
+        { path: 'message', title: '消息中心', name: 'message_index', component: resolve => { require(['./views/message/message.vue'], resolve); } }
+    ]
+};
+
+// 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
     {
         path: '/access',
@@ -172,6 +177,16 @@ export const appRouter = [
         ]
     },
     {
+        path: '/argument-page',
+        icon: 'ios-infinite',
+        name: 'argupage',
+        title: '带参页面',
+        component: Main,
+        children: [
+            { path: 'index', title: '带参页面', name: 'argupage_index', component: resolve => { require(['./views/argument-page/argument-page.vue'], resolve); } }
+        ]
+    },
+    {
         path: '/error-page',
         icon: 'android-sad',
         title: '错误页面',
@@ -183,6 +198,7 @@ export const appRouter = [
     }
 ];
 
+// 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
     otherRouter,
