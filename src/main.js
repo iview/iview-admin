@@ -119,6 +119,29 @@ const store = new Vuex.Store({
             state.pageOpenedList.splice(1, 0, openedPage);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
+        clearAllTags (state) {
+            state.pageOpenedList.splice(1);
+            router.push({
+                name: 'home_index'
+            });
+            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
+        },
+        clearOtherTags (state, vm) {
+            let currentName = vm.$route.name;
+            let currentIndex = 0;
+            state.pageOpenedList.forEach((item, index) => {
+                if (item.name === currentName) {
+                    currentIndex = index;
+                }
+            });
+            if (currentIndex === 0) {
+                state.pageOpenedList.splice(1);
+            } else {
+                state.pageOpenedList.splice(currentIndex + 1);
+                state.pageOpenedList.splice(1, currentIndex - 1);
+            }
+            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
+        },
         setOpenedList (state) {
             state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]];
         },
