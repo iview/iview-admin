@@ -57,12 +57,12 @@
                             <p><b>scaleY:</b>{{ cropdata2.scaleY }}</p>
                             <div class="margin-top-10" style="text-align: center;">
                                 <ButtonGroup>
-                                    <Button @click="cropper2.rotate(-90)" type="primary"><Icon :size="20" type="arrow-return-left"></Icon></Button>
-                                    <Button @click="cropper2.rotate(90)" type="primary"><Icon :size="20" type="arrow-return-right"></Icon></Button>
-                                    <Button @click="cropper2.zoom(0.1)" type="primary"><Icon :size="20" type="plus-round"></Icon></Button>
-                                    <Button @click="cropper2.zoom(-0.1)" type="primary"><Icon :size="20" type="minus-round"></Icon></Button>
-                                    <Button @click="cropper2.scaleX(-cropper2.getData().scaleX)" type="primary"><Icon :size="20" type="android-more-horizontal"></Icon></Button>
-                                    <Button @click="cropper2.scaleY(-cropper2.getData().scaleY)" type="primary"><Icon :size="20" type="android-more-vertical"></Icon></Button>
+                                    <Button @click="cropper2.rotate(-90)" type="primary"><Icon :size="14" type="arrow-return-left"></Icon></Button>
+                                    <Button @click="cropper2.rotate(90)" type="primary"><Icon :size="14" type="arrow-return-right"></Icon></Button>
+                                    <Button @click="cropper2.zoom(0.1)" type="primary"><Icon :size="14" type="plus-round"></Icon></Button>
+                                    <Button @click="cropper2.zoom(-0.1)" type="primary"><Icon :size="14" type="minus-round"></Icon></Button>
+                                    <Button @click="cropper2.scaleX(-cropper2.getData().scaleX)" type="primary"><Icon :size="14" type="android-more-horizontal"></Icon></Button>
+                                    <Button @click="cropper2.scaleY(-cropper2.getData().scaleY)" type="primary"><Icon :size="14" type="android-more-vertical"></Icon></Button>
                                 </ButtonGroup>
                             </div>
                         </Col>
