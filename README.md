@@ -112,7 +112,7 @@ iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组�
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
 - 标签导航
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/tags.gif)
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/page-tags.gif)
 
 - 权限管理
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/access.gif)
