@@ -16,7 +16,7 @@
                 </DropdownMenu>
             </Dropdown>
         </div>
-        <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px', transition: scrollBodyTansition ? 'left .5s ease' : ''}">
+        <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px'}">
             <transition-group name="taglist-moving-animation">
                 <Tag 
                     type="dot"
@@ -42,7 +42,6 @@ export default {
             currentPageName: this.$route.name,
             tagBodyLeft: 0,
             currentScrollBodyWidth: 0,
-            scrollBodyTansition: true,
             refsTag: []
         };
     },
@@ -87,7 +86,6 @@ export default {
         },
         handlescroll (e) {
             document.body.style.overflow = 'hidden';
-            this.scrollBodyTansition = false;
             let left = 0;
             if (e.wheelDelta > 0) {
                 left = Math.min(0, this.tagBodyLeft + e.wheelDelta);
@@ -106,7 +104,6 @@ export default {
         },
         handlemouseout () {
             document.body.style.overflow = 'auto';
-            this.scrollBodyTansition = true;
         },
         handleTagsOption (type) {
             if (type === 'clearAll') {
