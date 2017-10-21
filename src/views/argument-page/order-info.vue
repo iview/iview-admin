@@ -35,6 +35,7 @@
 <script>
 import expandRow from './expandRow.vue';
 export default {
+    name: 'order-info',
     components: {
         expandRow
     },

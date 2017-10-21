@@ -39,6 +39,7 @@
 
 <script>
 export default {
+    name: 'workflow',
     data () {
         return {
             stepList1: [],

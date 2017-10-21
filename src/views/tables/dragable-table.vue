@@ -70,6 +70,7 @@
 import DragableTable from './components/dragableTable.vue';
 
 export default {
+    name: 'dragable-table',
     components: {
         DragableTable
     },

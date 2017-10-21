@@ -151,6 +151,7 @@
 <script>
 import tinymce from 'tinymce';
 export default {
+    name: 'artical-publish',
     data () {
         return {
             articleTitle: '',

@@ -69,7 +69,7 @@
         </div>
         <div class="single-page-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
             <div class="single-page">
-                <keep-alive>
+                <keep-alive :include="cachePage">
                     <router-view></router-view>
                 </keep-alive>
             </div>
@@ -124,6 +124,9 @@
             },
             avatorPath () {
                 return localStorage.avatorImgPath;
+            },
+            cachePage () {
+                return this.$store.state.cachePage;
             }
         },
         methods: {

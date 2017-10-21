@@ -36,6 +36,7 @@
 import Cookies from 'js-cookie';
 import util from '@/libs/util';
 export default {
+    name: 'argupage_index',
     data () {
         return {
             orderColumns: [

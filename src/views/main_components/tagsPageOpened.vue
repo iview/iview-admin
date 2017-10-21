@@ -59,6 +59,7 @@ export default {
     methods: {
         closePage (event, name) {
             this.$store.commit('removeTag', name);
+            this.$store.commit('closePage', name);
             localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList);
             if (this.currentPageName === name) {
                 let lastPageName = '';

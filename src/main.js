@@ -91,7 +91,8 @@ const store = new Vuex.Store({
         ],  // 面包屑数组
         openedSubmenuArr: [],  // 要展开的菜单数组
         menuTheme: '', // 主题
-        theme: ''
+        theme: '',
+        cachePage: []
     },
     getters: {
 
@@ -100,8 +101,23 @@ const store = new Vuex.Store({
         setTagsList (state, list) {
             state.tagsList.push(...list);
         },
+        closePage (state, name) {
+            state.cachePage.forEach((item, index) => {
+                if (item === name) {
+                    state.cachePage.splice(index, 1);
+                }
+            });
+        },
         increateTag (state, tagObj) {
+            state.cachePage.push(tagObj.name);
             state.pageOpenedList.push(tagObj);
+        },
+        initCachepage (state) {
+            state.cachePage = JSON.parse(localStorage.pageOpenedList).map(item => {
+                if (item.name !== 'home_index') {
+                    return item.name;
+                }
+            });
         },
         removeTag (state, name) {
             state.pageOpenedList.map((item, index) => {
@@ -123,6 +139,7 @@ const store = new Vuex.Store({
             router.push({
                 name: 'home_index'
             });
+            state.cachePage = [];
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         clearOtherTags (state, vm) {
@@ -139,6 +156,10 @@ const store = new Vuex.Store({
                 state.pageOpenedList.splice(currentIndex + 1);
                 state.pageOpenedList.splice(1, currentIndex - 1);
             }
+            let newCachepage = state.cachePage.filter(item => {
+                return item === currentName;
+            });
+            state.cachePage = newCachepage;
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         setOpenedList (state) {
@@ -244,6 +265,7 @@ new Vue({
     },
     mounted () {
         this.currentPageName = this.$route.name;
+        this.$store.commit('initCachepage');
     },
     created () {
         let tagsList = [];

@@ -34,7 +34,7 @@
             <Col span="18" class="padding-left-10">
                 <Card>
                     <div class="edittable-con-1">
-                        <editable-table refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></editable-table>
+                        <can-edit-table refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -47,7 +47,7 @@
                         可编辑单元行
                     </p>
                     <div class="edittable-table-height-con">
-                        <editable-table refs="table2" :columns-list="editInlineColumns" :table-data="editInlineData" :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></editable-table>
+                        <can-edit-table refs="table2" :columns-list="editInlineColumns" :table-data="editInlineData" :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -58,7 +58,7 @@
                         可编辑单元格(鼠标移入显示编辑单元格按钮)
                     </p>
                     <div class="edittable-table-height-con">
-                        <editable-table refs="table2" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></editable-table>
+                        <can-edit-table refs="table2" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -71,7 +71,7 @@
                          单元行和单元格两种方式编辑(始终显示编辑单元格按钮)
                     </p>
                     <div class="edittable-table-height-con">
-                        <editable-table refs="table3" :editIncell="true" :columns-list="editInlineAndCellColumn" :table-data="editInlineAndCellData" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></editable-table>
+                        <can-edit-table refs="table3" :editIncell="true" :columns-list="editInlineAndCellColumn" :table-data="editInlineAndCellData" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -80,11 +80,12 @@
 </template>
 
 <script>
-import EditableTable from './components/editableTable.vue';
+import canEditTable from './components/canEditTable.vue';
 import tableData from './components/table_data.js';
 export default {
+    name: 'editable-table',
     components: {
-        EditableTable
+        canEditTable
     },
     data () {
         return {

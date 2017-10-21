@@ -105,6 +105,7 @@
 <script>
 import Sortable from 'sortablejs';
 export default {
+    name: 'draggable-list',
     data () {
         return {
             todoArray: [

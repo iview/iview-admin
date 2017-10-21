@@ -167,6 +167,7 @@
 
 <script>
 export default {
+    name: 'file-upload',
     data () {
         return {
             defaultList: [

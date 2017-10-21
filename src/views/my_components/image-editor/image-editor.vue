@@ -161,6 +161,7 @@
 <script>
 import Cropper from 'cropperjs';
 export default {
+    name: 'image-editor',
     data () {
         return {
             cropper1: {},

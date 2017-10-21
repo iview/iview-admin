@@ -186,6 +186,7 @@ import mapDataTable from './components/mapDataTable.vue';
 import toDoListItem from './components/toDoListItem.vue';
 
 export default {
+    name: 'home',
     components: {
         homeMap,
         dataSourcePie,

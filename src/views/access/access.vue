@@ -45,6 +45,7 @@
 <script>
 import Cookies from 'js-cookie';
 export default {
+    name: 'access_index',
     data () {
         return {
             accessCode: parseInt(Cookies.get('access')),

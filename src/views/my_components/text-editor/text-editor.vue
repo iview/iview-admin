@@ -17,6 +17,7 @@
 <script>
 import tinymce from 'tinymce';
 export default {
+    name: 'text-editor',
     data () {
         return {
             spinShow: true

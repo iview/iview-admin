@@ -133,7 +133,7 @@ const cellInput = (vm, h, param, item) => {
     });
 };
 export default {
-    name: 'EditableTable',
+    name: 'canEditTable',
     props: {
         refs: String,
         columnsList: Array,

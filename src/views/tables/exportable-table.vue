@@ -74,6 +74,7 @@ import {table2csvData, csvColumns} from './data/table2csv.js';
 import {table2excelData, excelColumns} from './data/table2excel.js';
 import table2excel from '@/libs/table2excel.js';
 export default {
+    name: 'exportable-table',
     data () {
         return {
             columnsCsv: csvColumns,

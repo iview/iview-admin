@@ -39,6 +39,7 @@
 
 <script>
 export default {
+    name: 'message',
     data () {
         const markAsreadBtn = (h, params) => {
             return h('Button', {

@@ -78,6 +78,7 @@
 
 <script>
 export default {
+    name: 'own-space',
     data () {
         const validePhone = (rule, value, callback) => {
             var re = /^1[0-9]{10}$/;

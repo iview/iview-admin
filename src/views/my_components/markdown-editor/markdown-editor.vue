@@ -21,6 +21,7 @@
 <script>
 import SimpleMDE from 'simplemde';
 export default {
+    name: 'markdown-editor',
     mounted () {
         new SimpleMDE({
             element: document.getElementById('iview_admin_markdown_editor'),
