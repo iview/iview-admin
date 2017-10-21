@@ -16,11 +16,12 @@
                 </DropdownMenu>
             </Dropdown>
         </div>
-        <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagConLeft + 'px'}">
+        <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px', transition: scrollBodyTansition ? 'left .5s ease' : ''}">
             <transition-group name="taglist-moving-animation">
                 <Tag 
                     type="dot"
-                    v-for="item in pageTagsList" 
+                    v-for="(item, index) in pageTagsList" 
+                    ref="tagsPageOpened"
                     :key="item.name" 
                     :name="item.name" 
                     @on-close="closePage"
@@ -39,7 +40,10 @@ export default {
     data () {
         return {
             currentPageName: this.$route.name,
-            tagConLeft: 0
+            tagBodyLeft: 0,
+            currentScrollBodyWidth: 0,
+            scrollBodyTansition: true,
+            refsTag: []
         };
     },
     props: {
@@ -48,6 +52,9 @@ export default {
     computed: {
         title () {
             return this.$store.state.currentTitle;
+        },
+        tagsList () {
+            return this.$store.state.pageOpenedList;
         }
     },
     methods: {
@@ -80,18 +87,26 @@ export default {
         },
         handlescroll (e) {
             document.body.style.overflow = 'hidden';
+            this.scrollBodyTansition = false;
             let left = 0;
             if (e.wheelDelta > 0) {
-                left = Math.min(0, this.tagConLeft + e.wheelDelta);
+                left = Math.min(0, this.tagBodyLeft + e.wheelDelta);
             } else {
-                if (this.$refs.scrollCon.offsetWidth < this.$refs.scrollBody.offsetWidth) {
-                    left = Math.max(this.tagConLeft + e.wheelDelta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth);
+                if (this.$refs.scrollCon.offsetWidth - 100 < this.$refs.scrollBody.offsetWidth) {
+                    if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollCon.offsetWidth + 100)) {
+                        left = this.tagBodyLeft;
+                    } else {
+                        left = Math.max(this.tagBodyLeft + e.wheelDelta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth - 100);
+                    }
+                } else {
+                    this.tagBodyLeft = 0;
                 }
             }
-            this.tagConLeft = left;
+            this.tagBodyLeft = left;
         },
         handlemouseout () {
             document.body.style.overflow = 'auto';
+            this.scrollBodyTansition = true;
         },
         handleTagsOption (type) {
             if (type === 'clearAll') {
@@ -99,11 +114,29 @@ export default {
             } else {
                 this.$store.commit('clearOtherTags', this);
             }
+            this.tagBodyLeft = 0;
         }
+    },
+    mounted () {
+        this.refsTag = this.$refs.tagsPageOpened;
+        setTimeout(() => {
+            this.refsTag.forEach((item, index) => {
+                if (this.$route.name === item.name) {
+                    this.tagBodyLeft = -this.refsTag[index].$el.offsetLeft + 10;
+                }
+            });
+        }, 1);  // 这里不设定时器就会有偏移bug
     },
     watch: {
         '$route' (to) {
             this.currentPageName = to.name;
+            this.$nextTick(() => {
+                this.refsTag.forEach((item, index) => {
+                    if (to.name === item.name) {
+                        this.tagBodyLeft = -this.refsTag[index].$el.offsetLeft + 10;
+                    }
+                });
+            });
         }
     }
 };

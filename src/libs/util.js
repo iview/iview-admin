@@ -183,7 +183,7 @@ util.openNewPage = function (vm, name, argu) {
     let tagHasOpened = false;
     while (i < openedPageLen) {
         if (name === pageOpenedList[i].name) {  // 页面已经打开
-            vm.$store.commit('moveToSecond', {
+            vm.$store.commit('pageOpenedList', {
                 index: i,
                 argu: argu
             });

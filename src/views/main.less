@@ -43,10 +43,12 @@
     .tags-con{
         height: 40px;
         z-index: -1;
-        overflow: visible;
+        overflow: hidden;
         background: #f0f0f0;
         .tags-outer-scroll-con{
             position: relative;
+            box-sizing: border-box;
+            padding-right: 120px;
             width: 100%;
             height: 100%;
             .tags-inner-scroll-body{

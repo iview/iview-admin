@@ -101,7 +101,7 @@ const store = new Vuex.Store({
             state.tagsList.push(...list);
         },
         increateTag (state, tagObj) {
-            state.pageOpenedList.splice(1, 0, tagObj);
+            state.pageOpenedList.push(tagObj);
         },
         removeTag (state, name) {
             state.pageOpenedList.map((item, index) => {
@@ -110,13 +110,12 @@ const store = new Vuex.Store({
                 }
             });
         },
-        moveToSecond (state, get) {
+        pageOpenedList (state, get) {
             let openedPage = state.pageOpenedList[get.index];
             if (get.argu) {
                 openedPage.argu = get.argu;
             }
-            state.pageOpenedList.splice(get.index, 1);
-            state.pageOpenedList.splice(1, 0, openedPage);
+            state.pageOpenedList.splice(get.index, 1, openedPage);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         clearAllTags (state) {
