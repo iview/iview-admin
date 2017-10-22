@@ -42,7 +42,8 @@ export default {
             currentPageName: this.$route.name,
             tagBodyLeft: 0,
             currentScrollBodyWidth: 0,
-            refsTag: []
+            refsTag: [],
+            tagsCount: 1
         };
     },
     props: {
@@ -113,6 +114,15 @@ export default {
                 this.$store.commit('clearOtherTags', this);
             }
             this.tagBodyLeft = 0;
+        },
+        moveToView (tag) {
+            if (tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft) {
+                this.tagBodyLeft = -tag.offsetLeft + 10;
+            } else if (tag.offsetLeft + 10 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + this.$refs.scrollCon.offsetWidth - 100) {
+                //
+            } else {
+                this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollCon.offsetWidth - 100 - tag.offsetWidth) + 20);
+            }
         }
     },
     mounted () {
@@ -120,10 +130,12 @@ export default {
         setTimeout(() => {
             this.refsTag.forEach((item, index) => {
                 if (this.$route.name === item.name) {
-                    this.tagBodyLeft = -this.refsTag[index].$el.offsetLeft + 10;
+                    let tag = this.refsTag[index].$el;
+                    this.moveToView(tag);
                 }
             });
         }, 1);  // 这里不设定时器就会有偏移bug
+        this.tagsCount = this.tagsList.length;
     },
     watch: {
         '$route' (to) {
@@ -131,10 +143,12 @@ export default {
             this.$nextTick(() => {
                 this.refsTag.forEach((item, index) => {
                     if (to.name === item.name) {
-                        this.tagBodyLeft = -this.refsTag[index].$el.offsetLeft + 10;
+                        let tag = this.refsTag[index].$el;
+                        this.moveToView(tag);
                     }
                 });
             });
+            this.tagsCount = this.tagsList.length;
         }
     }
 };
