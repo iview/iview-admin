@@ -113,11 +113,13 @@ const store = new Vuex.Store({
             state.pageOpenedList.push(tagObj);
         },
         initCachepage (state) {
-            state.cachePage = JSON.parse(localStorage.pageOpenedList).map(item => {
-                if (item.name !== 'home_index') {
-                    return item.name;
-                }
-            });
+            if (localStorage.pageOpenedList) {
+                state.cachePage = JSON.parse(localStorage.pageOpenedList).map(item => {
+                    if (item.name !== 'home_index') {
+                        return item.name;
+                    }
+                });
+            }
         },
         removeTag (state, name) {
             state.pageOpenedList.map((item, index) => {
@@ -208,10 +210,10 @@ const store = new Vuex.Store({
             appRouter.forEach((item, index) => {
                 if (item.access !== undefined) {
                     if (Util.showThisRoute(item.access, accessCode)) {
-                        if (item.children.length <= 1) {
+                        if (item.children.length === 1) {
                             menuList.push(item);
                         } else {
-                            let i = menuList.push(item);
+                            let len = menuList.push(item);
                             let childrenArr = [];
                             childrenArr = item.children.filter(child => {
                                 if (child.access !== undefined) {
@@ -222,14 +224,14 @@ const store = new Vuex.Store({
                                     return child;
                                 }
                             });
-                            menuList[i - 1].children = childrenArr;
+                            menuList[len - 1].children = childrenArr;
                         }
                     }
                 } else {
-                    if (item.children.length <= 1) {
+                    if (item.children.length === 1) {
                         menuList.push(item);
                     } else {
-                        let i = menuList.push(item);
+                        let len = menuList.push(item);
                         let childrenArr = [];
                         childrenArr = item.children.filter(child => {
                             if (child.access !== undefined) {
@@ -240,7 +242,9 @@ const store = new Vuex.Store({
                                 return child;
                             }
                         });
-                        menuList[i - 1].children = childrenArr;
+                        let handledItem = JSON.parse(JSON.stringify(menuList[len - 1]));
+                        handledItem.children = childrenArr;
+                        menuList.splice(len - 1, 1, handledItem);
                     }
                 }
             });
@@ -266,6 +270,8 @@ new Vue({
     mounted () {
         this.currentPageName = this.$route.name;
         this.$store.commit('initCachepage');
+        // 权限菜单过滤相关
+        this.$store.commit('updateMenulist');
     },
     created () {
         let tagsList = [];
@@ -277,5 +283,14 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
+    },
+    watch: {
+        '$route' (to) {
+            if (Util.getRouterObjByName(this, to.name).access) {
+                if (Util.getRouterObjByName(this, to.name).access !== parseInt(Cookies.get('access'))) {
+                    console.log(123)
+                }
+            }
+        }
     }
 });

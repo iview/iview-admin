@@ -300,8 +300,6 @@
             }
         },
         created () {
-            // 权限菜单过滤相关
-            this.$store.commit('updateMenulist');
             // 查找当前用户之前登录时设置的主题
             let name = Cookies.get('user');
             if (localStorage.theme) {

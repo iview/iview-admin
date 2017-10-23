@@ -46,24 +46,30 @@ util.showThisRoute = function (itAccess, currentAccess) {
     }
 };
 
-util.getPathObjByName = function (vm, name) {
-    let pathObj = vm.$store.state.routers.filter((item) => {
-        if (item.children.length <= 1) {
-            return item.name === name;
-        } else {
-            let i = 0;
-            let childArr = item.children;
-            let len = childArr.length;
-            while (i < len) {
-                if (childArr[i].name === name) {
-                    return true;
+util.getRouterObjByName = function (vm, name) {
+    let routerObj = {};
+    vm.$store.state.routers.forEach(item => {
+        if (item.name === 'otherRouter') {
+            item.children.forEach((child, i) => {
+                if (child.name === name) {
+                    routerObj = item.children[i];
                 }
-                i++;
+            });
+        } else {
+            if (item.children.length === 1) {
+                if (item.children[0].name === name) {
+                    routerObj = item.children[0];
+                }
+            } else {
+                item.children.forEach((child, i) => {
+                    if (child.name === name) {
+                        routerObj = item.children[i];
+                    }
+                });
             }
-            return false;
         }
-    })[0];
-    return pathObj;
+    });
+    return routerObj;
 };
 
 util.setCurrentPath = function (vm, name) {
