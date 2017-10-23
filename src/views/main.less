@@ -1,5 +1,5 @@
 .main{
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
     .unlock-con{
@@ -165,10 +165,13 @@
         }
     }
     .single-page-con{
-        box-sizing: border-box;
-        padding: 100px 0 10px;
+        position: absolute;
+        top: 100px;
+        right: 0;
+        bottom: 0;
+        overflow: auto;
         background-color: #F0F0F0;
-        z-index: -1;
+        z-index: 1;
         .single-page{
             margin: 10px;
         }

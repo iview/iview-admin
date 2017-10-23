@@ -2,7 +2,7 @@
     @import "./main.less";
 </style>
 <template>
-    <div id="main" class="main" :class="{'main-hide-text': hideMenuText}">
+    <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
                 <img v-show="!hideMenuText"  src="../images/logo.jpg">
@@ -67,7 +67,7 @@
                 <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
             </div>
         </div>
-        <div class="single-page-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
+        <div class="single-page-con" :style="{left: hideMenuText?'60px':'200px'}">
             <div class="single-page">
                 <keep-alive :include="cachePage">
                     <router-view></router-view>

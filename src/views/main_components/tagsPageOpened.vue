@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <div ref="scrollCon" @mousewheel="handlescroll" @mouseout="handlemouseout" class="tags-outer-scroll-con">
+    <div ref="scrollCon" @mousewheel="handlescroll" class="tags-outer-scroll-con">
         <div class="close-all-tag-con">
             <Dropdown @on-click="handleTagsOption">
                 <Button size="small" type="primary">
@@ -87,7 +87,6 @@ export default {
             }
         },
         handlescroll (e) {
-            document.body.style.overflow = 'hidden';
             let left = 0;
             if (e.wheelDelta > 0) {
                 left = Math.min(0, this.tagBodyLeft + e.wheelDelta);
@@ -103,9 +102,6 @@ export default {
                 }
             }
             this.tagBodyLeft = left;
-        },
-        handlemouseout () {
-            document.body.style.overflow = 'auto';
         },
         handleTagsOption (type) {
             if (type === 'clearAll') {
