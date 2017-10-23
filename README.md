@@ -12,6 +12,8 @@
 ## 当前版本：v1.1.0
 [更新日志](https://github.com/iview/iview-admin/releases)
 
+[使用教程](https://github.com/iview/iview-admin/wiki)
+
 [在线访问](https://iview.github.io/iview-admin)
 
 ## Run
