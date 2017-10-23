@@ -182,11 +182,6 @@ export default {
     },
     mounted () {
         this.init();
-    },
-    watch: {
-        '$route' () {
-            console.log(123)
-        }
     }
 };
 </script>
