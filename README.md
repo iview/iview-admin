@@ -16,6 +16,8 @@
 
 [在线访问](https://iview.github.io/iview-admin)
 
+`注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
+
 ## Run
 
 ```
