@@ -90,6 +90,7 @@ export const appRouter = [
     },
     {
         path: '/component',
+        redirect: '/component/text-editor',
         icon: 'social-buffer',
         name: 'component',
         title: '组件',
@@ -134,6 +135,7 @@ export const appRouter = [
                 path: 'count-to',
                 icon: 'arrow-graph-up-right',
                 name: 'count-to',
+                access: 0,
                 title: '数字渐变',
                 component: resolve => { require(['./views/my_components/count-to/count-to.vue'], resolve); }
             }
@@ -141,6 +143,7 @@ export const appRouter = [
     },
     {
         path: '/form',
+        redirect: '/form/artical-publish',
         icon: 'android-checkbox',
         name: 'form',
         title: '表单编辑',
@@ -165,6 +168,7 @@ export const appRouter = [
     // },
     {
         path: '/tables',
+        redirect: '/tables/adragableTable',
         icon: 'ios-grid-view',
         name: 'tables',
         title: '表格',
@@ -178,6 +182,7 @@ export const appRouter = [
     },
     {
         path: '/argument-page',
+        redirect: '/argument-page/index',
         icon: 'ios-infinite',
         name: 'argupage',
         title: '带参页面',
@@ -188,6 +193,7 @@ export const appRouter = [
     },
     {
         path: '/error-page',
+        redirect: '/error-page/index',
         icon: 'android-sad',
         title: '错误页面',
         name: 'errorpage',

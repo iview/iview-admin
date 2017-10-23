@@ -44,13 +44,11 @@ router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
     if (Cookies.get('locking') === '1' && to.name !== 'locking') {  // 判断当前是否是锁定状态
-        iView.LoadingBar.finish();
         next(false);
         router.replace({
             name: 'locking'
         });
     } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
-        iView.LoadingBar.finish();
         next(false);
     } else {
         if (!Cookies.get('user') && to.name !== 'login') {  // 判断是否已经登录且前往的页面不是登录页
@@ -58,13 +56,26 @@ router.beforeEach((to, from, next) => {
                 name: 'login'
             });
         } else if (Cookies.get('user') && to.name === 'login') {  // 判断是否已经登录且前往的是登录页
+            Util.title();
             next({
-                name: 'home'
+                name: 'home_index'
             });
         } else {
-            next();
+            if (Util.getRouterObjByName([otherRouter, ...appRouter], to.name).access !== undefined) {  // 判断用户是否有权限访问当前页
+                if (Util.getRouterObjByName([otherRouter, ...appRouter], to.name).access === parseInt(Cookies.get('access'))) {
+                    next();
+                } else {
+                    router.replace({
+                        name: 'error_401'
+                    });
+                    next();
+                }
+            } else {
+                next();
+            }
         }
     }
+    iView.LoadingBar.finish();
 });
 
 router.afterEach(() => {
@@ -286,11 +297,11 @@ new Vue({
     },
     watch: {
         '$route' (to) {
-            if (Util.getRouterObjByName(this, to.name).access) {
-                if (Util.getRouterObjByName(this, to.name).access !== parseInt(Cookies.get('access'))) {
-                    console.log(123)
-                }
-            }
+            // if (Util.getRouterObjByName(this, to.name).access) {
+            //     if (Util.getRouterObjByName(this, to.name).access === parseInt(Cookies.get('access'))) {
+
+            //     }
+            // }
         }
     }
 });

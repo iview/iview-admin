@@ -46,9 +46,9 @@ util.showThisRoute = function (itAccess, currentAccess) {
     }
 };
 
-util.getRouterObjByName = function (vm, name) {
+util.getRouterObjByName = function (routers, name) {
     let routerObj = {};
-    vm.$store.state.routers.forEach(item => {
+    routers.forEach(item => {
         if (item.name === 'otherRouter') {
             item.children.forEach((child, i) => {
                 if (child.name === name) {
