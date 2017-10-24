@@ -63,7 +63,6 @@ router.beforeEach((to, from, next) => {
         } else {
             if (Util.getRouterObjByName([otherRouter, ...appRouter], to.name).access !== undefined) {  // 判断用户是否有权限访问当前页
                 if (Util.getRouterObjByName([otherRouter, ...appRouter], to.name).access === parseInt(Cookies.get('access'))) {
-                    // next();
                     Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next);  // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
                 } else {
                     router.replace({
@@ -72,7 +71,6 @@ router.beforeEach((to, from, next) => {
                     next();
                 }
             } else {
-                // next();
                 Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next);
             }
         }
