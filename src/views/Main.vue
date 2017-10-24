@@ -5,8 +5,10 @@
     <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
-                <img v-show="!hideMenuText"  src="../images/logo.jpg">
-                <img v-show="hideMenuText" src="../images/logo-min.jpg">
+                <transition-group name="logo-img">
+                    <img v-show="!hideMenuText"  src="../images/logo.jpg" key="max-logo" />
+                    <img v-show="hideMenuText" src="../images/logo-min.jpg" key="min-logo" />
+                </transition-group>
             </div>
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
             <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>

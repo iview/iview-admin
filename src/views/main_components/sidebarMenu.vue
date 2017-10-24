@@ -1,3 +1,7 @@
+<style lang="less">
+    @import './menu.less';
+</style>
+
 <template>
     <Menu ref="sideMenu" :active-name="currentPageName" :open-names="openedSubmenuArr" :theme="$store.state.menuTheme" width="auto" @on-select="changeMenu">
         <template v-for="item in menuList">
