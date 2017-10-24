@@ -7,8 +7,8 @@
                         <Icon :size="20" :color="iconColor" :type="item.icon"></Icon>
                     </Button>
                     <DropdownMenu style="width: 200px;" slot="list">
-                        <template v-for="child in item.children">
-                            <DropdownItem :name="child.name" :key="child.title"><Icon :type="child.icon"></Icon><span style="padding-left:10px;">{{ child.title }}</span></DropdownItem>
+                        <template v-for="(child, i) in item.children">
+                            <DropdownItem :name="child.name" :key="i"><Icon :type="child.icon"></Icon><span style="padding-left:10px;">{{ itemTitle(child) }}</span></DropdownItem>
                         </template>
                     </DropdownMenu>
                 </Dropdown>
@@ -17,7 +17,7 @@
                         <Icon :size="20" :color="iconColor" :type="item.icon"></Icon>
                     </Button>
                     <DropdownMenu style="width: 200px;" slot="list">
-                        <DropdownItem :name="item.children[0].name" :key="item.children[0].title"><Icon :type="item.icon"></Icon><span style="padding-left:10px;">{{ item.children[0].title }}</span></DropdownItem>
+                        <DropdownItem :name="item.children[0].name" :key="'d' + index"><Icon :type="item.icon"></Icon><span style="padding-left:10px;">{{ itemTitle(item.children[0]) }}</span></DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -27,6 +27,9 @@
 
 <script>
 import util from '@/libs/util';
+import Vue from 'vue';
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
 export default {
     name: 'sidebarMenuShrink',
     props: {
@@ -56,6 +59,13 @@ export default {
                 this.$router.push({
                     name: active
                 });
+            }
+        },
+        itemTitle (item) {
+            if (typeof item.title === 'object') {
+                return this.$t(item.title.i18n);
+            } else {
+                return item.title;
             }
         }
     },

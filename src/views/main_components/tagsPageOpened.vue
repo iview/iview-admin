@@ -28,13 +28,16 @@
                     @click.native="linkTo(item)"
                     :closable="item.name==='home_index'?false:true"
                     :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
-                >{{ item.title }}</Tag>
+                >{{ itemTitle(item) }}</Tag>
             </transition-group>
         </div>
     </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
 export default {
     name: 'tagsPageOpened',
     data () {
@@ -58,6 +61,13 @@ export default {
         }
     },
     methods: {
+        itemTitle (item) {
+            if (typeof item.title === 'object') {
+                return this.$t(item.title.i18n);
+            } else {
+                return item.title;
+            }
+        },
         closePage (event, name) {
             this.$store.commit('removeTag', name);
             this.$store.commit('closePage', name);

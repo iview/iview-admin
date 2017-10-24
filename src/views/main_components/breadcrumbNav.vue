@@ -4,7 +4,7 @@
             v-for="item in $store.state.currentPath" 
             :href="item.path" 
             :key="item.name"
-        >{{item.title}}</BreadcrumbItem>
+        >{{itemTitle(item)}}</BreadcrumbItem>
     </Breadcrumb>
 </template>
 
@@ -13,6 +13,15 @@ export default {
     name: 'breadcrumbNav',
     props: {
         currentPath: Array
+    },
+    methods: {
+        itemTitle (item) {
+            if (typeof item.title === 'object') {
+                return this.$t(item.title.i18n);
+            } else {
+                return item.title;
+            }
+        }
     }
 };
 </script>

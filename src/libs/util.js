@@ -72,13 +72,21 @@ util.getRouterObjByName = function (routers, name) {
     return routerObj;
 };
 
+util.handleTitle = function (vm, item) {
+    if (typeof item.title === 'object') {
+        return vm.$t(item.title.i18n);
+    } else {
+        return item.title;
+    }
+};
+
 util.setCurrentPath = function (vm, name) {
     let title = '';
     let isOtherRouter = false;
     vm.$store.state.routers.forEach(item => {
         if (item.children.length === 1) {
             if (item.children[0].name === name) {
-                title = item.title;
+                title = util.handleTitle(vm, item);
                 if (item.name === 'otherRouter') {
                     isOtherRouter = true;
                 }
@@ -86,7 +94,7 @@ util.setCurrentPath = function (vm, name) {
         } else {
             item.children.forEach(child => {
                 if (child.name === name) {
-                    title = child.title;
+                    title = util.handleTitle(vm, child);
                     if (item.name === 'otherRouter') {
                         isOtherRouter = true;
                     }
@@ -98,7 +106,7 @@ util.setCurrentPath = function (vm, name) {
     if (name === 'home_index') {
         currentPathArr = [
             {
-                title: '首页',
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.routers, 'home_index')),
                 path: '',
                 name: 'home_index'
             }
@@ -106,7 +114,7 @@ util.setCurrentPath = function (vm, name) {
     } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
         currentPathArr = [
             {
-                title: '首页',
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.routers, 'home_index')),
                 path: '/home',
                 name: 'home_index'
             },
@@ -190,7 +198,7 @@ util.openNewPage = function (vm, name, argu, query) {
     while (i < openedPageLen) {
         if (name === pageOpenedList[i].name) {  // 页面已经打开
             vm.$store.commit('pageOpenedList', {
-                index: i,
+                // index: i,
                 argu: argu,
                 query: query
             });

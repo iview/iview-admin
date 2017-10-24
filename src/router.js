@@ -55,7 +55,7 @@ export const otherRouter = {
     name: 'otherRouter',
     component: Main,
     children: [
-        { path: 'home', title: '首页', name: 'home_index', component: resolve => { require(['./views/home/home.vue'], resolve); } },
+        { path: 'home', title: {i18n: 'home'}, name: 'home_index', component: resolve => { require(['./views/home/home.vue'], resolve); } },
         { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: resolve => { require(['./views/own-space/own-space.vue'], resolve); } },
         { path: 'order/:order_id', title: '订单详情', name: 'order_info', component: resolve => { require(['./views/advanced-router/component/order-info.vue'], resolve); } },  // 用于展示动态路由
         { path: 'shopping', title: '购物详情', name: 'shopping', component: resolve => { require(['./views/advanced-router/component/shopping-info.vue'], resolve); } },  // 用于展示带参路由
@@ -84,6 +84,16 @@ export const appRouter = [
         component: Main,
         children: [
             { path: 'index', title: '权限测试页', name: 'accesstest_index' }
+        ]
+    },
+    {
+        path: '/international',
+        icon: 'earth',
+        title: {i18n: 'international'},
+        name: 'international',
+        component: Main,
+        children: [
+            { path: 'index', title: {i18n: 'international'}, name: 'international_index', component: resolve => { require(['./views/international/international.vue'], resolve); } }
         ]
     },
     {
