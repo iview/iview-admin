@@ -132,7 +132,6 @@ const store = new Vuex.Store({
             state.pageOpenedList.push(tagObj);
         },
         initCachepage (state) {
-            console.log(localStorage.pageOpenedList)
             if (localStorage.pageOpenedList) {
                 state.cachePage = JSON.parse(localStorage.pageOpenedList).map(item => {
                     if (item.name !== 'home_index') {
