@@ -1,10 +1,10 @@
 <style lang="less">
-    @import './argupage.less';
+    @import '../advanced-router.less';
 </style>
 
 <template>
     <div>
-        <Row class="expand-row">
+        <Row class="advanced-router">
             <Col span="8">
                 <span class="expand-key">职业：</span>
                 <span class="expand-value">{{ row.job }}</span>

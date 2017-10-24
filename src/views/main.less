@@ -15,7 +15,13 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 1010;
+        z-index: 21;
+        transition: width .3s;
+    }
+    .layout-text{
+        display: inline-block;
+        white-space:nowrap;
+        position: absolute;
     }
     .main-hide-text .layout-text{
         display: none;
@@ -30,8 +36,9 @@
         padding-left: 200px;
         width: 100%;
         height: 100px;
-        z-index: 1000;
+        z-index: 20;
         box-shadow: 0 2px 1px 1px rgba(100,100,100,.1);
+        transition: padding .3s;
     }
     &-breadcrumb{
         padding: 8px 15px 0;
@@ -172,6 +179,7 @@
         overflow: auto;
         background-color: #F0F0F0;
         z-index: 1;
+        transition: left .3s;
         .single-page{
             margin: 10px;
         }
@@ -187,7 +195,9 @@
 }
 .logo-con{
     padding: 8px;
+    text-align: center;
     img{
-        width: 100%;
+        height: 44px;
+        width: auto;
     }
 }

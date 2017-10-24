@@ -46,24 +46,38 @@ util.showThisRoute = function (itAccess, currentAccess) {
     }
 };
 
-util.getPathObjByName = function (vm, name) {
-    let pathObj = vm.$store.state.routers.filter((item) => {
-        if (item.children.length <= 1) {
-            return item.name === name;
-        } else {
-            let i = 0;
-            let childArr = item.children;
-            let len = childArr.length;
-            while (i < len) {
-                if (childArr[i].name === name) {
-                    return true;
+util.getRouterObjByName = function (routers, name) {
+    let routerObj = {};
+    routers.forEach(item => {
+        if (item.name === 'otherRouter') {
+            item.children.forEach((child, i) => {
+                if (child.name === name) {
+                    routerObj = item.children[i];
                 }
-                i++;
+            });
+        } else {
+            if (item.children.length === 1) {
+                if (item.children[0].name === name) {
+                    routerObj = item.children[0];
+                }
+            } else {
+                item.children.forEach((child, i) => {
+                    if (child.name === name) {
+                        routerObj = item.children[i];
+                    }
+                });
             }
-            return false;
         }
-    })[0];
-    return pathObj;
+    });
+    return routerObj;
+};
+
+util.handleTitle = function (vm, item) {
+    if (typeof item.title === 'object') {
+        return vm.$t(item.title.i18n);
+    } else {
+        return item.title;
+    }
 };
 
 util.setCurrentPath = function (vm, name) {
@@ -72,7 +86,7 @@ util.setCurrentPath = function (vm, name) {
     vm.$store.state.routers.forEach(item => {
         if (item.children.length === 1) {
             if (item.children[0].name === name) {
-                title = item.title;
+                title = util.handleTitle(vm, item);
                 if (item.name === 'otherRouter') {
                     isOtherRouter = true;
                 }
@@ -80,7 +94,7 @@ util.setCurrentPath = function (vm, name) {
         } else {
             item.children.forEach(child => {
                 if (child.name === name) {
-                    title = child.title;
+                    title = util.handleTitle(vm, child);
                     if (item.name === 'otherRouter') {
                         isOtherRouter = true;
                     }
@@ -92,7 +106,7 @@ util.setCurrentPath = function (vm, name) {
     if (name === 'home_index') {
         currentPathArr = [
             {
-                title: '首页',
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.routers, 'home_index')),
                 path: '',
                 name: 'home_index'
             }
@@ -100,7 +114,7 @@ util.setCurrentPath = function (vm, name) {
     } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
         currentPathArr = [
             {
-                title: '首页',
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.routers, 'home_index')),
                 path: '/home',
                 name: 'home_index'
             },
@@ -176,7 +190,7 @@ util.setCurrentPath = function (vm, name) {
     return currentPathArr;
 };
 
-util.openNewPage = function (vm, name, argu) {
+util.openNewPage = function (vm, name, argu, query) {
     let pageOpenedList = vm.$store.state.pageOpenedList;
     let openedPageLen = pageOpenedList.length;
     let i = 0;
@@ -184,8 +198,9 @@ util.openNewPage = function (vm, name, argu) {
     while (i < openedPageLen) {
         if (name === pageOpenedList[i].name) {  // 页面已经打开
             vm.$store.commit('pageOpenedList', {
-                index: i,
-                argu: argu
+                // index: i,
+                argu: argu,
+                query: query
             });
             tagHasOpened = true;
             break;
@@ -205,10 +220,33 @@ util.openNewPage = function (vm, name, argu) {
         if (argu) {
             tag.argu = argu;
         }
+        if (query) {
+            tag.query = query;
+        }
         vm.$store.commit('increateTag', tag);
         localStorage.pageOpenedList = JSON.stringify(vm.$store.state.pageOpenedList); // 本地存储已打开页面
     }
     vm.$store.commit('setCurrentPageName', name);
+};
+
+util.toDefaultPage = function (routers, name, route, next) {
+    let len = routers.length;
+    let i = 0;
+    let notHandle = true;
+    while (i < len) {
+        if (routers[i].name === name && routers[i].redirect === undefined) {
+            route.replace({
+                name: routers[i].children[0].name
+            });
+            notHandle = false;
+            next();
+            break;
+        }
+        i++;
+    }
+    if (notHandle) {
+        next();
+    }
 };
 
 export default util;

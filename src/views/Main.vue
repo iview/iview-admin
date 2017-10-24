@@ -5,8 +5,8 @@
     <div class="main" :class="{'main-hide-text': hideMenuText}">
         <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
             <div class="logo-con">
-                <img v-show="!hideMenuText"  src="../images/logo.jpg">
-                <img v-show="hideMenuText" src="../images/logo-min.jpg">
+                <img v-show="!hideMenuText"  src="../images/logo.jpg" key="max-logo" />
+                <img v-show="hideMenuText" src="../images/logo-min.jpg" key="min-logo" />
             </div>
             <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
             <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
@@ -127,6 +127,9 @@
             },
             cachePage () {
                 return this.$store.state.cachePage;
+            },
+            lang () {
+                return this.$store.state.lang;
             }
         },
         methods: {
@@ -227,6 +230,9 @@
                 if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
+            },
+            lang () {
+                util.setCurrentPath(this, this.$route.name);  // 在切换语言时用于刷新面包屑
             }
         },
         mounted () {
@@ -300,8 +306,6 @@
             }
         },
         created () {
-            // 权限菜单过滤相关
-            this.$store.commit('updateMenulist');
             // 查找当前用户之前登录时设置的主题
             let name = Cookies.get('user');
             if (localStorage.theme) {
