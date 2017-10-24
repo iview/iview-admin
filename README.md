@@ -9,7 +9,7 @@
 [![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
 [![element-ui](https://img.shields.io/badge/iview-2.5.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 
-## 当前版本：v1.1.2
+## 当前版本：v1.1.3
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用教程](https://github.com/iview/iview-admin/wiki)
@@ -50,6 +50,7 @@ npm run dev
     - 可编辑表格
         - 行内编辑
         - 单元格编辑
+    - 可搜索表格
     - 表格导出数据
         - 导出为Csv文件
         - 导出为Xls文件
@@ -91,6 +92,7 @@ npm run dev
         │   ├── article-publish    文章发布
         │   └── work-flow    工作流
         ├── home    首页
+        ├── international    多语言切换
         ├── main_components    主框架
         ├── message    消息中心
         ├── my_components    组件
