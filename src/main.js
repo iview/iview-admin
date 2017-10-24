@@ -94,7 +94,11 @@ const store = new Vuex.Store({
         ],
         menuList: [],
         tagsList: [...otherRouter.children],
-        pageOpenedList: [],
+        pageOpenedList: [{
+            title: '首页',
+            path: '',
+            name: 'home_index'
+        }],
         currentPageName: '',
         currentPath: [
             {
@@ -128,6 +132,7 @@ const store = new Vuex.Store({
             state.pageOpenedList.push(tagObj);
         },
         initCachepage (state) {
+            console.log(localStorage.pageOpenedList)
             if (localStorage.pageOpenedList) {
                 state.cachePage = JSON.parse(localStorage.pageOpenedList).map(item => {
                     if (item.name !== 'home_index') {
