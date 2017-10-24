@@ -1,29 +1,17 @@
 <style lang="less">
-    @import './argupage.less';
+    @import './advanced-router.less';
 </style>
 
 <template>
     <div>
-        <Row :gutter="10">
-            <Col span="12">
-                <Card>
-                    <p slot="title">
-                        <Icon type="android-favorite-outline"></Icon>
-                        基础示例
-                    </p>
-                    <Row type="flex" justify="center" align="middle" class="argupage-open-argupage-row1">
-                        <img @click="linkToOwnspace" :src="avatorImage" class="avator-img" alt="">
-                        <b>点击头像跳转到该用户个人中心</b>
-                    </Row>
-                </Card>
-            </Col>
-            <Col span="12">
+        <Row>
+            <Col span="24">
                 <Card>
                     <p slot="title">
                         <Icon type="ios-list"></Icon>
-                        订单详情
+                        订单详情(动态路由)
                     </p>
-                    <Row type="flex" justify="center" align="middle" class="argupage-open-argupage-row1">
+                    <Row type="flex" justify="center" align="middle" class="advanced-router">
                         <Table :columns="orderColumns" :data="orderData" style="width: 100%;"></Table>
                     </Row>
                 </Card>
@@ -33,10 +21,9 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
 import util from '@/libs/util';
 export default {
-    name: 'argupage_index',
+    name: 'mutative-router',
     data () {
         return {
             orderColumns: [
@@ -52,13 +39,11 @@ export default {
                 },
                 {
                     title: '用户',
-                    key: 'user_name',
-                    width: 160
+                    key: 'user_name'
                 },
                 {
                     title: '详情',
                     key: 'show_more',
-                    width: 160,
                     align: 'center',
                     render: (h, params) => {
                         return h('Button', {
@@ -103,16 +88,6 @@ export default {
     computed: {
         avatorImage () {
             return localStorage.avatorImgPath;
-        }
-    },
-    methods: {
-        linkToOwnspace () {
-            let argu = { username: Cookies.get('user') };
-            this.$router.push({
-                name: 'ownspace_with_name',
-                params: argu
-            });
-            util.openNewPage(this, 'ownspace_with_name', argu);  // 如果是动态路由，带有参数，那么必须将参数对象传给util.openNewPage方法的第三个参数
         }
     }
 };

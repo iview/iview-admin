@@ -146,6 +146,9 @@ const store = new Vuex.Store({
             if (get.argu) {
                 openedPage.argu = get.argu;
             }
+            if (get.query) {
+                openedPage.query = get.query;
+            }
             state.pageOpenedList.splice(get.index, 1, openedPage);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },

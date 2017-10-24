@@ -182,7 +182,7 @@ util.setCurrentPath = function (vm, name) {
     return currentPathArr;
 };
 
-util.openNewPage = function (vm, name, argu) {
+util.openNewPage = function (vm, name, argu, query) {
     let pageOpenedList = vm.$store.state.pageOpenedList;
     let openedPageLen = pageOpenedList.length;
     let i = 0;
@@ -191,7 +191,8 @@ util.openNewPage = function (vm, name, argu) {
         if (name === pageOpenedList[i].name) {  // 页面已经打开
             vm.$store.commit('pageOpenedList', {
                 index: i,
-                argu: argu
+                argu: argu,
+                query: query
             });
             tagHasOpened = true;
             break;
@@ -210,6 +211,9 @@ util.openNewPage = function (vm, name, argu) {
         tag = tag.children ? tag.children[0] : tag;
         if (argu) {
             tag.argu = argu;
+        }
+        if (query) {
+            tag.query = query;
         }
         vm.$store.commit('increateTag', tag);
         localStorage.pageOpenedList = JSON.stringify(vm.$store.state.pageOpenedList); // 本地存储已打开页面

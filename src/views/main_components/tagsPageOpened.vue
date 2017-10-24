@@ -75,16 +75,15 @@ export default {
             }
         },
         linkTo (item) {
-            if (item.path.indexOf(':') > -1) {
-                this.$router.push({
-                    name: item.name,
-                    params: item.argu
-                });
-            } else {
-                this.$router.push({
-                    name: item.name
-                });
+            let routerObj = {};
+            routerObj.name = item.name;
+            if (item.argu) {
+                routerObj.params = item.argu;
             }
+            if (item.query) {
+                routerObj.query = item.query;
+            }
+            this.$router.push(routerObj);
         },
         handlescroll (e) {
             let left = 0;

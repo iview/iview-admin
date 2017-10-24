@@ -57,8 +57,8 @@ export const otherRouter = {
     children: [
         { path: 'home', title: '首页', name: 'home_index', component: resolve => { require(['./views/home/home.vue'], resolve); } },
         { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: resolve => { require(['./views/own-space/own-space.vue'], resolve); } },
-        { path: 'ownspace/:username', title: '带参个人中心', name: 'ownspace_with_name', component: resolve => { require(['./views/own-space/own-space.vue'], resolve); } },  // 用于展示带参路由
-        { path: 'order/:order_id', title: '订单详情', name: 'order_info', component: resolve => { require(['./views/argument-page/order-info.vue'], resolve); } },  // 用于展示带参路由
+        { path: 'order/:order_id', title: '订单详情', name: 'order_info', component: resolve => { require(['./views/advanced-router/component/order-info.vue'], resolve); } },  // 用于展示动态路由
+        { path: 'shopping', title: '购物详情', name: 'shopping', component: resolve => { require(['./views/advanced-router/component/shopping-info.vue'], resolve); } },  // 用于展示带参路由
         { path: 'message', title: '消息中心', name: 'message_index', component: resolve => { require(['./views/message/message.vue'], resolve); } }
     ]
 };
@@ -175,13 +175,14 @@ export const appRouter = [
         ]
     },
     {
-        path: '/argument-page',
+        path: '/advanced-router',
         icon: 'ios-infinite',
-        name: 'argupage',
-        title: '带参页面',
+        name: 'advanced-router',
+        title: '高级路由',
         component: Main,
         children: [
-            { path: 'index', title: '带参页面', name: 'argupage_index', component: resolve => { require(['./views/argument-page/argument-page.vue'], resolve); } }
+            { path: 'mutative-router', title: '动态路由', name: 'mutative-router', component: resolve => { require(['./views/advanced-router/mutative-router.vue'], resolve); } },
+            { path: 'argument-page', title: '带参页面', name: 'argument-page', component: resolve => { require(['./views/advanced-router/argument-page.vue'], resolve); } }
         ]
     },
     {

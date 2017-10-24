@@ -1,6 +1,6 @@
 <style lang="less">
-    @import '../../styles/common.less';
-    @import './argupage.less';
+    @import '../../../styles/common.less';
+    @import '../advanced-router.less';
 </style>
 
 <template>
@@ -20,11 +20,11 @@
         <Row class="margin-top-10">
             <Card>
                 <Row>
-                    <p class="order-infor-page-p">虽然iview-admin支持打开带参数的页面，但是类似于这种需求，还是建议用iview的Modal或者使用表格直接在表格内展开数据</p>
+                    <p class="advanced-router-tip-p">虽然iview-admin支持打开带参数的页面，但是类似于这种需求，还是建议用iview的Modal或者使用表格直接在表格内展开数据</p>
                     <p><Button @click="showInfo = true" type="primary">点击按钮弹出Modal</Button></p>
                 </Row>
                 <div class="margin-top-10">
-                    <p class="order-infor-page-p">iview官方示例<a href="https://www.iviewui.com/components/table">表格</a></p>
+                    <p class="advanced-router-tip-p">iview官方示例<a href="https://www.iviewui.com/components/table">表格</a></p>
                     <Table :columns="columns10" :data="data9"></Table>
                 </div>
             </Card>
@@ -145,7 +145,7 @@ export default {
     },
     methods: {
         init () {
-            let index = parseInt(this.$route.path.substr(-1, 1));
+            let index = parseInt(this.$route.params.order_id.toString().substr(-1, 1));
             let buyer = '';
             let addr = '';
             let time = '';
