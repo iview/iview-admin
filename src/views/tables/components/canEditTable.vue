@@ -114,6 +114,7 @@ const saveIncellEditBtn = (vm, h, param) => {
             click: (event) => {
                 vm.edittingStore[param.index].edittingCell[param.column.key] = false;
                 vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                vm.$emit('input', vm.handleBackdata(vm.thisTableData));
             }
         }
     });
@@ -137,7 +138,7 @@ export default {
     props: {
         refs: String,
         columnsList: Array,
-        tableData: Array,
+        value: Array,
         url: String,
         saveEdit: {
             type: Function,
@@ -180,7 +181,7 @@ export default {
                     }
                 }
             });
-            let cloneData = JSON.parse(JSON.stringify(this.tableData));
+            let cloneData = JSON.parse(JSON.stringify(this.value));
             let res = [];
             res = cloneData.map(item => {
                 this.$set(item, 'editting', false);
@@ -266,6 +267,17 @@ export default {
                 }
             });
         },
+        handleBackdata (data) {
+            let clonedData = JSON.parse(JSON.stringify(data));
+            clonedData.forEach(item => {
+                delete item.editting;
+                delete item.edittingCell;
+                delete item.isDeleting;
+                delete item.saveFail;
+                delete item.saving;
+            });
+            return clonedData;
+        },
         editIndex (index) {
             return (() => {
                 return index;
@@ -278,6 +290,7 @@ export default {
                 edittingRow.saveFail = false;
                 edittingRow.saving = false;
                 vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                this.$emit('input', this.handleBackdata(vm.thisTableData));
                 callback();
             };
         },
@@ -303,6 +316,7 @@ export default {
                 vm.edittingStore.splice(index, 1);
                 edittingRow.isDeleting = false;
                 vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                this.$emit('input', this.handleBackdata(vm.thisTableData));
             };
         },
         failDel (vm, index) {
@@ -315,7 +329,7 @@ export default {
         }
     },
     watch: {
-        tableData (data) {
+        value (data) {
             this.init();
         }
     }
