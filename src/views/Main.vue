@@ -101,7 +101,6 @@
                 hideMenuText: false,
                 userName: '',
                 showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
-                isFullScreen: false,
                 messageCount: 0,
                 lockScreenSize: 0
             };
@@ -130,6 +129,9 @@
             },
             lang () {
                 return this.$store.state.lang;
+            },
+            isFullScreen () {
+                return this.$store.state.isFullScreen;
             }
         },
         methods: {
@@ -179,28 +181,8 @@
                 }
             },
             handleFullScreen () {
-                let main = document.getElementById('main');
-                if (this.isFullScreen) {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitCancelFullScreen) {
-                        document.webkitCancelFullScreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                } else {
-                    if (main.requestFullscreen) {
-                        main.requestFullscreen();
-                    } else if (main.mozRequestFullScreen) {
-                        main.mozRequestFullScreen();
-                    } else if (main.webkitRequestFullScreen) {
-                        main.webkitRequestFullScreen();
-                    } else if (main.msRequestFullscreen) {
-                        main.msRequestFullscreen();
-                    }
-                }
+                this.$store.commit('handleFullScreen');
+                // this.$store.commit('changeFullScreenState');
             },
             showMessage () {
                 util.openNewPage(this, 'message_index');
@@ -249,19 +231,6 @@
         },
         mounted () {
             this.init();
-            // 全屏相关
-            document.addEventListener('fullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
-            document.addEventListener('mozfullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
-            document.addEventListener('webkitfullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
-            document.addEventListener('msfullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
             // 锁屏相关
             let lockScreenBack = document.getElementById('lock_screen_back');
             let x = document.body.clientWidth;

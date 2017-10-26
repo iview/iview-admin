@@ -111,7 +111,8 @@ const store = new Vuex.Store({
         menuTheme: '', // 主题
         theme: '',
         cachePage: [],
-        lang: ''
+        lang: '',
+        isFullScreen: false
     },
     getters: {
 
@@ -278,6 +279,33 @@ const store = new Vuex.Store({
         switchLang (state, lang) {
             state.lang = lang;
             Vue.config.lang = lang;
+        },
+        handleFullScreen (state) {
+            let main = document.getElementById('main');
+            if (state.isFullScreen) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            } else {
+                if (main.requestFullscreen) {
+                    main.requestFullscreen();
+                } else if (main.mozRequestFullScreen) {
+                    main.mozRequestFullScreen();
+                } else if (main.webkitRequestFullScreen) {
+                    main.webkitRequestFullScreen();
+                } else if (main.msRequestFullscreen) {
+                    main.msRequestFullscreen();
+                }
+            }
+        },
+        changeFullScreenState (state) {
+            state.isFullScreen = !state.isFullScreen;
         }
     },
     actions: {
@@ -298,6 +326,19 @@ new Vue({
         this.$store.commit('initCachepage');
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
+        // 全屏相关
+        document.addEventListener('fullscreenchange', () => {
+            this.$store.commit('changeFullScreenState');
+        });
+        document.addEventListener('mozfullscreenchange', () => {
+            this.$store.commit('changeFullScreenState');
+        });
+        document.addEventListener('webkitfullscreenchange', () => {
+            this.$store.commit('changeFullScreenState');
+        });
+        document.addEventListener('msfullscreenchange', () => {
+            this.$store.commit('changeFullScreenState');
+        });
     },
     created () {
         let tagsList = [];
