@@ -208,6 +208,34 @@ export const editInlineAndCellData = [
     }
 ];
 
+export const showCurrentColumns = [
+    {
+        title: '序号',
+        type: 'index',
+        width: 80,
+        align: 'center'
+    },
+    {
+        title: '姓名',
+        align: 'center',
+        key: 'name',
+        width: 300,
+        editable: true
+    },
+    {
+        title: '性别',
+        align: 'center',
+        key: 'sex'
+    },
+    {
+        title: '岗位',
+        align: 'center',
+        width: 300,
+        key: 'work',
+        editable: true
+    }
+];
+
 const tableData = {
     table1Columns: table1Columns,
     table1Data: table1Data,
@@ -216,7 +244,8 @@ const tableData = {
     editIncellColumns: editIncellColumns,
     editIncellData: editIncellData,
     editInlineAndCellColumn: editInlineAndCellColumn,
-    editInlineAndCellData: editInlineAndCellData
+    editInlineAndCellData: editInlineAndCellData,
+    showCurrentColumns: showCurrentColumns
 };
 
 export default tableData;

@@ -101,7 +101,6 @@
                 hideMenuText: false,
                 userName: '',
                 showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
-                isFullScreen: false,
                 messageCount: 0,
                 lockScreenSize: 0
             };
@@ -130,6 +129,9 @@
             },
             lang () {
                 return this.$store.state.lang;
+            },
+            isFullScreen () {
+                return this.$store.state.isFullScreen;
             }
         },
         methods: {
@@ -142,6 +144,7 @@
                 this.userName = Cookies.get('user');
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
+                this.checkTag(this.$route.name);
             },
             toggleClick () {
                 this.hideMenuText = !this.hideMenuText;
@@ -178,28 +181,8 @@
                 }
             },
             handleFullScreen () {
-                let main = document.getElementById('main');
-                if (this.isFullScreen) {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitCancelFullScreen) {
-                        document.webkitCancelFullScreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                } else {
-                    if (main.requestFullscreen) {
-                        main.requestFullscreen();
-                    } else if (main.mozRequestFullScreen) {
-                        main.mozRequestFullScreen();
-                    } else if (main.webkitRequestFullScreen) {
-                        main.webkitRequestFullScreen();
-                    } else if (main.msRequestFullscreen) {
-                        main.msRequestFullscreen();
-                    }
-                }
+                this.$store.commit('handleFullScreen');
+                // this.$store.commit('changeFullScreenState');
             },
             showMessage () {
                 util.openNewPage(this, 'message_index');
@@ -221,6 +204,16 @@
                         name: 'locking'
                     });
                 }, 800);
+            },
+            checkTag (name) {
+                let openpageHasTag = this.pageTagsList.some(item => {
+                    if (item.name === name) {
+                        return true;
+                    }
+                });
+                if (!openpageHasTag) {  //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
+                    util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
+                }
             }
         },
         watch: {
@@ -230,6 +223,7 @@
                 if (pathArr.length > 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
+                this.checkTag(to.name);
             },
             lang () {
                 util.setCurrentPath(this, this.$route.name);  // 在切换语言时用于刷新面包屑
@@ -237,19 +231,6 @@
         },
         mounted () {
             this.init();
-            // 全屏相关
-            document.addEventListener('fullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
-            document.addEventListener('mozfullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
-            document.addEventListener('webkitfullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
-            document.addEventListener('msfullscreenchange', () => {
-                this.isFullScreen = !this.isFullScreen;
-            });
             // 锁屏相关
             let lockScreenBack = document.getElementById('lock_screen_back');
             let x = document.body.clientWidth;
@@ -276,7 +257,7 @@
                     words: ''
                 };
                 let userName = Cookies.get('user');
-                if (hour < 6) {
+                if (hour > 5 && hour < 6) {
                     greetingWord = {title: '凌晨好~' + userName, words: '早起的鸟儿有虫吃~'};
                 } else if (hour >= 6 && hour < 9) {
                     greetingWord = {title: '早上好~' + userName, words: '来一杯咖啡开启美好的一天~'};

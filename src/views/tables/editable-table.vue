@@ -34,7 +34,7 @@
             <Col span="18" class="padding-left-10">
                 <Card>
                     <div class="edittable-con-1">
-                        <can-edit-table refs="table1" :columns-list="columnsList" :table-data="tableData" :saveEdit="saveEdit" :deleteRow="deleteRow"></can-edit-table>
+                        <can-edit-table refs="table1" v-model="tableData" :columns-list="columnsList" :saveEdit="saveEdit" :deleteRow="deleteRow"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -47,7 +47,7 @@
                         可编辑单元行
                     </p>
                     <div class="edittable-table-height-con">
-                        <can-edit-table refs="table2" :columns-list="editInlineColumns" :table-data="editInlineData" :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></can-edit-table>
+                        <can-edit-table refs="table2" v-model="editInlineData" :columns-list="editInlineColumns"  :saveEdit="saveEditInline" :deleteRow="deleteRowInline"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -58,7 +58,7 @@
                         可编辑单元格(鼠标移入显示编辑单元格按钮)
                     </p>
                     <div class="edittable-table-height-con">
-                        <can-edit-table refs="table2" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :table-data="editIncellData" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></can-edit-table>
+                        <can-edit-table refs="table3" v-model="editIncellData" :hover-show="true" :edit-incell="true" :columns-list="editIncellColumns" :saveEdit="saveEditIncell" :deleteRow="deleteRowIncell"></can-edit-table>
                     </div>
                 </Card>
             </Col>
@@ -70,9 +70,21 @@
                         <Icon type="ios-keypad"></Icon>
                          单元行和单元格两种方式编辑(始终显示编辑单元格按钮)
                     </p>
-                    <div class="edittable-table-height-con">
-                        <can-edit-table refs="table3" :editIncell="true" :columns-list="editInlineAndCellColumn" :table-data="editInlineAndCellData" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></can-edit-table>
-                    </div>
+                    <Row :gutter="10">
+                        <Col span="2">
+                            <Row type="flex" justify="center" align="middle" class="edittable-table-get-currentdata-con">
+                                <Button type="primary" @click="getCurrentData">当前数据</Button>
+                            </Row>
+                        </Col>
+                        <Col span="22">
+                            <div class="edittable-table-height-con">
+                                <can-edit-table refs="table4" v-model="editInlineAndCellData" :editIncell="true" :columns-list="editInlineAndCellColumn" :saveEdit="saveEditInlineIncell" :deleteRow="deleteRowInlineIncell"></can-edit-table>
+                            </div>
+                        </Col>
+                        <Modal :width="900" v-model="showCurrentTableData">
+                            <can-edit-table refs="table5" v-model="editInlineAndCellData" :columns-list="showCurrentColumns"></can-edit-table>
+                        </Modal>
+                    </Row>
                 </Card>
             </Col>
         </Row>
@@ -98,7 +110,9 @@ export default {
             editIncellColumns: [],
             editIncellData: [],
             editInlineAndCellColumn: [],
-            editInlineAndCellData: []
+            editInlineAndCellData: [],
+            showCurrentColumns: [],
+            showCurrentTableData: false
         };
     },
     methods: {
@@ -111,6 +125,7 @@ export default {
             this.editIncellData = tableData.editIncellData;
             this.editInlineAndCellColumn = tableData.editInlineAndCellColumn;
             this.editInlineAndCellData = tableData.editInlineAndCellData;
+            this.showCurrentColumns = tableData.showCurrentColumns;
         },
         handleNetConnect (state) {
             this.breakConnect = state;
@@ -253,6 +268,9 @@ export default {
                     });
                 }
             }, delay);
+        },
+        getCurrentData () {
+            this.showCurrentTableData = true;
         }
     },
     created () {

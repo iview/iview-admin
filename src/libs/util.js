@@ -198,7 +198,7 @@ util.openNewPage = function (vm, name, argu, query) {
     while (i < openedPageLen) {
         if (name === pageOpenedList[i].name) {  // 页面已经打开
             vm.$store.commit('pageOpenedList', {
-                // index: i,
+                index: i,
                 argu: argu,
                 query: query
             });
@@ -224,7 +224,6 @@ util.openNewPage = function (vm, name, argu, query) {
             tag.query = query;
         }
         vm.$store.commit('increateTag', tag);
-        localStorage.pageOpenedList = JSON.stringify(vm.$store.state.pageOpenedList); // 本地存储已打开页面
     }
     vm.$store.commit('setCurrentPageName', name);
 };
