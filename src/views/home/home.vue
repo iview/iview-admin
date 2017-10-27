@@ -242,7 +242,7 @@ export default {
                 this.toDoList.unshift({
                     title: this.newToDoItemValue
                 });
-                setTimeout(function () {
+                setTimeout(() => {
                     this.newToDoItemValue = '';
                 }, 200);
                 this.showAddNewTodo = false;
