@@ -112,7 +112,8 @@ const store = new Vuex.Store({
         theme: '',
         cachePage: [],
         lang: '',
-        isFullScreen: false
+        isFullScreen: false,
+        dontCache: ['text-editor']  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
     },
     getters: {
 
@@ -129,16 +130,15 @@ const store = new Vuex.Store({
             });
         },
         increateTag (state, tagObj) {
-            state.cachePage.push(tagObj.name);
+            if (!Util.oneOf(tagObj.name, state.dontCache)) {
+                state.cachePage.push(tagObj.name);
+                localStorage.cachePage = JSON.stringify(state.cachePage);
+            }
             state.pageOpenedList.push(tagObj);
         },
         initCachepage (state) {
-            if (localStorage.pageOpenedList) {
-                state.cachePage = JSON.parse(localStorage.pageOpenedList).map(item => {
-                    if (item.name !== 'home_index') {
-                        return item.name;
-                    }
-                });
+            if (localStorage.cachePage) {
+                state.cachePage = JSON.parse(localStorage.cachePage);
             }
         },
         removeTag (state, name) {
@@ -164,7 +164,7 @@ const store = new Vuex.Store({
             router.push({
                 name: 'home_index'
             });
-            state.cachePage = [];
+            state.cachePage.length = 0;
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         clearOtherTags (state, vm) {
@@ -281,7 +281,7 @@ const store = new Vuex.Store({
             Vue.config.lang = lang;
         },
         handleFullScreen (state) {
-            let main = document.getElementById('main');
+            let main = document.body;
             if (state.isFullScreen) {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();

@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <Menu ref="sideMenu" :active-name="currentPageName" :open-names="openedSubmenuArr" :theme="$store.state.menuTheme" width="auto" @on-select="changeMenu">
+    <Menu ref="sideMenu" :active-name="$route.name" :open-names="openedSubmenuArr" :theme="$store.state.menuTheme" width="auto" @on-select="changeMenu">
         <template v-for="item in menuList">
             <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="item.path">
                 <Icon :type="item.icon" :size="iconSize" :key="item.path"></Icon>
@@ -34,7 +34,6 @@ Vue.use(VueI18n);
 export default {
     data () {
         return {
-            currentPageName: this.$route.name,
             openedSubmenuArr: this.$store.state.openedSubmenuArr
         };
     },
@@ -68,7 +67,6 @@ export default {
     },
     watch: {
         '$route' (to) {
-            this.currentPageName = to.name;
             localStorage.currentPageName = to.name;
         },
         currentPageName () {
