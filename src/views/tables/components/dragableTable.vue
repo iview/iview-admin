@@ -38,8 +38,8 @@ export default {
         Sortable.create(el, {
             onStart: vm.start,
             onEnd: (endEl) => {
-                this.newTableData = util.dragableArray(this.newTableData, endEl.oldIndex, endEl.newIndex);
-                vm.end && vm.end(endEl, this.newTableData);
+                vm.newTableData = util.dragableArray(vm.newTableData, endEl.oldIndex, endEl.newIndex);
+                vm.end && vm.end(endEl, vm.newTableData);
             },
             onChoose: vm.choose
         });
