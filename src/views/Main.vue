@@ -35,8 +35,8 @@
                         </Tooltip>
                     </div>
                     <div @click="showMessage" class="message-con">
-                        <Tooltip :content="currentMessageCount > 0 ? '有' + currentMessageCount + '条未读消息' : '无未读消息'" placement="bottom">
-                            <Badge :count="currentMessageCount" dot>
+                        <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
+                            <Badge :count="messageCount" dot>
                                 <Icon type="ios-bell" :size="22"></Icon>
                             </Badge>
                         </Tooltip>
@@ -84,7 +84,7 @@
     import sidebarMenuShrink from './main_components/sidebarMenuShrink.vue';
     import Cookies from 'js-cookie';
     import util from '@/libs/util.js';
-
+    
     export default {
         components: {
             sidebarMenu,
@@ -101,8 +101,8 @@
                 hideMenuText: false,
                 userName: '',
                 showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
-                lockScreenSize: 0,
-                messageCount: 0
+                messageCount: 0,
+                lockScreenSize: 0
             };
         },
         computed: {
@@ -132,9 +132,6 @@
             },
             isFullScreen () {
                 return this.$store.state.isFullScreen;
-            },
-            currentMessageCount () {
-                return this.messageCount = this.$store.state.currentMessageCount;
             }
         },
         methods: {
@@ -145,7 +142,8 @@
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.userName = Cookies.get('user');
-                this.messageCount.toString();
+                let messageCount = 3;
+                this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
             },
             toggleClick () {
