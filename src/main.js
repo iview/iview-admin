@@ -113,7 +113,8 @@ const store = new Vuex.Store({
         cachePage: [],
         lang: '',
         isFullScreen: false,
-        dontCache: ['text-editor']  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        dontCache: ['text-editor'],  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        currentMessageCount: 3
     },
     getters: {
 
@@ -306,6 +307,12 @@ const store = new Vuex.Store({
         },
         changeFullScreenState (state) {
             state.isFullScreen = !state.isFullScreen;
+        },
+        readMessage (state) {
+            state.currentMessageCount --;
+        },
+        initMessageCount (state, val) {
+            state.currentMessageCount = val;
         }
     },
     actions: {

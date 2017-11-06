@@ -49,6 +49,7 @@ export default {
                 on: {
                     click: () => {
                         this.hasreadMesList.unshift(this.currentMesList.splice(params.index, 1)[0]);
+                        this.$store.commit('readMessage');
                     }
                 }
             }, '标为已读');
@@ -240,6 +241,7 @@ export default {
         this.unreadCount = this.unreadMesList.length;
         this.hasreadCount = this.hasreadMesList.length;
         this.recyclebinCount = this.recyclebinList.length;
+        this.$store.commit('initMessageCount', this.unreadCount);
     },
     watch: {
         unreadMesList (arr) {
