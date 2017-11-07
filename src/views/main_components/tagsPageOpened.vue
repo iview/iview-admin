@@ -5,7 +5,7 @@
 <template>
     <div ref="scrollCon" @mousewheel="handlescroll" class="tags-outer-scroll-con">
         <div class="close-all-tag-con">
-            <Dropdown @on-click="handleTagsOption">
+            <Dropdown transfer @on-click="handleTagsOption">
                 <Button size="small" type="primary">
                     标签选项
                     <Icon type="arrow-down-b"></Icon>
