@@ -132,6 +132,13 @@ export const appRouter = [
                 component: resolve => { require(['./views/my_components/draggable-list/draggable-list.vue'], resolve); }
             },
             {
+                path: 'area-linkage',
+                icon: 'ios-more',
+                name: 'area-linkage',
+                title: '城市级联',
+                component: resolve => { require(['./views/my_components/area-linkage/area-linkage.vue'], resolve); }
+            },
+            {
                 path: 'file-upload',
                 icon: 'android-upload',
                 name: 'file-upload',

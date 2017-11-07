@@ -72,13 +72,17 @@ export default {
         currentPageName () {
             this.openedSubmenuArr = this.$store.state.openedSubmenuArr;
             this.$nextTick(() => {
-                this.$refs.sideMenu.updateOpened();
+                if (this.$refs.sideMenu) {
+                    this.$refs.sideMenu.updateOpened();
+                }
             });
         }
     },
     updated () {
         this.$nextTick(() => {
-            this.$refs.sideMenu.updateOpened();
+            if (this.$refs.sideMenu) {
+                this.$refs.sideMenu.updateOpened();
+            }
         });
     }
 
