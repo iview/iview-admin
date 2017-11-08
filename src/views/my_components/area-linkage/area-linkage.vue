@@ -15,6 +15,7 @@
                     <Row class="area-linkage-page-row1">
                         <al-selector 
                             v-model="resDefault"
+                            level="2"
                             auto
                         />
                         <pre>
@@ -142,9 +143,9 @@
                     <p slot="title">
                         三种尺寸
                     </p>
-                    <al-cascader v-model="res1" size="large" level="0"/>
-                    <al-cascader style="margin-top:10px;" v-model="res1" level="0"/>
-                    <al-cascader style="margin-top:10px;" v-model="res1" size="small" level="0"/>
+                    <al-cascader v-model="res1" size="large" level="1"/>
+                    <al-cascader style="margin-top:10px;" v-model="res1" level="1"/>
+                    <al-cascader style="margin-top:10px;" v-model="res1" size="small" level="1"/>
                 </Card>
             </Col>
             <Col span="4">
@@ -166,7 +167,7 @@
             <Col span="12">
                 <Card>
                     <p slot="title">
-                        自定义显示格式
+                        可搜索
                     </p>
                     <Row class="area-linkage-page-row2">
                         <al-selector 
