@@ -23,14 +23,13 @@
                         </pre>
                         <al-cascader
                             v-model="res1"
-                            trigger="hover"
                             style="margin-top:20px;width:50%;"
                         />
                         <pre>
 &lt;al-cascader v-model="res1" /&gt;
                         </pre>
                         <div>
-                            <p>更多配置可参考iview-area组件官方文档：<a href="https://github.com/iview/iview-area/blob/gh-page/README.md" target="_block">iview-area</a></p>
+                            <p>更多配置可参考iview-area组件官方文档：<a href="https://github.com/iview/iview-area" target="_block">iview-area</a></p>
                         </div>
                     </Row>
                 </Card>
