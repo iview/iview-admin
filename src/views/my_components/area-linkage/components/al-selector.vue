@@ -88,7 +88,8 @@ export default {
             streIndex: 0,
             isInit: true,
             defaultPlaceholder: ['请选择省', '请选择市', '请选择县区', '请选择街道'],
-            defaultnotFoundText: ['无匹配市', '无匹配县区', '无匹配街道']
+            defaultnotFoundText: ['无匹配市', '无匹配县区', '无匹配街道'],
+            cloneValue: []
         };
     },
     props: {
@@ -214,15 +215,15 @@ export default {
                 this.$refs[nextList.substr(0, 4)].setQuery('');
             }
             this[nextList] = areaData[this[index]];
-            if (this.isInit && this.value[level + 1]) {
-                let valueNextItem = this.value[level + 1];
+            if (this.isInit && this.cloneValue[level + 1]) {
+                let valueNextItem = this.cloneValue[level + 1];
                 if (isNaN(parseInt(valueNextItem))) {
-                    if (util.getIndex(this[nextList], this.value[level + 1])) {
-                        nextSelected = this.value[level + 1];
+                    if (util.getIndex(this[nextList], this.cloneValue[level + 1])) {
+                        nextSelected = this.cloneValue[level + 1];
                     }
                 } else {
-                    if (Object.keys(this[nextList]).indexOf(this.value[level + 1]) > -1) {
-                        nextSelected = areaData[this.value[level]][this.value[level + 1]];
+                    if (Object.keys(this[nextList]).indexOf(this.cloneValue[level + 1]) > -1) {
+                        nextSelected = areaData[this.cloneValue[level]][this.cloneValue[level + 1]];
                     }
                 }
             }
@@ -331,6 +332,7 @@ export default {
     },
     mounted () {
         if (this.value && this.value.length > 0) {
+            this.cloneValue = this.value;
             if (isNaN(parseInt(this.value[0]))) {
                 if (util.getIndex(this.provList, this.value[0])) {
                     this.currPro = this.value[0];

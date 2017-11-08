@@ -15,6 +15,7 @@
                     <Row class="area-linkage-page-row1">
                         <al-selector 
                             v-model="resDefault"
+                            auto
                         />
                         <pre>
 &lt;al-selector v-model="resDefault" /&gt;
