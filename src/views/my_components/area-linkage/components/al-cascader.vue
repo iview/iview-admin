@@ -7,7 +7,6 @@
             transfer
             :disabled="disabled"
             :size="size"
-            :trigger="trigger"
             :placeholder="placeholder"
             :render-format="renderFormat"
             @on-change="handleChange"
@@ -48,10 +47,6 @@ export default {
             default: false
         },
         size: String,
-        trigger: {
-            type: String,
-            default: 'click'
-        },
         placeholder: String,
         renderFormat: Function
     },

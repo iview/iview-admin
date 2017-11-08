@@ -23,6 +23,7 @@
                         </pre>
                         <al-cascader
                             v-model="res1"
+                            trigger="hover"
                             style="margin-top:20px;width:50%;"
                         />
                         <pre>
@@ -182,18 +183,18 @@
 </template>
 
 <script>
-import alSelector from './components/al-selector.vue';
-import alCascader from './components/al-cascader.vue';
+// import alSelector from './components/al-selector.vue';
+// import alCascader from './components/al-cascader.vue';
 
-// import Vue from 'vue';
-// import iviewArea from 'iview-area';
-// Vue.use(iviewArea);
+import Vue from 'vue';
+import iviewArea from 'iview-area';
+Vue.use(iviewArea);
 
 export default {
-    components: {
-        alSelector,
-        alCascader
-    },
+    // components: {
+    //     alSelector,
+    //     alCascader
+    // },
     data () {
         return {
             res1: [],
