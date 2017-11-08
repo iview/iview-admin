@@ -48,7 +48,10 @@ export default {
             default: false
         },
         size: String,
-        trigger: String,
+        trigger: {
+            type: String,
+            default: 'click'
+        },
         placeholder: String,
         renderFormat: Function
     },
