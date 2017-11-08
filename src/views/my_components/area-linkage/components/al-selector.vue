@@ -117,11 +117,9 @@ export default {
                 return util.oneOf(val, dataTypeArr);
             }
         },
-        default: {
-            type: [Array, Boolean],
-            default () {
-                return [];
-            }
+        auto: {
+            type: Boolean,
+            default: false
         },
         placeholder: {
             type: [Array, String],
@@ -195,18 +193,18 @@ export default {
         },
         updateNextSelector (index, list, nextList, name, nextName, level) {
             let nextSelected = '';
-            if (this.isInit && this.default[level]) {
-                let defaultItem = this.default[level];
-                if (isNaN(parseInt(defaultItem))) {
-                    if (util.getIndex(this[list], this.default[level])) {
-                        name = defaultItem;
+            if (this.isInit && this.value[level]) {
+                let valueItem = this.value[level];
+                if (isNaN(parseInt(valueItem))) {
+                    if (util.getIndex(this[list], this.value[level])) {
+                        name = valueItem;
                     }
                 } else {
-                    if (Object.keys(this[list]).indexOf(this.default[level]) > -1) {
+                    if (Object.keys(this[list]).indexOf(this.value[level]) > -1) {
                         if (level === 0) {
-                            name = areaData[86][this.default[level]];
+                            name = areaData[86][this.value[level]];
                         } else {
-                            name = areaData[this.default[level - 1]][this.default[level]];
+                            name = areaData[this.value[level - 1]][this.value[level]];
                         }
                     }
                 }
@@ -216,26 +214,29 @@ export default {
                 this.$refs[nextList.substr(0, 4)].setQuery('');
             }
             this[nextList] = areaData[this[index]];
-            if (this.isInit && this.default[level + 1]) {
-                let defaultNextItem = this.default[level + 1];
-                if (isNaN(parseInt(defaultNextItem))) {
-                    if (util.getIndex(this[nextList], this.default[level + 1])) {
-                        nextSelected = this.default[level + 1];
+            if (this.isInit && this.value[level + 1]) {
+                let valueNextItem = this.value[level + 1];
+                if (isNaN(parseInt(valueNextItem))) {
+                    if (util.getIndex(this[nextList], this.value[level + 1])) {
+                        nextSelected = this.value[level + 1];
                     }
                 } else {
-                    if (Object.keys(this[nextList]).indexOf(this.default[level + 1]) > -1) {
-                        nextSelected = areaData[this.default[level]][this.default[level + 1]];
+                    if (Object.keys(this[nextList]).indexOf(this.value[level + 1]) > -1) {
+                        nextSelected = areaData[this.value[level]][this.value[level + 1]];
                     }
                 }
             }
-            if ((this.default && typeof this.default !== 'boolean') ? (this.default.length !== 0) : false) {
+            if (this.isInit && this.value.length !== 0) {
                 this[nextName] = nextSelected || this.setNextSelect(index);
-            } else if (this.default && typeof this.default === 'boolean') {
-                this[nextName] = this.setNextSelect(index);
+            } else if (!this.isInit && this.auto) {
+                this[nextName] = nextSelected || this.setNextSelect(index);
+            }
+            if (this.isInit && level === this.showLevel) {
+                this.returnRes(level);
             }
         },
         returnRes (level) {
-            if (this.default ? (this.default.length !== 0) : false) {
+            if (this.auto) {
                 if (this.showLevel === level) {
                     this.returnResArr(this.showLevel);
                 }
@@ -306,7 +307,7 @@ export default {
         disHandled (level) {
             if (typeof this.disabled === 'number') {
                 if (util.oneOf(this.disabled, areaLinkageArr)) {
-                    if (level === this.disabled) {
+                    if (level >= this.disabled) {
                         return true;
                     } else {
                         return false;
@@ -329,16 +330,16 @@ export default {
         }
     },
     mounted () {
-        if (this.default !== null && this.default.length > 0) {
-            if (isNaN(parseInt(this.default[0]))) {
-                if (util.getIndex(this.provList, this.default[0])) {
-                    this.currPro = this.default[0];
+        if (this.value && this.value.length > 0) {
+            if (isNaN(parseInt(this.value[0]))) {
+                if (util.getIndex(this.provList, this.value[0])) {
+                    this.currPro = this.value[0];
                 }
             } else {
-                if (this.default[0]) {
-                    if (areaData[86][this.default[0]]) {
-                        this.currPro = areaData[86][this.default[0]];
-                        this.provIndex = this.default[0];
+                if (this.value[0]) {
+                    if (areaData[86][this.value[0]]) {
+                        this.currPro = areaData[86][this.value[0]];
+                        this.provIndex = this.value[0];
                     }
                 }
             }

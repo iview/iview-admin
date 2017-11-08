@@ -14,11 +14,10 @@
                     </p>
                     <Row class="area-linkage-page-row1">
                         <al-selector 
-                            v-model="res1"
-                            :default="['河北省', '张家口市', '怀来县', '沙城镇']"
+                            v-model="resDefault"
                         />
                         <pre>
-&lt;al-selector v-model="res1" /&gt;
+&lt;al-selector v-model="resDefault" /&gt;
                         </pre>
                         <al-cascader
                             v-model="res1"
@@ -40,8 +39,11 @@
                         数据展示
                     </p>
                     <Row class="area-linkage-page-row1">
-                        <pre style="font-size:12px;">
+                        <pre v-if="res1.length > 0" style="font-size:12px;">
 {{ res1 }}
+                        </pre>
+                        <pre v-else style="font-size:12px;">
+{{ resDefault }}
                         </pre>
                     </Row>
                 </Card>
@@ -87,7 +89,7 @@
                     <p slot="title">
                         禁用指定级别
                     </p>
-                    <al-selector v-model="res1" :disabled="[2, 3]" level="3"/>
+                    <al-selector v-model="res1" :disabled="2" level="3"/>
                 </Card>
             </Col>
             <Col span="4">
@@ -192,7 +194,8 @@ export default {
     // },
     data () {
         return {
-            res1: []
+            res1: [],
+            resDefault: ['河北省', '张家口市', '怀来县', '沙城镇']
         };
     },
     methods: {
