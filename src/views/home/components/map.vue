@@ -3,8 +3,8 @@
 </template>
 
 <script>
-var echarts = require('echarts');
 import geoData from '../map-data/get-geography-value.js';
+var echarts = require('echarts');
 export default {
     name: 'homeMap',
     props: {
