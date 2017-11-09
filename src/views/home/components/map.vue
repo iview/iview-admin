@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import echarts from 'echarts';
 var echarts = require('echarts');
 import geoData from '../map-data/get-geography-value.js';
 export default {
