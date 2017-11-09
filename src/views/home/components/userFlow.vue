@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import echarts from 'echarts';
-
+//import echarts from 'echarts';
+var echarts = require('echarts');
 const option = {
     tooltip: {
         formatter: '{a} <br/>{b} : {c}%'
