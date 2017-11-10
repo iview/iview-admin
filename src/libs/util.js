@@ -248,4 +248,13 @@ util.toDefaultPage = function (routers, name, route, next) {
     }
 };
 
+util.dragableArray = function (arr, index1, index2) {
+    // 值传递
+    let newArr = JSON.parse(JSON.stringify(arr));
+    let temp = newArr[index1];
+    newArr.splice(index1, 1);
+    newArr.splice(index2, 0, temp);
+    return newArr;
+};
+
 export default util;
