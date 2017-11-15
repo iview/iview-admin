@@ -2,7 +2,6 @@ import {otherRouter, appRouter} from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
-import {router} from '@/router/index';
 
 const app = {
     state: {
@@ -10,7 +9,7 @@ const app = {
         lang: '',
         isFullScreen: false,
         openedSubmenuArr: [],  // 要展开的菜单数组
-        menuTheme: '', // 主题
+        menuTheme: 'dark', // 主题
         themeColor: '',
         pageOpenedList: [{
             title: '首页',

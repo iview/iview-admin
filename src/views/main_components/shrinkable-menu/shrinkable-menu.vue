@@ -7,14 +7,14 @@
         <slot name="top"></slot>
         <sidebar-menu 
             v-show="!shrink"
-            :menu-theme="menuTheme" 
+            :menu-theme="theme" 
             :menu-list="menuList" 
             :open-names="openNames"
             @on-change="handleChange"
         ></sidebar-menu>
         <sidebar-menu-shrink 
             v-show="shrink"
-            :menu-theme="menuTheme" 
+            :menu-theme="theme" 
             :menu-list="menuList" 
             @on-change="handleChange"
         ></sidebar-menu-shrink>
@@ -40,7 +40,7 @@ export default {
             type: Array,
             required: true
         },
-        menuTheme: {
+        theme: {
             type: String,
             default: 'dark',
             validator (val) {
@@ -56,7 +56,7 @@ export default {
     },
     computed: {
         bgColor () {
-            return this.menuTheme === 'dark' ? '#495060' : '#fff';
+            return this.theme === 'dark' ? '#495060' : '#fff';
         }
     },
     methods: {

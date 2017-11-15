@@ -91,7 +91,6 @@
                 shrink: false,
                 userName: '',
                 mesCount: 3,
-                menuTheme: this.$store.state.app.menuTheme,
                 isFullScreen: false,
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr
             };
@@ -114,11 +113,13 @@
             },
             lang () {
                 return this.$store.state.app.lang;
+            },
+            menuTheme () {
+                return this.$store.state.app.menuTheme;
             }
         },
         methods: {
             init () {
-                // this.$store.commit('setCurrentPageName', this.$route.name);
                 let pathArr = util.setCurrentPath(this, this.$route.name);
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);

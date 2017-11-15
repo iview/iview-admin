@@ -1,122 +1,109 @@
 (function () {
-
-var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
+    var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
 
 // Used when there is no 'main' module.
 // The name is probably (hopefully) unique so minification removes for releases.
-var register_3795 = function (id) {
-  var module = dem(id);
-  var fragments = id.split('.');
-  var target = Function('return this;')();
-  for (var i = 0; i < fragments.length - 1; ++i) {
-    if (target[fragments[i]] === undefined)
-      target[fragments[i]] = {};
-    target = target[fragments[i]];
-  }
-  target[fragments[fragments.length - 1]] = module;
-};
-
-var instantiate = function (id) {
-  var actual = defs[id];
-  var dependencies = actual.deps;
-  var definition = actual.defn;
-  var len = dependencies.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(dependencies[i]);
-  var defResult = definition.apply(null, instances);
-  if (defResult === undefined)
-     throw 'module [' + id + '] returned undefined';
-  actual.instance = defResult;
-};
-
-var def = function (id, dependencies, definition) {
-  if (typeof id !== 'string')
-    throw 'module id must be a string';
-  else if (dependencies === undefined)
-    throw 'no dependencies for ' + id;
-  else if (definition === undefined)
-    throw 'no definition function for ' + id;
-  defs[id] = {
-    deps: dependencies,
-    defn: definition,
-    instance: undefined
-  };
-};
-
-var dem = function (id) {
-  var actual = defs[id];
-  if (actual === undefined)
-    throw 'module [' + id + '] was undefined';
-  else if (actual.instance === undefined)
-    instantiate(id);
-  return actual.instance;
-};
-
-var req = function (ids, callback) {
-  var len = ids.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(ids[i]);
-  callback.apply(null, instances);
-};
-
-var ephox = {};
-
-ephox.bolt = {
-  module: {
-    api: {
-      define: def,
-      require: req,
-      demand: dem
-    }
-  }
-};
-
-var define = def;
-var require = req;
-var demand = dem;
-// this helps with minification when using a lot of global references
-var defineGlobal = function (id, ref) {
-  define(id, [], function () { return ref; });
-};
-/*jsc
-["tinymce.plugins.codesample.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.codesample.api.Commands","tinymce.plugins.codesample.core.FilterContent","tinymce.plugins.codesample.core.LoadCss","tinymce.plugins.codesample.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.codesample.ui.Dialog","tinymce.plugins.codesample.util.Utils","tinymce.plugins.codesample.core.Prism","tinymce.plugins.codesample.api.Settings","tinymce.core.dom.DOMUtils","tinymce.plugins.codesample.core.CodeSample","tinymce.plugins.codesample.core.Languages"]
-jsc*/
-define(
-  'ephox.katamari.api.Cell',
-
-  [
-  ],
-
-  function () {
-    var Cell = function (initial) {
-      var value = initial;
-
-      var get = function () {
-        return value;
-      };
-
-      var set = function (v) {
-        value = v;
-      };
-
-      var clone = function () {
-        return Cell(get());
-      };
-
-      return {
-        get: get,
-        set: set,
-        clone: clone
-      };
+    var register_3795 = function (id) {
+        var module = dem(id);
+        var fragments = id.split('.');
+        var target = Function('return this;')();
+        for (var i = 0; i < fragments.length - 1; ++i) {
+            if (target[fragments[i]] === undefined) { target[fragments[i]] = {}; }
+            target = target[fragments[i]];
+        }
+        target[fragments[fragments.length - 1]] = module;
     };
 
-    return Cell;
+    var instantiate = function (id) {
+        var actual = defs[id];
+        var dependencies = actual.deps;
+        var definition = actual.defn;
+        var len = dependencies.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(dependencies[i]); }
+        var defResult = definition.apply(null, instances);
+        if (defResult === undefined) { throw 'module [' + id + '] returned undefined'; }
+        actual.instance = defResult;
+    };
+
+    var def = function (id, dependencies, definition) {
+        if (typeof id !== 'string') { throw 'module id must be a string'; } else if (dependencies === undefined) { throw 'no dependencies for ' + id; } else if (definition === undefined) { throw 'no definition function for ' + id; }
+        defs[id] = {
+            deps: dependencies,
+            defn: definition,
+            instance: undefined
+        };
+    };
+
+    var dem = function (id) {
+        var actual = defs[id];
+        if (actual === undefined) { throw 'module [' + id + '] was undefined'; } else if (actual.instance === undefined) { instantiate(id); }
+        return actual.instance;
+    };
+
+    var req = function (ids, callback) {
+        var len = ids.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(ids[i]); }
+        callback.apply(null, instances);
+    };
+
+    var ephox = {};
+
+    ephox.bolt = {
+        module: {
+            api: {
+                define: def,
+                require: req,
+                demand: dem
+            }
+        }
+    };
+
+    var define = def;
+    var require = req;
+    var demand = dem;
+// this helps with minification when using a lot of global references
+    var defineGlobal = function (id, ref) {
+        define(id, [], function () { return ref; });
+    };
+/* jsc
+["tinymce.plugins.codesample.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.codesample.api.Commands","tinymce.plugins.codesample.core.FilterContent","tinymce.plugins.codesample.core.LoadCss","tinymce.plugins.codesample.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.codesample.ui.Dialog","tinymce.plugins.codesample.util.Utils","tinymce.plugins.codesample.core.Prism","tinymce.plugins.codesample.api.Settings","tinymce.core.dom.DOMUtils","tinymce.plugins.codesample.core.CodeSample","tinymce.plugins.codesample.core.Languages"]
+jsc */
+    define(
+  'ephox.katamari.api.Cell',
+
+        [
+        ],
+
+  function () {
+      var Cell = function (initial) {
+          var value = initial;
+
+          var get = function () {
+              return value;
+          };
+
+          var set = function (v) {
+              value = v;
+          };
+
+          var clone = function () {
+              return Cell(get());
+          };
+
+          return {
+              get: get,
+              set: set,
+              clone: clone
+          };
+      };
+
+      return Cell;
   }
 );
 
-defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
+    defineGlobal('global!tinymce.util.Tools.resolve', tinymce.util.Tools.resolve);
 /**
  * ResolveGlobal.js
  *
@@ -127,13 +114,13 @@ defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.PluginManager',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.PluginManager');
+      return resolve('tinymce.PluginManager');
   }
 );
 
@@ -147,13 +134,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.dom.DOMUtils',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.dom.DOMUtils');
+      return resolve('tinymce.dom.DOMUtils');
   }
 );
 
@@ -167,34 +154,34 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.api.Settings',
-  [
-    'tinymce.core.dom.DOMUtils'
-  ],
+        [
+            'tinymce.core.dom.DOMUtils'
+        ],
   function (DOMUtils) {
-    var getContentCss = function (editor) {
-      return editor.settings.codesample_content_css;
-    };
+      var getContentCss = function (editor) {
+          return editor.settings.codesample_content_css;
+      };
 
-    var getLanguages = function (editor) {
-      return editor.settings.codesample_languages;
-    };
+      var getLanguages = function (editor) {
+          return editor.settings.codesample_languages;
+      };
 
-    var getDialogMinWidth = function (editor) {
-      return Math.min(DOMUtils.DOM.getViewPort().w, editor.getParam('codesample_dialog_width', 800));
-    };
+      var getDialogMinWidth = function (editor) {
+          return Math.min(DOMUtils.DOM.getViewPort().w, editor.getParam('codesample_dialog_width', 800));
+      };
 
-    var getDialogMinHeight = function (editor) {
-      return Math.min(DOMUtils.DOM.getViewPort().w, editor.getParam('codesample_dialog_height', 650));
-    };
+      var getDialogMinHeight = function (editor) {
+          return Math.min(DOMUtils.DOM.getViewPort().w, editor.getParam('codesample_dialog_height', 650));
+      };
 
-    return {
-      getContentCss: getContentCss,
-      getLanguages: getLanguages,
-      getDialogMinWidth: getDialogMinWidth,
-      getDialogMinHeight: getDialogMinHeight
-    };
+      return {
+          getContentCss: getContentCss,
+          getLanguages: getLanguages,
+          getDialogMinWidth: getDialogMinWidth,
+          getDialogMinHeight: getDialogMinHeight
+      };
   }
 );
 /**
@@ -1154,25 +1141,25 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.util.Utils',
-  [
-  ],
+        [
+        ],
   function () {
-    function isCodeSample(elm) {
-      return elm && elm.nodeName === 'PRE' && elm.className.indexOf('language-') !== -1;
-    }
+      function isCodeSample (elm) {
+          return elm && elm.nodeName === 'PRE' && elm.className.indexOf('language-') !== -1;
+      }
 
-    function trimArg(predicateFn) {
-      return function (arg1, arg2) {
-        return predicateFn(arg2);
+      function trimArg (predicateFn) {
+          return function (arg1, arg2) {
+              return predicateFn(arg2);
+          };
+      }
+
+      return {
+          isCodeSample: isCodeSample,
+          trimArg: trimArg
       };
-    }
-
-    return {
-      isCodeSample: isCodeSample,
-      trimArg: trimArg
-    };
   }
 );
 /**
@@ -1185,57 +1172,57 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.core.CodeSample',
-  [
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.plugins.codesample.core.Prism',
-    'tinymce.plugins.codesample.util.Utils'
-  ],
+        [
+            'tinymce.core.dom.DOMUtils',
+            'tinymce.plugins.codesample.core.Prism',
+            'tinymce.plugins.codesample.util.Utils'
+        ],
   function (DOMUtils, Prism, Utils) {
-    var getSelectedCodeSample = function (editor) {
-      var node = editor.selection.getNode();
+      var getSelectedCodeSample = function (editor) {
+          var node = editor.selection.getNode();
 
-      if (Utils.isCodeSample(node)) {
-        return node;
-      }
+          if (Utils.isCodeSample(node)) {
+              return node;
+          }
 
-      return null;
-    };
+          return null;
+      };
 
-    var insertCodeSample = function (editor, language, code) {
-      editor.undoManager.transact(function () {
-        var node = getSelectedCodeSample(editor);
+      var insertCodeSample = function (editor, language, code) {
+          editor.undoManager.transact(function () {
+              var node = getSelectedCodeSample(editor);
 
-        code = DOMUtils.DOM.encode(code);
+              code = DOMUtils.DOM.encode(code);
 
-        if (node) {
-          editor.dom.setAttrib(node, 'class', 'language-' + language);
-          node.innerHTML = code;
-          Prism.highlightElement(node);
-          editor.selection.select(node);
-        } else {
-          editor.insertContent('<pre id="__new" class="language-' + language + '">' + code + '</pre>');
-          editor.selection.select(editor.$('#__new').removeAttr('id')[0]);
-        }
-      });
-    };
+              if (node) {
+                  editor.dom.setAttrib(node, 'class', 'language-' + language);
+                  node.innerHTML = code;
+                  Prism.highlightElement(node);
+                  editor.selection.select(node);
+              } else {
+                  editor.insertContent('<pre id="__new" class="language-' + language + '">' + code + '</pre>');
+                  editor.selection.select(editor.$('#__new').removeAttr('id')[0]);
+              }
+          });
+      };
 
-    var getCurrentCode = function (editor) {
-      var node = getSelectedCodeSample(editor);
+      var getCurrentCode = function (editor) {
+          var node = getSelectedCodeSample(editor);
 
-      if (node) {
-        return node.textContent;
-      }
+          if (node) {
+              return node.textContent;
+          }
 
-      return '';
-    };
+          return '';
+      };
 
-    return {
-      getSelectedCodeSample: getSelectedCodeSample,
-      insertCodeSample: insertCodeSample,
-      getCurrentCode: getCurrentCode
-    };
+      return {
+          getSelectedCodeSample: getSelectedCodeSample,
+          insertCodeSample: insertCodeSample,
+          getCurrentCode: getCurrentCode
+      };
   }
 );
 /**
@@ -1248,15 +1235,15 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.core.Languages',
-  [
-    'tinymce.plugins.codesample.api.Settings',
-    'tinymce.plugins.codesample.core.CodeSample'
-  ],
+        [
+            'tinymce.plugins.codesample.api.Settings',
+            'tinymce.plugins.codesample.core.CodeSample'
+        ],
   function (Settings, CodeSample) {
-    var getLanguages = function (editor) {
-      var defaultLanguages = [
+      var getLanguages = function (editor) {
+          var defaultLanguages = [
         { text: 'HTML/XML', value: 'markup' },
         { text: 'JavaScript', value: 'javascript' },
         { text: 'CSS', value: 'css' },
@@ -1267,27 +1254,27 @@ define(
         { text: 'C', value: 'c' },
         { text: 'C#', value: 'csharp' },
         { text: 'C++', value: 'cpp' }
-      ];
+          ];
 
-      var customLanguages = Settings.getLanguages(editor);
-      return customLanguages ? customLanguages : defaultLanguages;
-    };
+          var customLanguages = Settings.getLanguages(editor);
+          return customLanguages || defaultLanguages;
+      };
 
-    var getCurrentLanguage = function (editor) {
-      var matches, node = CodeSample.getSelectedCodeSample(editor);
+      var getCurrentLanguage = function (editor) {
+          var matches, node = CodeSample.getSelectedCodeSample(editor);
 
-      if (node) {
-        matches = node.className.match(/language-(\w+)/);
-        return matches ? matches[1] : '';
-      }
+          if (node) {
+              matches = node.className.match(/language-(\w+)/);
+              return matches ? matches[1] : '';
+          }
 
-      return '';
-    };
+          return '';
+      };
 
-    return {
-      getLanguages: getLanguages,
-      getCurrentLanguage: getCurrentLanguage
-    };
+      return {
+          getLanguages: getLanguages,
+          getCurrentLanguage: getCurrentLanguage
+      };
   }
 );
 /**
@@ -1300,58 +1287,58 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.ui.Dialog',
-  [
-    'tinymce.plugins.codesample.api.Settings',
-    'tinymce.plugins.codesample.core.CodeSample',
-    'tinymce.plugins.codesample.core.Languages'
-  ],
+        [
+            'tinymce.plugins.codesample.api.Settings',
+            'tinymce.plugins.codesample.core.CodeSample',
+            'tinymce.plugins.codesample.core.Languages'
+        ],
   function (Settings, CodeSample, Languages) {
-    return {
-      open: function (editor) {
-        var minWidth = Settings.getDialogMinWidth(editor);
-        var minHeight = Settings.getDialogMinHeight(editor);
-        var currentLanguage = Languages.getCurrentLanguage(editor);
-        var currentLanguages = Languages.getLanguages(editor);
-        var currentCode = CodeSample.getCurrentCode(editor);
+      return {
+          open: function (editor) {
+              var minWidth = Settings.getDialogMinWidth(editor);
+              var minHeight = Settings.getDialogMinHeight(editor);
+              var currentLanguage = Languages.getCurrentLanguage(editor);
+              var currentLanguages = Languages.getLanguages(editor);
+              var currentCode = CodeSample.getCurrentCode(editor);
 
-        editor.windowManager.open({
-          title: "Insert/Edit code sample",
-          minWidth: minWidth,
-          minHeight: minHeight,
-          layout: 'flex',
-          direction: 'column',
-          align: 'stretch',
-          body: [
-            {
-              type: 'listbox',
-              name: 'language',
-              label: 'Language',
-              maxWidth: 200,
-              value: currentLanguage,
-              values: currentLanguages
-            },
+              editor.windowManager.open({
+                  title: 'Insert/Edit code sample',
+                  minWidth: minWidth,
+                  minHeight: minHeight,
+                  layout: 'flex',
+                  direction: 'column',
+                  align: 'stretch',
+                  body: [
+                      {
+                          type: 'listbox',
+                          name: 'language',
+                          label: 'Language',
+                          maxWidth: 200,
+                          value: currentLanguage,
+                          values: currentLanguages
+                      },
 
-            {
-              type: 'textbox',
-              name: 'code',
-              multiline: true,
-              spellcheck: false,
-              ariaLabel: 'Code view',
-              flex: 1,
-              style: 'direction: ltr; text-align: left',
-              classes: 'monospace',
-              value: currentCode,
-              autofocus: true
-            }
-          ],
-          onSubmit: function (e) {
-            CodeSample.insertCodeSample(editor, e.data.language, e.data.code);
+                      {
+                          type: 'textbox',
+                          name: 'code',
+                          multiline: true,
+                          spellcheck: false,
+                          ariaLabel: 'Code view',
+                          flex: 1,
+                          style: 'direction: ltr; text-align: left',
+                          classes: 'monospace',
+                          value: currentCode,
+                          autofocus: true
+                      }
+                  ],
+                  onSubmit: function (e) {
+                      CodeSample.insertCodeSample(editor, e.data.language, e.data.code);
+                  }
+              });
           }
-        });
-      }
-    };
+      };
   }
 );
 /**
@@ -1364,27 +1351,27 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.api.Commands',
-  [
-    'tinymce.plugins.codesample.ui.Dialog',
-    'tinymce.plugins.codesample.util.Utils'
-  ],
+        [
+            'tinymce.plugins.codesample.ui.Dialog',
+            'tinymce.plugins.codesample.util.Utils'
+        ],
   function (Dialog, Utils) {
-    var register = function (editor) {
-      editor.addCommand('codesample', function () {
-        var node = editor.selection.getNode();
-        if (editor.selection.isCollapsed() || Utils.isCodeSample(node)) {
-          Dialog.open(editor);
-        } else {
-          editor.formatter.toggle('code');
-        }
-      });
-    };
+      var register = function (editor) {
+          editor.addCommand('codesample', function () {
+              var node = editor.selection.getNode();
+              if (editor.selection.isCollapsed() || Utils.isCodeSample(node)) {
+                  Dialog.open(editor);
+              } else {
+                  editor.formatter.toggle('code');
+              }
+          });
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 /**
@@ -1397,57 +1384,57 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.core.FilterContent',
-  [
-    'tinymce.plugins.codesample.core.Prism',
-    'tinymce.plugins.codesample.util.Utils'
-  ],
+        [
+            'tinymce.plugins.codesample.core.Prism',
+            'tinymce.plugins.codesample.util.Utils'
+        ],
   function (Prism, Utils) {
-    var setup = function (editor) {
-      var $ = editor.$;
+      var setup = function (editor) {
+          var $ = editor.$;
 
-      editor.on('PreProcess', function (e) {
-        $('pre[contenteditable=false]', e.node).
-          filter(Utils.trimArg(Utils.isCodeSample)).
-          each(function (idx, elm) {
-            var $elm = $(elm), code = elm.textContent;
+          editor.on('PreProcess', function (e) {
+              $('pre[contenteditable=false]', e.node)
+          .filter(Utils.trimArg(Utils.isCodeSample))
+          .each(function (idx, elm) {
+              var $elm = $(elm), code = elm.textContent;
 
-            $elm.attr('class', $.trim($elm.attr('class')));
-            $elm.removeAttr('contentEditable');
+              $elm.attr('class', $.trim($elm.attr('class')));
+              $elm.removeAttr('contentEditable');
 
-            $elm.empty().append($('<code></code>').each(function () {
+              $elm.empty().append($('<code></code>').each(function () {
               // Needs to be textContent since innerText produces BR:s
-              this.textContent = code;
-            }));
+                  this.textContent = code;
+              }));
           });
-      });
+          });
 
-      editor.on('SetContent', function () {
-        var unprocessedCodeSamples = $('pre').filter(Utils.trimArg(Utils.isCodeSample)).filter(function (idx, elm) {
-          return elm.contentEditable !== "false";
-        });
-
-        if (unprocessedCodeSamples.length) {
-          editor.undoManager.transact(function () {
-            unprocessedCodeSamples.each(function (idx, elm) {
-              $(elm).find('br').each(function (idx, elm) {
-                elm.parentNode.replaceChild(editor.getDoc().createTextNode('\n'), elm);
+          editor.on('SetContent', function () {
+              var unprocessedCodeSamples = $('pre').filter(Utils.trimArg(Utils.isCodeSample)).filter(function (idx, elm) {
+                  return elm.contentEditable !== 'false';
               });
 
-              elm.contentEditable = false;
-              elm.innerHTML = editor.dom.encode(elm.textContent);
-              Prism.highlightElement(elm);
-              elm.className = $.trim(elm.className);
-            });
-          });
-        }
-      });
-    };
+              if (unprocessedCodeSamples.length) {
+                  editor.undoManager.transact(function () {
+                      unprocessedCodeSamples.each(function (idx, elm) {
+                          $(elm).find('br').each(function (idx, elm) {
+                              elm.parentNode.replaceChild(editor.getDoc().createTextNode('\n'), elm);
+                          });
 
-    return {
-      setup: setup
-    };
+                          elm.contentEditable = false;
+                          elm.innerHTML = editor.dom.encode(elm.textContent);
+                          Prism.highlightElement(elm);
+                          elm.className = $.trim(elm.className);
+                      });
+                  });
+              }
+          });
+      };
+
+      return {
+          setup: setup
+      };
   }
 );
 /**
@@ -1460,43 +1447,43 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.core.LoadCss',
-  [
-    'tinymce.plugins.codesample.api.Settings'
-  ],
+        [
+            'tinymce.plugins.codesample.api.Settings'
+        ],
   function (Settings) {
     // Todo: use a proper css loader here
-    var loadCss = function (editor, pluginUrl, addedInlineCss, addedCss) {
-      var linkElm, contentCss = Settings.getContentCss(editor);
+      var loadCss = function (editor, pluginUrl, addedInlineCss, addedCss) {
+          var linkElm, contentCss = Settings.getContentCss(editor);
 
-      if (editor.inline && addedInlineCss.get()) {
-        return;
-      }
+          if (editor.inline && addedInlineCss.get()) {
+              return;
+          }
 
-      if (!editor.inline && addedCss.get()) {
-        return;
-      }
+          if (!editor.inline && addedCss.get()) {
+              return;
+          }
 
-      if (editor.inline) {
-        addedInlineCss.set(true);
-      } else {
-        addedCss.set(true);
-      }
+          if (editor.inline) {
+              addedInlineCss.set(true);
+          } else {
+              addedCss.set(true);
+          }
 
-      if (contentCss !== false) {
-        linkElm = editor.dom.create('link', {
-          rel: 'stylesheet',
-          href: contentCss ? contentCss : pluginUrl + '/css/prism.css'
-        });
+          if (contentCss !== false) {
+              linkElm = editor.dom.create('link', {
+                  rel: 'stylesheet',
+                  href: contentCss || pluginUrl + '/css/prism.css'
+              });
 
-        editor.getDoc().getElementsByTagName('head')[0].appendChild(linkElm);
-      }
-    };
+              editor.getDoc().getElementsByTagName('head')[0].appendChild(linkElm);
+          }
+      };
 
-    return {
-      loadCss: loadCss
-    };
+      return {
+          loadCss: loadCss
+      };
   }
 );
 /**
@@ -1509,27 +1496,27 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.ui.Buttons',
-  [
-  ],
+        [
+        ],
   function () {
-    var register = function (editor) {
-      editor.addButton('codesample', {
-        cmd: 'codesample',
-        title: 'Insert/Edit code sample'
-      });
+      var register = function (editor) {
+          editor.addButton('codesample', {
+              cmd: 'codesample',
+              title: 'Insert/Edit code sample'
+          });
 
-      editor.addMenuItem('codesample', {
-        cmd: 'codesample',
-        text: 'Code sample',
-        icon: 'codesample'
-      });
-    };
+          editor.addMenuItem('codesample', {
+              cmd: 'codesample',
+              text: 'Code sample',
+              icon: 'codesample'
+          });
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 /**
@@ -1542,33 +1529,33 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.codesample.Plugin',
-  [
-    'ephox.katamari.api.Cell',
-    'tinymce.core.PluginManager',
-    'tinymce.plugins.codesample.api.Commands',
-    'tinymce.plugins.codesample.core.FilterContent',
-    'tinymce.plugins.codesample.core.LoadCss',
-    'tinymce.plugins.codesample.ui.Buttons'
-  ],
+        [
+            'ephox.katamari.api.Cell',
+            'tinymce.core.PluginManager',
+            'tinymce.plugins.codesample.api.Commands',
+            'tinymce.plugins.codesample.core.FilterContent',
+            'tinymce.plugins.codesample.core.LoadCss',
+            'tinymce.plugins.codesample.ui.Buttons'
+        ],
   function (Cell, PluginManager, Commands, FilterContent, LoadCss, Buttons) {
-    var addedInlineCss = Cell(false);
+      var addedInlineCss = Cell(false);
 
-    PluginManager.add('codesample', function (editor, pluginUrl) {
-      var addedCss = Cell(false);
+      PluginManager.add('codesample', function (editor, pluginUrl) {
+          var addedCss = Cell(false);
 
-      FilterContent.setup(editor);
-      Buttons.register(editor);
-      Commands.register(editor);
+          FilterContent.setup(editor);
+          Buttons.register(editor);
+          Commands.register(editor);
 
-      editor.on('init', function () {
-        LoadCss.loadCss(editor, pluginUrl, addedInlineCss, addedCss);
+          editor.on('init', function () {
+              LoadCss.loadCss(editor, pluginUrl, addedInlineCss, addedCss);
+          });
       });
-    });
 
-    return function () { };
+      return function () { };
   }
 );
-dem('tinymce.plugins.codesample.Plugin')();
+    dem('tinymce.plugins.codesample.Plugin')();
 })();
