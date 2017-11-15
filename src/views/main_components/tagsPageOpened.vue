@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <div ref="scrollCon" @mousewheel="handlescroll" class="tags-outer-scroll-con">
+    <div ref="scrollCon" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll" class="tags-outer-scroll-con">
         <div class="close-all-tag-con">
             <Dropdown transfer @on-click="handleTagsOption">
                 <Button size="small" type="primary">
@@ -44,20 +44,25 @@ export default {
         return {
             currentPageName: this.$route.name,
             tagBodyLeft: 0,
-            currentScrollBodyWidth: 0,
             refsTag: [],
             tagsCount: 1
         };
     },
     props: {
-        pageTagsList: Array
+        pageTagsList: Array,
+        beforePush: {
+            type: Function,
+            default: (item) => {
+                return true;
+            }
+        }
     },
     computed: {
         title () {
-            return this.$store.state.currentTitle;
+            return this.$store.state.app.currentTitle;
         },
         tagsList () {
-            return this.$store.state.pageOpenedList;
+            return this.$store.state.app.pageOpenedList;
         }
     },
     methods: {
@@ -71,13 +76,14 @@ export default {
         closePage (event, name) {
             this.$store.commit('removeTag', name);
             this.$store.commit('closePage', name);
-            localStorage.pageOpenedList = JSON.stringify(this.$store.state.pageOpenedList);
+            let pageOpenedList = this.$store.state.app.pageOpenedList;
+            localStorage.pageOpenedList = JSON.stringify(pageOpenedList);
             if (this.currentPageName === name) {
                 let lastPageName = '';
-                if (this.$store.state.pageOpenedList.length > 1) {
-                    lastPageName = this.$store.state.pageOpenedList[1].name;
+                if (pageOpenedList.length > 1) {
+                    lastPageName = pageOpenedList[1].name;
                 } else {
-                    lastPageName = this.$store.state.pageOpenedList[0].name;
+                    lastPageName = pageOpenedList[0].name;
                 }
                 this.$router.push({
                     name: lastPageName
@@ -93,18 +99,25 @@ export default {
             if (item.query) {
                 routerObj.query = item.query;
             }
-            this.$router.push(routerObj);
+            if (this.beforePush(item)) {
+                this.$router.push(routerObj);
+            }
         },
         handlescroll (e) {
+            var type = e.type;
+            let delta = 0;
+            if (type === 'DOMMouseScroll' || type === 'mousewheel') {
+                delta = (e.wheelDelta) ? e.wheelDelta : -(e.detail || 0) * 40;
+            }
             let left = 0;
-            if (e.wheelDelta > 0) {
-                left = Math.min(0, this.tagBodyLeft + e.wheelDelta);
+            if (delta > 0) {
+                left = Math.min(0, this.tagBodyLeft + delta);
             } else {
                 if (this.$refs.scrollCon.offsetWidth - 100 < this.$refs.scrollBody.offsetWidth) {
                     if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollCon.offsetWidth + 100)) {
                         left = this.tagBodyLeft;
                     } else {
-                        left = Math.max(this.tagBodyLeft + e.wheelDelta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth - 100);
+                        left = Math.max(this.tagBodyLeft + delta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth - 100);
                     }
                 } else {
                     this.tagBodyLeft = 0;
@@ -115,6 +128,9 @@ export default {
         handleTagsOption (type) {
             if (type === 'clearAll') {
                 this.$store.commit('clearAllTags');
+                this.$router.push({
+                    name: 'home_index'
+                });
             } else {
                 this.$store.commit('clearOtherTags', this);
             }

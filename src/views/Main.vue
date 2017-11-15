@@ -2,19 +2,25 @@
     @import "./main.less";
 </style>
 <template>
-    <div class="main" :class="{'main-hide-text': hideMenuText}">
-        <div class="sidebar-menu-con" :style="{width: hideMenuText?'60px':'200px', overflow: hideMenuText ? 'visible' : 'auto', background: $store.state.menuTheme === 'dark'?'#495060':'white'}">
-            <div class="logo-con">
-                <img v-show="!hideMenuText"  src="../images/logo.jpg" key="max-logo" />
-                <img v-show="hideMenuText" src="../images/logo-min.jpg" key="min-logo" />
-            </div>
-            <sidebar-menu v-if="!hideMenuText" :menuList="menuList" :iconSize="14"/>
-            <sidebar-menu-shrink :icon-color="menuIconColor" v-else :menuList="menuList"/>
+    <div class="main" :class="{'main-hide-text': shrink}">
+        <div class="sidebar-menu-con" :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}">
+            <shrinkable-menu 
+                :shrink="shrink"
+                @on-change="handleSubmenuChange"
+                :theme="menuTheme" 
+                :before-push="beforePush"
+                :open-names="openedSubmenuArr"
+                :menu-list="menuList">
+                <div slot="top" class="logo-con">
+                    <img v-show="!shrink"  src="../images/logo.jpg" key="max-logo" />
+                    <img v-show="shrink" src="../images/logo-min.jpg" key="min-logo" />
+                </div>
+            </shrinkable-menu>
         </div>
-        <div class="main-header-con" :style="{paddingLeft: hideMenuText?'60px':'200px'}">
+        <div class="main-header-con" :style="{paddingLeft: shrink?'60px':'200px'}">
             <div class="main-header">
                 <div class="navicon-con">
-                    <Button :style="{transform: 'rotateZ(' + (this.hideMenuText ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
+                    <Button :style="{transform: 'rotateZ(' + (this.shrink ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
                         <Icon type="navicon" size="32"></Icon>
                     </Button>
                 </div>
@@ -24,28 +30,11 @@
                     </div>
                 </div>
                 <div class="header-avator-con">
-                    <div @click="handleFullScreen" v-if="showFullScreenBtn" class="full-screen-btn-con">
-                        <Tooltip :content="isFullScreen ? '退出全屏' : '全屏'" placement="bottom">
-                            <Icon :type="isFullScreen ? 'arrow-shrink' : 'arrow-expand'" :size="23"></Icon>
-                        </Tooltip>
-                    </div>
-                    <div @click="lockScreen" class="lock-screen-btn-con">
-                        <Tooltip content="锁屏" placement="bottom">
-                            <Icon type="locked" :size="20"></Icon>
-                        </Tooltip>
-                    </div>
-                    <div @click="showMessage" class="message-con">
-                        <Tooltip :content="messageCount > 0 ? '有' + messageCount + '条未读消息' : '无未读消息'" placement="bottom">
-                            <Badge :count="messageCount" dot>
-                                <Icon type="ios-bell" :size="22"></Icon>
-                            </Badge>
-                        </Tooltip>
-                    </div>
-                    <div class="switch-theme-con">
-                        <Row class="switch-theme" type="flex" justify="center" align="middle">
-                            <theme-dropdown-menu></theme-dropdown-menu>
-                        </Row>
-                    </div>
+                    <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
+                    <lock-screen></lock-screen>
+                    <message-tip v-model="mesCount"></message-tip>
+                    <theme-switch></theme-switch>
+                    
                     <div class="user-dropdown-menu-con">
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
                             <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">
@@ -67,7 +56,7 @@
                 <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
             </div>
         </div>
-        <div class="single-page-con" :style="{left: hideMenuText?'60px':'200px'}">
+        <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
             <div class="single-page">
                 <keep-alive :include="cachePage">
                     <router-view></router-view>
@@ -77,66 +66,59 @@
     </div>
 </template>
 <script>
-    import sidebarMenu from './main_components/sidebarMenu.vue';
+    import shrinkableMenu from './main_components/shrinkable-menu/shrinkable-menu.vue';
     import tagsPageOpened from './main_components/tagsPageOpened.vue';
     import breadcrumbNav from './main_components/breadcrumbNav.vue';
-    import themeDropdownMenu from './main_components/themeDropdownMenu.vue';
-    import sidebarMenuShrink from './main_components/sidebarMenuShrink.vue';
+    import fullScreen from './main_components/fullScreen.vue';
+    import lockScreen from './main_components/lockscreen/lockscreen.vue';
+    import messageTip from './main_components/message-tip.vue';
+    import themeSwitch from './main_components/theme-switch/themeSwitch.vue';
     import Cookies from 'js-cookie';
     import util from '@/libs/util.js';
     
     export default {
         components: {
-            sidebarMenu,
+            shrinkableMenu,
             tagsPageOpened,
             breadcrumbNav,
-            themeDropdownMenu,
-            sidebarMenuShrink
+            fullScreen,
+            lockScreen,
+            messageTip,
+            themeSwitch
         },
         data () {
             return {
-                spanLeft: 4,
-                spanRight: 20,
-                currentPageName: '',
-                hideMenuText: false,
+                shrink: false,
                 userName: '',
-                showFullScreenBtn: window.navigator.userAgent.indexOf('MSIE') < 0,
-                messageCount: 0,
-                lockScreenSize: 0
+                mesCount: 3,
+                menuTheme: this.$store.state.app.menuTheme,
+                isFullScreen: false,
+                openedSubmenuArr: this.$store.state.app.openedSubmenuArr
             };
         },
         computed: {
             menuList () {
-                return this.$store.state.menuList;
-            },
-            tagsList () {
-                return this.$store.state.tagsList;  // 所有页面的页面对象
+                return this.$store.state.app.menuList;
             },
             pageTagsList () {
-                return this.$store.state.pageOpenedList;  // 打开的页面的页面对象
+                return this.$store.state.app.pageOpenedList;  // 打开的页面的页面对象
             },
             currentPath () {
-                return this.$store.state.currentPath;  // 当前面包屑数组
-            },
-            menuIconColor () {
-                return this.$store.state.menuTheme === 'dark' ? 'white' : '#495060';
+                return this.$store.state.app.currentPath;  // 当前面包屑数组
             },
             avatorPath () {
                 return localStorage.avatorImgPath;
             },
             cachePage () {
-                return this.$store.state.cachePage;
+                return this.$store.state.app.cachePage;
             },
             lang () {
-                return this.$store.state.lang;
-            },
-            isFullScreen () {
-                return this.$store.state.isFullScreen;
+                return this.$store.state.app.lang;
             }
         },
         methods: {
             init () {
-                this.$store.commit('setCurrentPageName', this.$route.name);
+                // this.$store.commit('setCurrentPageName', this.$route.name);
                 let pathArr = util.setCurrentPath(this, this.$route.name);
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
@@ -147,7 +129,7 @@
                 this.checkTag(this.$route.name);
             },
             toggleClick () {
-                this.hideMenuText = !this.hideMenuText;
+                this.shrink = !this.shrink;
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
@@ -157,53 +139,12 @@
                     });
                 } else if (name === 'loginout') {
                     // 退出登录
-                    Cookies.remove('user');
-                    Cookies.remove('password');
-                    Cookies.remove('hasGreet');
-                    Cookies.remove('access');
-                    this.$Notice.close('greeting');
+                    this.$store.commit('logout', this);
                     this.$store.commit('clearOpenedSubmenu');
-                    // 回复默认样式
-                    let themeLink = document.querySelector('link[name="theme"]');
-                    themeLink.setAttribute('href', '');
-                    // 清空打开的页面等数据，但是保存主题数据
-                    let theme = '';
-                    if (localStorage.theme) {
-                        theme = localStorage.theme;
-                    }
-                    localStorage.clear();
-                    if (theme) {
-                        localStorage.theme = theme;
-                    }
                     this.$router.push({
                         name: 'login'
                     });
                 }
-            },
-            handleFullScreen () {
-                this.$store.commit('handleFullScreen');
-                // this.$store.commit('changeFullScreenState');
-            },
-            showMessage () {
-                util.openNewPage(this, 'message_index');
-                this.$router.push({
-                    name: 'message_index'
-                });
-            },
-            lockScreen () {
-                let lockScreenBack = document.getElementById('lock_screen_back');
-                lockScreenBack.style.transition = 'all 3s';
-                lockScreenBack.style.zIndex = 10000;
-                lockScreenBack.style.boxShadow = '0 0 0 ' + this.lockScreenSize + 'px #667aa6 inset';
-                this.showUnlock = true;
-                this.$store.commit('lock');
-                Cookies.set('last_page_name', this.$route.name); // 本地存储锁屏之前打开的页面以便解锁后打开
-                setTimeout(() => {
-                    lockScreenBack.style.transition = 'all 0s';
-                    this.$router.push({
-                        name: 'locking'
-                    });
-                }, 800);
             },
             checkTag (name) {
                 let openpageHasTag = this.pageTagsList.some(item => {
@@ -214,6 +155,19 @@
                 if (!openpageHasTag) {  //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
                     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
                 }
+            },
+            handleSubmenuChange (val) {
+                // console.log(val)
+            },
+            beforePush (name) {
+                if (name === 'accesstest_index') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            fullscreenChange (isFullScreen) {
+                // console.log(isFullScreen);
             }
         },
         watch: {
@@ -224,6 +178,7 @@
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.checkTag(to.name);
+                localStorage.currentPageName = to.name;
             },
             lang () {
                 util.setCurrentPath(this, this.$route.name);  // 在切换语言时用于刷新面包屑
@@ -231,88 +186,8 @@
         },
         mounted () {
             this.init();
-            // 锁屏相关
-            let lockScreenBack = document.getElementById('lock_screen_back');
-            let x = document.body.clientWidth;
-            let y = document.body.clientHeight;
-            let r = Math.sqrt(x * x + y * y);
-            let size = parseInt(r);
-            this.lockScreenSize = size;
-            window.addEventListener('resize', () => {
-                let x = document.body.clientWidth;
-                let y = document.body.clientHeight;
-                let r = Math.sqrt(x * x + y * y);
-                let size = parseInt(r);
-                this.lockScreenSize = size;
-                lockScreenBack.style.transition = 'all 0s';
-                lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
-            });
-            lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
-            // 问候信息相关
-            if (!Cookies.get('hasGreet')) {
-                let now = new Date();
-                let hour = now.getHours();
-                let greetingWord = {
-                    title: '',
-                    words: ''
-                };
-                let userName = Cookies.get('user');
-                if (hour > 5 && hour < 6) {
-                    greetingWord = {title: '凌晨好~' + userName, words: '早起的鸟儿有虫吃~'};
-                } else if (hour >= 6 && hour < 9) {
-                    greetingWord = {title: '早上好~' + userName, words: '来一杯咖啡开启美好的一天~'};
-                } else if (hour >= 9 && hour < 12) {
-                    greetingWord = {title: '上午好~' + userName, words: '工作要加油哦~'};
-                } else if (hour >= 12 && hour < 14) {
-                    greetingWord = {title: '中午好~' + userName, words: '午饭要吃饱~'};
-                } else if (hour >= 14 && hour < 17) {
-                    greetingWord = {title: '下午好~' + userName, words: '下午也要活力满满哦~'};
-                } else if (hour >= 17 && hour < 19) {
-                    greetingWord = {title: '傍晚好~' + userName, words: '下班没事问候下爸妈吧~'};
-                } else if (hour >= 19 && hour < 21) {
-                    greetingWord = {title: '晚上好~' + userName, words: '工作之余品一品书香吧~'};
-                } else {
-                    greetingWord = {title: '深夜好~' + userName, words: '夜深了，注意休息哦~'};
-                }
-                this.$Notice.config({
-                    top: 130
-                });
-                this.$Notice.info({
-                    title: greetingWord.title,
-                    desc: greetingWord.words,
-                    duration: 4,
-                    name: 'greeting'
-                });
-                Cookies.set('hasGreet', 1);
-            }
         },
         created () {
-            // 查找当前用户之前登录时设置的主题
-            let name = Cookies.get('user');
-            if (localStorage.theme) {
-                let hasThisUser = JSON.parse(localStorage.theme).some(item => {
-                    if (item.userName === name) {
-                        this.$store.commit('changeMenuTheme', item.menuTheme);
-                        this.$store.commit('changeMainTheme', item.mainTheme);
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
-                if (!hasThisUser) {
-                    this.$store.commit('changeMenuTheme', 'dark');
-                    this.$store.commit('changeMainTheme', 'b');
-                }
-            } else {
-                this.$store.commit('changeMenuTheme', 'dark');
-                this.$store.commit('changeMainTheme', 'b');
-            }
-            // 根据用户设置主题
-            if (this.$store.state.theme !== 'b') {
-                let stylesheetPath = './dist/' + this.$store.state.theme + '.css';
-                let themeLink = document.querySelector('link[name="theme"]');
-                themeLink.setAttribute('href', stylesheetPath);
-            }
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
         }

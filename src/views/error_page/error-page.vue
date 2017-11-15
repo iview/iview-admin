@@ -34,14 +34,14 @@
             <Card>
                 <p slot="title">
                     <Icon :size="14" type="android-lock"></Icon>
-                    401-权限不足
+                    403-权限不足
                 </p>
                 <Row>
                     <Col span="10">
                         <Card dis-hover>
                             <Row>
                                 <div class="error-page-show">
-                                    <error401></error401>
+                                    <error403></error403>
                                 </div>
                                 <div class="error-page-cover"></div>
                             </Row>
@@ -86,12 +86,12 @@
 <script>
 import Error404 from './404.vue';
 import Error500 from './500.vue';
-import Error401 from './401.vue';
+import Error403 from './403.vue';
 export default {
     components: {
         Error404,
         Error500,
-        Error401
+        Error403
     }
 };
 </script>

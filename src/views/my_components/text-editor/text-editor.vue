@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import tinymce from 'tinymce';
+const tinymce = require('tinymce');
 export default {
     name: 'text-editor',
     data () {
@@ -63,7 +63,7 @@ export default {
             });
         }
     },
-    created () {
+    mounted () {
         this.init();
     },
     destroyed () {

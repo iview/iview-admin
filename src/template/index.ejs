@@ -2,14 +2,13 @@
 <html lang="zh-CN">
 
 <head>
-    <title>iView admin</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>">
     <link rel="stylesheet" name="theme" href="">
-    <link rel="icon" href="./td_icon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="./dist/simplemde.min.css">
-    <link rel="stylesheet" href="./dist/cropper.min.css">
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[1] %>">
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[2] %>">
 </head>
 
 <body>
@@ -17,6 +16,7 @@
     <div class="lock-screen-back" id="lock_screen_back"></div>
     <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
     <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[1] %>"></script>
+    <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[2] %>"></script>
 </body>
 
 </html>

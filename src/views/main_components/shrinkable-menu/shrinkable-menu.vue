@@ -1,0 +1,80 @@
+<style lang="less">
+    @import './styles/menu.less';
+</style>
+
+<template>
+    <div :style="{background: bgColor}" class="ivu-shrinkable-menu">
+        <slot name="top"></slot>
+        <sidebar-menu 
+            v-show="!shrink"
+            :menu-theme="menuTheme" 
+            :menu-list="menuList" 
+            :open-names="openNames"
+            @on-change="handleChange"
+        ></sidebar-menu>
+        <sidebar-menu-shrink 
+            v-show="shrink"
+            :menu-theme="menuTheme" 
+            :menu-list="menuList" 
+            @on-change="handleChange"
+        ></sidebar-menu-shrink>
+    </div>
+</template>
+
+<script>
+import sidebarMenu from './components/sidebarMenu.vue';
+import sidebarMenuShrink from './components/sidebarMenuShrink.vue';
+import util from '@/libs/util';
+export default {
+    name: 'shrinkableMenu',
+    components: {
+        sidebarMenu,
+        sidebarMenuShrink
+    },
+    props: {
+        shrink: {
+            type: Boolean,
+            default: false
+        },
+        menuList: {
+            type: Array,
+            required: true
+        },
+        menuTheme: {
+            type: String,
+            default: 'dark',
+            validator (val) {
+                return util.oneOf(val, ['dark', 'light']);
+            }
+        },
+        beforePush: {
+            type: Function
+        },
+        openNames: {
+            type: Array
+        }
+    },
+    computed: {
+        bgColor () {
+            return this.menuTheme === 'dark' ? '#495060' : '#fff';
+        }
+    },
+    methods: {
+        handleChange (name) {
+            let willpush = true;
+            if (this.beforePush !== undefined) {
+                if (!this.beforePush(name)) {
+                    willpush = false;
+                }
+            }
+            if (willpush) {
+                this.$router.push({
+                    name: name
+                });
+                util.openNewPage(this, name);
+            }
+            this.$emit('on-change', name);
+        }
+    }
+};
+</script>
