@@ -1,89 +1,76 @@
 (function () {
-
-var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
+    var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
 
 // Used when there is no 'main' module.
 // The name is probably (hopefully) unique so minification removes for releases.
-var register_3795 = function (id) {
-  var module = dem(id);
-  var fragments = id.split('.');
-  var target = Function('return this;')();
-  for (var i = 0; i < fragments.length - 1; ++i) {
-    if (target[fragments[i]] === undefined)
-      target[fragments[i]] = {};
-    target = target[fragments[i]];
-  }
-  target[fragments[fragments.length - 1]] = module;
-};
+    var register_3795 = function (id) {
+        var module = dem(id);
+        var fragments = id.split('.');
+        var target = Function('return this;')();
+        for (var i = 0; i < fragments.length - 1; ++i) {
+            if (target[fragments[i]] === undefined) { target[fragments[i]] = {}; }
+            target = target[fragments[i]];
+        }
+        target[fragments[fragments.length - 1]] = module;
+    };
 
-var instantiate = function (id) {
-  var actual = defs[id];
-  var dependencies = actual.deps;
-  var definition = actual.defn;
-  var len = dependencies.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(dependencies[i]);
-  var defResult = definition.apply(null, instances);
-  if (defResult === undefined)
-     throw 'module [' + id + '] returned undefined';
-  actual.instance = defResult;
-};
+    var instantiate = function (id) {
+        var actual = defs[id];
+        var dependencies = actual.deps;
+        var definition = actual.defn;
+        var len = dependencies.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(dependencies[i]); }
+        var defResult = definition.apply(null, instances);
+        if (defResult === undefined) { throw 'module [' + id + '] returned undefined'; }
+        actual.instance = defResult;
+    };
 
-var def = function (id, dependencies, definition) {
-  if (typeof id !== 'string')
-    throw 'module id must be a string';
-  else if (dependencies === undefined)
-    throw 'no dependencies for ' + id;
-  else if (definition === undefined)
-    throw 'no definition function for ' + id;
-  defs[id] = {
-    deps: dependencies,
-    defn: definition,
-    instance: undefined
-  };
-};
+    var def = function (id, dependencies, definition) {
+        if (typeof id !== 'string') { throw 'module id must be a string'; } else if (dependencies === undefined) { throw 'no dependencies for ' + id; } else if (definition === undefined) { throw 'no definition function for ' + id; }
+        defs[id] = {
+            deps: dependencies,
+            defn: definition,
+            instance: undefined
+        };
+    };
 
-var dem = function (id) {
-  var actual = defs[id];
-  if (actual === undefined)
-    throw 'module [' + id + '] was undefined';
-  else if (actual.instance === undefined)
-    instantiate(id);
-  return actual.instance;
-};
+    var dem = function (id) {
+        var actual = defs[id];
+        if (actual === undefined) { throw 'module [' + id + '] was undefined'; } else if (actual.instance === undefined) { instantiate(id); }
+        return actual.instance;
+    };
 
-var req = function (ids, callback) {
-  var len = ids.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(ids[i]);
-  callback.apply(null, instances);
-};
+    var req = function (ids, callback) {
+        var len = ids.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(ids[i]); }
+        callback.apply(null, instances);
+    };
 
-var ephox = {};
+    var ephox = {};
 
-ephox.bolt = {
-  module: {
-    api: {
-      define: def,
-      require: req,
-      demand: dem
-    }
-  }
-};
+    ephox.bolt = {
+        module: {
+            api: {
+                define: def,
+                require: req,
+                demand: dem
+            }
+        }
+    };
 
-var define = def;
-var require = req;
-var demand = dem;
+    var define = def;
+    var require = req;
+    var demand = dem;
 // this helps with minification when using a lot of global references
-var defineGlobal = function (id, ref) {
-  define(id, [], function () { return ref; });
-};
-/*jsc
+    var defineGlobal = function (id, ref) {
+        define(id, [], function () { return ref; });
+    };
+/* jsc
 ["tinymce.plugins.link.Plugin","tinymce.core.PluginManager","tinymce.plugins.link.api.Commands","tinymce.plugins.link.core.Actions","tinymce.plugins.link.core.Keyboard","tinymce.plugins.link.ui.Controls","global!tinymce.util.Tools.resolve","tinymce.core.util.VK","tinymce.plugins.link.api.Settings","tinymce.plugins.link.core.OpenUrl","tinymce.plugins.link.core.Utils","tinymce.plugins.link.ui.Dialog","global!document","global!window","tinymce.core.dom.DOMUtils","tinymce.core.Env","global!RegExp","tinymce.core.util.Tools","tinymce.core.util.Delay","tinymce.core.util.XHR"]
-jsc*/
-defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
+jsc */
+    defineGlobal('global!tinymce.util.Tools.resolve', tinymce.util.Tools.resolve);
 /**
  * ResolveGlobal.js
  *
@@ -94,13 +81,13 @@ defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.PluginManager',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.PluginManager');
+      return resolve('tinymce.PluginManager');
   }
 );
 
@@ -114,13 +101,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.util.VK',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.util.VK');
+      return resolve('tinymce.util.VK');
   }
 );
 
@@ -134,88 +121,88 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.api.Settings',
-  [
-  ],
+        [
+        ],
   function () {
-    var assumeExternalTargets = function (editorSettings) {
-      return typeof editorSettings.link_assume_external_targets === 'boolean' ? editorSettings.link_assume_external_targets : false;
-    };
+      var assumeExternalTargets = function (editorSettings) {
+          return typeof editorSettings.link_assume_external_targets === 'boolean' ? editorSettings.link_assume_external_targets : false;
+      };
 
-    var hasContextToolbar = function (editorSettings) {
-      return typeof editorSettings.link_context_toolbar === 'boolean' ? editorSettings.link_context_toolbar : false;
-    };
+      var hasContextToolbar = function (editorSettings) {
+          return typeof editorSettings.link_context_toolbar === 'boolean' ? editorSettings.link_context_toolbar : false;
+      };
 
-    var getLinkList = function (editorSettings) {
-      return editorSettings.link_list;
-    };
+      var getLinkList = function (editorSettings) {
+          return editorSettings.link_list;
+      };
 
-    var hasDefaultLinkTarget = function (editorSettings) {
-      return typeof editorSettings.default_link_target === 'string';
-    };
+      var hasDefaultLinkTarget = function (editorSettings) {
+          return typeof editorSettings.default_link_target === 'string';
+      };
 
-    var getDefaultLinkTarget = function (editorSettings) {
-      return editorSettings.default_link_target;
-    };
+      var getDefaultLinkTarget = function (editorSettings) {
+          return editorSettings.default_link_target;
+      };
 
-    var getTargetList = function (editorSettings) {
-      return editorSettings.target_list;
-    };
+      var getTargetList = function (editorSettings) {
+          return editorSettings.target_list;
+      };
 
-    var setTargetList = function (editor, list) {
-      editor.settings.target_list = list;
-    };
+      var setTargetList = function (editor, list) {
+          editor.settings.target_list = list;
+      };
 
-    var shouldShowTargetList = function (editorSettings) {
-      return getTargetList(editorSettings) !== false;
-    };
+      var shouldShowTargetList = function (editorSettings) {
+          return getTargetList(editorSettings) !== false;
+      };
 
-    var getRelList = function (editorSettings) {
-      return editorSettings.rel_list;
-    };
+      var getRelList = function (editorSettings) {
+          return editorSettings.rel_list;
+      };
 
-    var hasRelList = function (editorSettings) {
-      return getRelList(editorSettings) !== undefined;
-    };
+      var hasRelList = function (editorSettings) {
+          return getRelList(editorSettings) !== undefined;
+      };
 
-    var getLinkClassList = function (editorSettings) {
-      return editorSettings.link_class_list;
-    };
+      var getLinkClassList = function (editorSettings) {
+          return editorSettings.link_class_list;
+      };
 
-    var hasLinkClassList = function (editorSettings) {
-      return getLinkClassList(editorSettings) !== undefined;
-    };
+      var hasLinkClassList = function (editorSettings) {
+          return getLinkClassList(editorSettings) !== undefined;
+      };
 
-    var shouldShowLinkTitle = function (editorSettings) {
-      return editorSettings.link_title !== false;
-    };
+      var shouldShowLinkTitle = function (editorSettings) {
+          return editorSettings.link_title !== false;
+      };
 
-    var allowUnsafeLinkTarget = function (editorSettings) {
-      return typeof editorSettings.allow_unsafe_link_target === 'boolean' ? editorSettings.allow_unsafe_link_target : false;
-    };
+      var allowUnsafeLinkTarget = function (editorSettings) {
+          return typeof editorSettings.allow_unsafe_link_target === 'boolean' ? editorSettings.allow_unsafe_link_target : false;
+      };
 
-    return {
-      assumeExternalTargets: assumeExternalTargets,
-      hasContextToolbar: hasContextToolbar,
-      getLinkList: getLinkList,
-      hasDefaultLinkTarget: hasDefaultLinkTarget,
-      getDefaultLinkTarget: getDefaultLinkTarget,
-      getTargetList: getTargetList,
-      setTargetList: setTargetList,
-      shouldShowTargetList: shouldShowTargetList,
-      getRelList: getRelList,
-      hasRelList: hasRelList,
-      getLinkClassList: getLinkClassList,
-      hasLinkClassList: hasLinkClassList,
-      shouldShowLinkTitle: shouldShowLinkTitle,
-      allowUnsafeLinkTarget: allowUnsafeLinkTarget
-    };
+      return {
+          assumeExternalTargets: assumeExternalTargets,
+          hasContextToolbar: hasContextToolbar,
+          getLinkList: getLinkList,
+          hasDefaultLinkTarget: hasDefaultLinkTarget,
+          getDefaultLinkTarget: getDefaultLinkTarget,
+          getTargetList: getTargetList,
+          setTargetList: setTargetList,
+          shouldShowTargetList: shouldShowTargetList,
+          getRelList: getRelList,
+          hasRelList: hasRelList,
+          getLinkClassList: getLinkClassList,
+          hasLinkClassList: hasLinkClassList,
+          shouldShowLinkTitle: shouldShowLinkTitle,
+          allowUnsafeLinkTarget: allowUnsafeLinkTarget
+      };
   }
 );
 
-defineGlobal("global!document", document);
-defineGlobal("global!window", window);
+    defineGlobal('global!document', document);
+    defineGlobal('global!window', window);
 /**
  * ResolveGlobal.js
  *
@@ -226,13 +213,13 @@ defineGlobal("global!window", window);
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.dom.DOMUtils',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.dom.DOMUtils');
+      return resolve('tinymce.dom.DOMUtils');
   }
 );
 
@@ -246,13 +233,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.Env',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.Env');
+      return resolve('tinymce.Env');
   }
 );
 
@@ -266,54 +253,54 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.core.OpenUrl',
-  [
-    'global!document',
-    'global!window',
-    'tinymce.core.dom.DOMUtils',
-    'tinymce.core.Env'
-  ],
+        [
+            'global!document',
+            'global!window',
+            'tinymce.core.dom.DOMUtils',
+            'tinymce.core.Env'
+        ],
   function (document, window, DOMUtils, Env) {
-    var appendClickRemove = function (link, evt) {
-      document.body.appendChild(link);
-      link.dispatchEvent(evt);
-      document.body.removeChild(link);
-    };
+      var appendClickRemove = function (link, evt) {
+          document.body.appendChild(link);
+          link.dispatchEvent(evt);
+          document.body.removeChild(link);
+      };
 
-    var open = function (url) {
+      var open = function (url) {
       // Chrome and Webkit has implemented noopener and works correctly with/without popup blocker
       // Firefox has it implemented noopener but when the popup blocker is activated it doesn't work
       // Edge has only implemented noreferrer and it seems to remove opener as well
       // Older IE versions pre IE 11 falls back to a window.open approach
-      if (!Env.ie || Env.ie > 10) {
-        var link = document.createElement('a');
-        link.target = '_blank';
-        link.href = url;
-        link.rel = 'noreferrer noopener';
+          if (!Env.ie || Env.ie > 10) {
+              var link = document.createElement('a');
+              link.target = '_blank';
+              link.href = url;
+              link.rel = 'noreferrer noopener';
 
-        var evt = document.createEvent('MouseEvents');
-        evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+              var evt = document.createEvent('MouseEvents');
+              evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 
-        appendClickRemove(link, evt);
-      } else {
-        var win = window.open('', '_blank');
-        if (win) {
-          win.opener = null;
-          var doc = win.document;
-          doc.open();
-          doc.write('<meta http-equiv="refresh" content="0; url=' + DOMUtils.DOM.encode(url) + '">');
-          doc.close();
-        }
-      }
-    };
+              appendClickRemove(link, evt);
+          } else {
+              var win = window.open('', '_blank');
+              if (win) {
+                  win.opener = null;
+                  var doc = win.document;
+                  doc.open();
+                  doc.write('<meta http-equiv="refresh" content="0; url=' + DOMUtils.DOM.encode(url) + '">');
+                  doc.close();
+              }
+          }
+      };
 
-    return {
-      open: open
-    };
+      return {
+          open: open
+      };
   }
 );
-defineGlobal("global!RegExp", RegExp);
+    defineGlobal('global!RegExp', RegExp);
 /**
  * ResolveGlobal.js
  *
@@ -324,13 +311,13 @@ defineGlobal("global!RegExp", RegExp);
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.util.Tools',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.util.Tools');
+      return resolve('tinymce.util.Tools');
   }
 );
 
@@ -344,173 +331,173 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.core.Utils',
-  [
-    'global!RegExp',
-    'tinymce.core.util.Tools',
-    'tinymce.plugins.link.api.Settings'
-  ],
+        [
+            'global!RegExp',
+            'tinymce.core.util.Tools',
+            'tinymce.plugins.link.api.Settings'
+        ],
   function (RegExp, Tools, Settings) {
-    var toggleTargetRules = function (rel, isUnsafe) {
-      var rules = ['noopener'];
-      var newRel = rel ? rel.split(/\s+/) : [];
+      var toggleTargetRules = function (rel, isUnsafe) {
+          var rules = ['noopener'];
+          var newRel = rel ? rel.split(/\s+/) : [];
 
-      var toString = function (rel) {
-        return Tools.trim(rel.sort().join(' '));
-      };
-
-      var addTargetRules = function (rel) {
-        rel = removeTargetRules(rel);
-        return rel.length ? rel.concat(rules) : rules;
-      };
-
-      var removeTargetRules = function (rel) {
-        return rel.filter(function (val) {
-          return Tools.inArray(rules, val) === -1;
-        });
-      };
-
-      newRel = isUnsafe ? addTargetRules(newRel) : removeTargetRules(newRel);
-      return newRel.length ? toString(newRel) : null;
-    };
-
-    var trimCaretContainers = function (text) {
-      return text.replace(/\uFEFF/g, '');
-    };
-
-    var getAnchorElement = function (editor, selectedElm) {
-      selectedElm = selectedElm || editor.selection.getStart();
-      if (isImageFigure(selectedElm)) {
-        // for an image conained in a figure we look for a link inside the selected element
-        return editor.dom.select('a[href]', selectedElm)[0];
-      } else {
-        return editor.dom.getParent(selectedElm, 'a[href]');
-      }
-    };
-
-    var getAnchorText = function (selection, anchorElm) {
-      var text = anchorElm ? (anchorElm.innerText || anchorElm.textContent) : selection.getContent({ format: 'text' });
-      return trimCaretContainers(text);
-    };
-
-    var isLink = function (elm) {
-      return elm && elm.nodeName === 'A' && elm.href;
-    };
-
-    var hasLinks = function (elements) {
-      return Tools.grep(elements, isLink).length > 0;
-    };
-
-    var isOnlyTextSelected = function (html) {
-      // Partial html and not a fully selected anchor element
-      if (/</.test(html) && (!/^<a [^>]+>[^<]+<\/a>$/.test(html) || html.indexOf('href=') === -1)) {
-        return false;
-      }
-
-      return true;
-    };
-
-    var isImageFigure = function (node) {
-      return node && node.nodeName === 'FIGURE' && /\bimage\b/i.test(node.className);
-    };
-
-    var link = function (editor, attachState) {
-      return function (data) {
-        editor.undoManager.transact(function () {
-          var selectedElm = editor.selection.getNode();
-          var anchorElm = getAnchorElement(editor, selectedElm);
-
-          var linkAttrs = {
-            href: data.href,
-            target: data.target ? data.target : null,
-            rel: data.rel ? data.rel : null,
-            "class": data["class"] ? data["class"] : null,
-            title: data.title ? data.title : null
+          var toString = function (rel) {
+              return Tools.trim(rel.sort().join(' '));
           };
 
-          if (!Settings.hasRelList(editor.settings) && Settings.allowUnsafeLinkTarget(editor.settings) === false) {
-            linkAttrs.rel = toggleTargetRules(linkAttrs.rel, linkAttrs.target === '_blank');
+          var addTargetRules = function (rel) {
+              rel = removeTargetRules(rel);
+              return rel.length ? rel.concat(rules) : rules;
+          };
+
+          var removeTargetRules = function (rel) {
+              return rel.filter(function (val) {
+                  return Tools.inArray(rules, val) === -1;
+              });
+          };
+
+          newRel = isUnsafe ? addTargetRules(newRel) : removeTargetRules(newRel);
+          return newRel.length ? toString(newRel) : null;
+      };
+
+      var trimCaretContainers = function (text) {
+          return text.replace(/\uFEFF/g, '');
+      };
+
+      var getAnchorElement = function (editor, selectedElm) {
+          selectedElm = selectedElm || editor.selection.getStart();
+          if (isImageFigure(selectedElm)) {
+        // for an image conained in a figure we look for a link inside the selected element
+              return editor.dom.select('a[href]', selectedElm)[0];
+          } else {
+              return editor.dom.getParent(selectedElm, 'a[href]');
+          }
+      };
+
+      var getAnchorText = function (selection, anchorElm) {
+          var text = anchorElm ? (anchorElm.innerText || anchorElm.textContent) : selection.getContent({ format: 'text' });
+          return trimCaretContainers(text);
+      };
+
+      var isLink = function (elm) {
+          return elm && elm.nodeName === 'A' && elm.href;
+      };
+
+      var hasLinks = function (elements) {
+          return Tools.grep(elements, isLink).length > 0;
+      };
+
+      var isOnlyTextSelected = function (html) {
+      // Partial html and not a fully selected anchor element
+          if (/</.test(html) && (!/^<a [^>]+>[^<]+<\/a>$/.test(html) || html.indexOf('href=') === -1)) {
+              return false;
           }
 
-          if (data.href === attachState.href) {
-            attachState.attach();
-            attachState = {};
-          }
+          return true;
+      };
 
-          if (anchorElm) {
-            editor.focus();
+      var isImageFigure = function (node) {
+          return node && node.nodeName === 'FIGURE' && /\bimage\b/i.test(node.className);
+      };
 
-            if (data.hasOwnProperty('text')) {
-              if ("innerText" in anchorElm) {
-                anchorElm.innerText = data.text;
-              } else {
-                anchorElm.textContent = data.text;
+      var link = function (editor, attachState) {
+          return function (data) {
+              editor.undoManager.transact(function () {
+                  var selectedElm = editor.selection.getNode();
+                  var anchorElm = getAnchorElement(editor, selectedElm);
+
+                  var linkAttrs = {
+                      href: data.href,
+                      target: data.target ? data.target : null,
+                      rel: data.rel ? data.rel : null,
+                      'class': data['class'] ? data['class'] : null,
+                      title: data.title ? data.title : null
+                  };
+
+                  if (!Settings.hasRelList(editor.settings) && Settings.allowUnsafeLinkTarget(editor.settings) === false) {
+                      linkAttrs.rel = toggleTargetRules(linkAttrs.rel, linkAttrs.target === '_blank');
+                  }
+
+                  if (data.href === attachState.href) {
+                      attachState.attach();
+                      attachState = {};
+                  }
+
+                  if (anchorElm) {
+                      editor.focus();
+
+                      if (data.hasOwnProperty('text')) {
+                          if ('innerText' in anchorElm) {
+                              anchorElm.innerText = data.text;
+                          } else {
+                              anchorElm.textContent = data.text;
+                          }
+                      }
+
+                      editor.dom.setAttribs(anchorElm, linkAttrs);
+
+                      editor.selection.select(anchorElm);
+                      editor.undoManager.add();
+                  } else {
+                      if (isImageFigure(selectedElm)) {
+                          linkImageFigure(editor, selectedElm, linkAttrs);
+                      } else if (data.hasOwnProperty('text')) {
+                          editor.insertContent(editor.dom.createHTML('a', linkAttrs, editor.dom.encode(data.text)));
+                      } else {
+                          editor.execCommand('mceInsertLink', false, linkAttrs);
+                      }
+                  }
+              });
+          };
+      };
+
+      var unlink = function (editor) {
+          return function () {
+              editor.undoManager.transact(function () {
+                  var node = editor.selection.getNode();
+                  if (isImageFigure(node)) {
+                      unlinkImageFigure(editor, node);
+                  } else {
+                      editor.execCommand('unlink');
+                  }
+              });
+          };
+      };
+
+      var unlinkImageFigure = function (editor, fig) {
+          var a, img;
+          img = editor.dom.select('img', fig)[0];
+          if (img) {
+              a = editor.dom.getParents(img, 'a[href]', fig)[0];
+              if (a) {
+                  a.parentNode.insertBefore(img, a);
+                  editor.dom.remove(a);
               }
-            }
-
-            editor.dom.setAttribs(anchorElm, linkAttrs);
-
-            editor.selection.select(anchorElm);
-            editor.undoManager.add();
-          } else {
-            if (isImageFigure(selectedElm)) {
-              linkImageFigure(editor, selectedElm, linkAttrs);
-            } else if (data.hasOwnProperty('text')) {
-              editor.insertContent(editor.dom.createHTML('a', linkAttrs, editor.dom.encode(data.text)));
-            } else {
-              editor.execCommand('mceInsertLink', false, linkAttrs);
-            }
           }
-        });
       };
-    };
 
-    var unlink = function (editor) {
-      return function () {
-        editor.undoManager.transact(function () {
-          var node = editor.selection.getNode();
-          if (isImageFigure(node)) {
-            unlinkImageFigure(editor, node);
-          } else {
-            editor.execCommand('unlink');
+      var linkImageFigure = function (editor, fig, attrs) {
+          var a, img;
+          img = editor.dom.select('img', fig)[0];
+          if (img) {
+              a = editor.dom.create('a', attrs);
+              img.parentNode.insertBefore(a, img);
+              a.appendChild(img);
           }
-        });
       };
-    };
 
-    var unlinkImageFigure = function (editor, fig) {
-      var a, img;
-      img = editor.dom.select('img', fig)[0];
-      if (img) {
-        a = editor.dom.getParents(img, 'a[href]', fig)[0];
-        if (a) {
-          a.parentNode.insertBefore(img, a);
-          editor.dom.remove(a);
-        }
-      }
-    };
-
-    var linkImageFigure = function (editor, fig, attrs) {
-      var a, img;
-      img = editor.dom.select('img', fig)[0];
-      if (img) {
-        a = editor.dom.create('a', attrs);
-        img.parentNode.insertBefore(a, img);
-        a.appendChild(img);
-      }
-    };
-
-    return {
-      link: link,
-      unlink: unlink,
-      isLink: isLink,
-      hasLinks: hasLinks,
-      isOnlyTextSelected: isOnlyTextSelected,
-      getAnchorElement: getAnchorElement,
-      getAnchorText: getAnchorText,
-      toggleTargetRules: toggleTargetRules
-    };
+      return {
+          link: link,
+          unlink: unlink,
+          isLink: isLink,
+          hasLinks: hasLinks,
+          isOnlyTextSelected: isOnlyTextSelected,
+          getAnchorElement: getAnchorElement,
+          getAnchorText: getAnchorText,
+          toggleTargetRules: toggleTargetRules
+      };
   }
 );
 /**
@@ -523,13 +510,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.util.Delay',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.util.Delay');
+      return resolve('tinymce.util.Delay');
   }
 );
 
@@ -543,13 +530,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.util.XHR',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.util.XHR');
+      return resolve('tinymce.util.XHR');
   }
 );
 
@@ -563,358 +550,358 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.ui.Dialog',
-  [
-    'tinymce.core.util.Delay',
-    'tinymce.core.util.Tools',
-    'tinymce.core.util.XHR',
-    'tinymce.plugins.link.api.Settings',
-    'tinymce.plugins.link.core.Utils'
-  ],
+        [
+            'tinymce.core.util.Delay',
+            'tinymce.core.util.Tools',
+            'tinymce.core.util.XHR',
+            'tinymce.plugins.link.api.Settings',
+            'tinymce.plugins.link.core.Utils'
+        ],
   function (Delay, Tools, XHR, Settings, Utils) {
-    var attachState = {};
+      var attachState = {};
 
-    var createLinkList = function (editor, callback) {
-      var linkList = Settings.getLinkList(editor.settings);
+      var createLinkList = function (editor, callback) {
+          var linkList = Settings.getLinkList(editor.settings);
 
-      if (typeof linkList === "string") {
-        XHR.send({
-          url: linkList,
-          success: function (text) {
-            callback(editor, JSON.parse(text));
-          }
-        });
-      } else if (typeof linkList === "function") {
-        linkList(function (list) {
-          callback(editor, list);
-        });
-      } else {
-        callback(editor, linkList);
-      }
-    };
-
-    var buildListItems = function (inputList, itemCallback, startItems) {
-      var appendItems = function (values, output) {
-        output = output || [];
-
-        Tools.each(values, function (item) {
-          var menuItem = { text: item.text || item.title };
-
-          if (item.menu) {
-            menuItem.menu = appendItems(item.menu);
+          if (typeof linkList === 'string') {
+              XHR.send({
+                  url: linkList,
+                  success: function (text) {
+                      callback(editor, JSON.parse(text));
+                  }
+              });
+          } else if (typeof linkList === 'function') {
+              linkList(function (list) {
+                  callback(editor, list);
+              });
           } else {
-            menuItem.value = item.value;
-
-            if (itemCallback) {
-              itemCallback(menuItem);
-            }
+              callback(editor, linkList);
           }
-
-          output.push(menuItem);
-        });
-
-        return output;
       };
 
-      return appendItems(inputList, startItems || []);
-    };
+      var buildListItems = function (inputList, itemCallback, startItems) {
+          var appendItems = function (values, output) {
+              output = output || [];
+
+              Tools.each(values, function (item) {
+                  var menuItem = { text: item.text || item.title };
+
+                  if (item.menu) {
+                      menuItem.menu = appendItems(item.menu);
+                  } else {
+                      menuItem.value = item.value;
+
+                      if (itemCallback) {
+                          itemCallback(menuItem);
+                      }
+                  }
+
+                  output.push(menuItem);
+              });
+
+              return output;
+          };
+
+          return appendItems(inputList, startItems || []);
+      };
 
     // Delay confirm since onSubmit will move focus
-    var delayedConfirm = function (editor, message, callback) {
-      var rng = editor.selection.getRng();
+      var delayedConfirm = function (editor, message, callback) {
+          var rng = editor.selection.getRng();
 
-      Delay.setEditorTimeout(editor, function () {
-        editor.windowManager.confirm(message, function (state) {
-          editor.selection.setRng(rng);
-          callback(state);
-        });
-      });
-    };
-
-    var showDialog = function (editor, linkList) {
-      var data = {}, selection = editor.selection, dom = editor.dom, anchorElm, initialText;
-      var win, onlyText, textListCtrl, linkListCtrl, relListCtrl, targetListCtrl, classListCtrl, linkTitleCtrl, value;
-
-      var linkListChangeHandler = function (e) {
-        var textCtrl = win.find('#text');
-
-        if (!textCtrl.value() || (e.lastControl && textCtrl.value() === e.lastControl.text())) {
-          textCtrl.value(e.control.text());
-        }
-
-        win.find('#href').value(e.control.value());
+          Delay.setEditorTimeout(editor, function () {
+              editor.windowManager.confirm(message, function (state) {
+                  editor.selection.setRng(rng);
+                  callback(state);
+              });
+          });
       };
 
-      var buildAnchorListControl = function (url) {
-        var anchorList = [];
+      var showDialog = function (editor, linkList) {
+          var data = {}, selection = editor.selection, dom = editor.dom, anchorElm, initialText;
+          var win, onlyText, textListCtrl, linkListCtrl, relListCtrl, targetListCtrl, classListCtrl, linkTitleCtrl, value;
 
-        Tools.each(editor.dom.select('a:not([href])'), function (anchor) {
-          var id = anchor.name || anchor.id;
+          var linkListChangeHandler = function (e) {
+              var textCtrl = win.find('#text');
 
-          if (id) {
-            anchorList.push({
-              text: id,
-              value: '#' + id,
-              selected: url.indexOf('#' + id) !== -1
-            });
-          }
-        });
+              if (!textCtrl.value() || (e.lastControl && textCtrl.value() === e.lastControl.text())) {
+                  textCtrl.value(e.control.text());
+              }
 
-        if (anchorList.length) {
-          anchorList.unshift({ text: 'None', value: '' });
-
-          return {
-            name: 'anchor',
-            type: 'listbox',
-            label: 'Anchors',
-            values: anchorList,
-            onselect: linkListChangeHandler
+              win.find('#href').value(e.control.value());
           };
-        }
-      };
 
-      var updateText = function () {
-        if (!initialText && onlyText && !data.text) {
-          this.parent().parent().find('#text')[0].value(this.value());
-        }
-      };
+          var buildAnchorListControl = function (url) {
+              var anchorList = [];
 
-      var urlChange = function (e) {
-        var meta = e.meta || {};
+              Tools.each(editor.dom.select('a:not([href])'), function (anchor) {
+                  var id = anchor.name || anchor.id;
 
-        if (linkListCtrl) {
-          linkListCtrl.value(editor.convertURL(this.value(), 'href'));
-        }
+                  if (id) {
+                      anchorList.push({
+                          text: id,
+                          value: '#' + id,
+                          selected: url.indexOf('#' + id) !== -1
+                      });
+                  }
+              });
 
-        Tools.each(e.meta, function (value, key) {
-          var inp = win.find('#' + key);
+              if (anchorList.length) {
+                  anchorList.unshift({ text: 'None', value: '' });
 
-          if (key === 'text') {
-            if (initialText.length === 0) {
-              inp.value(value);
-              data.text = value;
-            }
-          } else {
-            inp.value(value);
-          }
-        });
-
-        if (meta.attach) {
-          attachState = {
-            href: this.value(),
-            attach: meta.attach
+                  return {
+                      name: 'anchor',
+                      type: 'listbox',
+                      label: 'Anchors',
+                      values: anchorList,
+                      onselect: linkListChangeHandler
+                  };
+              }
           };
-        }
 
-        if (!meta.text) {
-          updateText.call(this);
-        }
-      };
+          var updateText = function () {
+              if (!initialText && onlyText && !data.text) {
+                  this.parent().parent().find('#text')[0].value(this.value());
+              }
+          };
 
-      var onBeforeCall = function (e) {
-        e.meta = win.toJSON();
-      };
+          var urlChange = function (e) {
+              var meta = e.meta || {};
 
-      onlyText = Utils.isOnlyTextSelected(selection.getContent());
-      anchorElm = Utils.getAnchorElement(editor);
+              if (linkListCtrl) {
+                  linkListCtrl.value(editor.convertURL(this.value(), 'href'));
+              }
 
-      data.text = initialText = Utils.getAnchorText(editor.selection, anchorElm);
-      data.href = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+              Tools.each(e.meta, function (value, key) {
+                  var inp = win.find('#' + key);
 
-      if (anchorElm) {
-        data.target = dom.getAttrib(anchorElm, 'target');
-      } else if (Settings.hasDefaultLinkTarget(editor.settings)) {
-        data.target = Settings.getDefaultLinkTarget(editor.settings);
-      }
+                  if (key === 'text') {
+                      if (initialText.length === 0) {
+                          inp.value(value);
+                          data.text = value;
+                      }
+                  } else {
+                      inp.value(value);
+                  }
+              });
 
-      if ((value = dom.getAttrib(anchorElm, 'rel'))) {
-        data.rel = value;
-      }
+              if (meta.attach) {
+                  attachState = {
+                      href: this.value(),
+                      attach: meta.attach
+                  };
+              }
 
-      if ((value = dom.getAttrib(anchorElm, 'class'))) {
-        data['class'] = value;
-      }
+              if (!meta.text) {
+                  updateText.call(this);
+              }
+          };
 
-      if ((value = dom.getAttrib(anchorElm, 'title'))) {
-        data.title = value;
-      }
+          var onBeforeCall = function (e) {
+              e.meta = win.toJSON();
+          };
 
-      if (onlyText) {
-        textListCtrl = {
-          name: 'text',
-          type: 'textbox',
-          size: 40,
-          label: 'Text to display',
-          onchange: function () {
-            data.text = this.value();
+          onlyText = Utils.isOnlyTextSelected(selection.getContent());
+          anchorElm = Utils.getAnchorElement(editor);
+
+          data.text = initialText = Utils.getAnchorText(editor.selection, anchorElm);
+          data.href = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+
+          if (anchorElm) {
+              data.target = dom.getAttrib(anchorElm, 'target');
+          } else if (Settings.hasDefaultLinkTarget(editor.settings)) {
+              data.target = Settings.getDefaultLinkTarget(editor.settings);
           }
-        };
-      }
 
-      if (linkList) {
-        linkListCtrl = {
-          type: 'listbox',
-          label: 'Link list',
-          values: buildListItems(
+          if ((value = dom.getAttrib(anchorElm, 'rel'))) {
+              data.rel = value;
+          }
+
+          if ((value = dom.getAttrib(anchorElm, 'class'))) {
+              data['class'] = value;
+          }
+
+          if ((value = dom.getAttrib(anchorElm, 'title'))) {
+              data.title = value;
+          }
+
+          if (onlyText) {
+              textListCtrl = {
+                  name: 'text',
+                  type: 'textbox',
+                  size: 40,
+                  label: 'Text to display',
+                  onchange: function () {
+                      data.text = this.value();
+                  }
+              };
+          }
+
+          if (linkList) {
+              linkListCtrl = {
+                  type: 'listbox',
+                  label: 'Link list',
+                  values: buildListItems(
             linkList,
             function (item) {
-              item.value = editor.convertURL(item.value || item.url, 'href');
+                item.value = editor.convertURL(item.value || item.url, 'href');
             },
             [{ text: 'None', value: '' }]
           ),
-          onselect: linkListChangeHandler,
-          value: editor.convertURL(data.href, 'href'),
-          onPostRender: function () {
-            /*eslint consistent-this:0*/
-            linkListCtrl = this;
+                  onselect: linkListChangeHandler,
+                  value: editor.convertURL(data.href, 'href'),
+                  onPostRender: function () {
+            /* eslint consistent-this:0 */
+                      linkListCtrl = this;
+                  }
+              };
           }
-        };
-      }
 
-      if (Settings.shouldShowTargetList(editor.settings)) {
-        if (Settings.getTargetList(editor.settings) === undefined) {
-          Settings.setTargetList(editor, [
+          if (Settings.shouldShowTargetList(editor.settings)) {
+              if (Settings.getTargetList(editor.settings) === undefined) {
+                  Settings.setTargetList(editor, [
             { text: 'None', value: '' },
             { text: 'New window', value: '_blank' }
-          ]);
-        }
+                  ]);
+              }
 
-        targetListCtrl = {
-          name: 'target',
-          type: 'listbox',
-          label: 'Target',
-          values: buildListItems(Settings.getTargetList(editor.settings))
-        };
-      }
+              targetListCtrl = {
+                  name: 'target',
+                  type: 'listbox',
+                  label: 'Target',
+                  values: buildListItems(Settings.getTargetList(editor.settings))
+              };
+          }
 
-      if (Settings.hasRelList(editor.settings)) {
-        relListCtrl = {
-          name: 'rel',
-          type: 'listbox',
-          label: 'Rel',
-          values: buildListItems(
+          if (Settings.hasRelList(editor.settings)) {
+              relListCtrl = {
+                  name: 'rel',
+                  type: 'listbox',
+                  label: 'Rel',
+                  values: buildListItems(
             Settings.getRelList(editor.settings),
             function (item) {
-              if (Settings.allowUnsafeLinkTarget(editor.settings) === false) {
-                item.value = Utils.toggleTargetRules(item.value, data.target === '_blank');
-              }
+                if (Settings.allowUnsafeLinkTarget(editor.settings) === false) {
+                    item.value = Utils.toggleTargetRules(item.value, data.target === '_blank');
+                }
             }
           )
-        };
-      }
+              };
+          }
 
-      if (Settings.hasLinkClassList(editor.settings)) {
-        classListCtrl = {
-          name: 'class',
-          type: 'listbox',
-          label: 'Class',
-          values: buildListItems(
+          if (Settings.hasLinkClassList(editor.settings)) {
+              classListCtrl = {
+                  name: 'class',
+                  type: 'listbox',
+                  label: 'Class',
+                  values: buildListItems(
             Settings.getLinkClassList(editor.settings),
             function (item) {
-              if (item.value) {
-                item.textStyle = function () {
-                  return editor.formatter.getCssText({ inline: 'a', classes: [item.value] });
-                };
-              }
+                if (item.value) {
+                    item.textStyle = function () {
+                        return editor.formatter.getCssText({ inline: 'a', classes: [item.value] });
+                    };
+                }
             }
           )
-        };
-      }
-
-      if (Settings.shouldShowLinkTitle(editor.settings)) {
-        linkTitleCtrl = {
-          name: 'title',
-          type: 'textbox',
-          label: 'Title',
-          value: data.title
-        };
-      }
-
-      win = editor.windowManager.open({
-        title: 'Insert link',
-        data: data,
-        body: [
-          {
-            name: 'href',
-            type: 'filepicker',
-            filetype: 'file',
-            size: 40,
-            autofocus: true,
-            label: 'Url',
-            onchange: urlChange,
-            onkeyup: updateText,
-            onbeforecall: onBeforeCall
-          },
-          textListCtrl,
-          linkTitleCtrl,
-          buildAnchorListControl(data.href),
-          linkListCtrl,
-          relListCtrl,
-          targetListCtrl,
-          classListCtrl
-        ],
-        onSubmit: function (e) {
-          var assumeExternalTargets = Settings.assumeExternalTargets(editor.settings);
-          var insertLink = Utils.link(editor, attachState);
-          var removeLink = Utils.unlink(editor);
-
-          var resultData = Tools.extend({}, data, e.data);
-          /*eslint dot-notation: 0*/
-          var href = resultData.href;
-
-          if (!href) {
-            removeLink();
-            return;
+              };
           }
 
-          if (!onlyText || resultData.text === initialText) {
-            delete resultData.text;
+          if (Settings.shouldShowLinkTitle(editor.settings)) {
+              linkTitleCtrl = {
+                  name: 'title',
+                  type: 'textbox',
+                  label: 'Title',
+                  value: data.title
+              };
           }
+
+          win = editor.windowManager.open({
+              title: 'Insert link',
+              data: data,
+              body: [
+                  {
+                      name: 'href',
+                      type: 'filepicker',
+                      filetype: 'file',
+                      size: 40,
+                      autofocus: true,
+                      label: 'Url',
+                      onchange: urlChange,
+                      onkeyup: updateText,
+                      onbeforecall: onBeforeCall
+                  },
+                  textListCtrl,
+                  linkTitleCtrl,
+                  buildAnchorListControl(data.href),
+                  linkListCtrl,
+                  relListCtrl,
+                  targetListCtrl,
+                  classListCtrl
+              ],
+              onSubmit: function (e) {
+                  var assumeExternalTargets = Settings.assumeExternalTargets(editor.settings);
+                  var insertLink = Utils.link(editor, attachState);
+                  var removeLink = Utils.unlink(editor);
+
+                  var resultData = Tools.extend({}, data, e.data);
+          /* eslint dot-notation: 0 */
+                  var href = resultData.href;
+
+                  if (!href) {
+                      removeLink();
+                      return;
+                  }
+
+                  if (!onlyText || resultData.text === initialText) {
+                      delete resultData.text;
+                  }
 
           // Is email and not //user@domain.com
-          if (href.indexOf('@') > 0 && href.indexOf('//') === -1 && href.indexOf('mailto:') === -1) {
-            delayedConfirm(
+                  if (href.indexOf('@') > 0 && href.indexOf('//') === -1 && href.indexOf('mailto:') === -1) {
+                      delayedConfirm(
               editor,
               'The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?',
               function (state) {
-                if (state) {
-                  resultData.href = 'mailto:' + href;
-                }
-                insertLink(resultData);
+                  if (state) {
+                      resultData.href = 'mailto:' + href;
+                  }
+                  insertLink(resultData);
               }
             );
-            return;
-          }
+                      return;
+                  }
 
           // Is not protocol prefixed
-          if ((assumeExternalTargets === true && !/^\w+:/i.test(href)) ||
+                  if ((assumeExternalTargets === true && !/^\w+:/i.test(href)) ||
             (assumeExternalTargets === false && /^\s*www[\.|\d\.]/i.test(href))) {
-            delayedConfirm(
+                      delayedConfirm(
               editor,
               'The URL you entered seems to be an external link. Do you want to add the required http:// prefix?',
               function (state) {
-                if (state) {
-                  resultData.href = 'http://' + href;
-                }
-                insertLink(resultData);
+                  if (state) {
+                      resultData.href = 'http://' + href;
+                  }
+                  insertLink(resultData);
               }
             );
-            return;
-          }
+                      return;
+                  }
 
-          insertLink(resultData);
-        }
-      });
-    };
+                  insertLink(resultData);
+              }
+          });
+      };
 
-    var open = function (editor) {
-      createLinkList(editor, showDialog);
-    };
+      var open = function (editor) {
+          createLinkList(editor, showDialog);
+      };
 
-    return {
-      open: open
-    };
+      return {
+          open: open
+      };
   }
 );
 /**
@@ -927,140 +914,140 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.core.Actions',
-  [
-    'tinymce.core.util.VK',
-    'tinymce.plugins.link.api.Settings',
-    'tinymce.plugins.link.core.OpenUrl',
-    'tinymce.plugins.link.core.Utils',
-    'tinymce.plugins.link.ui.Dialog'
-  ],
+        [
+            'tinymce.core.util.VK',
+            'tinymce.plugins.link.api.Settings',
+            'tinymce.plugins.link.core.OpenUrl',
+            'tinymce.plugins.link.core.Utils',
+            'tinymce.plugins.link.ui.Dialog'
+        ],
   function (VK, Settings, OpenUrl, Utils, Dialog) {
-    var getLink = function (editor, elm) {
-      return editor.dom.getParent(elm, 'a[href]');
-    };
+      var getLink = function (editor, elm) {
+          return editor.dom.getParent(elm, 'a[href]');
+      };
 
-    var getSelectedLink = function (editor) {
-      return getLink(editor, editor.selection.getStart());
-    };
+      var getSelectedLink = function (editor) {
+          return getLink(editor, editor.selection.getStart());
+      };
 
-    var getHref = function (elm) {
+      var getHref = function (elm) {
       // Returns the real href value not the resolved a.href value
-      var href = elm.getAttribute('data-mce-href');
-      return href ? href : elm.getAttribute('href');
-    };
+          var href = elm.getAttribute('data-mce-href');
+          return href || elm.getAttribute('href');
+      };
 
-    var isContextMenuVisible = function (editor) {
-      var contextmenu = editor.plugins.contextmenu;
-      return contextmenu ? contextmenu.isContextMenuVisible() : false;
-    };
+      var isContextMenuVisible = function (editor) {
+          var contextmenu = editor.plugins.contextmenu;
+          return contextmenu ? contextmenu.isContextMenuVisible() : false;
+      };
 
-    var hasOnlyAltModifier = function (e) {
-      return e.altKey === true && e.shiftKey === false && e.ctrlKey === false && e.metaKey === false;
-    };
+      var hasOnlyAltModifier = function (e) {
+          return e.altKey === true && e.shiftKey === false && e.ctrlKey === false && e.metaKey === false;
+      };
 
-    var gotoLink = function (editor, a) {
-      if (a) {
-        var href = getHref(a);
-        if (/^#/.test(href)) {
-          var targetEl = editor.$(href);
-          if (targetEl.length) {
-            editor.selection.scrollIntoView(targetEl[0], true);
+      var gotoLink = function (editor, a) {
+          if (a) {
+              var href = getHref(a);
+              if (/^#/.test(href)) {
+                  var targetEl = editor.$(href);
+                  if (targetEl.length) {
+                      editor.selection.scrollIntoView(targetEl[0], true);
+                  }
+              } else {
+                  OpenUrl.open(a.href);
+              }
           }
-        } else {
-          OpenUrl.open(a.href);
-        }
-      }
-    };
-
-    var openDialog = function (editor) {
-      return function () {
-        Dialog.open(editor);
       };
-    };
 
-    var gotoSelectedLink = function (editor) {
-      return function () {
-        gotoLink(editor, getSelectedLink(editor));
+      var openDialog = function (editor) {
+          return function () {
+              Dialog.open(editor);
+          };
       };
-    };
 
-    var leftClickedOnAHref = function (editor) {
-      return function (elm) {
-        var sel, rng, node;
-        if (Settings.hasContextToolbar(editor.settings) && !isContextMenuVisible(editor) && Utils.isLink(elm)) {
-          sel = editor.selection;
-          rng = sel.getRng();
-          node = rng.startContainer;
+      var gotoSelectedLink = function (editor) {
+          return function () {
+              gotoLink(editor, getSelectedLink(editor));
+          };
+      };
+
+      var leftClickedOnAHref = function (editor) {
+          return function (elm) {
+              var sel, rng, node;
+              if (Settings.hasContextToolbar(editor.settings) && !isContextMenuVisible(editor) && Utils.isLink(elm)) {
+                  sel = editor.selection;
+                  rng = sel.getRng();
+                  node = rng.startContainer;
           // ignore cursor positions at the beginning/end (to make context toolbar less noisy)
-          if (node.nodeType === 3 && sel.isCollapsed() && rng.startOffset > 0 && rng.startOffset < node.data.length) {
-            return true;
-          }
-        }
-        return false;
+                  if (node.nodeType === 3 && sel.isCollapsed() && rng.startOffset > 0 && rng.startOffset < node.data.length) {
+                      return true;
+                  }
+              }
+              return false;
+          };
       };
-    };
 
-    var setupGotoLinks = function (editor) {
-      editor.on('click', function (e) {
-        var link = getLink(editor, e.target);
-        if (link && VK.metaKeyPressed(e)) {
-          e.preventDefault();
-          gotoLink(editor, link);
-        }
-      });
+      var setupGotoLinks = function (editor) {
+          editor.on('click', function (e) {
+              var link = getLink(editor, e.target);
+              if (link && VK.metaKeyPressed(e)) {
+                  e.preventDefault();
+                  gotoLink(editor, link);
+              }
+          });
 
-      editor.on('keydown', function (e) {
-        var link = getSelectedLink(editor);
-        if (link && e.keyCode === 13 && hasOnlyAltModifier(e)) {
-          e.preventDefault();
-          gotoLink(editor, link);
-        }
-      });
-    };
-
-    var toggleActiveState = function (editor) {
-      return function () {
-        var self = this;
-        editor.on('nodechange', function (e) {
-          self.active(!editor.readonly && !!Utils.getAnchorElement(editor, e.element));
-        });
+          editor.on('keydown', function (e) {
+              var link = getSelectedLink(editor);
+              if (link && e.keyCode === 13 && hasOnlyAltModifier(e)) {
+                  e.preventDefault();
+                  gotoLink(editor, link);
+              }
+          });
       };
-    };
 
-    var toggleViewLinkState = function (editor) {
-      return function () {
-        var self = this;
-
-        var toggleVisibility = function (e) {
-          if (Utils.hasLinks(e.parents)) {
-            self.show();
-          } else {
-            self.hide();
-          }
-        };
-
-        if (!Utils.hasLinks(editor.dom.getParents(editor.selection.getStart()))) {
-          self.hide();
-        }
-
-        editor.on('nodechange', toggleVisibility);
-
-        self.on('remove', function () {
-          editor.off('nodechange', toggleVisibility);
-        });
+      var toggleActiveState = function (editor) {
+          return function () {
+              var self = this;
+              editor.on('nodechange', function (e) {
+                  self.active(!editor.readonly && !!Utils.getAnchorElement(editor, e.element));
+              });
+          };
       };
-    };
 
-    return {
-      openDialog: openDialog,
-      gotoSelectedLink: gotoSelectedLink,
-      leftClickedOnAHref: leftClickedOnAHref,
-      setupGotoLinks: setupGotoLinks,
-      toggleActiveState: toggleActiveState,
-      toggleViewLinkState: toggleViewLinkState
-    };
+      var toggleViewLinkState = function (editor) {
+          return function () {
+              var self = this;
+
+              var toggleVisibility = function (e) {
+                  if (Utils.hasLinks(e.parents)) {
+                      self.show();
+                  } else {
+                      self.hide();
+                  }
+              };
+
+              if (!Utils.hasLinks(editor.dom.getParents(editor.selection.getStart()))) {
+                  self.hide();
+              }
+
+              editor.on('nodechange', toggleVisibility);
+
+              self.on('remove', function () {
+                  editor.off('nodechange', toggleVisibility);
+              });
+          };
+      };
+
+      return {
+          openDialog: openDialog,
+          gotoSelectedLink: gotoSelectedLink,
+          leftClickedOnAHref: leftClickedOnAHref,
+          setupGotoLinks: setupGotoLinks,
+          toggleActiveState: toggleActiveState,
+          toggleViewLinkState: toggleViewLinkState
+      };
   }
 );
 /**
@@ -1073,19 +1060,19 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.api.Commands',
-  [
-    'tinymce.plugins.link.core.Actions'
-  ],
+        [
+            'tinymce.plugins.link.core.Actions'
+        ],
   function (Actions) {
-    var register = function (editor) {
-      editor.addCommand('mceLink', Actions.openDialog(editor));
-    };
+      var register = function (editor) {
+          editor.addCommand('mceLink', Actions.openDialog(editor));
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 
@@ -1099,19 +1086,19 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.core.Keyboard',
-  [
-    'tinymce.plugins.link.core.Actions'
-  ],
+        [
+            'tinymce.plugins.link.core.Actions'
+        ],
   function (Actions) {
-    var setup = function (editor) {
-      editor.addShortcut('Meta+K', '', Actions.openDialog(editor));
-    };
+      var setup = function (editor) {
+          editor.addShortcut('Meta+K', '', Actions.openDialog(editor));
+      };
 
-    return {
-      setup: setup
-    };
+      return {
+          setup: setup
+      };
   }
 );
 
@@ -1125,73 +1112,72 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.ui.Controls',
-  [
-    'tinymce.plugins.link.core.Actions',
-    'tinymce.plugins.link.core.Utils'
-  ],
+        [
+            'tinymce.plugins.link.core.Actions',
+            'tinymce.plugins.link.core.Utils'
+        ],
   function (Actions, Utils) {
+      var setupButtons = function (editor) {
+          editor.addButton('link', {
+              icon: 'link',
+              tooltip: 'Insert/edit link',
+              shortcut: 'Meta+K',
+              onclick: Actions.openDialog(editor),
+              onpostrender: Actions.toggleActiveState(editor)
+          });
 
-    var setupButtons = function (editor) {
-      editor.addButton('link', {
-        icon: 'link',
-        tooltip: 'Insert/edit link',
-        shortcut: 'Meta+K',
-        onclick: Actions.openDialog(editor),
-        onpostrender: Actions.toggleActiveState(editor)
-      });
+          editor.addButton('unlink', {
+              icon: 'unlink',
+              tooltip: 'Remove link',
+              onclick: Utils.unlink(editor),
+              onpostrender: Actions.toggleActiveState(editor)
+          });
 
-      editor.addButton('unlink', {
-        icon: 'unlink',
-        tooltip: 'Remove link',
-        onclick: Utils.unlink(editor),
-        onpostrender: Actions.toggleActiveState(editor)
-      });
+          if (editor.addContextToolbar) {
+              editor.addButton('openlink', {
+                  icon: 'newtab',
+                  tooltip: 'Open link',
+                  onclick: Actions.gotoSelectedLink(editor)
+              });
+          }
+      };
 
-      if (editor.addContextToolbar) {
-        editor.addButton('openlink', {
-          icon: 'newtab',
-          tooltip: 'Open link',
-          onclick: Actions.gotoSelectedLink(editor)
-        });
-      }
-    };
+      var setupMenuItems = function (editor) {
+          editor.addMenuItem('openlink', {
+              text: 'Open link',
+              icon: 'newtab',
+              onclick: Actions.gotoSelectedLink(editor),
+              onPostRender: Actions.toggleViewLinkState(editor),
+              prependToContext: true
+          });
 
-    var setupMenuItems = function (editor) {
-      editor.addMenuItem('openlink', {
-        text: 'Open link',
-        icon: 'newtab',
-        onclick: Actions.gotoSelectedLink(editor),
-        onPostRender: Actions.toggleViewLinkState(editor),
-        prependToContext: true
-      });
+          editor.addMenuItem('link', {
+              icon: 'link',
+              text: 'Link',
+              shortcut: 'Meta+K',
+              onclick: Actions.openDialog(editor),
+              stateSelector: 'a[href]',
+              context: 'insert',
+              prependToContext: true
+          });
+      };
 
-      editor.addMenuItem('link', {
-        icon: 'link',
-        text: 'Link',
-        shortcut: 'Meta+K',
-        onclick: Actions.openDialog(editor),
-        stateSelector: 'a[href]',
-        context: 'insert',
-        prependToContext: true
-      });
-    };
-
-    var setupContextToolbars = function (editor) {
-      if (editor.addContextToolbar) {
-        editor.addContextToolbar(
+      var setupContextToolbars = function (editor) {
+          if (editor.addContextToolbar) {
+              editor.addContextToolbar(
           Actions.leftClickedOnAHref(editor),
           'openlink | link unlink'
         );
-      }
-    };
+          }
+      };
 
-    return {
-      setupButtons: setupButtons,
-      setupMenuItems: setupMenuItems,
-      setupContextToolbars: setupContextToolbars
-    };
+      return {
+          setupButtons: setupButtons,
+          setupMenuItems: setupMenuItems,
+          setupContextToolbars: setupContextToolbars
+      };
   }
 );
 /**
@@ -1204,27 +1190,27 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.link.Plugin',
-  [
-    'tinymce.core.PluginManager',
-    'tinymce.plugins.link.api.Commands',
-    'tinymce.plugins.link.core.Actions',
-    'tinymce.plugins.link.core.Keyboard',
-    'tinymce.plugins.link.ui.Controls'
-  ],
+        [
+            'tinymce.core.PluginManager',
+            'tinymce.plugins.link.api.Commands',
+            'tinymce.plugins.link.core.Actions',
+            'tinymce.plugins.link.core.Keyboard',
+            'tinymce.plugins.link.ui.Controls'
+        ],
   function (PluginManager, Commands, Actions, Keyboard, Controls) {
-    PluginManager.add('link', function (editor) {
-      Controls.setupButtons(editor);
-      Controls.setupMenuItems(editor);
-      Controls.setupContextToolbars(editor);
-      Actions.setupGotoLinks(editor);
-      Commands.register(editor);
-      Keyboard.setup(editor);
-    });
+      PluginManager.add('link', function (editor) {
+          Controls.setupButtons(editor);
+          Controls.setupMenuItems(editor);
+          Controls.setupContextToolbars(editor);
+          Actions.setupGotoLinks(editor);
+          Commands.register(editor);
+          Keyboard.setup(editor);
+      });
 
-    return function () { };
+      return function () { };
   }
 );
-dem('tinymce.plugins.link.Plugin')();
+    dem('tinymce.plugins.link.Plugin')();
 })();

@@ -1,122 +1,109 @@
 (function () {
-
-var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
+    var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
 
 // Used when there is no 'main' module.
 // The name is probably (hopefully) unique so minification removes for releases.
-var register_3795 = function (id) {
-  var module = dem(id);
-  var fragments = id.split('.');
-  var target = Function('return this;')();
-  for (var i = 0; i < fragments.length - 1; ++i) {
-    if (target[fragments[i]] === undefined)
-      target[fragments[i]] = {};
-    target = target[fragments[i]];
-  }
-  target[fragments[fragments.length - 1]] = module;
-};
-
-var instantiate = function (id) {
-  var actual = defs[id];
-  var dependencies = actual.deps;
-  var definition = actual.defn;
-  var len = dependencies.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(dependencies[i]);
-  var defResult = definition.apply(null, instances);
-  if (defResult === undefined)
-     throw 'module [' + id + '] returned undefined';
-  actual.instance = defResult;
-};
-
-var def = function (id, dependencies, definition) {
-  if (typeof id !== 'string')
-    throw 'module id must be a string';
-  else if (dependencies === undefined)
-    throw 'no dependencies for ' + id;
-  else if (definition === undefined)
-    throw 'no definition function for ' + id;
-  defs[id] = {
-    deps: dependencies,
-    defn: definition,
-    instance: undefined
-  };
-};
-
-var dem = function (id) {
-  var actual = defs[id];
-  if (actual === undefined)
-    throw 'module [' + id + '] was undefined';
-  else if (actual.instance === undefined)
-    instantiate(id);
-  return actual.instance;
-};
-
-var req = function (ids, callback) {
-  var len = ids.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(ids[i]);
-  callback.apply(null, instances);
-};
-
-var ephox = {};
-
-ephox.bolt = {
-  module: {
-    api: {
-      define: def,
-      require: req,
-      demand: dem
-    }
-  }
-};
-
-var define = def;
-var require = req;
-var demand = dem;
-// this helps with minification when using a lot of global references
-var defineGlobal = function (id, ref) {
-  define(id, [], function () { return ref; });
-};
-/*jsc
-["tinymce.plugins.visualchars.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.visualchars.api.Api","tinymce.plugins.visualchars.api.Commands","tinymce.plugins.visualchars.core.Keyboard","tinymce.plugins.visualchars.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.visualchars.core.Actions","tinymce.core.util.Delay","tinymce.plugins.visualchars.core.VisualChars","tinymce.plugins.visualchars.api.Events","tinymce.plugins.visualchars.core.Data","tinymce.plugins.visualchars.core.Nodes","ephox.katamari.api.Arr","ephox.sugar.api.node.Element","ephox.sugar.api.node.Node","ephox.katamari.api.Option","global!Array","global!Error","global!String","ephox.katamari.api.Fun","global!console","global!document","ephox.sugar.api.node.NodeTypes","tinymce.plugins.visualchars.core.Html","global!Object"]
-jsc*/
-define(
-  'ephox.katamari.api.Cell',
-
-  [
-  ],
-
-  function () {
-    var Cell = function (initial) {
-      var value = initial;
-
-      var get = function () {
-        return value;
-      };
-
-      var set = function (v) {
-        value = v;
-      };
-
-      var clone = function () {
-        return Cell(get());
-      };
-
-      return {
-        get: get,
-        set: set,
-        clone: clone
-      };
+    var register_3795 = function (id) {
+        var module = dem(id);
+        var fragments = id.split('.');
+        var target = Function('return this;')();
+        for (var i = 0; i < fragments.length - 1; ++i) {
+            if (target[fragments[i]] === undefined) { target[fragments[i]] = {}; }
+            target = target[fragments[i]];
+        }
+        target[fragments[fragments.length - 1]] = module;
     };
 
-    return Cell;
+    var instantiate = function (id) {
+        var actual = defs[id];
+        var dependencies = actual.deps;
+        var definition = actual.defn;
+        var len = dependencies.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(dependencies[i]); }
+        var defResult = definition.apply(null, instances);
+        if (defResult === undefined) { throw 'module [' + id + '] returned undefined'; }
+        actual.instance = defResult;
+    };
+
+    var def = function (id, dependencies, definition) {
+        if (typeof id !== 'string') { throw 'module id must be a string'; } else if (dependencies === undefined) { throw 'no dependencies for ' + id; } else if (definition === undefined) { throw 'no definition function for ' + id; }
+        defs[id] = {
+            deps: dependencies,
+            defn: definition,
+            instance: undefined
+        };
+    };
+
+    var dem = function (id) {
+        var actual = defs[id];
+        if (actual === undefined) { throw 'module [' + id + '] was undefined'; } else if (actual.instance === undefined) { instantiate(id); }
+        return actual.instance;
+    };
+
+    var req = function (ids, callback) {
+        var len = ids.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(ids[i]); }
+        callback.apply(null, instances);
+    };
+
+    var ephox = {};
+
+    ephox.bolt = {
+        module: {
+            api: {
+                define: def,
+                require: req,
+                demand: dem
+            }
+        }
+    };
+
+    var define = def;
+    var require = req;
+    var demand = dem;
+// this helps with minification when using a lot of global references
+    var defineGlobal = function (id, ref) {
+        define(id, [], function () { return ref; });
+    };
+/* jsc
+["tinymce.plugins.visualchars.Plugin","ephox.katamari.api.Cell","tinymce.core.PluginManager","tinymce.plugins.visualchars.api.Api","tinymce.plugins.visualchars.api.Commands","tinymce.plugins.visualchars.core.Keyboard","tinymce.plugins.visualchars.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.visualchars.core.Actions","tinymce.core.util.Delay","tinymce.plugins.visualchars.core.VisualChars","tinymce.plugins.visualchars.api.Events","tinymce.plugins.visualchars.core.Data","tinymce.plugins.visualchars.core.Nodes","ephox.katamari.api.Arr","ephox.sugar.api.node.Element","ephox.sugar.api.node.Node","ephox.katamari.api.Option","global!Array","global!Error","global!String","ephox.katamari.api.Fun","global!console","global!document","ephox.sugar.api.node.NodeTypes","tinymce.plugins.visualchars.core.Html","global!Object"]
+jsc */
+    define(
+  'ephox.katamari.api.Cell',
+
+        [
+        ],
+
+  function () {
+      var Cell = function (initial) {
+          var value = initial;
+
+          var get = function () {
+              return value;
+          };
+
+          var set = function (v) {
+              value = v;
+          };
+
+          var clone = function () {
+              return Cell(get());
+          };
+
+          return {
+              get: get,
+              set: set,
+              clone: clone
+          };
+      };
+
+      return Cell;
   }
 );
 
-defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
+    defineGlobal('global!tinymce.util.Tools.resolve', tinymce.util.Tools.resolve);
 /**
  * ResolveGlobal.js
  *
@@ -127,13 +114,13 @@ defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.PluginManager',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.PluginManager');
+      return resolve('tinymce.PluginManager');
   }
 );
 
@@ -147,24 +134,24 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.api.Api',
-  [
-  ],
+        [
+        ],
   function () {
-    var get = function (toggleState) {
-      var isEnabled = function () {
-        return toggleState.get();
+      var get = function (toggleState) {
+          var isEnabled = function () {
+              return toggleState.get();
+          };
+
+          return {
+              isEnabled: isEnabled
+          };
       };
 
       return {
-        isEnabled: isEnabled
+          get: get
       };
-    };
-
-    return {
-      get: get
-    };
   }
 );
 /**
@@ -177,18 +164,18 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.api.Events',
-  [
-  ],
+        [
+        ],
   function () {
-    var fireVisualChars = function (editor, state) {
-      return editor.fire('VisualChars', { state: state });
-    };
+      var fireVisualChars = function (editor, state) {
+          return editor.fire('VisualChars', { state: state });
+      };
 
-    return {
-      fireVisualChars: fireVisualChars
-    };
+      return {
+          fireVisualChars: fireVisualChars
+      };
   }
 );
 /**
@@ -201,155 +188,152 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.core.Data',
-  [
-  ],
+        [
+        ],
   function () {
-    var charMap = {
-      '\u00a0': 'nbsp',
-      '\u00ad': 'shy'
-    };
+      var charMap = {
+          '\u00a0': 'nbsp',
+          '\u00ad': 'shy'
+      };
 
-    var charMapToRegExp = function (charMap, global) {
-      var key, regExp = '';
+      var charMapToRegExp = function (charMap, global) {
+          var key, regExp = '';
 
-      for (key in charMap) {
-        regExp += key;
-      }
+          for (key in charMap) {
+              regExp += key;
+          }
 
-      return new RegExp('[' + regExp + ']', global ? 'g' : '');
-    };
+          return new RegExp('[' + regExp + ']', global ? 'g' : '');
+      };
 
-    var charMapToSelector = function (charMap) {
-      var key, selector = '';
+      var charMapToSelector = function (charMap) {
+          var key, selector = '';
 
-      for (key in charMap) {
-        if (selector) {
-          selector += ',';
-        }
-        selector += 'span.mce-' + charMap[key];
-      }
+          for (key in charMap) {
+              if (selector) {
+                  selector += ',';
+              }
+              selector += 'span.mce-' + charMap[key];
+          }
 
-      return selector;
-    };
+          return selector;
+      };
 
-    return {
-      charMap: charMap,
-      regExp: charMapToRegExp(charMap),
-      regExpGlobal: charMapToRegExp(charMap, true),
-      selector: charMapToSelector(charMap),
-      charMapToRegExp: charMapToRegExp,
-      charMapToSelector: charMapToSelector
-    };
+      return {
+          charMap: charMap,
+          regExp: charMapToRegExp(charMap),
+          regExpGlobal: charMapToRegExp(charMap, true),
+          selector: charMapToSelector(charMap),
+          charMapToRegExp: charMapToRegExp,
+          charMapToSelector: charMapToSelector
+      };
   }
 );
-defineGlobal("global!Array", Array);
-defineGlobal("global!Error", Error);
-define(
+    defineGlobal('global!Array', Array);
+    defineGlobal('global!Error', Error);
+    define(
   'ephox.katamari.api.Fun',
 
-  [
-    'global!Array',
-    'global!Error'
-  ],
+        [
+            'global!Array',
+            'global!Error'
+        ],
 
   function (Array, Error) {
+      var noop = function () { };
 
-    var noop = function () { };
-
-    var compose = function (fa, fb) {
-      return function () {
-        return fa(fb.apply(null, arguments));
+      var compose = function (fa, fb) {
+          return function () {
+              return fa(fb.apply(null, arguments));
+          };
       };
-    };
 
-    var constant = function (value) {
-      return function () {
-        return value;
+      var constant = function (value) {
+          return function () {
+              return value;
+          };
       };
-    };
 
-    var identity = function (x) {
-      return x;
-    };
+      var identity = function (x) {
+          return x;
+      };
 
-    var tripleEquals = function(a, b) {
-      return a === b;
-    };
+      var tripleEquals = function (a, b) {
+          return a === b;
+      };
 
     // Don't use array slice(arguments), makes the whole function unoptimisable on Chrome
-    var curry = function (f) {
+      var curry = function (f) {
       // equivalent to arguments.slice(1)
       // starting at 1 because 0 is the f, makes things tricky.
       // Pay attention to what variable is where, and the -1 magic.
       // thankfully, we have tests for this.
-      var args = new Array(arguments.length - 1);
-      for (var i = 1; i < arguments.length; i++) args[i-1] = arguments[i];
+          var args = new Array(arguments.length - 1);
+          for (var i = 1; i < arguments.length; i++) args[i - 1] = arguments[i];
 
-      return function () {
-        var newArgs = new Array(arguments.length);
-        for (var j = 0; j < newArgs.length; j++) newArgs[j] = arguments[j];
+          return function () {
+              var newArgs = new Array(arguments.length);
+              for (var j = 0; j < newArgs.length; j++) newArgs[j] = arguments[j];
 
-        var all = args.concat(newArgs);
-        return f.apply(null, all);
+              var all = args.concat(newArgs);
+              return f.apply(null, all);
+          };
       };
-    };
 
-    var not = function (f) {
-      return function () {
-        return !f.apply(null, arguments);
+      var not = function (f) {
+          return function () {
+              return !f.apply(null, arguments);
+          };
       };
-    };
 
-    var die = function (msg) {
-      return function () {
-        throw new Error(msg);
+      var die = function (msg) {
+          return function () {
+              throw new Error(msg);
+          };
       };
-    };
 
-    var apply = function (f) {
-      return f();
-    };
+      var apply = function (f) {
+          return f();
+      };
 
-    var call = function(f) {
-      f();
-    };
+      var call = function (f) {
+          f();
+      };
 
-    var never = constant(false);
-    var always = constant(true);
-    
+      var never = constant(false);
+      var always = constant(true);
 
-    return {
-      noop: noop,
-      compose: compose,
-      constant: constant,
-      identity: identity,
-      tripleEquals: tripleEquals,
-      curry: curry,
-      not: not,
-      die: die,
-      apply: apply,
-      call: call,
-      never: never,
-      always: always
-    };
+      return {
+          noop: noop,
+          compose: compose,
+          constant: constant,
+          identity: identity,
+          tripleEquals: tripleEquals,
+          curry: curry,
+          not: not,
+          die: die,
+          apply: apply,
+          call: call,
+          never: never,
+          always: always
+      };
   }
 );
 
-defineGlobal("global!Object", Object);
-define(
+    defineGlobal('global!Object', Object);
+    define(
   'ephox.katamari.api.Option',
 
-  [
-    'ephox.katamari.api.Fun',
-    'global!Object'
-  ],
+        [
+            'ephox.katamari.api.Fun',
+            'global!Object'
+        ],
 
   function (Fun, Object) {
-
-    var never = Fun.never;
-    var always = Fun.always;
+      var never = Fun.never;
+      var always = Fun.always;
 
     /**
       Option objects support the following methods:
@@ -407,172 +391,170 @@ define(
 
     */
 
-    var none = function () { return NONE; };
+      var none = function () { return NONE; };
 
-    var NONE = (function () {
-      var eq = function (o) {
-        return o.isNone();
-      };
+      var NONE = (function () {
+          var eq = function (o) {
+              return o.isNone();
+          };
 
       // inlined from peanut, maybe a micro-optimisation?
-      var call = function (thunk) { return thunk(); };
-      var id = function (n) { return n; };
-      var noop = function () { };
+          var call = function (thunk) { return thunk(); };
+          var id = function (n) { return n; };
+          var noop = function () { };
 
-      var me = {
-        fold: function (n, s) { return n(); },
-        is: never,
-        isSome: never,
-        isNone: always,
-        getOr: id,
-        getOrThunk: call,
-        getOrDie: function (msg) {
-          throw new Error(msg || 'error: getOrDie called on none.');
-        },
-        or: id,
-        orThunk: call,
-        map: none,
-        ap: none,
-        each: noop,
-        bind: none,
-        flatten: none,
-        exists: never,
-        forall: always,
-        filter: none,
-        equals: eq,
-        equals_: eq,
-        toArray: function () { return []; },
-        toString: Fun.constant("none()")
-      };
-      if (Object.freeze) Object.freeze(me);
-      return me;
-    })();
-
+          var me = {
+              fold: function (n, s) { return n(); },
+              is: never,
+              isSome: never,
+              isNone: always,
+              getOr: id,
+              getOrThunk: call,
+              getOrDie: function (msg) {
+                  throw new Error(msg || 'error: getOrDie called on none.');
+              },
+              or: id,
+              orThunk: call,
+              map: none,
+              ap: none,
+              each: noop,
+              bind: none,
+              flatten: none,
+              exists: never,
+              forall: always,
+              filter: none,
+              equals: eq,
+              equals_: eq,
+              toArray: function () { return []; },
+              toString: Fun.constant('none()')
+          };
+          if (Object.freeze) Object.freeze(me);
+          return me;
+      })();
 
     /** some :: a -> Option a */
-    var some = function (a) {
-
+      var some = function (a) {
       // inlined from peanut, maybe a micro-optimisation?
-      var constant_a = function () { return a; };
+          var constant_a = function () { return a; };
 
-      var self = function () {
+          var self = function () {
         // can't Fun.constant this one
-        return me;
-      };
+              return me;
+          };
 
-      var map = function (f) {
-        return some(f(a));
-      };
+          var map = function (f) {
+              return some(f(a));
+          };
 
-      var bind = function (f) {
-        return f(a);
-      };
+          var bind = function (f) {
+              return f(a);
+          };
 
-      var me = {
-        fold: function (n, s) { return s(a); },
-        is: function (v) { return a === v; },
-        isSome: always,
-        isNone: never,
-        getOr: constant_a,
-        getOrThunk: constant_a,
-        getOrDie: constant_a,
-        or: self,
-        orThunk: self,
-        map: map,
-        ap: function (optfab) {
-          return optfab.fold(none, function(fab) {
-            return some(fab(a));
-          });
-        },
-        each: function (f) {
-          f(a);
-        },
-        bind: bind,
-        flatten: constant_a,
-        exists: bind,
-        forall: bind,
-        filter: function (f) {
-          return f(a) ? me : NONE;
-        },
-        equals: function (o) {
-          return o.is(a);
-        },
-        equals_: function (o, elementEq) {
-          return o.fold(
+          var me = {
+              fold: function (n, s) { return s(a); },
+              is: function (v) { return a === v; },
+              isSome: always,
+              isNone: never,
+              getOr: constant_a,
+              getOrThunk: constant_a,
+              getOrDie: constant_a,
+              or: self,
+              orThunk: self,
+              map: map,
+              ap: function (optfab) {
+                  return optfab.fold(none, function (fab) {
+                      return some(fab(a));
+                  });
+              },
+              each: function (f) {
+                  f(a);
+              },
+              bind: bind,
+              flatten: constant_a,
+              exists: bind,
+              forall: bind,
+              filter: function (f) {
+                  return f(a) ? me : NONE;
+              },
+              equals: function (o) {
+                  return o.is(a);
+              },
+              equals_: function (o, elementEq) {
+                  return o.fold(
             never,
             function (b) { return elementEq(a, b); }
           );
-        },
-        toArray: function () {
-          return [a];
-        },
-        toString: function () {
-          return 'some(' + a + ')';
-        }
+              },
+              toArray: function () {
+                  return [a];
+              },
+              toString: function () {
+                  return 'some(' + a + ')';
+              }
+          };
+          return me;
       };
-      return me;
-    };
 
     /** from :: undefined|null|a -> Option a */
-    var from = function (value) {
-      return value === null || value === undefined ? NONE : some(value);
-    };
+      var from = function (value) {
+          return value === null || value === undefined ? NONE : some(value);
+      };
 
-    return {
-      some: some,
-      none: none,
-      from: from
-    };
+      return {
+          some: some,
+          none: none,
+          from: from
+      };
   }
 );
 
-defineGlobal("global!String", String);
-define(
+    defineGlobal('global!String', String);
+    define(
   'ephox.katamari.api.Arr',
 
-  [
-    'ephox.katamari.api.Option',
-    'global!Array',
-    'global!Error',
-    'global!String'
-  ],
+        [
+            'ephox.katamari.api.Option',
+            'global!Array',
+            'global!Error',
+            'global!String'
+        ],
 
   function (Option, Array, Error, String) {
     // Use the native Array.indexOf if it is available (IE9+) otherwise fall back to manual iteration
     // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
-    var rawIndexOf = (function () {
-      var pIndexOf = Array.prototype.indexOf;
+      var rawIndexOf = (function () {
+          var pIndexOf = Array.prototype.indexOf;
 
-      var fastIndex = function (xs, x) { return  pIndexOf.call(xs, x); };
+          var fastIndex = function (xs, x) { return pIndexOf.call(xs, x); };
 
-      var slowIndex = function(xs, x) { return slowIndexOf(xs, x); };
+          var slowIndex = function (xs, x) { return slowIndexOf(xs, x); };
 
-      return pIndexOf === undefined ? slowIndex : fastIndex;
-    })();
+          return pIndexOf === undefined ? slowIndex : fastIndex;
+      })();
 
-    var indexOf = function (xs, x) {
+      var indexOf = function (xs, x) {
       // The rawIndexOf method does not wrap up in an option. This is for performance reasons.
-      var r = rawIndexOf(xs, x);
-      return r === -1 ? Option.none() : Option.some(r);
-    };
+          var r = rawIndexOf(xs, x);
+          return r === -1 ? Option.none() : Option.some(r);
+      };
 
-    var contains = function (xs, x) {
-      return rawIndexOf(xs, x) > -1;
-    };
+      var contains = function (xs, x) {
+          return rawIndexOf(xs, x) > -1;
+      };
 
     // Using findIndex is likely less optimal in Chrome (dynamic return type instead of bool)
     // but if we need that micro-optimisation we can inline it later.
-    var exists = function (xs, pred) {
-      return findIndex(xs, pred).isSome();
-    };
+      var exists = function (xs, pred) {
+          return findIndex(xs, pred).isSome();
+      };
 
-    var range = function (num, f) {
-      var r = [];
-      for (var i = 0; i < num; i++) {
-        r.push(f(i));
-      }
-      return r;
-    };
+      var range = function (num, f) {
+          var r = [];
+          for (var i = 0; i < num; i++) {
+              r.push(f(i));
+          }
+          return r;
+      };
 
     // It's a total micro optimisation, but these do make some difference.
     // Particularly for browsers other than Chrome.
@@ -581,64 +563,64 @@ define(
     // - not using push
     // http://jsperf.com/array-direct-assignment-vs-push/2
 
-    var chunk = function (array, size) {
-      var r = [];
-      for (var i = 0; i < array.length; i += size) {
-        var s = array.slice(i, i + size);
-        r.push(s);
-      }
-      return r;
-    };
+      var chunk = function (array, size) {
+          var r = [];
+          for (var i = 0; i < array.length; i += size) {
+              var s = array.slice(i, i + size);
+              r.push(s);
+          }
+          return r;
+      };
 
-    var map = function(xs, f) {
+      var map = function (xs, f) {
       // pre-allocating array size when it's guaranteed to be known
       // http://jsperf.com/push-allocated-vs-dynamic/22
-      var len = xs.length;
-      var r = new Array(len);
-      for (var i = 0; i < len; i++) {
-        var x = xs[i];
-        r[i] = f(x, i, xs);
-      }
-      return r;
-    };
+          var len = xs.length;
+          var r = new Array(len);
+          for (var i = 0; i < len; i++) {
+              var x = xs[i];
+              r[i] = f(x, i, xs);
+          }
+          return r;
+      };
 
     // Unwound implementing other functions in terms of each.
     // The code size is roughly the same, and it should allow for better optimisation.
-    var each = function(xs, f) {
-      for (var i = 0, len = xs.length; i < len; i++) {
-        var x = xs[i];
-        f(x, i, xs);
-      }
-    };
+      var each = function (xs, f) {
+          for (var i = 0, len = xs.length; i < len; i++) {
+              var x = xs[i];
+              f(x, i, xs);
+          }
+      };
 
-    var eachr = function (xs, f) {
-      for (var i = xs.length - 1; i >= 0; i--) {
-        var x = xs[i];
-        f(x, i, xs);
-      }
-    };
+      var eachr = function (xs, f) {
+          for (var i = xs.length - 1; i >= 0; i--) {
+              var x = xs[i];
+              f(x, i, xs);
+          }
+      };
 
-    var partition = function(xs, pred) {
-      var pass = [];
-      var fail = [];
-      for (var i = 0, len = xs.length; i < len; i++) {
-        var x = xs[i];
-        var arr = pred(x, i, xs) ? pass : fail;
-        arr.push(x);
-      }
-      return { pass: pass, fail: fail };
-    };
+      var partition = function (xs, pred) {
+          var pass = [];
+          var fail = [];
+          for (var i = 0, len = xs.length; i < len; i++) {
+              var x = xs[i];
+              var arr = pred(x, i, xs) ? pass : fail;
+              arr.push(x);
+          }
+          return { pass: pass, fail: fail };
+      };
 
-    var filter = function(xs, pred) {
-      var r = [];
-      for (var i = 0, len = xs.length; i < len; i++) {
-        var x = xs[i];
-        if (pred(x, i, xs)) {
-          r.push(x);
-        }
-      }
-      return r;
-    };
+      var filter = function (xs, pred) {
+          var r = [];
+          for (var i = 0, len = xs.length; i < len; i++) {
+              var x = xs[i];
+              if (pred(x, i, xs)) {
+                  r.push(x);
+              }
+          }
+          return r;
+      };
 
     /*
      * Groups an array into contiguous arrays of like elements. Whether an element is like or not depends on f.
@@ -651,302 +633,302 @@ define(
      *  For a good explanation, see the group function (which is a special case of groupBy)
      *  http://hackage.haskell.org/package/base-4.7.0.0/docs/Data-List.html#v:group
      */
-    var groupBy = function (xs, f) {
-      if (xs.length === 0) {
-        return [];
-      } else {
-        var wasType = f(xs[0]); // initial case for matching
-        var r = [];
-        var group = [];
+      var groupBy = function (xs, f) {
+          if (xs.length === 0) {
+              return [];
+          } else {
+              var wasType = f(xs[0]); // initial case for matching
+              var r = [];
+              var group = [];
 
-        for (var i = 0, len = xs.length; i < len; i++) {
-          var x = xs[i];
-          var type = f(x);
-          if (type !== wasType) {
-            r.push(group);
-            group = [];
+              for (var i = 0, len = xs.length; i < len; i++) {
+                  var x = xs[i];
+                  var type = f(x);
+                  if (type !== wasType) {
+                      r.push(group);
+                      group = [];
+                  }
+                  wasType = type;
+                  group.push(x);
+              }
+              if (group.length !== 0) {
+                  r.push(group);
+              }
+              return r;
           }
-          wasType = type;
-          group.push(x);
-        }
-        if (group.length !== 0) {
-          r.push(group);
-        }
-        return r;
-      }
-    };
+      };
 
-    var foldr = function (xs, f, acc) {
-      eachr(xs, function (x) {
-        acc = f(acc, x);
-      });
-      return acc;
-    };
+      var foldr = function (xs, f, acc) {
+          eachr(xs, function (x) {
+              acc = f(acc, x);
+          });
+          return acc;
+      };
 
-    var foldl = function (xs, f, acc) {
-      each(xs, function (x) {
-        acc = f(acc, x);
-      });
-      return acc;
-    };
+      var foldl = function (xs, f, acc) {
+          each(xs, function (x) {
+              acc = f(acc, x);
+          });
+          return acc;
+      };
 
-    var find = function (xs, pred) {
-      for (var i = 0, len = xs.length; i < len; i++) {
-        var x = xs[i];
-        if (pred(x, i, xs)) {
-          return Option.some(x);
-        }
-      }
-      return Option.none();
-    };
+      var find = function (xs, pred) {
+          for (var i = 0, len = xs.length; i < len; i++) {
+              var x = xs[i];
+              if (pred(x, i, xs)) {
+                  return Option.some(x);
+              }
+          }
+          return Option.none();
+      };
 
-    var findIndex = function (xs, pred) {
-      for (var i = 0, len = xs.length; i < len; i++) {
-        var x = xs[i];
-        if (pred(x, i, xs)) {
-          return Option.some(i);
-        }
-      }
+      var findIndex = function (xs, pred) {
+          for (var i = 0, len = xs.length; i < len; i++) {
+              var x = xs[i];
+              if (pred(x, i, xs)) {
+                  return Option.some(i);
+              }
+          }
 
-      return Option.none();
-    };
+          return Option.none();
+      };
 
-    var slowIndexOf = function (xs, x) {
-      for (var i = 0, len = xs.length; i < len; ++i) {
-        if (xs[i] === x) {
-          return i;
-        }
-      }
+      var slowIndexOf = function (xs, x) {
+          for (var i = 0, len = xs.length; i < len; ++i) {
+              if (xs[i] === x) {
+                  return i;
+              }
+          }
 
-      return -1;
-    };
+          return -1;
+      };
 
-    var push = Array.prototype.push;
-    var flatten = function (xs) {
+      var push = Array.prototype.push;
+      var flatten = function (xs) {
       // Note, this is possible because push supports multiple arguments:
       // http://jsperf.com/concat-push/6
       // Note that in the past, concat() would silently work (very slowly) for array-like objects.
       // With this change it will throw an error.
-      var r = [];
-      for (var i = 0, len = xs.length; i < len; ++i) {
+          var r = [];
+          for (var i = 0, len = xs.length; i < len; ++i) {
         // Ensure that each value is an array itself
-        if (! Array.prototype.isPrototypeOf(xs[i])) throw new Error('Arr.flatten item ' + i + ' was not an array, input: ' + xs);
-        push.apply(r, xs[i]);
-      }
-      return r;
-    };
+              if (!Array.prototype.isPrototypeOf(xs[i])) throw new Error('Arr.flatten item ' + i + ' was not an array, input: ' + xs);
+              push.apply(r, xs[i]);
+          }
+          return r;
+      };
 
-    var bind = function (xs, f) {
-      var output = map(xs, f);
-      return flatten(output);
-    };
+      var bind = function (xs, f) {
+          var output = map(xs, f);
+          return flatten(output);
+      };
 
-    var forall = function (xs, pred) {
-      for (var i = 0, len = xs.length; i < len; ++i) {
-        var x = xs[i];
-        if (pred(x, i, xs) !== true) {
-          return false;
-        }
-      }
-      return true;
-    };
+      var forall = function (xs, pred) {
+          for (var i = 0, len = xs.length; i < len; ++i) {
+              var x = xs[i];
+              if (pred(x, i, xs) !== true) {
+                  return false;
+              }
+          }
+          return true;
+      };
 
-    var equal = function (a1, a2) {
-      return a1.length === a2.length && forall(a1, function (x, i) {
-        return x === a2[i];
-      });
-    };
+      var equal = function (a1, a2) {
+          return a1.length === a2.length && forall(a1, function (x, i) {
+              return x === a2[i];
+          });
+      };
 
-    var slice = Array.prototype.slice;
-    var reverse = function (xs) {
-      var r = slice.call(xs, 0);
-      r.reverse();
-      return r;
-    };
+      var slice = Array.prototype.slice;
+      var reverse = function (xs) {
+          var r = slice.call(xs, 0);
+          r.reverse();
+          return r;
+      };
 
-    var difference = function (a1, a2) {
-      return filter(a1, function (x) {
-        return !contains(a2, x);
-      });
-    };
+      var difference = function (a1, a2) {
+          return filter(a1, function (x) {
+              return !contains(a2, x);
+          });
+      };
 
-    var mapToObject = function(xs, f) {
-      var r = {};
-      for (var i = 0, len = xs.length; i < len; i++) {
-        var x = xs[i];
-        r[String(x)] = f(x, i);
-      }
-      return r;
-    };
+      var mapToObject = function (xs, f) {
+          var r = {};
+          for (var i = 0, len = xs.length; i < len; i++) {
+              var x = xs[i];
+              r[String(x)] = f(x, i);
+          }
+          return r;
+      };
 
-    var pure = function(x) {
-      return [x];
-    };
+      var pure = function (x) {
+          return [x];
+      };
 
-    var sort = function (xs, comparator) {
-      var copy = slice.call(xs, 0);
-      copy.sort(comparator);
-      return copy;
-    };
+      var sort = function (xs, comparator) {
+          var copy = slice.call(xs, 0);
+          copy.sort(comparator);
+          return copy;
+      };
 
-    var head = function (xs) {
-      return xs.length === 0 ? Option.none() : Option.some(xs[0]);
-    };
+      var head = function (xs) {
+          return xs.length === 0 ? Option.none() : Option.some(xs[0]);
+      };
 
-    var last = function (xs) {
-      return xs.length === 0 ? Option.none() : Option.some(xs[xs.length - 1]);
-    };
+      var last = function (xs) {
+          return xs.length === 0 ? Option.none() : Option.some(xs[xs.length - 1]);
+      };
 
-    return {
-      map: map,
-      each: each,
-      eachr: eachr,
-      partition: partition,
-      filter: filter,
-      groupBy: groupBy,
-      indexOf: indexOf,
-      foldr: foldr,
-      foldl: foldl,
-      find: find,
-      findIndex: findIndex,
-      flatten: flatten,
-      bind: bind,
-      forall: forall,
-      exists: exists,
-      contains: contains,
-      equal: equal,
-      reverse: reverse,
-      chunk: chunk,
-      difference: difference,
-      mapToObject: mapToObject,
-      pure: pure,
-      sort: sort,
-      range: range,
-      head: head,
-      last: last
-    };
+      return {
+          map: map,
+          each: each,
+          eachr: eachr,
+          partition: partition,
+          filter: filter,
+          groupBy: groupBy,
+          indexOf: indexOf,
+          foldr: foldr,
+          foldl: foldl,
+          find: find,
+          findIndex: findIndex,
+          flatten: flatten,
+          bind: bind,
+          forall: forall,
+          exists: exists,
+          contains: contains,
+          equal: equal,
+          reverse: reverse,
+          chunk: chunk,
+          difference: difference,
+          mapToObject: mapToObject,
+          pure: pure,
+          sort: sort,
+          range: range,
+          head: head,
+          last: last
+      };
   }
 );
-define("global!console", [], function () { if (typeof console === "undefined") console = { log: function () {} }; return console; });
-defineGlobal("global!document", document);
-define(
+    define('global!console', [], function () { if (typeof console === 'undefined') console = { log: function () {} }; return console; });
+    defineGlobal('global!document', document);
+    define(
   'ephox.sugar.api.node.Element',
 
-  [
-    'ephox.katamari.api.Fun',
-    'global!Error',
-    'global!console',
-    'global!document'
-  ],
+        [
+            'ephox.katamari.api.Fun',
+            'global!Error',
+            'global!console',
+            'global!document'
+        ],
 
   function (Fun, Error, console, document) {
-    var fromHtml = function (html, scope) {
-      var doc = scope || document;
-      var div = doc.createElement('div');
-      div.innerHTML = html;
-      if (!div.hasChildNodes() || div.childNodes.length > 1) {
-        console.error('HTML does not have a single root node', html);
-        throw 'HTML must have a single root node';
-      }
-      return fromDom(div.childNodes[0]);
-    };
-
-    var fromTag = function (tag, scope) {
-      var doc = scope || document;
-      var node = doc.createElement(tag);
-      return fromDom(node);
-    };
-
-    var fromText = function (text, scope) {
-      var doc = scope || document;
-      var node = doc.createTextNode(text);
-      return fromDom(node);
-    };
-
-    var fromDom = function (node) {
-      if (node === null || node === undefined) throw new Error('Node cannot be null or undefined');
-      return {
-        dom: Fun.constant(node)
+      var fromHtml = function (html, scope) {
+          var doc = scope || document;
+          var div = doc.createElement('div');
+          div.innerHTML = html;
+          if (!div.hasChildNodes() || div.childNodes.length > 1) {
+              console.error('HTML does not have a single root node', html);
+              throw 'HTML must have a single root node';
+          }
+          return fromDom(div.childNodes[0]);
       };
-    };
 
-    return {
-      fromHtml: fromHtml,
-      fromTag: fromTag,
-      fromText: fromText,
-      fromDom: fromDom
-    };
+      var fromTag = function (tag, scope) {
+          var doc = scope || document;
+          var node = doc.createElement(tag);
+          return fromDom(node);
+      };
+
+      var fromText = function (text, scope) {
+          var doc = scope || document;
+          var node = doc.createTextNode(text);
+          return fromDom(node);
+      };
+
+      var fromDom = function (node) {
+          if (node === null || node === undefined) throw new Error('Node cannot be null or undefined');
+          return {
+              dom: Fun.constant(node)
+          };
+      };
+
+      return {
+          fromHtml: fromHtml,
+          fromTag: fromTag,
+          fromText: fromText,
+          fromDom: fromDom
+      };
   }
 );
 
-define(
+    define(
   'ephox.sugar.api.node.NodeTypes',
 
-  [
+        [
 
-  ],
+        ],
 
   function () {
-    return {
-      ATTRIBUTE:              2,
-      CDATA_SECTION:          4,
-      COMMENT:                8,
-      DOCUMENT:               9,
-      DOCUMENT_TYPE:          10,
-      DOCUMENT_FRAGMENT:      11,
-      ELEMENT:                1,
-      TEXT:                   3,
-      PROCESSING_INSTRUCTION: 7,
-      ENTITY_REFERENCE:       5,
-      ENTITY:                 6,
-      NOTATION:               12
-    };
+      return {
+          ATTRIBUTE: 2,
+          CDATA_SECTION: 4,
+          COMMENT: 8,
+          DOCUMENT: 9,
+          DOCUMENT_TYPE: 10,
+          DOCUMENT_FRAGMENT: 11,
+          ELEMENT: 1,
+          TEXT: 3,
+          PROCESSING_INSTRUCTION: 7,
+          ENTITY_REFERENCE: 5,
+          ENTITY: 6,
+          NOTATION: 12
+      };
   }
 );
-define(
+    define(
   'ephox.sugar.api.node.Node',
 
-  [
-    'ephox.sugar.api.node.NodeTypes'
-  ],
+        [
+            'ephox.sugar.api.node.NodeTypes'
+        ],
 
   function (NodeTypes) {
-    var name = function (element) {
-      var r = element.dom().nodeName;
-      return r.toLowerCase();
-    };
-
-    var type = function (element) {
-      return element.dom().nodeType;
-    };
-
-    var value = function (element) {
-      return element.dom().nodeValue;
-    };
-
-    var isType = function (t) {
-      return function (element) {
-        return type(element) === t;
+      var name = function (element) {
+          var r = element.dom().nodeName;
+          return r.toLowerCase();
       };
-    };
 
-    var isComment = function (element) {
-      return type(element) === NodeTypes.COMMENT || name(element) === '#comment';
-    };
+      var type = function (element) {
+          return element.dom().nodeType;
+      };
 
-    var isElement = isType(NodeTypes.ELEMENT);
-    var isText = isType(NodeTypes.TEXT);
-    var isDocument = isType(NodeTypes.DOCUMENT);
+      var value = function (element) {
+          return element.dom().nodeValue;
+      };
 
-    return {
-      name: name,
-      type: type,
-      value: value,
-      isElement: isElement,
-      isText: isText,
-      isDocument: isDocument,
-      isComment: isComment
-    };
+      var isType = function (t) {
+          return function (element) {
+              return type(element) === t;
+          };
+      };
+
+      var isComment = function (element) {
+          return type(element) === NodeTypes.COMMENT || name(element) === '#comment';
+      };
+
+      var isElement = isType(NodeTypes.ELEMENT);
+      var isText = isType(NodeTypes.TEXT);
+      var isDocument = isType(NodeTypes.DOCUMENT);
+
+      return {
+          name: name,
+          type: type,
+          value: value,
+          isElement: isElement,
+          isText: isText,
+          isDocument: isDocument,
+          isComment: isComment
+      };
   }
 );
 
@@ -960,19 +942,19 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.core.Html',
-  [
-    'tinymce.plugins.visualchars.core.Data'
-  ],
+        [
+            'tinymce.plugins.visualchars.core.Data'
+        ],
   function (Data) {
-    var wrapCharWithSpan = function (value) {
-      return '<span data-mce-bogus="1" class="mce-' + Data.charMap[value] + '">' + value + '</span>';
-    };
+      var wrapCharWithSpan = function (value) {
+          return '<span data-mce-bogus="1" class="mce-' + Data.charMap[value] + '">' + value + '</span>';
+      };
 
-    return {
-      wrapCharWithSpan: wrapCharWithSpan
-    };
+      return {
+          wrapCharWithSpan: wrapCharWithSpan
+      };
   }
 );
 
@@ -986,56 +968,56 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.core.Nodes',
-  [
-    'ephox.katamari.api.Arr',
-    'ephox.sugar.api.node.Element',
-    'ephox.sugar.api.node.Node',
-    'tinymce.plugins.visualchars.core.Data',
-    'tinymce.plugins.visualchars.core.Html'
-  ],
+        [
+            'ephox.katamari.api.Arr',
+            'ephox.sugar.api.node.Element',
+            'ephox.sugar.api.node.Node',
+            'tinymce.plugins.visualchars.core.Data',
+            'tinymce.plugins.visualchars.core.Html'
+        ],
   function (Arr, Element, Node, Data, Html) {
-    var isMatch = function (n) {
-      return Node.isText(n) &&
+      var isMatch = function (n) {
+          return Node.isText(n) &&
         Node.value(n) !== undefined &&
         Data.regExp.test(Node.value(n));
-    };
+      };
 
     // inlined sugars PredicateFilter.descendants for file size
-    var filterDescendants = function (scope, predicate) {
-      var result = [];
-      var dom = scope.dom();
-      var children = Arr.map(dom.childNodes, Element.fromDom);
+      var filterDescendants = function (scope, predicate) {
+          var result = [];
+          var dom = scope.dom();
+          var children = Arr.map(dom.childNodes, Element.fromDom);
 
-      Arr.each(children, function (x) {
-        if (predicate(x)) {
-          result = result.concat([ x ]);
-        }
-        result = result.concat(filterDescendants(x, predicate));
-      });
-      return result;
-    };
+          Arr.each(children, function (x) {
+              if (predicate(x)) {
+                  result = result.concat([ x ]);
+              }
+              result = result.concat(filterDescendants(x, predicate));
+          });
+          return result;
+      };
 
-    var findParentElm = function (elm, rootElm) {
-      while (elm.parentNode) {
-        if (elm.parentNode === rootElm) {
-          return elm;
-        }
-        elm = elm.parentNode;
-      }
-    };
+      var findParentElm = function (elm, rootElm) {
+          while (elm.parentNode) {
+              if (elm.parentNode === rootElm) {
+                  return elm;
+              }
+              elm = elm.parentNode;
+          }
+      };
 
-    var replaceWithSpans = function (html) {
-      return html.replace(Data.regExpGlobal, Html.wrapCharWithSpan);
-    };
+      var replaceWithSpans = function (html) {
+          return html.replace(Data.regExpGlobal, Html.wrapCharWithSpan);
+      };
 
-    return {
-      isMatch: isMatch,
-      filterDescendants: filterDescendants,
-      findParentElm: findParentElm,
-      replaceWithSpans: replaceWithSpans
-    };
+      return {
+          isMatch: isMatch,
+          filterDescendants: filterDescendants,
+          findParentElm: findParentElm,
+          replaceWithSpans: replaceWithSpans
+      };
   }
 );
 /**
@@ -1048,59 +1030,59 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.core.VisualChars',
-  [
-    'tinymce.plugins.visualchars.core.Data',
-    'tinymce.plugins.visualchars.core.Nodes',
-    'ephox.katamari.api.Arr',
-    'ephox.sugar.api.node.Element',
-    'ephox.sugar.api.node.Node'
-  ],
+        [
+            'tinymce.plugins.visualchars.core.Data',
+            'tinymce.plugins.visualchars.core.Nodes',
+            'ephox.katamari.api.Arr',
+            'ephox.sugar.api.node.Element',
+            'ephox.sugar.api.node.Node'
+        ],
   function (Data, Nodes, Arr, Element, Node) {
-    var show = function (editor, rootElm) {
-      var node, div;
-      var nodeList = Nodes.filterDescendants(Element.fromDom(rootElm), Nodes.isMatch);
+      var show = function (editor, rootElm) {
+          var node, div;
+          var nodeList = Nodes.filterDescendants(Element.fromDom(rootElm), Nodes.isMatch);
 
-      Arr.each(nodeList, function (n) {
-        var withSpans = Nodes.replaceWithSpans(Node.value(n));
+          Arr.each(nodeList, function (n) {
+              var withSpans = Nodes.replaceWithSpans(Node.value(n));
 
-        div = editor.dom.create('div', null, withSpans);
-        while ((node = div.lastChild)) {
-          editor.dom.insertAfter(node, n.dom());
-        }
+              div = editor.dom.create('div', null, withSpans);
+              while ((node = div.lastChild)) {
+                  editor.dom.insertAfter(node, n.dom());
+              }
 
-        editor.dom.remove(n.dom());
-      });
-    };
+              editor.dom.remove(n.dom());
+          });
+      };
 
-    var hide = function (editor, body) {
-      var nodeList = editor.dom.select(Data.selector, body);
+      var hide = function (editor, body) {
+          var nodeList = editor.dom.select(Data.selector, body);
 
-      Arr.each(nodeList, function (node) {
-        editor.dom.remove(node, 1);
-      });
-    };
+          Arr.each(nodeList, function (node) {
+              editor.dom.remove(node, 1);
+          });
+      };
 
-    var toggle = function (editor) {
-      var body = editor.getBody();
-      var bookmark = editor.selection.getBookmark();
-      var parentNode = Nodes.findParentElm(editor.selection.getNode(), body);
+      var toggle = function (editor) {
+          var body = editor.getBody();
+          var bookmark = editor.selection.getBookmark();
+          var parentNode = Nodes.findParentElm(editor.selection.getNode(), body);
 
       // if user does select all the parentNode will be undefined
-      parentNode = parentNode !== undefined ? parentNode : body;
+          parentNode = parentNode !== undefined ? parentNode : body;
 
-      hide(editor, parentNode);
-      show(editor, parentNode);
+          hide(editor, parentNode);
+          show(editor, parentNode);
 
-      editor.selection.moveToBookmark(bookmark);
-    };
+          editor.selection.moveToBookmark(bookmark);
+      };
 
-    return {
-      show: show,
-      hide: hide,
-      toggle: toggle
-    };
+      return {
+          show: show,
+          hide: hide,
+          toggle: toggle
+      };
   }
 );
 /**
@@ -1113,33 +1095,33 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.core.Actions',
-  [
-    'tinymce.plugins.visualchars.api.Events',
-    'tinymce.plugins.visualchars.core.VisualChars'
-  ],
+        [
+            'tinymce.plugins.visualchars.api.Events',
+            'tinymce.plugins.visualchars.core.VisualChars'
+        ],
   function (Events, VisualChars) {
-    var toggleVisualChars = function (editor, toggleState) {
-      var body = editor.getBody(), selection = editor.selection, bookmark;
+      var toggleVisualChars = function (editor, toggleState) {
+          var body = editor.getBody(), selection = editor.selection, bookmark;
 
-      toggleState.set(!toggleState.get());
-      Events.fireVisualChars(editor, toggleState.get());
+          toggleState.set(!toggleState.get());
+          Events.fireVisualChars(editor, toggleState.get());
 
-      bookmark = selection.getBookmark();
+          bookmark = selection.getBookmark();
 
-      if (toggleState.get() === true) {
-        VisualChars.show(editor, body);
-      } else {
-        VisualChars.hide(editor, body);
-      }
+          if (toggleState.get() === true) {
+              VisualChars.show(editor, body);
+          } else {
+              VisualChars.hide(editor, body);
+          }
 
-      selection.moveToBookmark(bookmark);
-    };
+          selection.moveToBookmark(bookmark);
+      };
 
-    return {
-      toggleVisualChars: toggleVisualChars
-    };
+      return {
+          toggleVisualChars: toggleVisualChars
+      };
   }
 );
 /**
@@ -1152,21 +1134,21 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.api.Commands',
-  [
-    'tinymce.plugins.visualchars.core.Actions'
-  ],
+        [
+            'tinymce.plugins.visualchars.core.Actions'
+        ],
   function (Actions) {
-    var register = function (editor, toggleState) {
-      editor.addCommand('mceVisualChars', function () {
-        Actions.toggleVisualChars(editor, toggleState);
-      });
-    };
+      var register = function (editor, toggleState) {
+          editor.addCommand('mceVisualChars', function () {
+              Actions.toggleVisualChars(editor, toggleState);
+          });
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 /**
@@ -1179,13 +1161,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.util.Delay',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.util.Delay');
+      return resolve('tinymce.util.Delay');
   }
 );
 
@@ -1199,30 +1181,30 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.core.Keyboard',
-  [
-    'tinymce.core.util.Delay',
-    'tinymce.plugins.visualchars.core.VisualChars'
-  ],
+        [
+            'tinymce.core.util.Delay',
+            'tinymce.plugins.visualchars.core.VisualChars'
+        ],
   function (Delay, VisualChars) {
-    var setup = function (editor, toggleState) {
-      var debouncedToggle = Delay.debounce(function () {
-        VisualChars.toggle(editor);
-      }, 300);
+      var setup = function (editor, toggleState) {
+          var debouncedToggle = Delay.debounce(function () {
+              VisualChars.toggle(editor);
+          }, 300);
 
-      if (editor.settings.forced_root_block !== false) {
-        editor.on('keydown', function (e) {
-          if (toggleState.get() === true) {
-            e.keyCode === 13 ? VisualChars.toggle(editor) : debouncedToggle();
+          if (editor.settings.forced_root_block !== false) {
+              editor.on('keydown', function (e) {
+                  if (toggleState.get() === true) {
+                      e.keyCode === 13 ? VisualChars.toggle(editor) : debouncedToggle();
+                  }
+              });
           }
-        });
-      }
-    };
+      };
 
-    return {
-      setup: setup
-    };
+      return {
+          setup: setup
+      };
   }
 );
 /**
@@ -1235,41 +1217,41 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.ui.Buttons',
-  [
-  ],
+        [
+        ],
   function () {
-    var toggleActiveState = function (editor) {
-      return function (e) {
-        var ctrl = e.control;
+      var toggleActiveState = function (editor) {
+          return function (e) {
+              var ctrl = e.control;
 
-        editor.on('VisualChars', function (e) {
-          ctrl.active(e.state);
-        });
+              editor.on('VisualChars', function (e) {
+                  ctrl.active(e.state);
+              });
+          };
       };
-    };
 
-    var register = function (editor) {
-      editor.addButton('visualchars', {
-        title: 'Show invisible characters',
-        cmd: 'mceVisualChars',
-        onPostRender: toggleActiveState(editor)
-      });
+      var register = function (editor) {
+          editor.addButton('visualchars', {
+              title: 'Show invisible characters',
+              cmd: 'mceVisualChars',
+              onPostRender: toggleActiveState(editor)
+          });
 
-      editor.addMenuItem('visualchars', {
-        text: 'Show invisible characters',
-        cmd: 'mceVisualChars',
-        onPostRender: toggleActiveState(editor),
-        selectable: true,
-        context: 'view',
-        prependToContext: true
-      });
-    };
+          editor.addMenuItem('visualchars', {
+              text: 'Show invisible characters',
+              cmd: 'mceVisualChars',
+              onPostRender: toggleActiveState(editor),
+              selectable: true,
+              context: 'view',
+              prependToContext: true
+          });
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 /**
@@ -1282,29 +1264,29 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.visualchars.Plugin',
-  [
-    'ephox.katamari.api.Cell',
-    'tinymce.core.PluginManager',
-    'tinymce.plugins.visualchars.api.Api',
-    'tinymce.plugins.visualchars.api.Commands',
-    'tinymce.plugins.visualchars.core.Keyboard',
-    'tinymce.plugins.visualchars.ui.Buttons'
-  ],
+        [
+            'ephox.katamari.api.Cell',
+            'tinymce.core.PluginManager',
+            'tinymce.plugins.visualchars.api.Api',
+            'tinymce.plugins.visualchars.api.Commands',
+            'tinymce.plugins.visualchars.core.Keyboard',
+            'tinymce.plugins.visualchars.ui.Buttons'
+        ],
   function (Cell, PluginManager, Api, Commands, Keyboard, Buttons) {
-    PluginManager.add('visualchars', function (editor) {
-      var toggleState = Cell(false);
+      PluginManager.add('visualchars', function (editor) {
+          var toggleState = Cell(false);
 
-      Commands.register(editor, toggleState);
-      Buttons.register(editor);
-      Keyboard.setup(editor, toggleState);
+          Commands.register(editor, toggleState);
+          Buttons.register(editor);
+          Keyboard.setup(editor, toggleState);
 
-      return Api.get(toggleState);
-    });
+          return Api.get(toggleState);
+      });
 
-    return function () {};
+      return function () {};
   }
 );
-dem('tinymce.plugins.visualchars.Plugin')();
+    dem('tinymce.plugins.visualchars.Plugin')();
 })();

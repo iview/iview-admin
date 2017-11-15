@@ -1,89 +1,76 @@
 (function () {
-
-var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
+    var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
 
 // Used when there is no 'main' module.
 // The name is probably (hopefully) unique so minification removes for releases.
-var register_3795 = function (id) {
-  var module = dem(id);
-  var fragments = id.split('.');
-  var target = Function('return this;')();
-  for (var i = 0; i < fragments.length - 1; ++i) {
-    if (target[fragments[i]] === undefined)
-      target[fragments[i]] = {};
-    target = target[fragments[i]];
-  }
-  target[fragments[fragments.length - 1]] = module;
-};
+    var register_3795 = function (id) {
+        var module = dem(id);
+        var fragments = id.split('.');
+        var target = Function('return this;')();
+        for (var i = 0; i < fragments.length - 1; ++i) {
+            if (target[fragments[i]] === undefined) { target[fragments[i]] = {}; }
+            target = target[fragments[i]];
+        }
+        target[fragments[fragments.length - 1]] = module;
+    };
 
-var instantiate = function (id) {
-  var actual = defs[id];
-  var dependencies = actual.deps;
-  var definition = actual.defn;
-  var len = dependencies.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(dependencies[i]);
-  var defResult = definition.apply(null, instances);
-  if (defResult === undefined)
-     throw 'module [' + id + '] returned undefined';
-  actual.instance = defResult;
-};
+    var instantiate = function (id) {
+        var actual = defs[id];
+        var dependencies = actual.deps;
+        var definition = actual.defn;
+        var len = dependencies.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(dependencies[i]); }
+        var defResult = definition.apply(null, instances);
+        if (defResult === undefined) { throw 'module [' + id + '] returned undefined'; }
+        actual.instance = defResult;
+    };
 
-var def = function (id, dependencies, definition) {
-  if (typeof id !== 'string')
-    throw 'module id must be a string';
-  else if (dependencies === undefined)
-    throw 'no dependencies for ' + id;
-  else if (definition === undefined)
-    throw 'no definition function for ' + id;
-  defs[id] = {
-    deps: dependencies,
-    defn: definition,
-    instance: undefined
-  };
-};
+    var def = function (id, dependencies, definition) {
+        if (typeof id !== 'string') { throw 'module id must be a string'; } else if (dependencies === undefined) { throw 'no dependencies for ' + id; } else if (definition === undefined) { throw 'no definition function for ' + id; }
+        defs[id] = {
+            deps: dependencies,
+            defn: definition,
+            instance: undefined
+        };
+    };
 
-var dem = function (id) {
-  var actual = defs[id];
-  if (actual === undefined)
-    throw 'module [' + id + '] was undefined';
-  else if (actual.instance === undefined)
-    instantiate(id);
-  return actual.instance;
-};
+    var dem = function (id) {
+        var actual = defs[id];
+        if (actual === undefined) { throw 'module [' + id + '] was undefined'; } else if (actual.instance === undefined) { instantiate(id); }
+        return actual.instance;
+    };
 
-var req = function (ids, callback) {
-  var len = ids.length;
-  var instances = new Array(len);
-  for (var i = 0; i < len; ++i)
-    instances[i] = dem(ids[i]);
-  callback.apply(null, instances);
-};
+    var req = function (ids, callback) {
+        var len = ids.length;
+        var instances = new Array(len);
+        for (var i = 0; i < len; ++i) { instances[i] = dem(ids[i]); }
+        callback.apply(null, instances);
+    };
 
-var ephox = {};
+    var ephox = {};
 
-ephox.bolt = {
-  module: {
-    api: {
-      define: def,
-      require: req,
-      demand: dem
-    }
-  }
-};
+    ephox.bolt = {
+        module: {
+            api: {
+                define: def,
+                require: req,
+                demand: dem
+            }
+        }
+    };
 
-var define = def;
-var require = req;
-var demand = dem;
+    var define = def;
+    var require = req;
+    var demand = dem;
 // this helps with minification when using a lot of global references
-var defineGlobal = function (id, ref) {
-  define(id, [], function () { return ref; });
-};
-/*jsc
+    var defineGlobal = function (id, ref) {
+        define(id, [], function () { return ref; });
+    };
+/* jsc
 ["tinymce.plugins.charmap.Plugin","tinymce.core.PluginManager","tinymce.plugins.charmap.api.Api","tinymce.plugins.charmap.api.Commands","tinymce.plugins.charmap.ui.Buttons","global!tinymce.util.Tools.resolve","tinymce.plugins.charmap.core.Actions","tinymce.plugins.charmap.core.CharMap","tinymce.plugins.charmap.ui.Dialog","tinymce.plugins.charmap.api.Events","tinymce.core.util.Tools","tinymce.plugins.charmap.api.Settings","tinymce.plugins.charmap.ui.GridHtml"]
-jsc*/
-defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
+jsc */
+    defineGlobal('global!tinymce.util.Tools.resolve', tinymce.util.Tools.resolve);
 /**
  * ResolveGlobal.js
  *
@@ -94,13 +81,13 @@ defineGlobal("global!tinymce.util.Tools.resolve", tinymce.util.Tools.resolve);
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.PluginManager',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.PluginManager');
+      return resolve('tinymce.PluginManager');
   }
 );
 
@@ -114,18 +101,18 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.api.Events',
-  [
-  ],
+        [
+        ],
   function () {
-    var fireInsertCustomChar = function (editor, chr) {
-      return editor.fire('insertCustomChar', { chr: chr });
-    };
+      var fireInsertCustomChar = function (editor, chr) {
+          return editor.fire('insertCustomChar', { chr: chr });
+      };
 
-    return {
-      fireInsertCustomChar: fireInsertCustomChar
-    };
+      return {
+          fireInsertCustomChar: fireInsertCustomChar
+      };
   }
 );
 
@@ -139,20 +126,20 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.core.Actions',
-  [
-    'tinymce.plugins.charmap.api.Events'
-  ],
+        [
+            'tinymce.plugins.charmap.api.Events'
+        ],
   function (Events) {
-    var insertChar = function (editor, chr) {
-      var evtChr = Events.fireInsertCustomChar(editor, chr).chr;
-      editor.execCommand('mceInsertContent', false, evtChr);
-    };
+      var insertChar = function (editor, chr) {
+          var evtChr = Events.fireInsertCustomChar(editor, chr).chr;
+          editor.execCommand('mceInsertContent', false, evtChr);
+      };
 
-    return {
-      insertChar: insertChar
-    };
+      return {
+          insertChar: insertChar
+      };
   }
 );
 /**
@@ -165,13 +152,13 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.core.util.Tools',
-  [
-    'global!tinymce.util.Tools.resolve'
-  ],
+        [
+            'global!tinymce.util.Tools.resolve'
+        ],
   function (resolve) {
-    return resolve('tinymce.util.Tools');
+      return resolve('tinymce.util.Tools');
   }
 );
 
@@ -185,23 +172,23 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.api.Settings',
-  [
-  ],
+        [
+        ],
   function () {
-    var getCharMap = function (editor) {
-      return editor.settings.charmap;
-    };
+      var getCharMap = function (editor) {
+          return editor.settings.charmap;
+      };
 
-    var getCharMapAppend = function (editor) {
-      return editor.settings.charmap_append;
-    };
+      var getCharMapAppend = function (editor) {
+          return editor.settings.charmap_append;
+      };
 
-    return {
-      getCharMap: getCharMap,
-      getCharMapAppend: getCharMapAppend
-    };
+      return {
+          getCharMap: getCharMap,
+          getCharMapAppend: getCharMapAppend
+      };
   }
 );
 /**
@@ -214,17 +201,17 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.core.CharMap',
-  [
-    'tinymce.core.util.Tools',
-    'tinymce.plugins.charmap.api.Settings'
-  ],
+        [
+            'tinymce.core.util.Tools',
+            'tinymce.plugins.charmap.api.Settings'
+        ],
   function (Tools, Settings) {
-    var isArray = Tools.isArray;
+      var isArray = Tools.isArray;
 
-    var getDefaultCharMap = function () {
-      return [
+      var getDefaultCharMap = function () {
+          return [
         ['160', 'no-break space'],
         ['173', 'soft hyphen'],
         ['34', 'quotation mark'],
@@ -495,48 +482,48 @@ define(
         ['8205', 'zero width joiner'],
         ['8206', 'left-to-right mark'],
         ['8207', 'right-to-left mark']
-      ];
-    };
+          ];
+      };
 
-    var charmapFilter = function (charmap) {
-      return Tools.grep(charmap, function (item) {
-        return isArray(item) && item.length === 2;
-      });
-    };
+      var charmapFilter = function (charmap) {
+          return Tools.grep(charmap, function (item) {
+              return isArray(item) && item.length === 2;
+          });
+      };
 
-    var getCharsFromSetting = function (settingValue) {
-      if (isArray(settingValue)) {
-        return [].concat(charmapFilter(settingValue));
-      }
+      var getCharsFromSetting = function (settingValue) {
+          if (isArray(settingValue)) {
+              return [].concat(charmapFilter(settingValue));
+          }
 
-      if (typeof settingValue === "function") {
-        return settingValue();
-      }
+          if (typeof settingValue === 'function') {
+              return settingValue();
+          }
 
-      return [];
-    };
+          return [];
+      };
 
-    var extendCharMap = function (editor, charmap) {
-      var userCharMap = Settings.getCharMap(editor);
-      if (userCharMap) {
-        charmap = getCharsFromSetting(userCharMap);
-      }
+      var extendCharMap = function (editor, charmap) {
+          var userCharMap = Settings.getCharMap(editor);
+          if (userCharMap) {
+              charmap = getCharsFromSetting(userCharMap);
+          }
 
-      var userCharMapAppend = Settings.getCharMapAppend(editor);
-      if (userCharMapAppend) {
-        return [].concat(charmap).concat(getCharsFromSetting(userCharMapAppend));
-      }
+          var userCharMapAppend = Settings.getCharMapAppend(editor);
+          if (userCharMapAppend) {
+              return [].concat(charmap).concat(getCharsFromSetting(userCharMapAppend));
+          }
 
-      return charmap;
-    };
+          return charmap;
+      };
 
-    var getCharMap = function (editor) {
-      return extendCharMap(editor, getDefaultCharMap());
-    };
+      var getCharMap = function (editor) {
+          return extendCharMap(editor, getDefaultCharMap());
+      };
 
-    return {
-      getCharMap: getCharMap
-    };
+      return {
+          getCharMap: getCharMap
+      };
   }
 );
 /**
@@ -549,34 +536,33 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.api.Api',
-  [
-    'tinymce.plugins.charmap.core.Actions',
-    'tinymce.plugins.charmap.core.CharMap'
-  ],
+        [
+            'tinymce.plugins.charmap.core.Actions',
+            'tinymce.plugins.charmap.core.CharMap'
+        ],
   function (Actions, CharMap) {
-    var get = function (editor) {
-      var getCharMap = function () {
-        return CharMap.getCharMap(editor);
-      };
+      var get = function (editor) {
+          var getCharMap = function () {
+              return CharMap.getCharMap(editor);
+          };
 
-      var insertChar = function (chr) {
-        Actions.insertChar(editor, chr);
+          var insertChar = function (chr) {
+              Actions.insertChar(editor, chr);
+          };
+
+          return {
+              getCharMap: getCharMap,
+              insertChar: insertChar
+          };
       };
 
       return {
-        getCharMap: getCharMap,
-        insertChar: insertChar
+          get: get
       };
-    };
-
-    return {
-      get: get
-    };
   }
 );
-
 
 /**
  * GridHtml.js
@@ -588,50 +574,50 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.ui.GridHtml',
-  [
-  ],
+        [
+        ],
   function () {
-    var getHtml = function (charmap) {
-      var gridHtml, x, y;
-      var width = Math.min(charmap.length, 25);
-      var height = Math.ceil(charmap.length / width);
+      var getHtml = function (charmap) {
+          var gridHtml, x, y;
+          var width = Math.min(charmap.length, 25);
+          var height = Math.ceil(charmap.length / width);
 
-      gridHtml = '<table role="presentation" cellspacing="0" class="mce-charmap"><tbody>';
+          gridHtml = '<table role="presentation" cellspacing="0" class="mce-charmap"><tbody>';
 
-      for (y = 0; y < height; y++) {
-        gridHtml += '<tr>';
+          for (y = 0; y < height; y++) {
+              gridHtml += '<tr>';
 
-        for (x = 0; x < width; x++) {
-          var index = y * width + x;
-          if (index < charmap.length) {
-            var chr = charmap[index];
-            var chrText = chr ? String.fromCharCode(parseInt(chr[0], 10)) : '&nbsp;';
+              for (x = 0; x < width; x++) {
+                  var index = y * width + x;
+                  if (index < charmap.length) {
+                      var chr = charmap[index];
+                      var chrText = chr ? String.fromCharCode(parseInt(chr[0], 10)) : '&nbsp;';
 
-            gridHtml += (
+                      gridHtml += (
               '<td title="' + chr[1] + '">' +
               '<div tabindex="-1" title="' + chr[1] + '" role="button" data-chr="' + chrText + '">' +
               chrText +
               '</div>' +
               '</td>'
             );
-          } else {
-            gridHtml += '<td />';
+                  } else {
+                      gridHtml += '<td />';
+                  }
+              }
+
+              gridHtml += '</tr>';
           }
-        }
 
-        gridHtml += '</tr>';
-      }
+          gridHtml += '</tbody></table>';
 
-      gridHtml += '</tbody></table>';
+          return gridHtml;
+      };
 
-      return gridHtml;
-    };
-
-    return {
-      getHtml: getHtml
-    };
+      return {
+          getHtml: getHtml
+      };
   }
 );
 /**
@@ -644,109 +630,110 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.ui.Dialog',
-  [
-    'tinymce.plugins.charmap.core.Actions',
-    'tinymce.plugins.charmap.core.CharMap',
-    'tinymce.plugins.charmap.ui.GridHtml'
-  ],
+        [
+            'tinymce.plugins.charmap.core.Actions',
+            'tinymce.plugins.charmap.core.CharMap',
+            'tinymce.plugins.charmap.ui.GridHtml'
+        ],
   function (Actions, CharMap, GridHtml) {
-    var getParentTd = function (elm) {
-      while (elm) {
-        if (elm.nodeName === 'TD') {
-          return elm;
-        }
-
-        elm = elm.parentNode;
-      }
-    };
-
-    var open = function (editor) {
-      var win;
-
-      var charMapPanel = {
-        type: 'container',
-        html: GridHtml.getHtml(CharMap.getCharMap(editor)),
-        onclick: function (e) {
-          var target = e.target;
-
-          if (/^(TD|DIV)$/.test(target.nodeName)) {
-            var charDiv = getParentTd(target).firstChild;
-            if (charDiv && charDiv.hasAttribute('data-chr')) {
-              Actions.insertChar(editor, charDiv.getAttribute('data-chr'));
-
-              if (!e.ctrlKey) {
-                win.close();
+      var getParentTd = function (elm) {
+          while (elm) {
+              if (elm.nodeName === 'TD') {
+                  return elm;
               }
-            }
-          }
-        },
-        onmouseover: function (e) {
-          var td = getParentTd(e.target);
 
-          if (td && td.firstChild) {
-            win.find('#preview').text(td.firstChild.firstChild.data);
-            win.find('#previewTitle').text(td.title);
-          } else {
-            win.find('#preview').text(' ');
-            win.find('#previewTitle').text(' ');
+              elm = elm.parentNode;
           }
-        }
       };
 
-      win = editor.windowManager.open({
-        title: "Special character",
-        spacing: 10,
-        padding: 10,
-        items: [
-          charMapPanel,
-          {
-            type: 'container',
-            layout: 'flex',
-            direction: 'column',
-            align: 'center',
-            spacing: 5,
-            minWidth: 160,
-            minHeight: 160,
-            items: [
-              {
-                type: 'label',
-                name: 'preview',
-                text: ' ',
-                style: 'font-size: 40px; text-align: center',
-                border: 1,
-                minWidth: 140,
-                minHeight: 80
-              },
-              {
-                type: 'spacer',
-                minHeight: 20
-              },
-              {
-                type: 'label',
-                name: 'previewTitle',
-                text: ' ',
-                style: 'white-space: pre-wrap;',
-                border: 1,
-                minWidth: 140
-              }
-            ]
-          }
-        ],
-        buttons: [
-          {
-            text: "Close", onclick: function () {
-              win.close();
-            }
-          }
-        ]
-      });
-    };
+      var open = function (editor) {
+          var win;
 
-    return {
-      open: open
-    };
+          var charMapPanel = {
+              type: 'container',
+              html: GridHtml.getHtml(CharMap.getCharMap(editor)),
+              onclick: function (e) {
+                  var target = e.target;
+
+                  if (/^(TD|DIV)$/.test(target.nodeName)) {
+                      var charDiv = getParentTd(target).firstChild;
+                      if (charDiv && charDiv.hasAttribute('data-chr')) {
+                          Actions.insertChar(editor, charDiv.getAttribute('data-chr'));
+
+                          if (!e.ctrlKey) {
+                              win.close();
+                          }
+                      }
+                  }
+              },
+              onmouseover: function (e) {
+                  var td = getParentTd(e.target);
+
+                  if (td && td.firstChild) {
+                      win.find('#preview').text(td.firstChild.firstChild.data);
+                      win.find('#previewTitle').text(td.title);
+                  } else {
+                      win.find('#preview').text(' ');
+                      win.find('#previewTitle').text(' ');
+                  }
+              }
+          };
+
+          win = editor.windowManager.open({
+              title: 'Special character',
+              spacing: 10,
+              padding: 10,
+              items: [
+                  charMapPanel,
+                  {
+                      type: 'container',
+                      layout: 'flex',
+                      direction: 'column',
+                      align: 'center',
+                      spacing: 5,
+                      minWidth: 160,
+                      minHeight: 160,
+                      items: [
+                          {
+                              type: 'label',
+                              name: 'preview',
+                              text: ' ',
+                              style: 'font-size: 40px; text-align: center',
+                              border: 1,
+                              minWidth: 140,
+                              minHeight: 80
+                          },
+                          {
+                              type: 'spacer',
+                              minHeight: 20
+                          },
+                          {
+                              type: 'label',
+                              name: 'previewTitle',
+                              text: ' ',
+                              style: 'white-space: pre-wrap;',
+                              border: 1,
+                              minWidth: 140
+                          }
+                      ]
+                  }
+              ],
+              buttons: [
+                  {
+                      text: 'Close',
+                      onclick: function () {
+                          win.close();
+                      }
+                  }
+              ]
+          });
+      };
+
+      return {
+          open: open
+      };
   }
 );
 /**
@@ -759,21 +746,21 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.api.Commands',
-  [
-    'tinymce.plugins.charmap.ui.Dialog'
-  ],
+        [
+            'tinymce.plugins.charmap.ui.Dialog'
+        ],
   function (Dialog) {
-    var register = function (editor) {
-      editor.addCommand('mceShowCharmap', function () {
-        Dialog.open(editor);
-      });
-    };
+      var register = function (editor) {
+          editor.addCommand('mceShowCharmap', function () {
+              Dialog.open(editor);
+          });
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 /**
@@ -786,29 +773,29 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.ui.Buttons',
-  [
-  ],
+        [
+        ],
   function () {
-    var register = function (editor) {
-      editor.addButton('charmap', {
-        icon: 'charmap',
-        tooltip: 'Special character',
-        cmd: 'mceShowCharmap'
-      });
+      var register = function (editor) {
+          editor.addButton('charmap', {
+              icon: 'charmap',
+              tooltip: 'Special character',
+              cmd: 'mceShowCharmap'
+          });
 
-      editor.addMenuItem('charmap', {
-        icon: 'charmap',
-        text: 'Special character',
-        cmd: 'mceShowCharmap',
-        context: 'insert'
-      });
-    };
+          editor.addMenuItem('charmap', {
+              icon: 'charmap',
+              text: 'Special character',
+              cmd: 'mceShowCharmap',
+              context: 'insert'
+          });
+      };
 
-    return {
-      register: register
-    };
+      return {
+          register: register
+      };
   }
 );
 /**
@@ -821,24 +808,24 @@ define(
  * Contributing: http://www.tinymce.com/contributing
  */
 
-define(
+    define(
   'tinymce.plugins.charmap.Plugin',
-  [
-    'tinymce.core.PluginManager',
-    'tinymce.plugins.charmap.api.Api',
-    'tinymce.plugins.charmap.api.Commands',
-    'tinymce.plugins.charmap.ui.Buttons'
-  ],
+        [
+            'tinymce.core.PluginManager',
+            'tinymce.plugins.charmap.api.Api',
+            'tinymce.plugins.charmap.api.Commands',
+            'tinymce.plugins.charmap.ui.Buttons'
+        ],
   function (PluginManager, Api, Commands, Buttons) {
-    PluginManager.add('charmap', function (editor) {
-      Commands.register(editor);
-      Buttons.register(editor);
+      PluginManager.add('charmap', function (editor) {
+          Commands.register(editor);
+          Buttons.register(editor);
 
-      return Api.get(editor);
-    });
+          return Api.get(editor);
+      });
 
-    return function () { };
+      return function () { };
   }
 );
-dem('tinymce.plugins.charmap.Plugin')();
+    dem('tinymce.plugins.charmap.Plugin')();
 })();
