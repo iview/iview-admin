@@ -83,37 +83,112 @@ npm run build
 ## 文件结构
 ```shell
 .
-├── dist
-│   ├── langs    TinyMCE富文本编辑器语言包
-│   ├── plugins    TinyMCE富文本编辑器组件
-│   ├── skins    TinyMCE富文本编辑器皮肤
-│   └── themes    TinyMCE富文本编辑器主题
+├── build  项目构建配置
 └── src
-    ├── config    项目配置
-    ├── images    图片文件
-    ├── libs    工具方法
-    ├── styles    样式文件
-    ├── template    ejs模板
-    └── views    视图组件
-        ├── access    权限管理
-        ├── error_page    错误页面
-        ├── form    表单
-        │   ├── article-publish    文章发布
-        │   └── work-flow    工作流
-        ├── home    首页
-        ├── international    多语言切换
-        ├── main_components    主框架
-        ├── message    消息中心
-        ├── my_components    组件
-        │   ├── count-to    数字渐变
-        │   ├── draggable-list    可拖拽列表
-        │   ├── file-upload    文件上传
-        |   ├── image-editor    图片预览编辑
-        │   ├── markdown-editor    markdown编辑器
-        │   └── text-editer    富文本编辑器
-        ├── own-space    个人中心
-        ├── screen-shorts    锁屏
-        └── tables    表格
+    ├── images  图片文件
+    ├── libs  工具方法
+    ├── locale  多语言文件
+    ├── router  路由配置
+    ├── store  状态管理
+    ├── store  状态管理
+    ├── styles  样式文件
+    ├── template  
+    ├── vendors
+    └── views
+        ├── access
+        ├── advanced-router
+        │   └── component
+        ├── error_page
+        ├── form
+        │   ├── article-publish
+        │   └── work-flow
+        ├── home
+        │   ├── components
+        │   │   └── styles
+        │   └── map-data
+        ├── international
+        ├── main_components
+        │   ├── lockscreen
+        │   │   ├── components
+        │   │   └── styles
+        │   ├── shrinkable-menu
+        │   │   ├── components
+        │   │   └── styles
+        │   └── theme-switch
+        │       └── theme
+        ├── message
+        ├── my_components
+        │   ├── area-linkage
+        │   │   ├── components
+        │   │   └── util
+        │   ├── count-to
+        │   ├── draggable-list
+        │   ├── file-upload
+        │   ├── image-editor
+        │   ├── markdown-editor
+        │   └── text-editor
+        │       └── tinymce
+        │           ├── langs
+        │           ├── plugins
+        │           │   ├── advlist
+        │           │   ├── anchor
+        │           │   ├── autolink
+        │           │   ├── autoresize
+        │           │   ├── autosave
+        │           │   ├── bbcode
+        │           │   ├── charmap
+        │           │   ├── code
+        │           │   ├── codesample
+        │           │   │   └── css
+        │           │   ├── colorpicker
+        │           │   ├── contextmenu
+        │           │   ├── directionality
+        │           │   ├── emoticons
+        │           │   │   └── img
+        │           │   ├── fullpage
+        │           │   ├── fullscreen
+        │           │   ├── help
+        │           │   │   └── img
+        │           │   ├── hr
+        │           │   ├── image
+        │           │   ├── imagetools
+        │           │   ├── importcss
+        │           │   ├── insertdatetime
+        │           │   ├── legacyoutput
+        │           │   ├── link
+        │           │   ├── lists
+        │           │   ├── media
+        │           │   ├── nonbreaking
+        │           │   ├── noneditable
+        │           │   ├── pagebreak
+        │           │   ├── paste
+        │           │   ├── preview
+        │           │   ├── print
+        │           │   ├── save
+        │           │   ├── searchreplace
+        │           │   ├── spellchecker
+        │           │   ├── tabfocus
+        │           │   ├── table
+        │           │   ├── template
+        │           │   ├── textcolor
+        │           │   ├── textpattern
+        │           │   ├── toc
+        │           │   ├── visualblocks
+        │           │   │   └── css
+        │           │   ├── visualchars
+        │           │   └── wordcount
+        │           ├── skins
+        │           │   └── lightgray
+        │           │       ├── fonts
+        │           │       └── img
+        │           └── themes
+        │               ├── inlite
+        │               └── modern
+        ├── own-space
+        ├── screen-shorts
+        └── tables
+            ├── components
+            └── data
 ```
 
 ## Links
