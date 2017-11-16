@@ -27,7 +27,7 @@ export default {
         init () {
             this.$nextTick(() => {
                 let vm = this;
-                var height = document.body.offsetHeight - 300;
+                let height = document.body.offsetHeight - 300;
                 tinymce.init({
                     selector: '#tinymceEditer',
                     branding: false,
