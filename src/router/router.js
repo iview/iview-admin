@@ -12,11 +12,11 @@ export const loginRouter = {
 
 export const page404 = {
     path: '/*',
-    name: 'error_404',
+    name: 'error-404',
     meta: {
         title: '404-页面不存在'
     },
-    component: resolve => { require(['@/views/error_page/404.vue'], resolve); }
+    component: resolve => { require(['@/views/error-page/404.vue'], resolve); }
 };
 
 export const page403 = {
@@ -24,8 +24,8 @@ export const page403 = {
     meta: {
         title: '403-权限不足'
     },
-    name: 'error_403',
-    component: resolve => { require(['@//views/error_page/403.vue'], resolve); }
+    name: 'error-403',
+    component: resolve => { require(['@//views/error-page/403.vue'], resolve); }
 };
 
 export const page500 = {
@@ -33,8 +33,8 @@ export const page500 = {
     meta: {
         title: '500-服务端错误'
     },
-    name: 'error_500',
-    component: resolve => { require(['@/views/error_page/500.vue'], resolve); }
+    name: 'error-500',
+    component: resolve => { require(['@/views/error-page/500.vue'], resolve); }
 };
 
 export const preview = {
@@ -46,7 +46,7 @@ export const preview = {
 export const locking = {
     path: '/locking',
     name: 'locking',
-    component: resolve => { require(['@/views/main_components/lockscreen/components/locking-page.vue'], resolve); }
+    component: resolve => { require(['@/views/main-components/lockscreen/components/locking-page.vue'], resolve); }
 };
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
@@ -108,49 +108,49 @@ export const appRouter = [
                 icon: 'compose',
                 name: 'text-editor',
                 title: '富文本编辑器',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/text-editor/text-editor.vue'], resolve); }
             },
             {
                 path: 'md-editor',
                 icon: 'pound',
                 name: 'md-editor',
                 title: 'Markdown编辑器',
-                component: resolve => { require(['@/views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/markdown-editor/markdown-editor.vue'], resolve); }
             },
             {
                 path: 'image-editor',
                 icon: 'crop',
                 name: 'image-editor',
                 title: '图片预览编辑',
-                component: resolve => { require(['@/views/my_components/image-editor/image-editor.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/image-editor/image-editor.vue'], resolve); }
             },
             {
                 path: 'draggable-list',
                 icon: 'arrow-move',
                 name: 'draggable-list',
                 title: '可拖拽列表',
-                component: resolve => { require(['@/views/my_components/draggable-list/draggable-list.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/draggable-list/draggable-list.vue'], resolve); }
             },
             {
                 path: 'area-linkage',
                 icon: 'ios-more',
                 name: 'area-linkage',
                 title: '城市级联',
-                component: resolve => { require(['@/views/my_components/area-linkage/area-linkage.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/area-linkage/area-linkage.vue'], resolve); }
             },
             {
                 path: 'file-upload',
                 icon: 'android-upload',
                 name: 'file-upload',
                 title: '文件上传',
-                component: resolve => { require(['@/views/my_components/file-upload/file-upload.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/file-upload/file-upload.vue'], resolve); }
             },
             {
                 path: 'count-to',
                 icon: 'arrow-graph-up-right',
                 name: 'count-to',
                 title: '数字渐变',
-                component: resolve => { require(['@/views/my_components/count-to/count-to.vue'], resolve); }
+                component: resolve => { require(['@/views/my-components/count-to/count-to.vue'], resolve); }
             }
         ]
     },
@@ -210,7 +210,7 @@ export const appRouter = [
         name: 'errorpage',
         component: Main,
         children: [
-            { path: 'index', title: '错误页面', name: 'errorpage_index', component: resolve => { require(['@/views/error_page/error-page.vue'], resolve); } }
+            { path: 'index', title: '错误页面', name: 'errorpage_index', component: resolve => { require(['@/views/error-page/error-page.vue'], resolve); } }
         ]
     }
 ];

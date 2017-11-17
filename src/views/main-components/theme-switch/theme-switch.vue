@@ -114,7 +114,7 @@ export default {
             }
             let stylePath = '';
             if (config.env.indexOf('dev') > -1) {
-                stylePath = './src/views/main_components/theme-switch/theme/';
+                stylePath = './src/views/main-components/theme-switch/theme/';
             } else {
                 stylePath = 'dist/';
             }
@@ -129,7 +129,7 @@ export default {
     created () {
         let path = '';
         if (config.env.indexOf('dev') > -1) {
-            path = './src/views/main_components/theme-switch/theme/';
+            path = './src/views/main-components/theme-switch/theme/';
         } else {
             path = 'dist/';
         }

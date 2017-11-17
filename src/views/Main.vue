@@ -66,13 +66,13 @@
     </div>
 </template>
 <script>
-    import shrinkableMenu from './main_components/shrinkable-menu/shrinkable-menu.vue';
-    import tagsPageOpened from './main_components/tagsPageOpened.vue';
-    import breadcrumbNav from './main_components/breadcrumbNav.vue';
-    import fullScreen from './main_components/fullScreen.vue';
-    import lockScreen from './main_components/lockscreen/lockscreen.vue';
-    import messageTip from './main_components/message-tip.vue';
-    import themeSwitch from './main_components/theme-switch/themeSwitch.vue';
+    import shrinkableMenu from './main-components/shrinkable-menu/shrinkable-menu.vue';
+    import tagsPageOpened from './main-components/tags-page-opened.vue';
+    import breadcrumbNav from './main-components/breadcrumb-nav.vue';
+    import fullScreen from './main-components/fullscreen.vue';
+    import lockScreen from './main-components/lockscreen/lockscreen.vue';
+    import messageTip from './main-components/message-tip.vue';
+    import themeSwitch from './main-components/theme-switch/theme-switch.vue';
     import Cookies from 'js-cookie';
     import util from '@/libs/util.js';
     
