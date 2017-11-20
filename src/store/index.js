@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        dontCache: ['text-editor']  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        dontCache: ['text-editor', 'artical-publish']  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
     },
     mutations: {
         increateTag (state, tagObj) {
