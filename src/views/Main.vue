@@ -90,7 +90,6 @@
             return {
                 shrink: false,
                 userName: '',
-                mesCount: 3,
                 isFullScreen: false,
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr
             };
@@ -116,6 +115,9 @@
             },
             menuTheme () {
                 return this.$store.state.app.menuTheme;
+            },
+            mesCount () {
+                return this.$store.state.app.messageCount;
             }
         },
         methods: {
@@ -129,6 +131,7 @@
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
+                this.$store.commit('setMessageCount', 3);
             },
             toggleClick () {
                 this.shrink = !this.shrink;

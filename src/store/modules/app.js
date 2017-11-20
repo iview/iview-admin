@@ -29,7 +29,8 @@ const app = {
             otherRouter,
             ...appRouter
         ],
-        tagsList: [...otherRouter.children]
+        tagsList: [...otherRouter.children],
+        messageCount: 0
     },
     mutations: {
         setTagsList (state, list) {
@@ -173,6 +174,9 @@ const app = {
         },
         clearOpenedSubmenu (state) {
             state.openedSubmenuArr.length = 0;
+        },
+        setMessageCount (state, count) {
+            state.messageCount = count;
         }
     }
 };
