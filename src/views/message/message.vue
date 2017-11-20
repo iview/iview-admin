@@ -49,7 +49,7 @@ export default {
                 on: {
                     click: () => {
                         this.hasreadMesList.unshift(this.currentMesList.splice(params.index, 1)[0]);
-                        this.$store.commit('setMessageCount', this.hasreadMesList.length);
+                        this.$store.commit('setMessageCount', this.unreadMesList.length);
                     }
                 }
             }, '标为已读');
