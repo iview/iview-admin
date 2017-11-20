@@ -15,7 +15,7 @@
                     <Row class="area-linkage-page-row1">
                         <al-selector 
                             v-model="resDefault"
-                            level="3"
+                            level="1"
                             auto
                         />
                         <pre>

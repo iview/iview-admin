@@ -194,7 +194,7 @@ export default {
             }
         },
         updateNextSelector (index, list, nextList, name, nextName, level) {
-            if (level < this.showLevel) {
+            if (level <= this.showLevel) {
                 let nextSelected = '';
                 if (this.isInit && this.value[level]) {
                     let valueItem = this.value[level];
