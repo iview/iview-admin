@@ -20,10 +20,8 @@
 
 <script>
 import SimpleMDE from 'simplemde';
-import {loading} from '@/libs/mixins';
 export default {
     name: 'markdown-editor',
-    mixins: [loading],
     mounted () {
         new SimpleMDE({
             element: document.getElementById('iview_admin_markdown_editor'),
