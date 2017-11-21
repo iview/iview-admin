@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
             }
         }
     }
-    iView.LoadingBar.finish();
+    // iView.LoadingBar.finish();
 });
 
 router.afterEach(() => {

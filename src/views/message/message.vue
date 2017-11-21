@@ -39,7 +39,7 @@
 
 <script>
 export default {
-    name: 'message',
+    name: 'message_index',
     data () {
         const markAsreadBtn = (h, params) => {
             return h('Button', {
