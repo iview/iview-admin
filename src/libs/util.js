@@ -41,7 +41,7 @@ util.oneOf = function (ele, targetArr) {
 };
 
 util.showThisRoute = function (itAccess, currentAccess) {
-    if (typeof itAccess === 'object' && itAccess.isArray()) {
+    if (typeof itAccess === 'object' && Array.isArray(itAccess)) {
         return util.oneOf(currentAccess, itAccess);
     } else {
         return itAccess === currentAccess;
