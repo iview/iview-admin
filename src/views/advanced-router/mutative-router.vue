@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import util from '@/libs/util';
 export default {
     name: 'mutative-router',
     data () {
@@ -54,7 +53,6 @@ export default {
                             on: {
                                 click: () => {
                                     let argu = { order_id: params.row.order_id };
-                                    util.openNewPage(this, 'order_info', argu);
                                     this.$router.push({
                                         name: 'order_info',
                                         params: argu
