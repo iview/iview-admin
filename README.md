@@ -16,6 +16,8 @@
 
 [在线访问](https://iview.github.io/iview-admin)
 
+[English Doc](https://github.com/iview/iview-admin/blob/dev/README_EN.md)
+
 `注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
 
 ## Install
@@ -90,7 +92,6 @@ npm run build
     ├── libs  工具方法
     ├── locale  多语言文件
     ├── router  路由配置
-    ├── store  状态管理
     ├── store  状态管理
     ├── styles  样式文件
     ├── template  模板文件

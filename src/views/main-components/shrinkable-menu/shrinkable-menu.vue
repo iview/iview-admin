@@ -71,7 +71,6 @@ export default {
                 this.$router.push({
                     name: name
                 });
-                util.openNewPage(this, name);
             }
             this.$emit('on-change', name);
         }

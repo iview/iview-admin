@@ -15,7 +15,7 @@
 </template>
 
 <script>
-const tinymce = require('tinymce');
+import tinymce from 'tinymce';
 export default {
     name: 'text-editor',
     data () {
