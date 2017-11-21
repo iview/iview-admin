@@ -218,14 +218,16 @@ util.openNewPage = function (vm, name, argu, query) {
             }
         });
         tag = tag[0];
-        tag = tag.children ? tag.children[0] : tag;
-        if (argu) {
-            tag.argu = argu;
+        if (tag) {
+            tag = tag.children ? tag.children[0] : tag;
+            if (argu) {
+                tag.argu = argu;
+            }
+            if (query) {
+                tag.query = query;
+            }
+            vm.$store.commit('increateTag', tag);
         }
-        if (query) {
-            tag.query = query;
-        }
-        vm.$store.commit('increateTag', tag);
     }
     vm.$store.commit('setCurrentPageName', name);
 };
