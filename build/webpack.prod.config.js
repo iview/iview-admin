@@ -46,12 +46,6 @@ module.exports = merge(webpackBaseConfig, {
         }),
         new CopyWebpackPlugin([
             {
-                from: 'src/styles/simplemde.min.css'
-            },
-            {
-                from: 'src/styles/cropper.min.css'
-            },
-            {
                 from: 'td_icon.ico'
             },
             {
