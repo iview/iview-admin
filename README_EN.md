@@ -36,7 +36,7 @@ npm run build
 ## Introduction
 &emsp;&emsp;iView-admin is a suite of backstage management system developed based on Vue.js and use the UI Toolkit -- [iView](https://www.iviewui.com). It's maintained by the TalkingData front-end visualization team member. iView-admin compolies with iView design and development contract, use uniform style, and more features are developing. If you want to check the update of iView-admin, you can view [Update log](https://github.com/iview/iview-admin/releases) to get. If you are new to iView-admin, you can go to [WIKI](https://github.com/iview/iview-admin/wiki) for tutorials. If you want to experience iView-admin online, you can visit [View online](https://iview.github.io/iview-admin) to experience.
 
-## 功能
+## Features
 
 - Login/Logout
 - Authority management
@@ -80,7 +80,7 @@ npm run build
 - Message center
 - Personal center
 
-## 文件结构
+## File tree
 ```shell
 .
 ├── build    //the configuration of project builds
