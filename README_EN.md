@@ -16,6 +16,8 @@
 
 [View online](https://iview.github.io/iview-admin)
 
+[Simplified template](https://github.com/iview/iview-admin/tree/template)
+
 `Note: The demo online will be updated after the new version of the development version is released, so if you want to experience the iview-admin with latest version, please clone the full project code and run it locally.`
 
 ## Install
