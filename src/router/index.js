@@ -54,6 +54,6 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(() => {
-    iView.LoadingBar.finish();
+    // iView.LoadingBar.finish();
     window.scrollTo(0, 0);
 });

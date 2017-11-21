@@ -16,6 +16,7 @@
 
 <script>
 import tinymce from 'tinymce';
+import {loading} from '@/libs/mixins';
 export default {
     name: 'text-editor',
     data () {
@@ -23,6 +24,7 @@ export default {
             spinShow: true
         };
     },
+    mixins: [loading],
     methods: {
         init () {
             this.$nextTick(() => {
