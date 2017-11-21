@@ -4,7 +4,7 @@
 
 <template>
     <div ref="scrollCon" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll" class="tags-outer-scroll-con">
-        <div class="close-all-tag-con">
+        <!-- <div class="close-all-tag-con">
             <Dropdown transfer @on-click="handleTagsOption">
                 <Button size="small" type="primary">
                     标签选项
@@ -15,7 +15,7 @@
                     <DropdownItem name="clearOthers">关闭其他</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-        </div>
+        </div> -->
         <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px'}">
             <transition-group name="taglist-moving-animation">
                 <Tag 

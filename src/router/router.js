@@ -212,6 +212,17 @@ export const appRouter = [
         children: [
             { path: 'index', title: '错误页面', name: 'errorpage_index', component: resolve => { require(['@/views/error-page/error-page.vue'], resolve); } }
         ]
+    },
+    {
+        path: '/verify-per',
+        icon: 'person-outline',
+        name: 'verify-per',
+        title: '个人审核',
+        component: Main,
+        children: [
+            { path: 'account', title: '开户审核', name: 'verifyper_account', component: resolve => { require(['@/views/htt/verify-per/account.vue'], resolve); } },
+            { path: 'info', title: '认证审核', name: 'verifyper_info', component: resolve => { require(['@/views/htt/verify-per/info.vue'], resolve); } }
+        ]
     }
 ];
 
