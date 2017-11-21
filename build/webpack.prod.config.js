@@ -29,8 +29,6 @@ module.exports = merge(webpackBaseConfig, {
             allChunks: true
         }),
         new webpack.optimize.CommonsChunkPlugin({
-            // name: 'vendors',
-            // filename: 'vendors.[hash].js'
             name: ['vender-exten', 'vender-base'],
             minChunks: Infinity
         }),
@@ -43,25 +41,6 @@ module.exports = merge(webpackBaseConfig, {
             compress: {
                 warnings: false
             }
-        }),
-        new CopyWebpackPlugin([
-            {
-                from: 'td_icon.ico'
-            },
-            {
-                from: 'src/styles/fonts',
-                to: 'fonts'
-            },
-            {
-                from: 'src/views/main-components/theme-switch/theme'
-            },
-            {
-                from: 'src/views/my-components/text-editor/tinymce'
-            }
-        ], {
-            ignore: [
-                'text-editor.vue'
-            ]
         }),
         new HtmlWebpackPlugin({
             title: 'iView admin v' + package.version,
