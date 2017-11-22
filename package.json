@@ -4,7 +4,7 @@
   "description": "a management bases on iview",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build",
+    "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "start": "electron ./main.js",
     "build:linux32": "electron-packager ./ iview-admin --platform=linux --arch=ia32 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico",
     "build:linux64": "electron-packager ./ iview-admin --platform=linux --arch=x64 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico",

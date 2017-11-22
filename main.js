@@ -9,11 +9,11 @@ let winAbout = null;
 
 const createWindow = () => {
     win = new BrowserWindow({
-        width: 1000,
-        height: 700,
+        // width: 1000,
+        // height: 700,
         title: 'iView',
-        center: true,
-        resizable: false,
+        // center: true,
+        // resizable: false,
         icon: logo,
         titleBarStyle: 'hidden'
     });
