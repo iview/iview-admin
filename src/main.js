@@ -6,8 +6,6 @@ import store from './store';
 import App from './app.vue';
 import '@/locale';
 import 'iview/dist/styles/iview.css';
-import './styles/cropper.min.css';
-import './styles/simplemde.min.css';
 import VueI18n from 'vue-i18n';
 import util from '@/libs/util';
 

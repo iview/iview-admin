@@ -9,12 +9,14 @@
 [![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
 [![iview ui](https://img.shields.io/badge/iview-2.7.2-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 
-## Current version：v1.2.0
+## Current version：v1.2.1
 [Update log](https://github.com/iview/iview-admin/releases)
 
 [WIKI](https://github.com/iview/iview-admin/wiki)
 
 [View online](https://iview.github.io/iview-admin)
+
+[Simplified template](https://github.com/iview/iview-admin/tree/template)
 
 `Note: The demo online will be updated after the new version of the development version is released, so if you want to experience the iview-admin with latest version, please clone the full project code and run it locally.`
 
@@ -34,7 +36,7 @@ npm run build
 ```
 
 ## Introduction
-&emsp;&emsp;iView-admin is a suite of backstage management system developed based on Vue.js and use the UI Toolkit -- [iView](https://www.iviewui.com). It's maintained by the TalkingData front-end visualization team member. iView-admin compolies with iView design and development contract, use uniform style, and more features are developing. If you want to check the update of iView-admin, you can view [Update log](https://github.com/iview/iview-admin/releases) to get. If you are new to iView-admin, you can go to [WIKI](https://github.com/iview/iview-admin/wiki) for tutorials. If you want to experience iView-admin online, you can visit [View online](https://iview.github.io/iview-admin) to experience.
+&emsp;&emsp;iView-admin is a suite of backstage management system developed based on Vue.js and use the UI Toolkit -- [iView](https://www.iviewui.com). It's maintained by the TalkingData front-end visualization team member. iView-admin compolies with iView design and development contract, use uniform style, and more features are developing. If you want to check the update of iView-admin, you can view [Update log](https://github.com/iview/iview-admin/releases) to get. If you are new to iView-admin, you can go to [WIKI](https://github.com/iview/iview-admin/wiki) for tutorials. If you want to experience iView-admin online, you can visit [View online](https://iview.github.io/iview-admin) to experience. If you just want a sober and cool interface then you can download [Simplify Templates] (https://github.com/iview/iview-admin/tree/template) for development.
 
 ## Features
 

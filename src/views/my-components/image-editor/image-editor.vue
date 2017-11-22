@@ -160,6 +160,7 @@
 
 <script>
 import Cropper from 'cropperjs';
+import './cropper.min.css';
 export default {
     name: 'image-editor',
     data () {
