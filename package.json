@@ -19,7 +19,7 @@
   "dependencies": {
     "area-data": "^1.0.0",
     "axios": "^0.15.3",
-    "clipboard": "^1.5.12",
+    "clipboard": "^1.7.1",
     "countup": "^1.8.2",
     "cropperjs": "^1.1.2",
     "echarts": "^3.7.2",
