@@ -4,11 +4,13 @@
   "description": "a management bases on iview",
   "main": "index.js",
   "scripts": {
-    "init": "webpack --progress --config build/webpack.dev.config.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --config build/webpack.dev.config.js",
-    "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
-    "lint": "eslint --fix --ext .js,.vue src",
-    "test": "npm run lint"
+    "build": "npm run build",
+    "start": "electron ./main.js",
+    "build:linux32": "electron-packager ./ iview-admin --platform=linux --arch=ia32 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico",
+    "build:linux64": "electron-packager ./ iview-admin --platform=linux --arch=x64 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico",
+    "build:mac": "electron-packager ./ iview-admin --platform=darwin --arch=x64 ~/Desktop/iview-admin --electronVersion=1.7.6 --overwrite --icon=./td_icon.ico",
+    "build:win32": "electron-packager ./ iview-admin --platform=win32 --arch=ia32 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico",
+    "build:win64": "electron-packager ./ iview-admin --platform=win32 --arch=x64 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico"
   },
   "repository": {
     "type": "git",
@@ -34,7 +36,8 @@
     "vue": "^2.5.2",
     "vue-i18n": "^5.0.3",
     "vue-router": "^2.8.1",
-    "vuex": "^2.5.0"
+    "vuex": "^2.5.0",
+    "electron-builder": "^19.27.7"
   },
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
@@ -48,9 +51,13 @@
     "babel-preset-stage-3": "^6.24.1",
     "babel-runtime": "^6.11.6",
     "clean-webpack-plugin": "^0.1.17",
+    "cnpm": "^5.1.1",
     "copy-webpack-plugin": "^4.2.0",
     "css-hot-loader": "^1.3.3",
     "css-loader": "^0.23.1",
+    "electron": "^1.7.9",
+    "electron-connect": "^0.6.2",
+    "electron-packager": "^8.7.2",
     "eslint": "^3.19.0",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^10.2.1",
