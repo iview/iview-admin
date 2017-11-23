@@ -83,7 +83,7 @@ export const appRouter = [
         access: 0,
         component: Main,
         children: [
-            { path: 'index', title: '权限测试页', name: 'accesstest_index' }
+            { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: resolve => { require(['@/views/access/access-test.vue'], resolve); } }
         ]
     },
     {
