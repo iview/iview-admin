@@ -53,7 +53,8 @@ export default {
     data () {
         return {
             data: [],
-            select: []
+            select: [],
+            isInit: true
         };
     },
     computed: {
@@ -62,6 +63,43 @@ export default {
         }
     },
     methods: {
+        init () {
+            let proData = [];
+            for (const p in areaData['86']) {
+                let proitem = {
+                    value: p,
+                    label: areaData['86'][p],
+                    children: []
+                };
+                if (this.showLevel > 0) {
+                    proitem.loading = false;
+                }
+                proData.push(proitem);
+            }
+            this.data = proData;
+        },
+        setDefaultValue () {
+            if (this.value[0]) {
+                let select = [];
+                if (isNaN(parseInt(this.value[0]))) {
+                    let i = 0;
+                    let index = '';
+                    while (this.value[i]) {
+                        if (i === 0) {
+                            index = util.getIndex(areaData['86'], this.value[0]);
+                        } else {
+                            index = util.getIndex(areaData[index], this.value[i]);
+                        }
+                        select.push(index);
+                        i++;
+                    }
+                    this.select = select;
+                } else {
+                    this.select = this.value;
+                }
+                this.$emit('input', this.procesValue(this.select));
+            }
+        },
         handleChange (resArr) {
             let res = this.procesValue(resArr);
             this.$emit('input', res);
@@ -115,40 +153,15 @@ export default {
             return res;
         }
     },
-    created () {
-        let proData = [];
-        for (const p in areaData['86']) {
-            let proitem = {
-                value: p,
-                label: areaData['86'][p],
-                children: []
-            };
-            if (this.showLevel > 0) {
-                proitem.loading = false;
-            }
-            proData.push(proitem);
+    mounted () {
+        this.init();
+        this.setDefaultValue();
+    },
+    updated () {
+        if (this.isInit) {
+            this.setDefaultValue();
         }
-        this.data = proData;
-        if (this.value[0]) {
-            let select = [];
-            if (isNaN(parseInt(this.value[0]))) {
-                let i = 0;
-                let index = '';
-                while (this.value[i]) {
-                    if (i === 0) {
-                        index = util.getIndex(areaData['86'], this.value[0]);
-                    } else {
-                        index = util.getIndex(areaData[index], this.value[i]);
-                    }
-                    select.push(index);
-                    i++;
-                }
-                this.select = select;
-            } else {
-                this.select = this.value;
-            }
-            this.$emit('input', this.procesValue(this.select));
-        }
+        this.isInit = false;
     }
 };
 </script>
