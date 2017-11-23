@@ -165,11 +165,12 @@
                 // console.log(val)
             },
             beforePush (name) {
-                if (name === 'accesstest_index') {
-                    return false;
-                } else {
-                    return true;
-                }
+                // if (name === 'accesstest_index') {
+                //     return false;
+                // } else {
+                //     return true;
+                // }
+                return true;
             },
             fullscreenChange (isFullScreen) {
                 // console.log(isFullScreen);
