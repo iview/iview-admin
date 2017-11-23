@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
     Util.title(to.meta.title);
     if (Cookies.get('locking') === '1' && to.name !== 'locking') {  // 判断当前是否是锁定状态
         next({
-            replace: true
+            replace: true,
             name: 'locking'
         });
     } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
                     Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next);  // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
                 } else {
                     next({
-                        replace: true
+                        replace: true,
                         name: 'error_403'
                     });
                 }
