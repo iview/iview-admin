@@ -170,7 +170,7 @@
                 // } else {
                 //     return true;
                 // }
-                return true
+                return true;
             },
             fullscreenChange (isFullScreen) {
                 // console.log(isFullScreen);

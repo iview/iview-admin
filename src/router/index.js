@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
             next({
                 name: 'home_index'
             });
-        } else  {
+        } else {
             if (!Cookies.get('user') && to.name !== 'login') {  // 判断是否已经登录且前往的页面不是登录页
                 next({
                     name: 'login'
