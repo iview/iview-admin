@@ -4,6 +4,7 @@
   "description": "a management bases on iview",
   "main": "index.js",
   "scripts": {
+    "generate": "nuxt generate",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "start": "electron ./main.js",
     "build:linux32": "electron-packager ./ iview-admin --platform=linux --arch=ia32 ~/Desktop/iview-admin --electronVersion=1.4.15 --overwrite --icon=./td_icon.ico",
@@ -73,6 +74,7 @@
     "html-webpack-plugin": "^2.28.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "nuxt": "^1.0.0-rc11",
     "semver": "^5.4.1",
     "style-loader": "^0.13.1",
     "unsupported": "^1.1.0",
