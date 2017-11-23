@@ -19,8 +19,8 @@ router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
     if (Cookies.get('locking') === '1' && to.name !== 'locking') {  // 判断当前是否是锁定状态
-        next(false);
-        router.replace({
+        next({
+            replace: true,
             name: 'locking'
         });
     } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
@@ -40,10 +40,10 @@ router.beforeEach((to, from, next) => {
                 if (Util.getRouterObjByName([otherRouter, ...appRouter], to.name).access === parseInt(Cookies.get('access'))) {
                     Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next);  // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
                 } else {
-                    router.replace({
+                    next({
+                        replace: true,
                         name: 'error_403'
                     });
-                    next();
                 }
             } else {
                 Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next);
