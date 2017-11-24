@@ -38,11 +38,12 @@ module.exports = {
             },
             {
                 test: /iview\/.*?js$/,
-                loader: 'babel-loader'
+                loader: 'happypack/loader?id=happybabel',
+                exclude: /node_modules/
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                loader: 'happypack/loader?id=happybabel',
                 exclude: /node_modules/
             },
             {
@@ -81,6 +82,7 @@ module.exports = {
             id: 'happybabel',
             loaders: ['babel-loader'],
             threadPool: happyThreadPool,
+            cache: true,
             verbose: true
         })
     ],
