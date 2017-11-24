@@ -75,13 +75,15 @@ export default {
         },
         closePage (event, name) {
             let pageOpenedList = this.$store.state.app.pageOpenedList;
-            let lastPageName = pageOpenedList[0].name;
+            let lastPageObj = pageOpenedList[0];
             if (this.currentPageName === name) {
                 let len = pageOpenedList.length;
-                for (let i = 0; i < len; i++) {
+                for (let i = 1; i < len; i++) {
                     if (pageOpenedList[i].name === name) {
-                        if (i > 0) {
-                            lastPageName = pageOpenedList[i - 1].name;
+                        if (i < (len - 1)) {
+                            lastPageObj = pageOpenedList[i + 1];
+                        } else {
+                            lastPageObj = pageOpenedList[i - 1];
                         }
                         break;
                     }
@@ -92,9 +94,7 @@ export default {
             pageOpenedList = this.$store.state.app.pageOpenedList;
             localStorage.pageOpenedList = JSON.stringify(pageOpenedList);
             if (this.currentPageName === name) {
-                this.$router.push({
-                    name: lastPageName
-                });
+                this.linkTo(lastPageObj);
             }
         },
         linkTo (item) {

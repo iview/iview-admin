@@ -6,4 +6,4 @@ node_modules
 .DS_Store
 \.settings/
 build/env.js
-dist
+dist/

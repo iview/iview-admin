@@ -9,7 +9,7 @@
 [![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
 [![iview ui](https://img.shields.io/badge/iview-2.7.2-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 
-## Current version：v1.2.1
+## Current version：v1.2.2
 [Update log](https://github.com/iview/iview-admin/releases)
 
 [WIKI](https://github.com/iview/iview-admin/wiki)
