@@ -52,7 +52,7 @@
     "eslint": "^4.11.0",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-html": "^1.7.0",
+    "eslint-plugin-html": "^4.0.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.6.0",
