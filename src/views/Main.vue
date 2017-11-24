@@ -35,12 +35,40 @@
                     </Col>
                 </Row>
             </div>
-            <Row class="nav-bar" type="flex" justify="center" gutter="40">
-                <Col>业务管理</Col>
-                <Col>风控管理</Col>
-                <Col>会员管理</Col>
-                <Col>数据统计</Col>
-            </Row>
+            <Menu mode="horizontal" :theme="menuTheme" :active-name="navName" class="nav-bar" @on-select="handleNavmenuChange">
+                <Row type="flex" justify="center" :gutter="40">
+                    <Col>
+                        <MenuItem name="example">
+                            <Icon type="ios-paper"></Icon>
+                            官方示例
+                        </MenuItem>
+                    </Col>
+                    <Col>
+                        <MenuItem name="loan">
+                            <Icon type="ios-people"></Icon>
+                            业务管理
+                        </MenuItem>
+                    </Col>
+                    <Col>
+                        <MenuItem name="risk">
+                            <Icon type="stats-bars"></Icon>
+                            风控管理
+                        </MenuItem>
+                    </Col>
+                    <Col>
+                        <MenuItem name="member">
+                            <Icon type="settings"></Icon>
+                            会员管理
+                        </MenuItem>
+                    </Col>
+                    <Col>
+                        <MenuItem name="statistics">
+                            <Icon type="settings"></Icon>
+                            数据统计
+                        </MenuItem>
+                    </Col>
+                </Row>
+            </Menu>
         </header>
         <div class="main" :class="{'main-hide-text': shrink}">
             <div class="sidebar-menu-con" :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}">
@@ -50,7 +78,8 @@
                     :theme="menuTheme" 
                     :before-push="beforePush"
                     :open-names="openedSubmenuArr"
-                    :menu-list="menuList">
+                    :menu-list="menuList"
+                    :nav-name="navName">
                 </shrinkable-menu>
             </div>
             <div class="main-header-con" :style="{paddingLeft: shrink?'60px':'200px'}">
@@ -103,8 +132,11 @@
                 shrink: false,
                 userName: '',
                 isFullScreen: false,
-                openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+                openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+                navName: 'example'
             };
+        },
+        created(){
         },
         computed: {
             menuList () {
@@ -135,7 +167,7 @@
         methods: {
             init () {
                 let pathArr = util.setCurrentPath(this, this.$route.name);
-                this.$store.commit('updateMenulist');
+                this.$store.commit('updateMenulist', this.navName);
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
@@ -172,6 +204,10 @@
                 if (!openpageHasTag) {  //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
                     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
                 }
+            },
+            handleNavmenuChange (val) {
+                this.navName = val
+                this.$store.commit('updateMenulist', this.navName);
             },
             handleSubmenuChange (val) {
                 // console.log(val)

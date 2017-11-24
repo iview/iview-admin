@@ -1,4 +1,4 @@
-import {otherRouter, appRouter} from '@/router/router';
+import {otherRouter, appRouter, example, loan, risk, member, statistics} from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
@@ -27,7 +27,11 @@ const app = {
         menuList: [],
         routers: [
             otherRouter,
-            ...appRouter
+            ...example,
+            ...loan,
+            ...risk,
+            ...member,
+            ...statistics
         ],
         tagsList: [...otherRouter.children],
         messageCount: 0
@@ -36,10 +40,10 @@ const app = {
         setTagsList (state, list) {
             state.tagsList.push(...list);
         },
-        updateMenulist (state) {
+        updateMenulist (state, navName) {
             let accessCode = parseInt(Cookies.get('access'));
             let menuList = [];
-            appRouter.forEach((item, index) => {
+            appRouter[navName || 'loan'].forEach((item, index) => {
                 if (item.access !== undefined) {
                     if (Util.showThisRoute(item.access, accessCode)) {
                         if (item.children.length === 1) {

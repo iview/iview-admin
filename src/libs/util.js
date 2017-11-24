@@ -243,6 +243,7 @@ util.toDefaultPage = function (routers, name, route, next) {
             });
             notHandle = false;
             next();
+            alert('open');
             break;
         }
         i++;

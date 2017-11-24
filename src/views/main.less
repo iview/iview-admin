@@ -27,10 +27,10 @@ html,body{
         z-index: 11000;
     }
     .sidebar-menu-con{
-        height: 100%;
-        position: absolute;
-        top: 0;
+        position: fixed;
+        top: 128px;
         left: 0;
+        bottom: 0;
         z-index: 21;
         transition: width .3s;
     }
@@ -112,7 +112,7 @@ html,body{
         position: absolute;
         top: 60px;
         right: 0;
-        bottom: 0;
+        bottom: 128px;
         overflow: auto;
         background-color: #F0F0F0;
         z-index: 1;
@@ -219,14 +219,10 @@ html,body{
         }
     }
     .nav-bar{
-        background-color: #4A5060;
-        color: white;
-        font-size: 14px;
-        >div{
-            line-height: 60px;
-            &:hover{
-                background-color: #2D8CF0;
-            }
+        z-index: 890;
+        .ivu-menu-item-active{
+            color: #fff;
+            background: #2d8cf0!important;
         }
     }
 }

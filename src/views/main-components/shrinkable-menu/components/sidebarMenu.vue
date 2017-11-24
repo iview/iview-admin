@@ -38,11 +38,16 @@ export default {
         },
         openNames: {
             type: Array
-        }
+        },
+        navName: String
+    },
+    created() {
+        // console.log(this.navName,1,this.iconSize)
     },
     methods: {
         changeMenu (active) {
             this.$emit('on-change', active);
+            console.log(this.navName,this.menuList)
         },
         itemTitle (item) {
             if (typeof item.title === 'object') {

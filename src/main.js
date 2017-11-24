@@ -30,7 +30,13 @@ new Vue({
     },
     created () {
         let tagsList = [];
-        appRouter.map((item) => {
+        let appRouters = [];
+        for (const name in appRouter) {
+            if (appRouter.hasOwnProperty(name)) {
+                appRouters.push(...appRouter[name]);
+            }
+        }
+        appRouters.map((item) => {
             if (item.children.length <= 1) {
                 tagsList.push(item.children[0]);
             } else {
