@@ -77,6 +77,7 @@
     "vue-template-compiler": "^2.5.8",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
-    "webpack-merge": "^3.0.0"
+    "webpack-merge": "^3.0.0",
+    "webpack-uglify-parallel": "^0.1.4"
   }
 }
