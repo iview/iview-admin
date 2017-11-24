@@ -5,4 +5,5 @@ node_modules
 .history
 .DS_Store
 \.settings/
-src/config/env.js
+build/env.js
+dist/
