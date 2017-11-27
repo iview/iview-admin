@@ -20,6 +20,7 @@
 
 <script>
 import SimpleMDE from 'simplemde';
+import './simplemde.min.css';
 export default {
     name: 'markdown-editor',
     mounted () {

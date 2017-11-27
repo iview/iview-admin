@@ -53,6 +53,7 @@ export const locking = {
 export const otherRouter = {
     path: '/',
     name: 'otherRouter',
+    redirect: '/home',
     component: Main,
     children: [
         { path: 'home', title: {i18n: 'home'}, name: 'home_index', component: resolve => { require(['@/views/home/home.vue'], resolve); } },
@@ -83,7 +84,7 @@ export const appRouter = [
         access: 0,
         component: Main,
         children: [
-            { path: 'index', title: '权限测试页', name: 'accesstest_index' }
+            { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: resolve => { require(['@/views/access/access-test.vue'], resolve); } }
         ]
     },
     {
@@ -152,6 +153,13 @@ export const appRouter = [
                 title: '数字渐变',
                 component: resolve => { require(['@/views/my-components/count-to/count-to.vue'], resolve); }
             }
+            // {
+            //     path: 'clipboard-page',
+            //     icon: 'clipboard',
+            //     name: 'clipboard-page',
+            //     title: '一键复制',
+            //     component: resolve => { require(['@/views/my-components/clipboard/clipboard.vue'], resolve); }
+            // }
         ]
     },
     {

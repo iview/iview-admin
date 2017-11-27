@@ -16,6 +16,7 @@
             v-show="shrink"
             :menu-theme="theme" 
             :menu-list="menuList" 
+            :icon-color="shrinkIconColor"
             @on-change="handleChange"
         ></sidebar-menu-shrink>
     </div>
@@ -57,6 +58,9 @@ export default {
     computed: {
         bgColor () {
             return this.theme === 'dark' ? '#495060' : '#fff';
+        },
+        shrinkIconColor () {
+            return this.theme === 'dark' ? '#fff' : '#495060';
         }
     },
     methods: {
@@ -71,7 +75,6 @@ export default {
                 this.$router.push({
                     name: name
                 });
-                util.openNewPage(this, name);
             }
             this.$emit('on-change', name);
         }

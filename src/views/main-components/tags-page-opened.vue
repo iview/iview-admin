@@ -74,20 +74,27 @@ export default {
             }
         },
         closePage (event, name) {
+            let pageOpenedList = this.$store.state.app.pageOpenedList;
+            let lastPageObj = pageOpenedList[0];
+            if (this.currentPageName === name) {
+                let len = pageOpenedList.length;
+                for (let i = 1; i < len; i++) {
+                    if (pageOpenedList[i].name === name) {
+                        if (i < (len - 1)) {
+                            lastPageObj = pageOpenedList[i + 1];
+                        } else {
+                            lastPageObj = pageOpenedList[i - 1];
+                        }
+                        break;
+                    }
+                }
+            }
             this.$store.commit('removeTag', name);
             this.$store.commit('closePage', name);
-            let pageOpenedList = this.$store.state.app.pageOpenedList;
+            pageOpenedList = this.$store.state.app.pageOpenedList;
             localStorage.pageOpenedList = JSON.stringify(pageOpenedList);
             if (this.currentPageName === name) {
-                let lastPageName = '';
-                if (pageOpenedList.length > 1) {
-                    lastPageName = pageOpenedList[1].name;
-                } else {
-                    lastPageName = pageOpenedList[0].name;
-                }
-                this.$router.push({
-                    name: lastPageName
-                });
+                this.linkTo(lastPageObj);
             }
         },
         linkTo (item) {
