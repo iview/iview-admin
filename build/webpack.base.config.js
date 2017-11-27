@@ -82,7 +82,6 @@ module.exports = {
             id: 'happybabel',
             loaders: ['babel-loader'],
             threadPool: happyThreadPool,
-            cache: true,
             verbose: true
         })
     ],

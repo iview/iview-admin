@@ -3,8 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const cleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config.js');
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const package = require('../package.json');
@@ -39,10 +41,19 @@ module.exports = merge(webpackBaseConfig, {
                 NODE_ENV: '"production"'
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
+        new UglifyJsParallelPlugin({
+            workers: os.cpus().length,
+            mangle: true,
+            compressor: {
+              warnings: false,
+              drop_console: true,
+              drop_debugger: true
+             }
         }),
         new CopyWebpackPlugin([
             {
