@@ -53,6 +53,7 @@ export const locking = {
 export const otherRouter = {
     path: '/',
     name: 'otherRouter',
+    redirect: '/home',
     component: Main,
     children: [
         { path: 'home', title: {i18n: 'home'}, name: 'home_index', component: resolve => { require(['@/views/home/home.vue'], resolve); } },
@@ -90,7 +91,7 @@ export const example = [
         // access如果只有一个权限值过滤，那么直接写一个数字即可（如这的0）,如果有多个，则写成数组类型（如[0,1]）。
         component: Main,
         children: [
-            { path: 'index', title: '权限测试页', name: 'accesstest_index' }
+            { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: resolve => { require(['@/views/access/access-test.vue'], resolve); } }
         ]
     },
     {
@@ -159,6 +160,13 @@ export const example = [
                 title: '数字渐变',
                 component: resolve => { require(['@/views/my-components/count-to/count-to.vue'], resolve); }
             }
+            // {
+            //     path: 'clipboard-page',
+            //     icon: 'clipboard',
+            //     name: 'clipboard-page',
+            //     title: '一键复制',
+            //     component: resolve => { require(['@/views/my-components/clipboard/clipboard.vue'], resolve); }
+            // }
         ]
     },
     {

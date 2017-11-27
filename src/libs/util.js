@@ -49,29 +49,21 @@ util.showThisRoute = function (itAccess, currentAccess) {
 };
 
 util.getRouterObjByName = function (routers, name) {
-    let routerObj = {};
-    routers.forEach(item => {
-        if (item.name === 'otherRouter') {
-            item.children.forEach((child, i) => {
-                if (child.name === name) {
-                    routerObj = item.children[i];
-                }
-            });
-        } else {
-            if (item.children.length === 1) {
-                if (item.children[0].name === name) {
-                    routerObj = item.children[0];
-                }
-            } else {
-                item.children.forEach((child, i) => {
-                    if (child.name === name) {
-                        routerObj = item.children[i];
-                    }
-                });
-            }
+    if (!name || !routers || !routers.length) {
+        return null;
+    }
+    // debugger;
+    let routerObj = null;
+    for (let item of routers) {
+        if (item.name === name) {
+            return item;
         }
-    });
-    return routerObj;
+        routerObj = util.getRouterObjByName(item.children, name);
+        if (routerObj) {
+            return routerObj;
+        }
+    }
+    return null;
 };
 
 util.handleTitle = function (vm, item) {
@@ -237,7 +229,7 @@ util.toDefaultPage = function (routers, name, route, next) {
     let i = 0;
     let notHandle = true;
     while (i < len) {
-        if (routers[i].name === name && routers[i].redirect === undefined) {
+        if (routers[i].name === name && routers[i].children && routers[i].redirect === undefined) {
             route.replace({
                 name: routers[i].children[0].name
             });
