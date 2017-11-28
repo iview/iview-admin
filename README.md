@@ -133,7 +133,7 @@ npm run build
 
 ## 效果展示
 
-- 首页
+- 响应式布局首页
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
 - 标签导航
