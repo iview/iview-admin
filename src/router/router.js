@@ -64,8 +64,12 @@ export const otherRouter = {
     ]
 };
 
-// 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
-export const appRouter = [
+/**
+ * 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
+ */
+
+// 官方示例
+export const example = [
     {
         path: '/access',
         icon: 'key',
@@ -82,6 +86,9 @@ export const appRouter = [
         title: '权限测试页',
         name: 'accesstest',
         access: 0,
+        // 如果设置access值，那么当登录用户的权限值不为0时则该菜单及其二级菜单都不会出现在左侧菜单栏；
+        // 如果不设置access值，那么该菜单默认显示；
+        // access如果只有一个权限值过滤，那么直接写一个数字即可（如这的0）,如果有多个，则写成数组类型（如[0,1]）。
         component: Main,
         children: [
             { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: resolve => { require(['@/views/access/access-test.vue'], resolve); } }
@@ -223,13 +230,83 @@ export const appRouter = [
     }
 ];
 
+// 业务管理
+export const loan = [
+    {
+        path: '/verify-per',
+        icon: 'person',
+        name: 'verify-per',
+        title: '个人审核',
+        component: Main,
+        children: [
+            { path: 'account', title: '开户审核', name: 'verifyper_account', component: resolve => { require(['@/views/htt/verify-per/account.vue'], resolve); } },
+            { path: 'info', title: '认证审核', name: 'verifyper_info', component: resolve => { require(['@/views/htt/verify-per/info.vue'], resolve); } }
+        ]
+    }
+];
+
+// 风控管理
+export const risk = [
+    {
+        path: '/loan',
+        icon: 'person',
+        name: 'loan',
+        title: '贷后管理',
+        component: Main,
+        children: [
+            { path: 'account', title: '借款管理', name: 'manage', component: resolve => { require(['@/views/htt/verify-per/account.vue'], resolve); } },
+            { path: 'info', title: '逾期管理', name: 'overdue', component: resolve => { require(['@/views/htt/verify-per/info.vue'], resolve); } }
+        ]
+    }
+];
+
+export const member = [
+    {
+        path: '/loan',
+        icon: 'person',
+        name: 'loan',
+        title: '贷后管理',
+        component: Main,
+        children: [
+            { path: 'account', title: '借款管理', name: 'manage', component: resolve => { require(['@/views/htt/verify-per/account.vue'], resolve); } },
+            { path: 'info', title: '逾期管理', name: 'overdue', component: resolve => { require(['@/views/htt/verify-per/info.vue'], resolve); } }
+        ]
+    }
+];
+
+export const statistics = [
+    {
+        path: '/loan',
+        icon: 'person',
+        name: 'loan',
+        title: '贷后管理',
+        component: Main,
+        children: [
+            { path: 'account', title: '借款管理', name: 'manage', component: resolve => { require(['@/views/htt/verify-per/account.vue'], resolve); } },
+            { path: 'info', title: '逾期管理', name: 'overdue', component: resolve => { require(['@/views/htt/verify-per/info.vue'], resolve); } }
+        ]
+    }
+];
+
+export const appRouter = {
+    example,
+    loan,
+    risk,
+    member,
+    statistics
+};
+
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
     otherRouter,
     preview,
     locking,
-    ...appRouter,
+    ...example,
+    ...loan,
+    ...risk,
+    ...member,
+    ...statistics,
     page500,
     page403,
     page404

@@ -27,10 +27,10 @@ html,body{
         z-index: 11000;
     }
     .sidebar-menu-con{
-        height: 100%;
         position: fixed;
-        top: 0;
+        top: 128px;
         left: 0;
+        bottom: 0;
         z-index: 21;
         transition: width .3s;
     }
@@ -50,28 +50,21 @@ html,body{
         position: fixed;
         display: block;
         padding-left: 200px;
+        margin-top: 2px;
         width: 100%;
-        height: 100px;
+        height: 60px;
         z-index: 20;
-        box-shadow: 0 2px 1px 1px rgba(100,100,100,.1);
+        box-shadow: 0 0 1px 3px hsla(0,0%,39%,.1);
         transition: padding .3s;
-    }
-    &-breadcrumb{
-        padding: 8px 15px 0;
-    }
-    &-menu-left{
-        background: #464c5b;
-        height: 100%;
     }
     .tags-con{
         height: 40px;
         z-index: -1;
         overflow: hidden;
-        background: #f0f0f0;
         .tags-outer-scroll-con{
             position: relative;
             box-sizing: border-box;
-            padding-right: 120px;
+            // padding-right: 120px;
             width: 100%;
             height: 100%;
             .tags-inner-scroll-body{
@@ -81,25 +74,24 @@ html,body{
                 white-space: nowrap;
                 transition: left .3s ease;
             }
-            .close-all-tag-con{
-                position: absolute;
-                right: 0;
-                top: 0;
-                box-sizing: border-box;
-                padding-top: 8px;
-                text-align: center;
-                width: 110px;
-                height: 100%;
-                background: white;
-                box-shadow: -3px 0 15px 3px rgba(0, 0, 0, .1);
-                z-index: 10;
-            }
+            // .close-all-tag-con{
+            //     position: absolute;
+            //     right: 0;
+            //     top: 0;
+            //     box-sizing: border-box;
+            //     padding-top: 8px;
+            //     text-align: center;
+            //     width: 110px;
+            //     height: 100%;
+            //     background: white;
+            //     box-shadow: -3px 0 15px 3px rgba(0, 0, 0, .1);
+            //     z-index: 10;
+            // }
         }
     }
     &-header{
         height: 60px;
         background: #fff;
-        box-shadow: 0 2px 1px 1px rgba(100,100,100,.1);
         position: relative;
         z-index: 11;
         .navicon-con{
@@ -110,10 +102,47 @@ html,body{
             position: absolute;
             left: 60px;
             top: 0;
-            right: 340px;
+            right: 0px;
             bottom: 0;
-            padding: 10px;
+            padding: 10px 0;
             overflow: hidden;
+        }
+    }
+    .single-page-con{
+        position: absolute;
+        top: 60px;
+        right: 0;
+        bottom: 128px;
+        overflow: auto;
+        background-color: #F0F0F0;
+        z-index: 1;
+        transition: left .3s;
+        .single-page{
+            margin: 10px;
+        }
+    }
+    &-copy{
+        text-align: center;
+        padding: 10px 0 20px;
+        color: #9ea7b4;
+    }
+}
+.taglist-moving-animation-move{
+    transition: transform .3s;
+}
+.header{
+    margin-bottom: 8px;
+    box-shadow: 0 2px 1px 1px hsla(0,0%,39%,.1);
+    .info-bar{
+        background-color: white;
+        .logo-con{
+            padding: 8px;
+            text-align: center;
+            height: 60px;
+            img{
+                height: 100%;
+                width: auto;
+            }
         }
         .header-avator-con{
             position: absolute;
@@ -189,33 +218,11 @@ html,body{
             }
         }
     }
-    .single-page-con{
-        position: absolute;
-        top: 100px;
-        right: 0;
-        bottom: 0;
-        overflow: auto;
-        background-color: #F0F0F0;
-        z-index: 1;
-        transition: left .3s;
-        .single-page{
-            margin: 10px;
+    .nav-bar{
+        z-index: 890;
+        .ivu-menu-item-active{
+            color: #fff;
+            background: #2d8cf0!important;
         }
-    }
-    &-copy{
-        text-align: center;
-        padding: 10px 0 20px;
-        color: #9ea7b4;
-    }
-}
-.taglist-moving-animation-move{
-    transition: transform .3s;
-}
-.logo-con{
-    padding: 8px;
-    text-align: center;
-    img{
-        height: 44px;
-        width: auto;
     }
 }
