@@ -133,7 +133,7 @@ npm run build
 
 ## 效果展示
 
-- 登录
+- 首页
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
 - 标签导航

@@ -129,7 +129,7 @@ npm run build
 
 ## Show
 
-- log in
+- home
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
 - tag navigation
