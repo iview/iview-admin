@@ -62,11 +62,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
-                    use: ['css-hot-loader', 'autoprefixer-loader', 'less-loader'],
+                    use: ['autoprefixer-loader', 'less-loader'],
                     fallback: 'style-loader'
                 }),
             },
-
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=1024'
