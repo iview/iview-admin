@@ -25,7 +25,7 @@
     "echarts": "^3.8.5",
     "html2canvas": "^0.5.0-beta4",
     "iview": "^2.7.3",
-    "iview-area": "^1.5.11",
+    "iview-area": "^1.5.12",
     "js-cookie": "^2.2.0",
     "rasterizehtml": "^1.2.4",
     "simplemde": "^1.11.2",

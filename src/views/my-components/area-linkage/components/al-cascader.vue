@@ -84,7 +84,7 @@ export default {
                 if (isNaN(parseInt(this.value[0]))) {
                     let i = 0;
                     let index = '';
-                    while (this.value[i]) {
+                    while (this.value[i] && i <= this.showLevel) {
                         if (i === 0) {
                             index = util.getIndex(areaData['86'], this.value[0]);
                         } else {
@@ -155,7 +155,7 @@ export default {
     },
     mounted () {
         this.init();
-        this.setDefaultValue();
+        // this.setDefaultValue();
     },
     updated () {
         if (this.isInit) {
