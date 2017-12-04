@@ -164,7 +164,7 @@ export default {
                     this.moveToView(tag);
                 }
             });
-        }, 1);  // 这里不设定时器就会有偏移bug
+        }, 1); // 这里不设定时器就会有偏移bug
         this.tagsCount = this.tagsList.length;
     },
     watch: {

@@ -99,10 +99,10 @@
                 return this.$store.state.app.menuList;
             },
             pageTagsList () {
-                return this.$store.state.app.pageOpenedList;  // 打开的页面的页面对象
+                return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
             },
             currentPath () {
-                return this.$store.state.app.currentPath;  // 当前面包屑数组
+                return this.$store.state.app.currentPath; // 当前面包屑数组
             },
             avatorPath () {
                 return localStorage.avatorImgPath;
@@ -157,7 +157,7 @@
                         return true;
                     }
                 });
-                if (!openpageHasTag) {  //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
+                if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
                     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
                 }
             },
@@ -187,7 +187,7 @@
                 localStorage.currentPageName = to.name;
             },
             lang () {
-                util.setCurrentPath(this, this.$route.name);  // 在切换语言时用于刷新面包屑
+                util.setCurrentPath(this, this.$route.name); // 在切换语言时用于刷新面包屑
             }
         },
         mounted () {
