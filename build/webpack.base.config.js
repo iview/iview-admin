@@ -24,6 +24,16 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
+                    // loaders: {
+                    //     less: ExtractTextPlugin.extract({
+                    //         use: ['css-loader?minimize', 'autoprefixer-loader', 'less-loader'],
+                    //         fallback: 'vue-style-loader'
+                    //     }),
+                    //     css: ExtractTextPlugin.extract({
+                    //         use: ['css-loader', 'autoprefixer-loader'],
+                    //         fallback: 'vue-style-loader'
+                    //     })
+                    // }
                     loaders: {
                         css: 'vue-style-loader!css-loader',
                         less: 'vue-style-loader!css-loader!less-loader'
@@ -35,11 +45,12 @@ module.exports = {
             },
             {
                 test: /iview\/.*?js$/,
-                loader: 'babel-loader'
+                loader: 'happypack/loader?id=happybabel',
+                exclude: /node_modules/
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                loader: 'happypack/loader?id=happybabel',
                 exclude: /node_modules/
             },
             {
@@ -58,11 +69,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
-                    use: ['css-hot-loader', 'autoprefixer-loader', 'less-loader'],
+                    use: ['autoprefixer-loader', 'less-loader'],
                     fallback: 'style-loader'
                 }),
             },
-
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=1024'
