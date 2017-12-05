@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/iview/iview-admin.git"
   },
-  "author": "",
+  "author": "Lison<zhigang.li@tendcloud.com>",
   "license": "MIT",
   "dependencies": {
     "area-data": "^1.0.0",
