@@ -8,6 +8,12 @@
 
 <script>
 import Cookies from 'js-cookie';
+const setLockBackSize = () => {
+    let x = document.body.clientWidth;
+    let y = document.body.clientHeight;
+    let r = Math.sqrt(x * x + y * y);
+    return parseInt(r);
+};
 export default {
     name: 'lockScreen',
     props: {
@@ -42,10 +48,7 @@ export default {
             document.body.appendChild(lockdiv);
             lockScreenBack = document.getElementById('lock_screen_back');
             window.addEventListener('resize', () => {
-                let x = document.body.clientWidth;
-                let y = document.body.clientHeight;
-                let r = Math.sqrt(x * x + y * y);
-                let size = parseInt(r);
+                let size = setLockBackSize();
                 this.lockScreenSize = size;
                 lockScreenBack.style.transition = 'all 0s';
                 lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
@@ -53,10 +56,7 @@ export default {
         } else {
             lockScreenBack = document.getElementById('lock_screen_back');
         }
-        let x = document.body.clientWidth;
-        let y = document.body.clientHeight;
-        let r = Math.sqrt(x * x + y * y);
-        let size = parseInt(r);
+        let size = setLockBackSize();
         this.lockScreenSize = size;
         lockScreenBack.style.transition = 'all 3s';
         lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';

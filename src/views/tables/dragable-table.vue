@@ -8,7 +8,12 @@
         <Row>
             <Col span="16">
                 <Card>
-                    <DragableTable refs="table1" v-model="tableData" :columnsList="columnsList" @on-start="handleOnstart1" @on-end="handleOnend1" ></DragableTable>
+                    <DragableTable 
+                        v-model="tableData" 
+                        :columns-list="columnsList" 
+                        @on-start="handleOnstart1" 
+                        @on-end="handleOnend1" 
+                    ></DragableTable>
                 </Card>
             </Col>
             <Col span="8" class="padding-left-10 height-100" >

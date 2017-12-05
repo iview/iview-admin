@@ -1,7 +1,7 @@
 <template>
     <div>
         <Table 
-            :ref="refs" 
+            ref="dragable" 
             :columns="columnsList" 
             :data="value" 
             highlight-row 
@@ -16,7 +16,6 @@ import Sortable from 'sortablejs';
 export default {
     name: 'DragableTable',
     props: {
-        refs: String,
         columnsList: Array,
         value: Array
     },
@@ -39,7 +38,7 @@ export default {
         }
     },
     mounted () {
-        var el = this.$refs[this.refs].$children[1].$el.children[1];
+        var el = this.$refs.dragable.$children[1].$el.children[1];
         let vm = this;
         Sortable.create(el, {
             onStart: vm.startFunc,
@@ -49,3 +48,4 @@ export default {
     }
 };
 </script>
+
