@@ -75,7 +75,7 @@
     "vue-loader": "^13.5.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.9",
-    "webpack": "^3.9.1",
+    "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.5",
     "webpack-merge": "^4.1.1",
     "webpack-uglify-parallel": "^0.1.4"
