@@ -26,7 +26,7 @@ util.inOf = function (arr, targetArr) {
     let res = true;
     arr.map(item => {
         if (targetArr.indexOf(item) < 0) {
-            res = false;
+            res = res && false;
         }
     });
     return res;
