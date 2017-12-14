@@ -15,7 +15,7 @@
                     <Row class="area-linkage-page-row1">
                         <al-selector 
                             v-model="resDefault"
-                            level="1"
+                            level="3"
                             auto
                         />
                         <pre>
@@ -41,11 +41,8 @@
                         数据展示
                     </p>
                     <Row class="area-linkage-page-row1">
-                        <pre v-if="res1.length > 0" style="font-size:12px;">
-{{ res1 }}
-                        </pre>
-                        <pre v-else style="font-size:12px;">
-{{ resDefault }}
+                        <pre style="font-size:12px;">
+{{ showRes }}
                         </pre>
                     </Row>
                 </Card>
@@ -197,12 +194,21 @@ export default {
     data () {
         return {
             res1: [],
-            resDefault: ['河北省', '张家口市', '怀来县', '沙城镇']
+            resDefault: ['河北省', '张家口市', '怀来县', '沙城镇'],
+            showRes: []
         };
     },
     methods: {
         renderFormat (label) {
             return label.join(' => ');
+        }
+    },
+    watch: {
+        res1 (val) {
+            this.showRes = val;
+        },
+        resDefault (val) {
+            this.showRes = val;
         }
     }
 };

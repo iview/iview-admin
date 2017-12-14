@@ -102,17 +102,17 @@ export default {
                 company: '',
                 department: ''
             },
-            uid: '',  // 登录用户的userId
-            securityCode: '',  // 验证码
-            phoneHasChanged: false,  // 是否编辑了手机
+            uid: '', // 登录用户的userId
+            securityCode: '', // 验证码
+            phoneHasChanged: false, // 是否编辑了手机
             save_loading: false,
-            identifyError: '',  // 验证码错误
+            identifyError: '', // 验证码错误
             editPasswordModal: false, // 修改密码模态框显示
             savePassLoading: false,
             oldPassError: '',
-            identifyCodeRight: false,  // 验证码是否正确
-            hasGetIdentifyCode: false,  // 是否点了获取验证码
-            canGetIdentifyCode: false,  // 是否可点获取验证码
+            identifyCodeRight: false, // 验证码是否正确
+            hasGetIdentifyCode: false, // 是否点了获取验证码
+            canGetIdentifyCode: false, // 是否可点获取验证码
             checkIdentifyCodeLoading: false,
             inforValidate: {
                 name: [
@@ -144,7 +144,7 @@ export default {
             },
             inputCodeVisible: false, // 显示填写验证码box
             initPhone: '',
-            gettingIdentifyCodeBtnContent: '获取验证码'  // “获取验证码”按钮的文字
+            gettingIdentifyCodeBtnContent: '获取验证码' // “获取验证码”按钮的文字
         };
     },
     methods: {
@@ -188,9 +188,9 @@ export default {
         saveEdit () {
             this.$refs['userForm'].validate((valid) => {
                 if (valid) {
-                    if (this.phoneHasChanged && this.userForm.cellphone !== this.initPhone) {  // 手机号码修改过了而且修改之后的手机号和原来的不一样
+                    if (this.phoneHasChanged && this.userForm.cellphone !== this.initPhone) { // 手机号码修改过了而且修改之后的手机号和原来的不一样
                         if (this.hasGetIdentifyCode) { // 判断是否点了获取验证码
-                            if (this.identifyCodeRight) {  // 判断验证码是否正确
+                            if (this.identifyCodeRight) { // 判断验证码是否正确
                                 this.saveInfoAjax();
                             } else {
                                 this.$Message.error('验证码错误，请重新输入');

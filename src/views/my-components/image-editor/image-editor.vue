@@ -236,7 +236,7 @@ export default {
             let file = e.target.files[0];
             let reader = new FileReader();
             reader.onload = () => {
-                this.cropper3.replace(reader.result, true);  // 这里必须设置true这个参数，否则旋转会有bug
+                this.cropper3.replace(reader.result, true); // 这里必须设置true这个参数，否则旋转会有bug
                 reader.onload = null;
             };
             reader.readAsDataURL(file);

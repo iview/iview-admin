@@ -9,7 +9,8 @@
 [![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
 [![iview ui](https://img.shields.io/badge/iview-2.7.2-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 
-## 当前版本：v1.2.1
+
+## 当前版本：v1.2.3
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用教程](https://github.com/iview/iview-admin/wiki)
@@ -132,7 +133,7 @@ npm run build
 
 ## 效果展示
 
-- 登录
+- 响应式布局首页
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
 - 标签导航

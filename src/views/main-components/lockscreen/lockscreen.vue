@@ -8,6 +8,12 @@
 
 <script>
 import Cookies from 'js-cookie';
+const setLockBackSize = () => {
+    let x = document.body.clientWidth;
+    let y = document.body.clientHeight;
+    let r = Math.sqrt(x * x + y * y);
+    return parseInt(r);
+};
 export default {
     name: 'lockScreen',
     props: {
@@ -34,25 +40,25 @@ export default {
         }
     },
     mounted () {
-        let lockdiv = document.createElement('div');
-        lockdiv.setAttribute('id', 'lock_screen_back');
-        lockdiv.setAttribute('class', 'lock-screen-back');
-        document.body.appendChild(lockdiv);
-        let lockScreenBack = document.getElementById('lock_screen_back');
-        let x = document.body.clientWidth;
-        let y = document.body.clientHeight;
-        let r = Math.sqrt(x * x + y * y);
-        let size = parseInt(r);
+        let lockScreenBack;
+        if (!document.getElementById('lock_screen_back')) {
+            let lockdiv = document.createElement('div');
+            lockdiv.setAttribute('id', 'lock_screen_back');
+            lockdiv.setAttribute('class', 'lock-screen-back');
+            document.body.appendChild(lockdiv);
+            lockScreenBack = document.getElementById('lock_screen_back');
+            window.addEventListener('resize', () => {
+                let size = setLockBackSize();
+                this.lockScreenSize = size;
+                lockScreenBack.style.transition = 'all 0s';
+                lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
+            });
+        } else {
+            lockScreenBack = document.getElementById('lock_screen_back');
+        }
+        let size = setLockBackSize();
         this.lockScreenSize = size;
-        window.addEventListener('resize', () => {
-            let x = document.body.clientWidth;
-            let y = document.body.clientHeight;
-            let r = Math.sqrt(x * x + y * y);
-            let size = parseInt(r);
-            this.lockScreenSize = size;
-            lockScreenBack.style.transition = 'all 0s';
-            lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
-        });
+        lockScreenBack.style.transition = 'all 3s';
         lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
     }
 };

@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         validator () {
-            return true;  // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
+            return true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
         },
         handleClickAvator () {
             this.avatorLeft = '-180px';

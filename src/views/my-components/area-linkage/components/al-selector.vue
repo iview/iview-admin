@@ -164,28 +164,47 @@ export default {
     watch: {
         currPro (prov) {
             this.updateNextSelector('provIndex', 'provList', 'cityList', prov, 'currCit', 0);
-            this.returnRes(0);
+            if (this.showLevel === 0 || (!areaData[util.getIndex(areaData[86], prov)]) || !this.auto) {
+                this.returnRes(0);
+            }
         },
         currCit (city) {
             this.updateNextSelector('cityIndex', 'cityList', 'counList', city, 'currCou', 1);
-            if (city) {
+            if (this.showLevel === 1 || (!areaData[util.getIndex(this.provList, city)]) || !this.auto) {
                 this.returnRes(1);
             }
         },
         currCou (coun) {
             this.updateNextSelector('counIndex', 'counList', 'streList', coun, 'currStr', 2);
-            if (coun) {
+            if (this.showLevel === 2 || !this.auto) {
                 this.returnRes(2);
             }
         },
         currStr (str) {
             this.streIndex = util.getIndex(this.streList, str);
-            if (str) {
+            if (this.showLevel === 3 || !this.auto) {
                 this.returnRes(3);
             }
         }
     },
     methods: {
+        init () {
+            if (this.value && this.value.length > 0) {
+                this.cloneValue = this.value;
+                if (isNaN(parseInt(this.value[0]))) {
+                    if (util.getIndex(this.provList, this.value[0])) {
+                        this.currPro = this.value[0];
+                    }
+                } else {
+                    if (this.value[0]) {
+                        if (areaData[86][this.value[0]]) {
+                            this.currPro = areaData[86][this.value[0]];
+                            this.provIndex = this.value[0];
+                        }
+                    }
+                }
+            }
+        },
         show (level) {
             if (level <= this.showLevel) {
                 return true;
@@ -213,29 +232,34 @@ export default {
                     }
                 }
                 this[index] = util.getIndex(this[list], name);
-                if (this[index] === undefined) {
-                    this.$refs[nextList.substr(0, 4)].setQuery('');
-                }
-                this[nextList] = areaData[this[index]];
-                if (this.isInit && this.cloneValue[level + 1]) {
-                    let valueNextItem = this.cloneValue[level + 1];
-                    if (isNaN(parseInt(valueNextItem))) {
-                        if (util.getIndex(this[nextList], this.cloneValue[level + 1])) {
-                            nextSelected = this.cloneValue[level + 1];
-                        }
-                    } else {
-                        if (Object.keys(this[nextList]).indexOf(this.cloneValue[level + 1]) > -1) {
-                            nextSelected = areaData[this.cloneValue[level]][this.cloneValue[level + 1]];
+                if (areaData[this[index]]) {
+                    if (this[index] === undefined) {
+                        this.$refs[nextList.substr(0, 4)].setQuery('');
+                    }
+                    this[nextList] = areaData[this[index]];
+                    if (this.isInit && this.cloneValue[level + 1]) {
+                        let valueNextItem = this.cloneValue[level + 1];
+                        if (isNaN(parseInt(valueNextItem))) {
+                            if (util.getIndex(this[nextList], this.cloneValue[level + 1])) {
+                                nextSelected = this.cloneValue[level + 1];
+                            }
+                        } else {
+                            if (Object.keys(this[nextList]).indexOf(this.cloneValue[level + 1]) > -1) {
+                                nextSelected = areaData[this.cloneValue[level]][this.cloneValue[level + 1]];
+                            }
                         }
                     }
-                }
-                if (this.isInit && this.value.length !== 0) {
-                    this[nextName] = nextSelected || this.setNextSelect(index);
-                } else if (!this.isInit && this.auto) {
-                    this[nextName] = nextSelected || this.setNextSelect(index);
-                }
-                if (this.isInit && level === this.showLevel) {
-                    this.returnRes(level);
+                    if (this.isInit && this.value.length !== 0) {
+                        this[nextName] = nextSelected || this.setNextSelect(index);
+                    } else if (!this.isInit && this.auto) {
+                        this[nextName] = nextSelected || this.setNextSelect(index);
+                    }
+                    if (this.isInit && level === this.showLevel) {
+                        this.returnRes(level);
+                    }
+                } else {
+                    this[nextName] = '';
+                    this[nextList] = [];
                 }
             }
         },
@@ -256,21 +280,27 @@ export default {
             let nameArr = [this.currPro, this.currCit, this.currCou, this.currStr];
             if (this.dataType === 'name') {
                 while (i <= level) {
-                    res.push(nameArr[i]);
+                    if (nameArr[i]) {
+                        res.push(nameArr[i]);
+                    }
                     i++;
                 };
             } else if (this.dataType === 'all') {
                 while (i <= level) {
-                    let item = {
-                        code: codeArr[i],
-                        name: nameArr[i]
-                    };
-                    res.push(item);
+                    if (codeArr[i] && nameArr[i]) {
+                        let item = {
+                            code: codeArr[i],
+                            name: nameArr[i]
+                        };
+                        res.push(item);
+                    }
                     i++;
                 }
             } else {
                 while (i <= level) {
-                    res.push(codeArr[i]);
+                    if (codeArr[i]) {
+                        res.push(codeArr[i]);
+                    }
                     i++;
                 };
             }
@@ -331,22 +361,11 @@ export default {
             }
         }
     },
+    updated () {
+        this.init();
+    },
     mounted () {
-        if (this.value && this.value.length > 0) {
-            this.cloneValue = this.value;
-            if (isNaN(parseInt(this.value[0]))) {
-                if (util.getIndex(this.provList, this.value[0])) {
-                    this.currPro = this.value[0];
-                }
-            } else {
-                if (this.value[0]) {
-                    if (areaData[86][this.value[0]]) {
-                        this.currPro = areaData[86][this.value[0]];
-                        this.provIndex = this.value[0];
-                    }
-                }
-            }
-        }
+        this.init();
     }
 };
 </script>
