@@ -21,6 +21,7 @@ new Vue({
         currentPageName: ''
     },
     mounted () {
+        //liubingjun
         this.currentPageName = this.$route.name;
         this.$store.commit('initCachepage');
         // 权限菜单过滤相关
