@@ -245,26 +245,19 @@ export default {
                             });
                         }
                     };
-                }
-                if (item.handle) {
+                } else if (item.handle && Array.isArray(item.handle)) {
                     item.render = (h, param) => {
-                        let currentRowData = this.thisTableData[param.index];
-                        if (item.handle.length === 2) {
-                            return h('div', [
-                                editButton(this, h, currentRowData, param.index),
-                                deleteButton(this, h, currentRowData, param.index)
-                            ]);
-                        } else if (item.handle.length === 1) {
-                            if (item.handle[0] === 'edit') {
-                                return h('div', [
-                                    editButton(this, h, currentRowData, param.index)
-                                ]);
-                            } else {
-                                return h('div', [
-                                    deleteButton(this, h, currentRowData, param.index)
-                                ]);
+                        var currentRowData = this.thisTableData[param.index];
+                        var handleList = item.handle.reduce(function(arr, name) {
+                            if (name === 'delete') {
+                                arr.push(deleteButton(vm, h, currentRowData, param.index));
+                            } else if (name === 'edit') {
+                                arr.push(editButton(vm, h, currentRowData, param.index));
                             }
-                        }
+
+                            return arr;
+                        }, []);
+                        return h('div', handleList);
                     };
                 }
             });
