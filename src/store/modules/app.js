@@ -41,9 +41,9 @@ const app = {
             let accessCode = parseInt(Cookies.get('access'));
             let menuList = [];
             appRouter.forEach((item, index) => {
-                if (item.access == undefined || Util.showThisRoute(item.access, accessCode)) {
+                if (item.access === undefined || Util.showThisRoute(item.access, accessCode)) {
                     item.children = item.children.filter(child => {
-                        if (child.access == undefined || Util.showThisRoute(child.access, accessCode)) {
+                        if (child.access === undefined || Util.showThisRoute(child.access, accessCode)) {
                             return child;
                         }
                     });
