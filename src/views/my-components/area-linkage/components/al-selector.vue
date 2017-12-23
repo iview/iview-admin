@@ -261,6 +261,9 @@ export default {
                     this[nextName] = '';
                     this[nextList] = [];
                 }
+                if ((this[nextName] === '市辖区' && this.auto) || (this[nextName] === '市辖区' && this.value.length !== 0)) {
+                    this.updateNextSelector('cityIndex', 'cityList', 'counList', '市辖区', 'currCou', 1);
+                }
             }
         },
         returnRes (level) {
