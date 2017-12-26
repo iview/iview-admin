@@ -78,7 +78,7 @@ module.exports = {
                 loader: 'url-loader?limit=1024'
             },
             {
-                test: /\.(html|tpl)$/,
+                test: /\.(html|tpl|ejs)$/,
                 loader: 'html-loader'
             }
         ]
