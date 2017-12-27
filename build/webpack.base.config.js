@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
-function resolve (dir) {
+function resolve(dir) {
     return path.join(__dirname, dir);
 }
 
@@ -78,7 +78,7 @@ module.exports = {
                 loader: 'url-loader?limit=1024'
             },
             {
-                test: /\.(html|tpl|ejs)$/,
+                test: /\.(html|tpl)$/,
                 loader: 'html-loader'
             }
         ]
