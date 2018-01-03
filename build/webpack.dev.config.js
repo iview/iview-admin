@@ -19,6 +19,14 @@ module.exports = merge(webpackBaseConfig, {
         filename: '[name].js',
         chunkFilename: '[name].chunk.js'
     },
+    module: {
+        rules: [
+            {
+                test: /\.ejs$/,
+                loader: 'html-loader'
+            }
+        ]
+    },
     plugins: [
         new ExtractTextPlugin({
             filename: '[name].css',
