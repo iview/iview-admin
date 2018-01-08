@@ -75,9 +75,13 @@ const app = {
                                 return child;
                             }
                         });
-                        let handledItem = JSON.parse(JSON.stringify(menuList[len - 1]));
-                        handledItem.children = childrenArr;
-                        menuList.splice(len - 1, 1, handledItem);
+                        if (childrenArr === undefined || childrenArr.length === 0) {
+                            menuList.splice(len - 1, 1);
+                        } else {
+                            let handledItem = JSON.parse(JSON.stringify(menuList[len - 1]));
+                            handledItem.children = childrenArr;
+                            menuList.splice(len - 1, 1, handledItem);
+                        }
                     }
                 }
             });
