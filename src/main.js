@@ -7,11 +7,9 @@ import App from './app.vue';
 import '@/locale';
 import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
-import { VirtualScroller } from 'vue-virtual-scroller';
 
 Vue.use(VueI18n);
 Vue.use(iView);
-Vue.component('virtual-scroller', VirtualScroller);
 
 new Vue({
     el: '#app',
