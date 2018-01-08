@@ -152,14 +152,14 @@ export const appRouter = [
                 name: 'count-to',
                 title: '数字渐变',
                 component: resolve => { require(['@/views/my-components/count-to/count-to.vue'], resolve); }
+            },
+            {
+                path: 'split-pane-page',
+                icon: 'ios-pause',
+                name: 'split-pane-page',
+                title: 'split-pane',
+                component: resolve => { require(['@/views/my-components/split-pane/split-pane-page.vue'], resolve); }
             }
-            // {
-            //     path: 'clipboard-page',
-            //     icon: 'clipboard',
-            //     name: 'clipboard-page',
-            //     title: '一键复制',
-            //     component: resolve => { require(['@/views/my-components/clipboard/clipboard.vue'], resolve); }
-            // }
         ]
     },
     {

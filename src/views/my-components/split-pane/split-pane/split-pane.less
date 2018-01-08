@@ -1,0 +1,63 @@
+@prefix: ~"split-pane";
+@container: ~"@{prefix}-container";
+@trigger: ~"@{prefix}-trigger";
+
+.@{prefix}{
+    position: relative;
+    &-container{
+        height: 100%;
+        width: 100%;
+    }
+
+    &-horizontal{
+        & > div > .@{trigger}{
+            transform: translateX(-50%);
+            cursor: col-resize;
+            width: 2px;
+            height: 100%;
+            margin: 0 1px;
+        }
+    }
+
+    &-vertical{
+        & > div > .@{trigger}{
+            transform: translateY(-50%);
+            cursor: row-resize;
+            height: 2px;
+            width: 100%;
+            margin: 1px 0;
+        }
+    }
+
+    &-trigger{
+        position: absolute;
+        z-index: 3;
+        background: #BDBDBD;
+    }
+
+    &-left-area{
+        height: 100%;
+        float: left;
+        z-index: 2;
+        overflow: auto;
+    }
+
+    &-right-area{
+        height: 100%;
+        float: left;
+        z-index: 2;
+        overflow: auto;
+    }
+
+    &-top-area{
+        width: 100%;
+        z-index: 2;
+        overflow: auto;
+    }
+
+    &-bottom-area{
+        width: 100%;
+        z-index: 2;
+        overflow: auto;
+    }
+}
