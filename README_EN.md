@@ -53,6 +53,7 @@ npm run build
     - Dragable list
     - File upload
     - Count animation
+    - Split pane
 - Form
     - Artical publish
     - Workflow
@@ -149,6 +150,9 @@ npm run build
 
 - count animation
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
+
+- split-pane
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/split-pane.gif)
 
 - artical publish
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/article-publish.gif)

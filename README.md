@@ -155,6 +155,9 @@ npm run build
 - 数字渐变
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
 
+- split-pane
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/split-pane.gif)
+
 - 文章发布
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/article-publish.gif)
 
