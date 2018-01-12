@@ -78,7 +78,9 @@ export default {
         init () {
             this.data1 = this.initTable1 = table.searchTable1;
             this.data2 = this.initTable2 = table.searchTable2;
-            this.data3 = this.initTable3 = table.searchTable3;
+            //this.data3 = this.initTable3 = table.searchTable3;
+            var response=await this.$http.get("/customer/?page=1&pageSize=10");
+            this.data3 = response.data.data.list;
         },
         search (data, argumentObj) {
             let res = data;

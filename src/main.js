@@ -21,6 +21,7 @@ new Vue({
         currentPageName: ''
     },
     mounted () {
+        //liubingjun
         this.currentPageName = this.$route.name;
         // 显示打开的页面的列表
         this.$store.commit('setOpenedList');
