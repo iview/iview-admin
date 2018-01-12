@@ -10,7 +10,7 @@
 [![iview ui](https://img.shields.io/badge/iview-2.8.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 
 
-## 当前版本：v1.3.0
+## 当前版本：v1.3.1
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用教程](https://github.com/iview/iview-admin/wiki)
