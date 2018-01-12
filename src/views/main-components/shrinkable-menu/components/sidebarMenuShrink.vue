@@ -14,10 +14,10 @@
                 </Dropdown>
                 <Dropdown transfer v-else placement="right-start" :key="index" @on-click="changeMenu">
                     <Button @click="changeMenu(item.children[0].name)" style="width: 70px;margin-left: -5px;padding:10px 0;" type="text">
-                        <Icon :size="20" :color="iconColor" :type="item.icon"></Icon>
+                        <Icon :size="20" :color="iconColor" :type="item.children[0].icon || item.icon"></Icon>
                     </Button>
                     <DropdownMenu style="width: 200px;" slot="list">
-                        <DropdownItem :name="item.children[0].name" :key="'d' + index"><Icon :type="item.icon"></Icon><span style="padding-left:10px;">{{ itemTitle(item.children[0]) }}</span></DropdownItem>
+                        <DropdownItem :name="item.children[0].name" :key="'d' + index"><Icon :type="item.children[0].icon || item.icon"></Icon><span style="padding-left:10px;">{{ itemTitle(item.children[0]) }}</span></DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
