@@ -64,7 +64,7 @@
             </Col>
             <Col span="16" class="padding-left-10">
                 <Card>
-                    <DragableTable refs="table2" :columnsList="columnsList" v-model="tableData" @on-start="handleOnstart2" @on-end="handleOnend2" @on-choose="handleOnchoose2" ></DragableTable>
+                    <DragableTable refs="table2" :columns-list="columnsList" v-model="tableData" @on-start="handleOnstart2" @on-end="handleOnend2" @on-choose="handleOnchoose2" ></DragableTable>
                 </Card>
             </Col>
         </Row>
