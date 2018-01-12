@@ -1,5 +1,5 @@
 {
     "presets": ["env"],
-    "plugins": ["transform-runtime"],
+    "plugins": ["transform-runtime", "syntax-dynamic-import"],
     "comments": false
 }
