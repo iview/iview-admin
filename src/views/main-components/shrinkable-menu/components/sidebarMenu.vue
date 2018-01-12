@@ -58,9 +58,6 @@ export default {
                 this.$refs.sideMenu.updateOpened();
             }
         });
-    },
-    mounted () {
-        console.log(this.menuList)
     }
 
 };
