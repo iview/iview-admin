@@ -192,8 +192,7 @@ npm run build
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/message.gif)
 
 #### If you find this project helpful, maybe you can buy me a coffee.
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/alipay.png)
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/wechat.png)
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/code.png)
 
 
 ## License
