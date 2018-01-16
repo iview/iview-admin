@@ -183,13 +183,18 @@ npm run build
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/locking.gif)
 
 - 可收缩侧边栏
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)s
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)
 
 - 主题切换
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/theme.gif)
 
 - 消息中心
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/message.gif)
+
+#### If you find this project helpful, maybe you can buy me a coffee.
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/alipay.png)
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/wechat.png)
+
 
 ## License
 [MIT](http://opensource.org/licenses/MIT)
