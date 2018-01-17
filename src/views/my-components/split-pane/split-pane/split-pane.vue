@@ -103,15 +103,12 @@ export default {
 		},
 		leftSize () {
 			return this.right ? `${100 - this.triggerOffset}%` : `${this.triggerOffset}%`;
-			// return `${this.triggerOffset}%`;
 		},
 		rightSize () {
 			return this.right ? `${this.triggerOffset}%` : `${100 - this.triggerOffset}%`;
-			// return `${100 - this.triggerOffset}%`;
 		},
 		triggerLeft () {
 			return this.right ? `${100 - this.triggerOffset}%` : `${this.triggerOffset}%`;
-			// return `${this.triggerOffset}%`;
 		},
 		minTransed () {
 			return this.transValue(this.min);
