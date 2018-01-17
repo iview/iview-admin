@@ -90,7 +90,8 @@ export default {
 			triggerOldOffset: 50,
 			offset: {},
 			atMin: false,
-			atMax: false
+			atMax: false,
+			oldOffset: 0
 		};
 	},
 	computed: {
@@ -102,24 +103,27 @@ export default {
 		},
 		leftSize () {
 			return this.right ? `${100 - this.triggerOffset}%` : `${this.triggerOffset}%`;
+			// return `${this.triggerOffset}%`;
 		},
 		rightSize () {
 			return this.right ? `${this.triggerOffset}%` : `${100 - this.triggerOffset}%`;
+			// return `${100 - this.triggerOffset}%`;
 		},
 		triggerLeft () {
 			return this.right ? `${100 - this.triggerOffset}%` : `${this.triggerOffset}%`;
+			// return `${this.triggerOffset}%`;
 		},
 		minTransed () {
 			return this.transValue(this.min);
 		},
 		maxTransed () {
-			return this.transValue(this.max);
+			return this.right ? (100 - this.transValue(this.max)) : this.transValue(this.max);
 		}
 	},
 	methods: {
 		handleMouseup (e) {
 			this.canMove = false;
-			this.$emit('on-moving-end', e);
+			this.$emit('on-resizing-end', e);
 		},
 		transValue (val) {
 			return (typeof val === 'number') ? val : Math.floor(((parseFloat(val) / this.$refs.wraper.offsetWidth) * 10000)) / 100;
@@ -131,34 +135,47 @@ export default {
 				x: e.pageX,
 				y: e.pageY
 			};
-			this.$emit('on-moving-start', e);
+			this.$emit('on-resizing-start', e);
 			e.preventDefault();
 		},
-		handleMouseout (e) {
+		handleMouseout () {
 			this.canMove = false;
-			// this.$emit('on-moving-end', e);
 		},
 		handleMousemove (e) {
 			if (this.canMove) {
 				let offset;
+				let moveSize = 0;
 				if (this.direction === 'horizontal') {
-					let moveSize = Math.floor(((e.clientX - this.offset.x) / this.$refs.wraper.offsetWidth) * 10000) / 100;
+					moveSize = Math.floor(((e.clientX - this.offset.x) / this.$refs.wraper.offsetWidth) * 10000) / 100;
 					offset = this.triggerOldOffset + (this.right ? -moveSize : moveSize);
 				} else {
-					let moveSize = Math.floor(((e.clientY - this.offset.y) / this.$refs.wraper.offsetHeight) * 10000) / 100;
+					moveSize = Math.floor(((e.clientY - this.offset.y) / this.$refs.wraper.offsetHeight) * 10000) / 100;
 					offset = this.triggerOldOffset + (this.right ? -moveSize : moveSize);
 				}
-				if (offset <= this.minTransed) {
-					this.triggerOffset = Math.max(offset, this.minTransed);
+				if (this.right) {
+					let offsetHandle = 100 - offset;
+					if (offsetHandle <= this.minTransed) {
+						this.triggerOffset = 100 - Math.max(offsetHandle, this.minTransed);
+					} else {
+						this.triggerOffset = 100 - Math.min(offsetHandle, this.maxTransed);
+					}
 				} else {
-					this.triggerOffset = Math.min(offset, this.maxTransed);
+					if (offset <= this.minTransed) {
+						this.triggerOffset = Math.max(offset, this.minTransed);
+					} else {
+						this.triggerOffset = Math.min(offset, this.maxTransed);
+					}
 				}
-				this.atMin = this.triggerOffset === this.minTransed;
-				this.atMax = this.triggerOffset === this.maxTransed;
-				e.atMin = this.atMin;
-				e.atMax = this.atMax;
+				e.atMin = 100 - offset <= this.minTransed;
+				e.atMax = 100 - offset <= this.minTransed;
+				if (this.triggerOffset < this.oldOffset) {
+					e.direction = 0;
+				} else {
+					e.direction = 1;
+				}
+				this.oldOffset = this.triggerOffset;
 				this.$emit('input', this.triggerOffset);
-				this.$emit('on-trigger-moving', e);
+				this.$emit('on-resizing', e);
 			}
 		}
 	},
