@@ -157,7 +157,7 @@ export default {
 				this.atMax = this.triggerOffset === this.maxTransed;
 				e.atMin = this.atMin;
 				e.atMax = this.atMax;
-				this.$emit('input', offset);
+				this.$emit('input', this.triggerOffset);
 				this.$emit('on-trigger-moving', e);
 			}
 		}
