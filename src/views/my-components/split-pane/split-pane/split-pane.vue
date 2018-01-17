@@ -136,7 +136,7 @@ export default {
 		},
 		handleMouseout (e) {
 			this.canMove = false;
-			this.$emit('on-moving-end', e);
+			// this.$emit('on-moving-end', e);
 		},
 		handleMousemove (e) {
 			if (this.canMove) {
