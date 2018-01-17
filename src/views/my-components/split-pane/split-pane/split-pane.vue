@@ -169,9 +169,9 @@ export default {
 				e.atMin = 100 - offset <= this.minTransed;
 				e.atMax = 100 - offset <= this.minTransed;
 				if (this.triggerOffset < this.oldOffset) {
-					e.direction = 0;
+					e.direction = this.right ? 1 : 0;
 				} else {
-					e.direction = 1;
+					e.direction = this.right ? 0 : 1;
 				}
 				this.oldOffset = this.triggerOffset;
 				this.$emit('input', this.triggerOffset);
