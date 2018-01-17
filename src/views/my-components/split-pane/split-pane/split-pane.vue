@@ -59,7 +59,7 @@ export default {
     name: 'splitPane',
     props: {
         value: {
-            type: Number,
+            type: [Number, String],
             default: 50
         },
         direction: {
@@ -101,11 +101,20 @@ export default {
         },
         rightSize () {
             return `${100 - this.triggerOffset}%`;
+        },
+        minTransed () {
+            return this.transValue(this.min);
+        },
+        maxTransed () {
+            return this.transValue(this.max);
         }
     },
     methods: {
         handleMouseup () {
             this.canMove = false;
+        },
+        transValue (val) {
+            return (typeof val === 'number') ? val : Math.floor(((parseFloat(val) / this.$refs.wraper.offsetWidth) * 10000)) / 100;
         },
         handleMousedown (e) {
             this.canMove = true;
@@ -127,13 +136,13 @@ export default {
                 } else {
                     offset = this.triggerOldOffset + Math.floor(((e.clientY - this.offset.y) / this.$refs.wraper.offsetHeight) * 10000) / 100;
                 }
-                if (offset <= this.min) {
-                    this.triggerOffset = Math.max(offset, this.min);
+                if (offset <= this.minTransed) {
+                    this.triggerOffset = Math.max(offset, this.minTransed);
                 } else {
-                    this.triggerOffset = Math.min(offset, this.max);
+                    this.triggerOffset = Math.min(offset, this.maxTransed);
                 }
-                this.atMin = this.triggerOffset === this.min;
-                this.atMax = this.triggerOffset === this.max;
+                this.atMin = this.triggerOffset === this.minTransed;
+                this.atMax = this.triggerOffset === this.maxTransed;
                 e.atMin = this.atMin;
                 e.atMax = this.atMax;
                 this.$emit('input', offset);
@@ -143,7 +152,7 @@ export default {
     },
     mounted () {
         if (this.value !== undefined) {
-            this.triggerOffset = this.value;
+            this.triggerOffset = (typeof this.value === 'number') ? this.value : Math.floor(((parseFloat(this.value) / this.$refs.wraper.offsetWidth) * 10000)) / 100;
         }
     }
 };
