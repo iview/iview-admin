@@ -185,6 +185,9 @@ export default {
             if (this.showLevel === 3 || !this.auto) {
                 this.returnRes(3);
             }
+        },
+        value () {
+            this.init();
         }
     },
     methods: {
@@ -364,9 +367,9 @@ export default {
             }
         }
     },
-    updated () {
-        this.init();
-    },
+    // updated () {
+    //     this.init();
+    // },
     mounted () {
         this.init();
     }
