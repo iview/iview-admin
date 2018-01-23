@@ -8,6 +8,7 @@
                 :shrink="shrink"
                 @on-change="handleSubmenuChange"
                 :theme="menuTheme" 
+                :accordion="accordion"
                 :before-push="beforePush"
                 :open-names="openedSubmenuArr"
                 :menu-list="menuList">
@@ -118,6 +119,9 @@
             },
             mesCount () {
                 return this.$store.state.app.messageCount;
+            },
+            accordion(){
+                return this.$store.state.app.accordion;
             }
         },
         methods: {

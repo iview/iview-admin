@@ -8,6 +8,7 @@
         <sidebar-menu 
             v-show="!shrink"
             :menu-theme="theme" 
+            :accordion="accordion"
             :menu-list="menuList" 
             :open-names="openNames"
             @on-change="handleChange"
@@ -53,6 +54,10 @@ export default {
         },
         openNames: {
             type: Array
+        },
+        accordion: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {

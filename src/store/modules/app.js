@@ -8,6 +8,7 @@ const app = {
         cachePage: [],
         lang: '',
         isFullScreen: false,
+        accordion: true,
         openedSubmenuArr: [], // 要展开的菜单数组
         menuTheme: 'dark', // 主题
         themeColor: '',
@@ -104,6 +105,10 @@ const app = {
             }
             if (!hasThisName && !isEmpty) {
                 state.openedSubmenuArr.push(name);
+                if (state.accordion) {
+                    state.openedSubmenuArr.splice(0, state.openedSubmenuArr.length);
+                    state.openedSubmenuArr.push(name);
+                }
             }
         },
         closePage (state, name) {
