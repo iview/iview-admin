@@ -6,9 +6,12 @@ import packjson from '../../package.json';
 let util = {
 
 };
-util.title = function (title) {
-    title = title || 'iView admin';
-    window.document.title = title;
+util.title = function (title, vm) {
+    let iTitle = 'iView admin';
+    if (title) {
+        iTitle += ' - ' + (title.i18n ? vm.$t(title.i18n) : title);
+    }
+    window.document.title = iTitle;
 };
 
 const ajaxUrl = env === 'development'
