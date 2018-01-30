@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const echarts = require('echarts');
+import echarts from 'echarts';
 export default {
     name: 'serviceRequests',
     mounted () {

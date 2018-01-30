@@ -39,7 +39,7 @@
 
 <script>
 export default {
-    name: 'message',
+    name: 'message_index',
     data () {
         const markAsreadBtn = (h, params) => {
             return h('Button', {
@@ -49,6 +49,7 @@ export default {
                 on: {
                     click: () => {
                         this.hasreadMesList.unshift(this.currentMesList.splice(params.index, 1)[0]);
+                        this.$store.commit('setMessageCount', this.unreadMesList.length);
                     }
                 }
             }, '标为已读');

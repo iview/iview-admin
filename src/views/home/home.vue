@@ -4,69 +4,71 @@
 </style>
 <template>
     <div class="home-main">
-        <Row>
-            <Col span="8">
-                <Row>
-                    <Card>
-                        <Row type="flex" class="user-infor">
-                            <Col span="8">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <img class="avator-img" :src="avatorPath" />
-                                </Row>
-                            </Col>
-                            <Col span="16" style="padding-left:6px;">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <div>
-                                        <b class="card-user-infor-name">Admin</b>
-                                        <p>super admin</p>
-                                    </div>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <div class="line-gray"></div>
-                        <Row class="margin-top-8">
-                            <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
-                            <Col span="16" class="padding-left-8">2017.09.12-13:32:20</Col>
-                        </Row>
-                        <Row class="margin-top-8">
-                            <Col span="8"><p class="notwrap">上次登录地点:</p></Col>
-                            <Col span="16" class="padding-left-8">北京</Col>
-                        </Row>
-                    </Card>
-                </Row>
-                <Row class="margin-top-10">
-                    <Card>
-                        <p slot="title" class="card-title">
-                            <Icon type="android-checkbox-outline"></Icon>
-                            待办事项
-                        </p>
-                        <a type="text" slot="extra" @click.prevent="addNewToDoItem">
-                            <Icon type="plus-round"></Icon>
-                        </a>
-                        <Modal
-                            v-model="showAddNewTodo"
-                            title="添加新的待办事项"
-                            @on-ok="addNew"
-                            @on-cancel="cancelAdd">
-                            <Row type="flex" justify="center">
-                                <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px" />
+        <Row :gutter="10">
+            <Col :md="24" :lg="8">
+                <Row class-name="home-page-row1" :gutter="10">
+                    <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                        <Card>
+                            <Row type="flex" class="user-infor">
+                                <Col span="8">
+                                    <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                        <img class="avator-img" :src="avatorPath" />
+                                    </Row>
+                                </Col>
+                                <Col span="16" style="padding-left:6px;">
+                                    <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                        <div>
+                                            <b class="card-user-infor-name">Admin</b>
+                                            <p>super admin</p>
+                                        </div>
+                                    </Row>
+                                </Col>
                             </Row>
-                            <Row slot="footer">
-                                <Button type="text" @click="cancelAdd">取消</Button>
-                                <Button type="primary" @click="addNew">确定</Button>
+                            <div class="line-gray"></div>
+                            <Row class="margin-top-8">
+                                <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
+                                <Col span="16" class="padding-left-8">2017.09.12-13:32:20</Col>
                             </Row>
-                        </Modal>
-                        <div class="to-do-list-con">
-                            <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
-                                <to-do-list-item :content="item.title"></to-do-list-item>
+                            <Row class="margin-top-8">
+                                <Col span="8"><p class="notwrap">上次登录地点:</p></Col>
+                                <Col span="16" class="padding-left-8">北京</Col>
+                            </Row>
+                        </Card>
+                    </Col>
+                    <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                        <Card>
+                            <p slot="title" class="card-title">
+                                <Icon type="android-checkbox-outline"></Icon>
+                                待办事项
+                            </p>
+                            <a type="text" slot="extra" @click.prevent="addNewToDoItem">
+                                <Icon type="plus-round"></Icon>
+                            </a>
+                            <Modal
+                                v-model="showAddNewTodo"
+                                title="添加新的待办事项"
+                                @on-ok="addNew"
+                                @on-cancel="cancelAdd">
+                                <Row type="flex" justify="center">
+                                    <Input v-model="newToDoItemValue" icon="compose" placeholder="请输入..." style="width: 300px" />
+                                </Row>
+                                <Row slot="footer">
+                                    <Button type="text" @click="cancelAdd">取消</Button>
+                                    <Button type="primary" @click="addNew">确定</Button>
+                                </Row>
+                            </Modal>
+                            <div class="to-do-list-con">
+                                <div v-for="(item, index) in toDoList" :key="'todo-item' + (toDoList.length - index)" class="to-do-item">
+                                    <to-do-list-item :content="item.title"></to-do-list-item>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    </Col>
                 </Row>
             </Col>
-            <Col span="16" class-name="padding-left-5">
-                <Row>
-                    <Col span="6">
+            <Col :md="24" :lg="16">
+                <Row :gutter="5">
+                    <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="user_created_count"
                             :end-val="count.createUser"
@@ -75,7 +77,7 @@
                             intro-text="今日新增用户"
                         ></infor-card>
                     </Col>
-                    <Col span="6" class-name="padding-left-5">
+                    <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="visit_count"
                             :end-val="count.visit"
@@ -85,7 +87,7 @@
                             intro-text="今日浏览量"
                         ></infor-card>
                     </Col>
-                    <Col span="6" class-name="padding-left-5">
+                    <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="collection_count"
                             :end-val="count.collection"
@@ -94,7 +96,7 @@
                             intro-text="今日数据采集量"
                         ></infor-card>
                     </Col>
-                    <Col span="6" class-name="padding-left-5">
+                    <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="transfer_count"
                             :end-val="count.transfer"
@@ -104,7 +106,7 @@
                         ></infor-card>
                     </Col>
                 </Row>
-                <Row class="margin-top-10">
+                <Row>
                     <Card :padding="0">
                         <p slot="title" class="card-title">
                             <Icon type="map"></Icon>
@@ -124,8 +126,8 @@
                 </Row>
             </Col>
         </Row>
-        <Row class="margin-top-10">
-            <Col span="8">
+        <Row :gutter="10" class="margin-top-10">
+            <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
@@ -136,7 +138,7 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="8" class="padding-left-10">
+            <Col :md="24" :lg="8" :style="{marginBottom: '10px'}">
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-pulse-strong"></Icon>
@@ -147,7 +149,7 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="8" class="padding-left-10">
+            <Col :md="24" :lg="8">
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-wifi"></Icon>

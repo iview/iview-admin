@@ -14,11 +14,6 @@
                 <p class="to-do-list-item-text" @click="handleHasDid" :class="{hasDid: todoitem}">{{ content }}</p>
             </Row>
         </Col>
-        <!-- <Col span="4" class="height-100">
-            <Row type="flex" justify="center" align="middle" class="infor-icon-row height-100">
-                <Icon @click.native="showItemInfor" type="information-circled" size="20"></Icon>
-            </Row>
-        </Col> -->
     </Row>
 </template>
 

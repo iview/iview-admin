@@ -170,16 +170,16 @@ export default {
             topArticle: false,
             publishTime: '',
             publishTimeType: 'immediately',
-            editPublishTime: false,  // 是否正在编辑发布时间
-            articleTagSelected: [],  // 文章选中的标签
-            articleTagList: [],  // 所有标签列表
+            editPublishTime: false, // 是否正在编辑发布时间
+            articleTagSelected: [], // 文章选中的标签
+            articleTagList: [], // 所有标签列表
             classificationList: [],
-            classificationSelected: [],  // 在所有分类目录中选中的目录数组
+            classificationSelected: [], // 在所有分类目录中选中的目录数组
             offenUsedClass: [],
-            offenUsedClassSelected: [],  // 常用目录选中的目录
-            classificationFinalSelected: [],  // 最后实际选择的目录
+            offenUsedClassSelected: [], // 常用目录选中的目录
+            classificationFinalSelected: [], // 最后实际选择的目录
             publishLoading: false,
-            addingNewTag: false,  // 添加新标签
+            addingNewTag: false, // 添加新标签
             newTagName: '' // 新建标签名
         };
     },
@@ -237,7 +237,7 @@ export default {
             this.classificationFinalSelected = selectedArray.map(item => {
                 return item.title;
             });
-            localStorage.classificationSelected = JSON.stringify(this.classificationFinalSelected);  // 本地存储所选目录列表
+            localStorage.classificationSelected = JSON.stringify(this.classificationFinalSelected); // 本地存储所选目录列表
         },
         setClassificationInOffen (selectedArray) {
             this.classificationFinalSelected = selectedArray;
@@ -280,7 +280,7 @@ export default {
                     let second = date.getSeconds();
                     localStorage.publishTime = year + ' 年 ' + month + ' 月 ' + day + ' 日 -- ' + hour + ' : ' + minute + ' : ' + second;
                 } else {
-                    localStorage.publishTime = this.publishTime;  // 本地存储发布时间
+                    localStorage.publishTime = this.publishTime; // 本地存储发布时间
                 }
                 localStorage.content = tinymce.activeEditor.getContent();
                 this.$router.push({
@@ -306,13 +306,13 @@ export default {
             }
         },
         handleSelectTag () {
-            localStorage.tagsList = JSON.stringify(this.articleTagSelected);  // 本地存储文章标签列表
+            localStorage.tagsList = JSON.stringify(this.articleTagSelected); // 本地存储文章标签列表
         }
     },
     computed: {
         completeUrl () {
             let finalUrl = this.fixedLink + this.articlePath;
-            localStorage.finalUrl = finalUrl;  // 本地存储完整文章路径
+            localStorage.finalUrl = finalUrl; // 本地存储完整文章路径
             return finalUrl;
         }
     },

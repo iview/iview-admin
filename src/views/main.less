@@ -1,3 +1,13 @@
+.lock-screen-back{
+    border-radius: 50%;
+    z-index: -1;
+    box-shadow: 0 0 0 0 #667aa6 inset;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    transition: all 3s;
+}
 .main{
     position: absolute;
     width: 100%;
@@ -138,6 +148,8 @@
                     .main-user-name{
                         display: inline-block;
                         width: 80px;
+                        word-break: keep-all;
+                        white-space: nowrap;
                         vertical-align: middle;
                         overflow: hidden;
                         text-overflow: ellipsis;

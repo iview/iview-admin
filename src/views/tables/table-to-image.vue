@@ -3,7 +3,6 @@
     @import './components/table.less';
 </style>
 
-
 <template>
     <div>
         <Row>

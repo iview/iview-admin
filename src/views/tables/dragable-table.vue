@@ -8,7 +8,12 @@
         <Row>
             <Col span="16">
                 <Card>
-                    <DragableTable refs="table1" :columnsList="columnsList" :tableData="tableData" :start="handleOnstart1" :end="handleOnend1" ></DragableTable>
+                    <DragableTable 
+                        v-model="tableData" 
+                        :columns-list="columnsList" 
+                        @on-start="handleOnstart1" 
+                        @on-end="handleOnend1" 
+                    ></DragableTable>
                 </Card>
             </Col>
             <Col span="8" class="padding-left-10 height-100" >
@@ -59,7 +64,7 @@
             </Col>
             <Col span="16" class="padding-left-10">
                 <Card>
-                    <DragableTable refs="table2" :columnsList="columnsList" :tableData="tableData" :start="handleOnstart2" :end="handleOnend2" :choose="handleOnchoose2" ></DragableTable>
+                    <DragableTable refs="table2" :columns-list="columnsList" v-model="tableData" @on-start="handleOnstart2" @on-end="handleOnend2" @on-choose="handleOnchoose2" ></DragableTable>
                 </Card>
             </Col>
         </Row>
@@ -95,30 +100,29 @@ export default {
         };
     },
     methods: {
-        handleOnstart1 (el) {
-            this.table1.oldIndex = el.oldIndex;
+        handleOnstart1 (from) {
+            this.table1.oldIndex = from;
             this.table1.hasDragged = true;
             this.table1.isDragging = true;
         },
-        handleOnend1 (el) {
-            this.table1.newIndex = el.newIndex;
+        handleOnend1 (e) {
             this.table1.isDragging = false;
             this.table1.draggingRecord.unshift({
-                from: this.table1.oldIndex + 1,
-                to: this.table1.newIndex + 1
+                from: e.from + 1,
+                to: e.to + 1
             });
         },
-        handleOnstart2 (el) {
-            this.table2.oldIndex = el.oldIndex;
+        handleOnstart2 (from) {
+            this.table2.oldIndex = from;
             this.table2.hasDragged = true;
             this.table2.isDragging = true;
         },
-        handleOnend2 (el) {
-            this.table2.newIndex = el.newIndex;
+        handleOnend2 (e) {
+            this.table2.newIndex = e.to;
             this.table2.isDragging = false;
         },
-        handleOnchoose2 (el) {
-            this.table2.chooseRecord.unshift(this.tableData[el.oldIndex].todoItem);
+        handleOnchoose2 (from) {
+            this.table2.chooseRecord.unshift(this.tableData[from].todoItem);
         },
         getData () {
             this.columnsList = [

@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import util from '@/libs/util';
 export default {
     name: 'argument-page',
     data () {
@@ -57,7 +56,6 @@ export default {
                             on: {
                                 click: () => {
                                     let query = {shopping_id: params.row.shopping_id};
-                                    util.openNewPage(this, 'shopping', undefined, query);
                                     this.$router.push({
                                         name: 'shopping',
                                         query: query

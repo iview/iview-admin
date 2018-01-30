@@ -2,7 +2,6 @@
     @import './editable-table.less';
 </style>
 
-
 <template>
     <div>
         <Table :ref="refs" :columns="columnsList" :data="thisTableData" border disabled-hover></Table>
@@ -13,7 +12,7 @@
 const editButton = (vm, h, currentRow, index) => {
     return h('Button', {
         props: {
-            type: currentRow.editting ? 'success' : (currentRow.saveFail ? 'error' : 'primary'),
+            type: currentRow.editting ? 'success' : 'primary',
             loading: currentRow.saving
         },
         style: {
@@ -21,27 +20,28 @@ const editButton = (vm, h, currentRow, index) => {
         },
         on: {
             'click': () => {
-                if (currentRow.saveFail) {
-                    currentRow.saving = vm.edittingStore[index].saving = true;
-                    vm.saveEdit(vm.editIndex(index), vm.successSave(currentRow, vm, index), vm.failSave(currentRow, vm, index));
-                } else {
-                    if (!currentRow.editting) {
-                        if (currentRow.edittingCell) {
-                            for (let name in currentRow.edittingCell) {
-                                currentRow.edittingCell[name] = false;
-                                vm.edittingStore[index].edittingCell[name] = false;
-                            }
+                if (!currentRow.editting) {
+                    if (currentRow.edittingCell) {
+                        for (let name in currentRow.edittingCell) {
+                            currentRow.edittingCell[name] = false;
+                            vm.edittingStore[index].edittingCell[name] = false;
                         }
-                        currentRow.editting = vm.edittingStore[index].editting = true;
-                    } else {
-                        currentRow.saving = vm.edittingStore[index].saving = true;
-                        vm.saveEdit(vm.editIndex(index), vm.successSave(currentRow, vm, index), vm.failSave(currentRow, vm, index));
                     }
+                    vm.edittingStore[index].editting = true;
+                    vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                } else {
+                    vm.edittingStore[index].saving = true;
+                    vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                    let edittingRow = vm.edittingStore[index];
+                    edittingRow.editting = false;
+                    edittingRow.saving = false;
+                    vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
+                    vm.$emit('input', vm.handleBackdata(vm.thisTableData));
+                    vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);
                 }
-                vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
             }
         }
-    }, currentRow.editting ? '保存' : (currentRow.saveFail ? '重试' : '编辑'));
+    }, currentRow.editting ? '保存' : '编辑');
 };
 const deleteButton = (vm, h, currentRow, index) => {
     return h('Poptip', {
@@ -52,8 +52,9 @@ const deleteButton = (vm, h, currentRow, index) => {
         },
         on: {
             'on-ok': () => {
-                currentRow.isDeleting = true;
-                vm.deleteRow(vm.deleteIndex(index), vm.successDel(vm, index), vm.failDel(vm, index));
+                vm.thisTableData.splice(index, 1);
+                vm.$emit('input', vm.handleBackdata(vm.thisTableData));
+                vm.$emit('on-delete', vm.handleBackdata(vm.thisTableData), index);
             }
         }
     }, [
@@ -63,8 +64,7 @@ const deleteButton = (vm, h, currentRow, index) => {
             },
             props: {
                 type: 'error',
-                placement: 'top',
-                loading: currentRow.isDeleting
+                placement: 'top'
             }
         }, '删除')
     ]);
@@ -115,6 +115,7 @@ const saveIncellEditBtn = (vm, h, param) => {
                 vm.edittingStore[param.index].edittingCell[param.column.key] = false;
                 vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
                 vm.$emit('input', vm.handleBackdata(vm.thisTableData));
+                vm.$emit('on-cell-change', vm.handleBackdata(vm.thisTableData), param.index, param.column.key);
             }
         }
     });
@@ -140,18 +141,6 @@ export default {
         columnsList: Array,
         value: Array,
         url: String,
-        saveEdit: {
-            type: Function,
-            default () {
-                return () => {};
-            }
-        },
-        deleteRow: {
-            type: Function,
-            default () {
-                return () => {};
-            }
-        },
         editIncell: {
             type: Boolean,
             default: false
@@ -183,17 +172,30 @@ export default {
             });
             let cloneData = JSON.parse(JSON.stringify(this.value));
             let res = [];
-            res = cloneData.map(item => {
-                this.$set(item, 'editting', false);
-                this.$set(item, 'saving', false);
-                this.$set(item, 'saveFail', false);
-                this.$set(item, 'isDeleting', false);
-                let edittingCell = {};
-                editableCell.forEach(item => {
-                    edittingCell[item.key] = false;
-                });
-                this.$set(item, 'edittingCell', edittingCell);
-                return item;
+            res = cloneData.map((item, index) => {
+                let isEditting = false;
+                if (this.thisTableData[index]) {
+                    if (this.thisTableData[index].editting) {
+                        isEditting = true;
+                    } else {
+                        for (const cell in this.thisTableData[index].edittingCell) {
+                            if (this.thisTableData[index].edittingCell[cell] === true) {
+                                isEditting = true;
+                            }
+                        }
+                    }
+                }
+                if (isEditting) {
+                    return this.thisTableData[index];
+                } else {
+                    this.$set(item, 'editting', false);
+                    let edittingCell = {};
+                    editableCell.forEach(item => {
+                        edittingCell[item.key] = false;
+                    });
+                    this.$set(item, 'edittingCell', edittingCell);
+                    return item;
+                }
             });
             this.thisTableData = res;
             this.edittingStore = JSON.parse(JSON.stringify(this.thisTableData));
@@ -247,22 +249,15 @@ export default {
                 if (item.handle) {
                     item.render = (h, param) => {
                         let currentRowData = this.thisTableData[param.index];
-                        if (item.handle.length === 2) {
-                            return h('div', [
-                                editButton(this, h, currentRowData, param.index),
-                                deleteButton(this, h, currentRowData, param.index)
-                            ]);
-                        } else if (item.handle.length === 1) {
-                            if (item.handle[0] === 'edit') {
-                                return h('div', [
-                                    editButton(this, h, currentRowData, param.index)
-                                ]);
-                            } else {
-                                return h('div', [
-                                    deleteButton(this, h, currentRowData, param.index)
-                                ]);
+                        let children = [];
+                        item.handle.forEach(item => {
+                            if (item === 'edit') {
+                                children.push(editButton(this, h, currentRowData, param.index));
+                            } else if (item === 'delete') {
+                                children.push(deleteButton(this, h, currentRowData, param.index));
                             }
-                        }
+                        });
+                        return h('div', children);
                     };
                 }
             });
@@ -272,60 +267,9 @@ export default {
             clonedData.forEach(item => {
                 delete item.editting;
                 delete item.edittingCell;
-                delete item.isDeleting;
-                delete item.saveFail;
                 delete item.saving;
             });
             return clonedData;
-        },
-        editIndex (index) {
-            return (() => {
-                return index;
-            })();
-        },
-        successSave (currentRow, vm, index) {
-            return (callback) => {
-                let edittingRow = vm.edittingStore[index];
-                edittingRow.editting = false;
-                edittingRow.saveFail = false;
-                edittingRow.saving = false;
-                vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                this.$emit('input', this.handleBackdata(vm.thisTableData));
-                callback();
-            };
-        },
-        failSave (currentRow, vm, index) {
-            return (callback) => {
-                let edittingRow = vm.edittingStore[index];
-                edittingRow.editting = false;
-                edittingRow.saveFail = true;
-                edittingRow.saving = false;
-                vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                callback();
-            };
-        },
-        deleteIndex (index) {
-            return (() => {
-                return index;
-            })();
-        },
-        successDel (vm, index) {
-            return (callback) => {
-                callback();
-                let edittingRow = vm.edittingStore[index];
-                vm.edittingStore.splice(index, 1);
-                edittingRow.isDeleting = false;
-                vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                this.$emit('input', this.handleBackdata(vm.thisTableData));
-            };
-        },
-        failDel (vm, index) {
-            return (callback) => {
-                callback();
-                let edittingRow = vm.edittingStore[index];
-                edittingRow.isDeleting = false;
-                vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-            };
         }
     },
     watch: {

@@ -169,10 +169,8 @@ export default {
     mounted () {
         this.init();
     },
-    watch: {
-        '$route' () {
-            this.init();
-        }
+    activated () {
+        this.init();
     }
 };
 </script>

@@ -6,27 +6,42 @@
 
 # iView Admin
 [![](https://img.shields.io/travis/iview/iview-admin.svg?style=flat-square)](https://travis-ci.org/iview/iview-admin)
-[![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
-[![iview ui](https://img.shields.io/badge/iview-2.5.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
+[![vue](https://img.shields.io/badge/vue-2.5.13-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
+[![iview ui](https://img.shields.io/badge/iview-2.8.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
+[![npm](https://img.shields.io/npm/l/express.svg)]()
 
-## 当前版本：v1.1.3
+
+## 当前版本：v1.3.1
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用教程](https://github.com/iview/iview-admin/wiki)
 
 [在线访问](https://iview.github.io/iview-admin)
 
+[English Doc](https://github.com/iview/iview-admin/blob/dev/README_EN.md)
+
+[简化版模板](https://github.com/iview/iview-admin/tree/template)
+
 `注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
 
-## Run
-
+## Install
+```bush
+// install dependencies
+npm install
 ```
+## Run
+### Development
+```bush
 npm run dev
+```
+### Production(Build)
+```bush
+npm run build
 ```
 
 ## 简介
 &emsp;&emsp;iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组件库形成的一套后台集成解决方案，由TalkingData前端可视化团队部分成员开发维护。iView admin遵守iView设计和开发约定，风格统一，设计考究，并且更多功能在不停开发中。
-如果您想查看iview-admin的更新动态，您可以到[更新日志](https://github.com/iview/iview-admin/releases)查看了解最新更新；如果您是新手，想快速入手iview-admin，您可以到[使用教程](https://github.com/iview/iview-admin/wiki)查看讲解；如果您想在线体验iview-admin，您可以到[在线访问](https://iview.github.io/iview-admin)体验。
+如果您想查看iview-admin的更新动态，您可以到[更新日志](https://github.com/iview/iview-admin/releases)查看了解最新更新；如果您是新手，想快速入手iview-admin，您可以到[使用教程](https://github.com/iview/iview-admin/wiki)查看讲解；如果您想在线体验iview-admin，您可以到[在线访问](https://iview.github.io/iview-admin)体验。如果你只是想要一个清醒爽朗的界面，那你可以下载[简化版模板](https://github.com/iview/iview-admin/tree/template)来做开发。
 
 ## 功能
 
@@ -38,10 +53,12 @@ npm run dev
 - 组件
     - 富文本编辑器
     - Markdown编辑器
+    - 城市级联
     - 图片预览编辑
     - 可拖拽列表
     - 文件上传
     - 数字渐变
+    - split-pane
 - 表单编辑
     - 文章发布
     - 工作流
@@ -56,7 +73,7 @@ npm run dev
         - 导出为Xls文件
     - 表格转图片
 - 错误页面
-    - 401页面
+    - 403页面
     - 404页面
     - 500页面
 - 高级路由
@@ -74,37 +91,39 @@ npm run dev
 ## 文件结构
 ```shell
 .
-├── dist
-│   ├── langs    TinyMCE富文本编辑器语言包
-│   ├── plugins    TinyMCE富文本编辑器组件
-│   ├── skins    TinyMCE富文本编辑器皮肤
-│   └── themes    TinyMCE富文本编辑器主题
+├── build  项目构建配置
 └── src
-    ├── config    项目配置
-    ├── images    图片文件
-    ├── libs    工具方法
-    ├── styles    样式文件
-    ├── template    ejs模板
-    └── views    视图组件
-        ├── access    权限管理
-        ├── error_page    错误页面
-        ├── form    表单
-        │   ├── article-publish    文章发布
-        │   └── work-flow    工作流
-        ├── home    首页
-        ├── international    多语言切换
-        ├── main_components    主框架
-        ├── message    消息中心
-        ├── my_components    组件
-        │   ├── count-to    数字渐变
-        │   ├── draggable-list    可拖拽列表
-        │   ├── file-upload    文件上传
-        |   ├── image-editor    图片预览编辑
-        │   ├── markdown-editor    markdown编辑器
-        │   └── text-editer    富文本编辑器
-        ├── own-space    个人中心
-        ├── screen-shorts    锁屏
-        └── tables    表格
+    ├── images  图片文件
+    ├── libs  工具方法
+    ├── locale  多语言文件
+    ├── router  路由配置
+    ├── store  状态管理
+    ├── styles  样式文件
+    ├── template  模板文件
+    ├── vendors  公共库文件
+    └── views
+        ├── access  权限管理
+        ├── advanced-router  高级路由
+        ├── error_page  错误页面
+        ├── form  表单编辑
+        ├── home  首页
+        │   ├── components  首页组件
+        ├── international  多语言
+        ├── main_components  Main组件
+        │   ├── lockscreen  锁屏
+        │   ├── shrinkable-menu  可收缩菜单
+        │   └── theme-switch  主题切换
+        ├── message  消息中心
+        ├── my_components  业务组件
+        │   ├── area-linkage  中国行政区级联选择器
+        │   ├── count-to  数字渐变
+        │   ├── draggable-list  可拖拽列表
+        │   ├── file-upload  文件上传
+        │   ├── image-editor  图片预览编辑
+        │   ├── markdown-editor  Markdown编辑器
+        │   └── text-editor  富文本编辑器
+        ├── own-space  个人中心
+        └── tables  综合表格
 ```
 
 ## Links
@@ -116,7 +135,7 @@ npm run dev
 
 ## 效果展示
 
-- 登录
+- 响应式布局首页
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/home.gif)
 
 - 标签导航
@@ -136,6 +155,9 @@ npm run dev
 
 - 数字渐变
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
+
+- split-pane
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/split-pane.gif)
 
 - 文章发布
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/article-publish.gif)
@@ -162,13 +184,17 @@ npm run dev
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/locking.gif)
 
 - 可收缩侧边栏
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)s
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/sidebarmenu.gif)
 
 - 主题切换
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/theme.gif)
 
 - 消息中心
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/message.gif)
+
+### 💖💖 If you find this project helpful, maybe you can buy me a coffee. 💖💖
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/code.png)
+
 
 ## License
 [MIT](http://opensource.org/licenses/MIT)
