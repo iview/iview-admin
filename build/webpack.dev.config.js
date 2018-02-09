@@ -19,14 +19,6 @@ module.exports = merge(webpackBaseConfig, {
         filename: '[name].js',
         chunkFilename: '[name].chunk.js'
     },
-    module: {
-        rules: [
-            {
-                test: /\.ejs$/,
-                loader: 'html-loader'
-            }
-        ]
-    },
     plugins: [
         new ExtractTextPlugin({
             filename: '[name].css',
@@ -39,7 +31,6 @@ module.exports = merge(webpackBaseConfig, {
         new HtmlWebpackPlugin({
             title: 'iView admin v' + package.version,
             filename: '../index.html',
-            template: './src/template/index.ejs',
             inject: false
         }),
         new CopyWebpackPlugin([

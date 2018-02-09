@@ -6,10 +6,11 @@
 
 # iView Admin
 [![](https://img.shields.io/travis/iview/iview-admin.svg?style=flat-square)](https://travis-ci.org/iview/iview-admin)
-[![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
-[![iview ui](https://img.shields.io/badge/iview-2.7.2-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
+[![vue](https://img.shields.io/badge/vue-2.5.13-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
+[![iview ui](https://img.shields.io/badge/iview-2.8.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
+[![npm](https://img.shields.io/npm/l/express.svg)]()
 
-## Current version：v1.2.3
+## Current version：v1.3.1
 [Update log](https://github.com/iview/iview-admin/releases)
 
 [WIKI](https://github.com/iview/iview-admin/wiki)
@@ -53,6 +54,7 @@ npm run build
     - Dragable list
     - File upload
     - Count animation
+    - Split pane
 - Form
     - Artical publish
     - Workflow
@@ -149,6 +151,9 @@ npm run build
 
 - count animation
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
+
+- split-pane
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/split-pane.gif)
 
 - artical publish
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/article-publish.gif)

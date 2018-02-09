@@ -58,7 +58,7 @@
                                 </Row>
                             </Modal>
                             <div class="to-do-list-con">
-                                <div v-for="(item, index) in toDoList" :key="index" class="to-do-item">
+                                <div v-for="(item, index) in toDoList" :key="'todo-item' + (toDoList.length - index)" class="to-do-item">
                                     <to-do-list-item :content="item.title"></to-do-list-item>
                                 </div>
                             </div>
