@@ -11,7 +11,7 @@
             :menu-list="menuList" 
             :open-names="openNames"
             @on-change="handleChange"
-            :style="{overflow: 'auto', width: '110%', height: '100%'}"
+            class="ivu-sidebar-menu"
         ></sidebar-menu>
         <sidebar-menu-shrink
             v-show="shrink"
