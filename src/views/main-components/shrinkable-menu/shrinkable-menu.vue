@@ -12,6 +12,7 @@
             :open-names="openNames"
             @on-change="handleChange"
             class="ivu-sidebar-menu"
+            :style="{width: '110%'}"
         ></sidebar-menu>
         <sidebar-menu-shrink
             v-show="shrink"
