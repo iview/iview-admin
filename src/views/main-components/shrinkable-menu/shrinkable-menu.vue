@@ -11,11 +11,12 @@
             :menu-list="menuList" 
             :open-names="openNames"
             @on-change="handleChange"
+            :style="{overflow: 'auto', width: '110%', height: '100%'}"
         ></sidebar-menu>
-        <sidebar-menu-shrink 
+        <sidebar-menu-shrink
             v-show="shrink"
-            :menu-theme="theme" 
-            :menu-list="menuList" 
+            :menu-theme="theme"
+            :menu-list="menuList"
             :icon-color="shrinkIconColor"
             @on-change="handleChange"
         ></sidebar-menu-shrink>
