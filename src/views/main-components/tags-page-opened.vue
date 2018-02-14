@@ -133,7 +133,7 @@
                 let left = Math.abs(this.tagBodyLeft) + this.$refs.scrollCon.offsetWidth;
                 for (let i = 0; i < this.refsTag.length; i++) {
                     let tag = this.refsTag[i];
-                    if (tag.$el.offsetLeft > left) {
+                    if (tag.$el.offsetLeft + tag.$el.offsetWidth > left) {
                         this.tagBodyLeft = -tag.$el.offsetLeft;
                         break;
                     }
