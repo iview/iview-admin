@@ -19,6 +19,7 @@
         "no-eq-null": 2,
         "no-new": 0,
         "no-fallthrough": 0,
-        "no-unreachable": 0
+        "no-unreachable": 0,
+        "comma-dangle": ["error", "always-multiline"]
     }
 }
