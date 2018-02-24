@@ -18,7 +18,7 @@ new Vue({
     store: store,
     render: h => h(App),
     data: {
-        currentPageName: ''
+        currentPageName: '',
     },
     mounted () {
         this.currentPageName = this.$route.name;
@@ -40,5 +40,5 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
-    }
+    },
 });

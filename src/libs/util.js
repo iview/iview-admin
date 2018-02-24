@@ -19,7 +19,7 @@ const ajaxUrl = env === 'development'
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
-    timeout: 30000
+    timeout: 30000,
 });
 
 util.inOf = function (arr, targetArr) {
@@ -102,21 +102,21 @@ util.setCurrentPath = function (vm, name) {
             {
                 title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
                 path: '',
-                name: 'home_index'
-            }
+                name: 'home_index',
+            },
         ];
     } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
         currentPathArr = [
             {
                 title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
                 path: '/home',
-                name: 'home_index'
+                name: 'home_index',
             },
             {
                 title: title,
                 path: '',
-                name: name
-            }
+                name: name,
+            },
         ];
     } else {
         let currentPathObj = vm.$store.state.app.routers.filter(item => {
@@ -140,21 +140,21 @@ util.setCurrentPath = function (vm, name) {
                 {
                     title: '首页',
                     path: '',
-                    name: 'home_index'
-                }
+                    name: 'home_index',
+                },
             ];
         } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
             currentPathArr = [
                 {
                     title: '首页',
                     path: '/home',
-                    name: 'home_index'
+                    name: 'home_index',
                 },
                 {
                     title: currentPathObj.title,
                     path: '',
-                    name: name
-                }
+                    name: name,
+                },
             ];
         } else {
             let childObj = currentPathObj.children.filter((child) => {
@@ -164,18 +164,18 @@ util.setCurrentPath = function (vm, name) {
                 {
                     title: '首页',
                     path: '/home',
-                    name: 'home_index'
+                    name: 'home_index',
                 },
                 {
                     title: currentPathObj.title,
                     path: '',
-                    name: currentPathObj.name
+                    name: currentPathObj.name,
                 },
                 {
                     title: childObj.title,
                     path: currentPathObj.path + '/' + childObj.path,
-                    name: name
-                }
+                    name: name,
+                },
             ];
         }
     }
@@ -194,7 +194,7 @@ util.openNewPage = function (vm, name, argu, query) {
             vm.$store.commit('pageOpenedList', {
                 index: i,
                 argu: argu,
-                query: query
+                query: query,
             });
             tagHasOpened = true;
             break;
@@ -231,7 +231,7 @@ util.toDefaultPage = function (routers, name, route, next) {
     while (i < len) {
         if (routers[i].name === name && routers[i].children && routers[i].redirect === undefined) {
             route.replace({
-                name: routers[i].children[0].name
+                name: routers[i].children[0].name,
             });
             notHandle = false;
             next();
@@ -255,12 +255,12 @@ util.checkUpdate = function (vm) {
     axios.get('https://api.github.com/repos/iview/iview-admin/releases/latest').then(res => {
         let version = res.data.tag_name;
         vm.$Notice.config({
-            duration: 0
+            duration: 0,
         });
         if (semver.lt(packjson.version, version)) {
             vm.$Notice.info({
                 title: 'iview-admin更新啦',
-                desc: '<p>iView-admin更新到了' + version + '了，去看看有哪些变化吧</p><a style="font-size:13px;" href="https://github.com/iview/iview-admin/releases" target="_blank">前往github查看</a>'
+                desc: '<p>iView-admin更新到了' + version + '了，去看看有哪些变化吧</p><a style="font-size:13px;" href="https://github.com/iview/iview-admin/releases" target="_blank">前往github查看</a>',
             });
         }
     });
