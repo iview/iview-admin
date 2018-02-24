@@ -18,8 +18,7 @@ fs.open('./build/env.js', 'w', function(err, fd) {
 
 module.exports = merge(webpackBaseConfig, {
     output: {
-        path: path.resolve(__dirname, '../dist', package.version),
-        publicPath: '/',
+        publicPath: '/dist/',
         filename: '[name].[hash].js',
         chunkFilename: '[name].[hash].chunk.js'
     },
