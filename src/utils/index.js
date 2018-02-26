@@ -29,24 +29,6 @@ export const getPostParams = (params, compact = false) => {
     return result.substr(1);
 };
 
-// 生成api请求头参数
-// export const getAuthHeader = httpMethod => {
-//     let accId = sessionStorage.getItem(CONSTANTS.SESSION_ID);
-//     return {
-//       'content-type': (() => {
-//         switch (httpMethod) {
-//           case HttpMethod.POST:
-//             return 'application/x-www-form-urlencoded';
-//           case HttpMethod.GET:
-//           default:
-//             return '';
-//         }
-//       })(),
-//       'ck': '80ee08a57e8f788bc6e18769a896bd9d',
-//       'accId': accId,
-//     };
-// };
-
 // 通用fetch模板，用于处理异常和超时的场景
 export const fetchWithTimeout = (url, params) => {
     return Promise.race([
@@ -63,7 +45,8 @@ export const fetchWithTimeout = (url, params) => {
         .catch(res => {
             window.console.log(res);
             return {
-                status: 'timeout',
+                status: 'fail',
+                msg: 'request timeout',
             };
         });
 };

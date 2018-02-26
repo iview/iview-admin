@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import 'whatwg-fetch';
 import iView from 'iview';
 import {router} from './router/index';
 import {appRouter} from './router/router';

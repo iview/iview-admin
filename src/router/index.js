@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 // 路由配置
 const RouterConfig = {
     // mode: 'history',
-    routes: routers
+    routes: routers,
 };
 
 export const router = new VueRouter(RouterConfig);
@@ -21,19 +21,19 @@ router.beforeEach((to, from, next) => {
     if (Cookies.get('locking') === '1' && to.name !== 'locking') { // 判断当前是否是锁定状态
         next({
             replace: true,
-            name: 'locking'
+            name: 'locking',
         });
     } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
         next(false);
     } else {
         if (!Cookies.get('user') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
             next({
-                name: 'login'
+                name: 'login',
             });
         } else if (Cookies.get('user') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
             Util.title();
             next({
-                name: 'home_index'
+                name: 'home_index',
             });
         } else {
             const curRouterObj = Util.getRouterObjByName([otherRouter, ...appRouter], to.name);
@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
                 } else {
                     next({
                         replace: true,
-                        name: 'error-403'
+                        name: 'error-403',
                     });
                 }
             } else { // 没有配置权限的路由, 直接通过
