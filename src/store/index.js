@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import actionSet from './actions/index';
+
 import app from './modules/app';
 import user from './modules/user';
 
@@ -14,12 +16,12 @@ const store = new Vuex.Store({
         //
     },
     actions: {
-
+        ...actionSet,
     },
     modules: {
         app,
-        user
-    }
+        user,
+    },
 });
 
 export default store;

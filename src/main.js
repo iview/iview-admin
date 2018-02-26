@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import 'whatwg-fetch';
 import iView from 'iview';
 import {router} from './router/index';
 import {appRouter} from './router/router';
@@ -18,7 +19,7 @@ new Vue({
     store: store,
     render: h => h(App),
     data: {
-        currentPageName: ''
+        currentPageName: '',
     },
     mounted () {
         this.currentPageName = this.$route.name;
@@ -40,5 +41,5 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
-    }
+    },
 });

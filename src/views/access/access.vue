@@ -49,13 +49,13 @@ export default {
     data () {
         return {
             accessCode: parseInt(Cookies.get('access')),
-            switchValue: parseInt(Cookies.get('access')) === 1
+            switchValue: parseInt(Cookies.get('access')) === 1,
         };
     },
     computed: {
         avatorPath () {
             return localStorage.avatorImgPath;
-        }
+        },
     },
     methods: {
         changeAccess (res) {
@@ -67,8 +67,8 @@ export default {
                 Cookies.set('access', 0);
             }
             this.$store.commit('updateMenulist');
-        }
-    }
+        },
+    },
 };
 </script>
 

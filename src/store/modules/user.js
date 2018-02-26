@@ -19,8 +19,8 @@ const user = {
             if (theme) {
                 localStorage.theme = theme;
             }
-        }
-    }
+        },
+    },
 };
 
 export default user;

@@ -84,14 +84,14 @@
             fullScreen,
             lockScreen,
             messageTip,
-            themeSwitch
+            themeSwitch,
         },
         data () {
             return {
                 shrink: false,
                 userName: '',
                 isFullScreen: false,
-                openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+                openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
             };
         },
         computed: {
@@ -118,7 +118,7 @@
             },
             mesCount () {
                 return this.$store.state.app.messageCount;
-            }
+            },
         },
         methods: {
             init () {
@@ -140,14 +140,14 @@
                 if (name === 'ownSpace') {
                     util.openNewPage(this, 'ownspace_index');
                     this.$router.push({
-                        name: 'ownspace_index'
+                        name: 'ownspace_index',
                     });
                 } else if (name === 'loginout') {
                     // 退出登录
                     this.$store.commit('logout', this);
                     this.$store.commit('clearOpenedSubmenu');
                     this.$router.push({
-                        name: 'login'
+                        name: 'login',
                     });
                 }
             },
@@ -174,7 +174,7 @@
             },
             fullscreenChange (isFullScreen) {
                 // console.log(isFullScreen);
-            }
+            },
         },
         watch: {
             '$route' (to) {
@@ -188,7 +188,7 @@
             },
             lang () {
                 util.setCurrentPath(this, this.$route.name); // 在切换语言时用于刷新面包屑
-            }
+            },
         },
         mounted () {
             this.init();
@@ -196,6 +196,6 @@
         created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
-        }
+        },
     };
 </script>
