@@ -147,6 +147,13 @@ export const appRouter = [
                 component: () => import('@/views/my-components/file-upload/file-upload.vue')
             },
             {
+                path: 'scroll-bar',
+                icon: 'android-upload',
+                name: 'scroll-bar',
+                title: '滚动条',
+                component: () => import('@/views/my-components/scroll-bar/scroll-bar-page.vue')
+            },
+            {
                 path: 'count-to',
                 icon: 'arrow-graph-up-right',
                 name: 'count-to',

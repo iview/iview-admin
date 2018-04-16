@@ -17,9 +17,10 @@
                 <div 
                     :class="`${prefix}-trigger`" 
                     ref="trigger" 
-                    :style="{left: triggerLeft}"
+                    :style="horizontalTriggerStyle"
                     @mousedown="handleMousedown"
                     unselectable="on">
+					<div class="trigger-middle-point"><p></p><p></p><p></p><p></p><p></p><p></p></div>
                 </div>
             </slot>
             <div :class="`${prefix}-right-area`" :style="{width: rightSize}">
@@ -35,9 +36,10 @@
                 <div 
                     :class="`${prefix}-trigger`" 
                     ref="trigger"
-                    :style="{top: triggerLeft}"
+                    :style="verticalTriggerStyle"
                     @mousedown="handleMousedown"
                     unselectable="on">
+					<div class="trigger-middle-point"><p></p><p></p><p></p><p></p><p></p><p></p></div>
                 </div>
             </slot>
             <div :class="`${prefix}-bottom-area`" :style="{height: rightSize}">
@@ -77,9 +79,29 @@ export default {
 			type: [Number, String],
 			default: 97
 		},
+		maxRight: {
+			type: Boolean,
+			default: false
+		},
 		right: {
 			type: Boolean,
 			default: false
+		},
+		triggerStyle: {
+			type: Object,
+			default () {
+				if (this.direction === 'horizontal') {
+					return {
+						width: '4px',
+						background: '#BDBDBD'
+					};
+				} else {
+					return {
+						height: '4px',
+						background: '#BDBDBD'
+					};
+				}
+			}
 		}
 	},
 	data () {
@@ -91,7 +113,7 @@ export default {
 			offset: {},
 			atMin: false,
 			atMax: false,
-			oldOffset: 0
+			directionMark: 0
 		};
 	},
 	computed: {
@@ -114,7 +136,14 @@ export default {
 			return this.transValue(this.min);
 		},
 		maxTransed () {
-			return this.right ? (100 - this.transValue(this.max)) : this.transValue(this.max);
+			let max = this.right ? (100 - this.transValue(this.max)) : this.transValue(this.max);
+			return this.maxRight ? 100 - max : max;
+		},
+		horizontalTriggerStyle () {
+			return Object.assign({left: this.triggerLeft}, this.triggerStyle);
+		},
+		verticalTriggerStyle () {
+			return Object.assign({top: this.triggerLeft}, this.triggerStyle);
 		}
 	},
 	methods: {
@@ -163,17 +192,23 @@ export default {
 						this.triggerOffset = Math.min(offset, this.maxTransed);
 					}
 				}
-				e.atMin = 100 - offset <= this.minTransed;
-				e.atMax = 100 - offset <= this.minTransed;
-				if (this.triggerOffset < this.oldOffset) {
-					e.direction = this.right ? 1 : 0;
+				e.atMin = (100 - offset) <= this.minTransed;
+				e.atMax = (100 - offset) >= this.maxTransed;
+				if (e.pageX > this.directionMark) {
+					e.direction = 1;
 				} else {
-					e.direction = this.right ? 0 : 1;
+					e.direction = 0;
 				}
-				this.oldOffset = this.triggerOffset;
+				this.directionMark = e.pageX;
 				this.$emit('input', this.triggerOffset);
 				this.$emit('on-resizing', e);
 			}
+		},
+		setTriggerOffset (offset) {
+			this.$nextTick(() => {
+				this.triggerOffset = (typeof offset === 'number') ? offset : Math.floor(((parseInt(offset) / this.$refs.wraper.offsetWidth) * 10000)) / 100;
+				this.$emit('input', this.triggerOffset);
+			});
 		}
 	},
 	watch: {

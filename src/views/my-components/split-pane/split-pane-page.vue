@@ -2,7 +2,7 @@
     <div>
         <Card :padding="0">
             <div class="split-pane-con">
-                <split-pane :style="{height: '100%'}" right min="100px" :max="80" @on-trigger-moving="handleMoving" direction="horizontal" v-model="triggerOffset">
+                <split-pane :style="{height: '100%'}" right :min="20" max="100px" @on-trigger-moving="handleMoving" direction="horizontal" v-model="triggerOffset">
                     <div slot="left" style="height: 100%;">
                         <split-pane :style="{height: '100%'}" direction="vertical" v-model="triggerOffsetV">
                             <div class="introduce-left-con" slot="top" style="background: #EDE3A0;height: 100%;padding: 30px;">
@@ -46,7 +46,7 @@ export default {
     },
     data () {
         return {
-            triggerOffset: '300px',
+            triggerOffset: 20,
             triggerOffsetV: 70,
             triggerOffsetMin: 40,
             atMax: false,
