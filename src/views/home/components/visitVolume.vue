@@ -1,11 +1,11 @@
 <template>
-    <div style="width:100%;height:100%;" id="visite_volume_con"></div>
+    <div style="width:100%;height:100%;" id="visit_volume_con"></div>
 </template>
 
 <script>
 import echarts from 'echarts';
 export default {
-    name: 'visiteVolume',
+    name: 'visitVolume',
     data () {
         return {
             //
@@ -13,7 +13,7 @@ export default {
     },
     mounted () {
         this.$nextTick(() => {
-            let visiteVolume = echarts.init(document.getElementById('visite_volume_con'));
+            let visitVolume = echarts.init(document.getElementById('visit_volume_con'));
             let xAxisData = [];
             let data1 = [];
             let data2 = [];
@@ -65,10 +65,10 @@ export default {
                 ]
             };
 
-            visiteVolume.setOption(option);
+            visitVolume.setOption(option);
 
             window.addEventListener('resize', function () {
-                visiteVolume.resize();
+                visitVolume.resize();
             });
         });
     }
