@@ -84,11 +84,11 @@
 <script>
 import scrollBar from './vue-scroller-bars';
 export default {
-	name: 'scroll-bar-page',
-	components: {
-		scrollBar
-	}
-}
+    name: 'scroll-bar-page',
+    components: {
+        scrollBar
+    }
+};
 </script>
 
 <style lang="less">

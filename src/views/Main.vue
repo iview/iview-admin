@@ -199,7 +199,7 @@
             openedSubmenuArr () {
                 setTimeout(() => {
                     this.scrollBarResize();
-                }, 300)
+                }, 300);
             }
         },
         mounted () {
