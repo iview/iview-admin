@@ -8,29 +8,29 @@
             <Card :bordered="false">
                 <p slot="title">
                     <Icon type="log-in"></Icon>
-                    欢迎登录
+                    歡迎登入
                 </p>
                 <div class="form-con">
                     <Form ref="loginForm" :model="form" :rules="rules">
                         <FormItem prop="userName">
-                            <Input v-model="form.userName" placeholder="请输入用户名">
+                            <Input v-model="form.userName" placeholder="請輸入帳號">
                                 <span slot="prepend">
                                     <Icon :size="16" type="person"></Icon>
                                 </span>
                             </Input>
                         </FormItem>
                         <FormItem prop="password">
-                            <Input type="password" v-model="form.password" placeholder="请输入密码">
+                            <Input type="password" v-model="form.password" placeholder="請輸入密碼">
                                 <span slot="prepend">
                                     <Icon :size="14" type="locked"></Icon>
                                 </span>
                             </Input>
                         </FormItem>
                         <FormItem>
-                            <Button @click="handleSubmit" type="primary" long>登录</Button>
+                            <Button @click="handleSubmit" type="primary" long>登入</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">输入任意用户名和密码即可</p>
+                    <p class="login-tip">公用帳號sales@wecc.com.tw</p>
                 </div>
             </Card>
         </div>
