@@ -25,7 +25,7 @@ export default [
     name: 'international',
     component: Main,
     children: [
-      addChildPage('index', )
+      // addChildPage('index', )
     ]
   }
 ]
