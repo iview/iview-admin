@@ -1,11 +1,11 @@
 {
   "name": "iview-admin",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
+  "version": "2.0.0",
+  "description": "Vue 2.0 admin management system template based on iView",
   "author": "lison<zhigang.li@tendcloud.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --open --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
@@ -60,6 +60,8 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
+    "less": "^3.0.2",
+    "less-loader": "^4.1.0",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",
     "node-notifier": "^5.1.2",
