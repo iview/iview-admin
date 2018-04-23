@@ -8,10 +8,9 @@ export default [
     },
     component: () => import('@/view/login/login.vue')
   },
-  {
-    path: '/',
+  { path: '/',
     name: 'home',
-    redirect: '/home',
+    // redirect: '/home',
     component: Main
   }
 ]
