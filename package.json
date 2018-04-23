@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Vue 2.0 admin management system template based on iView",
   "author": "lison<zhigang.li@tendcloud.com>",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "webpack-dev-server --inline --open --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
