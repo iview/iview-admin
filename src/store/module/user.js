@@ -7,7 +7,8 @@ export default {
     userName: '',
     userId: '',
     avatorImgPath: '',
-    token: getToken()
+    token: getToken(),
+    access: ''
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -18,9 +19,13 @@ export default {
     },
     setUserName (state, name) {
       state.userName = name
+    },
+    setAccess (state, access) {
+      state.access = access
     }
   },
   actions: {
+    // 登录
     handleLogin ({ commit }, {userName, password}) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
@@ -37,6 +42,7 @@ export default {
         })
       })
     },
+    // 获取用户相关信息
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(res => {
@@ -44,6 +50,7 @@ export default {
           commit('setAvator', data.avator)
           commit('setUserName', data.user_name)
           commit('setUserId', data.user_id)
+          commit('setAccess', data.access)
           resolve(data)
         }).catch(err => {
           reject(err)
