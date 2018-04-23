@@ -3,7 +3,7 @@
 </style>
 
 <template>
-  <div class="login" @keydown.enter="handleSubmit">
+  <div class="login" @keydown.enter="handleLogin">
     <div class="login-con">
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
@@ -17,17 +17,19 @@
 
 <script>
 import loginForm from '_c/login-form'
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   components: {
     loginForm
   },
   methods: {
-    ...mapMutations([
+    ...mapActions('user', [
       'handleLogin'
     ]),
-    handleSubmit ({userName, password}) {
-
+    handleSubmit ({ userName, password }) {
+      this.handleLogin({ userName, password }).then(res => {
+        console.log(res)
+      })
     }
   }
 }
