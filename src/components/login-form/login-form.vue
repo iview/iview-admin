@@ -9,9 +9,9 @@
     </FormItem>
     <FormItem prop="password">
       <Input type="password" v-model="form.password" placeholder="请输入密码">
-          <span slot="prepend">
-              <Icon :size="14" type="locked"></Icon>
-          </span>
+        <span slot="prepend">
+          <Icon :size="14" type="locked"></Icon>
+        </span>
       </Input>
     </FormItem>
     <FormItem>
@@ -61,8 +61,8 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$emit('on-success-valid', {
-            userName: this.userName,
-            password: this.password
+            userName: this.form.userName,
+            password: this.form.password
           })
         }
       })

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
-import cookieExpires from '_conf/app/basic'
+import { cookieExpires } from '_conf/app/basic'
 
 const TOKEN_KEY = 'token'
 
