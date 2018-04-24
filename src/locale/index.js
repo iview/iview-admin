@@ -12,15 +12,16 @@ Vue.use(VueI18n)
 // 自动根据浏览器系统语言设置语言
 const navLang = navigator.language
 const localLang = (navLang === 'zh-CN' || navLang === 'en-US') ? navLang : false
-const lang = window.localStorage.lang || localLang || 'zh-CN'
+// let lang = window.localStorage.lang || localLang || 'zh-CN'
+let lang = 'zh-CN'
 
 Vue.config.lang = lang
 Vue.locale = () => {}
 
 const messages = {
-  zhCn: Object.assign(zhCnLocale, customZhCn),
-  zhTw: Object.assign(zhTwLocale, customZhTw),
-  enUs: Object.assign(enUsLocale, customEnUs)
+  'zh-CN': Object.assign(zhCnLocale, customZhCn),
+  'zh-TW': Object.assign(zhTwLocale, customZhTw),
+  'en-US': Object.assign(enUsLocale, customEnUs)
 }
 
 const i18n = new VueI18n({
