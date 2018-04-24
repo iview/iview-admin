@@ -16,8 +16,6 @@ export const getToken = () => {
 }
 
 export const getMenuByRouter = list => {
-  // console.log(routerList)
-  // console.log(routers)
   let res = []
   forEach(list, (item) => {
     if (!item.hideInMenu) {
