@@ -30,7 +30,8 @@
 - 使用Webpack4版本（待定）
 - 重整项目结构，更好封装组件
 - 新增更多组件
-- 加入服务端获取路由列表
+- 多级菜单
+- 动态路由
 - 重构权限控制体系
 - 使用最新版iView以及iView-editor
 - 加入大数据量表格[vue-bigdata-table](https://github.com/lison16/vue-bigdata-table)组件，几十万数据流畅渲染
