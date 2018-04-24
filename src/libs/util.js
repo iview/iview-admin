@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import { cookieExpires } from '@/config/basic'
+import { forEach } from '@/libs/tools'
 
 const TOKEN_KEY = 'token'
 
@@ -14,6 +15,21 @@ export const getToken = () => {
   else return false
 }
 
-export const handleRouter = routerList => {
-  return routerList
+export const getMenuByRouter = list => {
+  // console.log(routerList)
+  // console.log(routers)
+  let res = []
+  forEach(list, (item) => {
+    if (!item.hideInMenu) {
+      let obj = {
+        icon: item.meta.icon,
+        name: item.name
+      }
+      if (item.children && item.children.length !== 0) {
+        obj.children = getMenuByRouter(item.children)
+      }
+      res.push(obj)
+    }
+  })
+  return res
 }

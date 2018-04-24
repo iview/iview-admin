@@ -5,6 +5,7 @@ export default [
   {
     path: '/login',
     name: 'login',
+    hideInMenu: true,
     meta: {
       title: 'Login - 登录'
     },
@@ -14,48 +15,68 @@ export default [
     path: '/',
     name: 'index',
     // redirect: '/home',
+    hideInMenu: true,
     component: Main,
     children: [
       {
         path: 'home',
         name: 'home',
-        hideInMenu: true,
-        notCache: true,
+        meta: {
+          notCache: true
+        },
         component: () => import('@/view/single-page/home')
+      }
+    ]
+  },
+  {
+    path: '/components',
+    name: 'components',
+    meta: {
+      icon: 'social-buffer'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'count_to',
+        name: 'count_to',
+        meta: {
+          icon: 'arrow-graph-up-right'
+        },
+        component: () => import('@/view/components/count-to/count-to.vue')
+      }
+    ]
+  },
+  {
+    path: 'multilevel',
+    name: 'multilevel',
+    meta: {
+      icon: 'arrow-graph-up-right'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'level_1',
+        name: 'level_1',
+        meta: {
+          icon: 'arrow-graph-up-right'
+        },
+        component: () => import('@/view/multilevel/level-1.vue')
       },
       {
-        path: '/components',
-        name: 'components',
+        path: 'level_2',
+        name: 'level_2',
+        meta: {
+          icon: 'arrow-graph-up-right'
+        },
         component: parentView,
         children: [
           {
-            path: 'count_to',
-            name: 'count_to',
-            component: () => import('@/view/components/count-to/count-to.vue')
-          }
-        ]
-      },
-      {
-        path: 'multilevel',
-        name: 'multilevel',
-        component: parentView,
-        children: [
-          {
-            path: 'level_1',
-            name: 'level_1',
-            component: () => import('@/view/multilevel/level-1.vue')
-          },
-          {
-            path: 'level_2',
-            name: 'level_2',
-            component: parentView,
-            children: [
-              {
-                path: 'level_2_1',
-                name: 'level_2_1',
-                component: () => import('@/view/multilevel/level-2/level-2-1.vue')
-              }
-            ]
+            path: 'level_2_1',
+            name: 'level_2_1',
+            meta: {
+              icon: 'arrow-graph-up-right'
+            },
+            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
           }
         ]
       }
