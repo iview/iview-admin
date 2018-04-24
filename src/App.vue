@@ -5,8 +5,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    ...mapActions('routers', [
+      'getRouter'
+    ])
+  },
+  mounted () {
+    this.getRouter()
+  }
 }
 </script>
 

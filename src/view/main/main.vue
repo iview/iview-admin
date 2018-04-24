@@ -1,8 +1,14 @@
 <template>
-  <div>12313123</div>
+  <div>{{ menuList }}</div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'Main'
+  name: 'Main',
+  computed: {
+    ...mapGetters('routers', [
+      'menuList'
+    ])
+  }
 }
 </script>

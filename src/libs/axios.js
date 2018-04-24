@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import baseURL from '_conf/app/url'
+import baseURL from '_conf/url'
 import { Message } from 'iview'
 import Cookies from 'js-cookie'
 class httpRequest {
