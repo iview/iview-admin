@@ -1,5 +1,5 @@
 <template>
-  <Menu theme="dark" width="auto">
+  <Menu theme="dark" width="auto" @on-select="handleSelect">
     <template v-for="item in menuList">
       <side-menu-item v-if="item.children && item.children.length !== 0" :key="`menu-${item.name}`" :submenu-item="item" :list="item.children"></side-menu-item>
       <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/>{{ showTitle(item) }}</menu-item>
@@ -25,6 +25,11 @@ export default {
     useI18n: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    handleSelect (name) {
+      this.$emit('on-select', name)
     }
   }
 }

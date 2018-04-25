@@ -1,7 +1,7 @@
 <template>
   <Layout style="height: 100%">
     <Sider collapsible :width="260" :collapsed-width="64" v-model="collapsed">
-      <side-menu :use-i18n="useI18n" :menu-list="menuList"></side-menu>
+      <side-menu @on-select="turnToPage" :use-i18n="useI18n" :menu-list="menuList"></side-menu>
     </Sider>
     <Layout>
       <Header></Header>
@@ -29,6 +29,13 @@ export default {
     ...mapState('app', [
       'useI18n'
     ])
+  },
+  methods: {
+    turnToPage (name) {
+      this.$router.push({
+        name: name
+      })
+    }
   }
 }
 </script>
