@@ -1,7 +1,12 @@
 <template>
-  <Layout style="height: 100%">
+  <Layout style="height: 100%" class="main">
     <Sider collapsible :width="260" :collapsed-width="64" v-model="collapsed">
-      <side-menu @on-select="turnToPage" :use-i18n="useI18n" :menu-list="menuList"></side-menu>
+      <side-menu :collapsed="collapsed" @on-select="turnToPage" :use-i18n="useI18n" :menu-list="menuList">
+        <div class="logo-con">
+          <img v-show="!collapsed"  :src="maxLogo" key="max-logo" />
+          <img v-show="collapsed" :src="minLogo" key="min-logo" />
+        </div>
+      </side-menu>
     </Sider>
     <Layout>
       <Header></Header>
@@ -12,6 +17,8 @@
 <script>
 import sideMenu from '_c/main/side-menu'
 import { mapState, mapGetters } from 'vuex'
+import minLogo from '@/assets/images/logo-min.jpg'
+import maxLogo from '@/assets/images/logo.jpg'
 export default {
   name: 'Main',
   components: {
@@ -19,7 +26,9 @@ export default {
   },
   data () {
     return {
-      collapsed: false
+      collapsed: true,
+      minLogo,
+      maxLogo
     }
   },
   computed: {
@@ -39,3 +48,6 @@ export default {
   }
 }
 </script>
+<style lang="less">
+@import 'main.less';
+</style>
