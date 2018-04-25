@@ -32,7 +32,8 @@ export default [
     path: '/components',
     name: 'components',
     meta: {
-      icon: 'social-buffer'
+      icon: 'social-buffer',
+      title: '组件'
     },
     component: Main,
     children: [
@@ -40,7 +41,8 @@ export default [
         path: 'count_to',
         name: 'count_to',
         meta: {
-          icon: 'arrow-graph-up-right'
+          icon: 'arrow-graph-up-right',
+          title: '数字渐变'
         },
         component: () => import('@/view/components/count-to/count-to.vue')
       }
@@ -50,7 +52,8 @@ export default [
     path: 'multilevel',
     name: 'multilevel',
     meta: {
-      icon: 'arrow-graph-up-right'
+      icon: 'arrow-graph-up-right',
+      title: '多级菜单'
     },
     component: Main,
     children: [
@@ -58,7 +61,8 @@ export default [
         path: 'level_1',
         name: 'level_1',
         meta: {
-          icon: 'arrow-graph-up-right'
+          icon: 'arrow-graph-up-right',
+          title: '二级'
         },
         component: () => import('@/view/multilevel/level-1.vue')
       },
@@ -66,7 +70,8 @@ export default [
         path: 'level_2',
         name: 'level_2',
         meta: {
-          icon: 'arrow-graph-up-right'
+          icon: 'arrow-graph-up-right',
+          title: '二级'
         },
         component: parentView,
         children: [
@@ -74,7 +79,8 @@ export default [
             path: 'level_2_1',
             name: 'level_2_1',
             meta: {
-              icon: 'arrow-graph-up-right'
+              icon: 'arrow-graph-up-right',
+              title: '三级'
             },
             component: () => import('@/view/multilevel/level-2/level-2-1.vue')
           }

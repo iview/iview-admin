@@ -1,21 +1,30 @@
 <template>
   <Submenu :name="`${submenuName}`">
     <template slot="title">
-      <Icon type="ios-paper"></Icon>
-      {{ $t(submenuName) }}
+      <Icon :type="submenuItem.icon"/>
+      {{ showTitle(submenuItem) }}
     </template>
-    <template v-for="item in list">
-      <side-menu-item v-if="item.children && item.children.length !== 0" :key="`menu-${item.name}`" :submenu-name="item.name" :list="item.children"></side-menu-item>
-      <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`">{{ $t(item.name) }}</menu-item>
+    <template v-for="item in children">
+      <side-menu-item v-if="item.children && item.children.length !== 0" :key="`menu-${item.name}`" :submenu-item="item"></side-menu-item>
+      <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/>{{ showTitle(item) }}</menu-item>
     </template>
   </Submenu>
 </template>
 <script>
+import mixin from './mixin'
 export default {
   name: 'sideMenuItem',
   props: {
-    list: Array,
-    submenuName: String
+    submenuItem: Object
+  },
+  mixins: [ mixin ],
+  computed: {
+    submenuName () {
+      return this.submenuItem.name
+    },
+    children () {
+      return this.submenuItem.children
+    }
   }
 }
 </script>

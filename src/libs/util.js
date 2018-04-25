@@ -21,7 +21,8 @@ export const getMenuByRouter = list => {
     if (!item.hideInMenu) {
       let obj = {
         icon: item.meta.icon,
-        name: item.name
+        name: item.name,
+        meta: item.meta
       }
       if (item.children && item.children.length !== 0) {
         obj.children = getMenuByRouter(item.children)
