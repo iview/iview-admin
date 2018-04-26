@@ -1,7 +1,8 @@
 <template>
   <Layout style="height: 100%" class="main">
-    <Sider collapsible :width="210" :collapsed-width="64" v-model="collapsed">
+    <Sider hide-trigger collapsible :width="210" :collapsed-width="64" v-model="collapsed">
       <side-menu :collapsed="collapsed" @on-select="turnToPage" :use-i18n="useI18n" :menu-list="menuList">
+        <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
           <img v-show="!collapsed"  :src="maxLogo" key="max-logo" />
           <img v-show="collapsed" :src="minLogo" key="min-logo" />
@@ -9,20 +10,24 @@
       </side-menu>
     </Sider>
     <Layout>
-      <Header></Header>
+      <Header class="header-con">
+        <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange"></header-bar>
+      </Header>
       <Content></Content>
     </Layout>
   </Layout>
 </template>
 <script>
 import sideMenu from '_c/main/side-menu'
+import headerBar from '_c/main/header-bar'
 import { mapState, mapGetters } from 'vuex'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 export default {
   name: 'Main',
   components: {
-    sideMenu
+    sideMenu,
+    headerBar
   },
   data () {
     return {
@@ -44,6 +49,9 @@ export default {
       this.$router.push({
         name: name
       })
+    },
+    handleCollapsedChange (state) {
+      this.collapsed = state
     }
   }
 }

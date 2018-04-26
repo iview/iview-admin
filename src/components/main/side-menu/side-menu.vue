@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="side-menu-wrapper">
     <slot></slot>
     <Menu v-show="!collapsed" :theme="theme" width="auto" @on-select="handleSelect">
       <template v-for="item in menuList">
