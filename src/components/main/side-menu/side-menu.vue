@@ -8,7 +8,7 @@
       </template>
     </Menu>
     <div class="menu-collapsed" v-show="collapsed" :list="menuList">
-      <collapsed-menu hide-title :root-icon-size="rootIconSize" :icon-size="iconSize" :theme="theme" v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
+      <collapsed-menu @on-click="handleSelect" hide-title :root-icon-size="rootIconSize" :icon-size="iconSize" :theme="theme" v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
     </div>
   </div>
 </template>
