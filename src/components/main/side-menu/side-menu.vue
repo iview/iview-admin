@@ -1,14 +1,14 @@
 <template>
   <div>
     <slot></slot>
-    <Menu v-show="!collapsed" theme="dark" width="auto" @on-select="handleSelect">
+    <Menu v-show="!collapsed" :theme="theme" width="auto" @on-select="handleSelect">
       <template v-for="item in menuList">
         <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
         <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
       </template>
     </Menu>
     <div v-show="collapsed" :list="menuList">
-      <collapsed-menu v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
+      <collapsed-menu :theme="theme" v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
     </div>
   </div>
 </template>
@@ -36,6 +36,10 @@ export default {
     },
     collapsed: {
       type: Boolean
+    },
+    theme: {
+      type: String,
+      default: 'dark'
     }
   },
   methods: {

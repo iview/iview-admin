@@ -1,6 +1,6 @@
 <template>
   <Dropdown placement="right-start">
-    <Button><Icon :type="parentItem.icon"/></Button>
+    <Button type="text"><Icon :color="textColor" :type="parentItem.icon"/></Button>
     <DropdownMenu slot="list">
       <template v-for="child in children">
         <collapsed-menu v-if="showChildren(child)" :parent-item="child" :key="`drop-${child.name}`"></collapsed-menu>
