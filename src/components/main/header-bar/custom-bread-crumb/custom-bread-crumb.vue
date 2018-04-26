@@ -1,7 +1,7 @@
 <template>
   <div class="custom-bread-crumb">
     <Breadcrumb :style="{fontSize: `${fontSize}px`}">
-      <BreadcrumbItem v-for="item in list" :to="item.to" :key="`bread-crumb-${item.name}`">{{ showTitle(item) }}</BreadcrumbItem>
+      <BreadcrumbItem v-for="item in list" :to="item.to" :key="`bread-crumb-${item.name}`"><Icon v-if="showIcon" :type="item.icon" style="margin-right: 4px;" />{{ showTitle(item) }}</BreadcrumbItem>
     </Breadcrumb>
   </div>
 </template>
@@ -16,16 +16,17 @@ export default {
     },
     fontSize: {
       type: Number,
-      default: 16
+      default: 14
+    },
+    showIcon: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     showTitle (item) {
       return showTitle(item, this)
     }
-  },
-  mounted () {
-    // console.log(this.list)
   }
 }
 </script>
