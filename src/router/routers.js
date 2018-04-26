@@ -15,13 +15,13 @@ export default [
     path: '/',
     name: 'index',
     // redirect: '/home',
-    hideInMenu: true,
     component: Main,
     children: [
       {
         path: 'home',
         name: 'home',
         meta: {
+          hideInMenu: true,
           notCache: true
         },
         component: () => import('@/view/single-page/home')

@@ -22,9 +22,9 @@ export const hasChild = (item) => {
 export const getMenuByRouter = list => {
   let res = []
   forEach(list, (item) => {
-    if (!item.hideInMenu) {
+    if (!(item.meta && item.meta.hideInMenu)) {
       let obj = {
-        icon: item.meta.icon,
+        icon: (item.meta && item.meta.icon) || '',
         name: item.name,
         meta: item.meta
       }
@@ -40,12 +40,20 @@ export const getMenuByRouter = list => {
 export const getBreadCrumbList = (routeMetched) => {
   let res = routeMetched.map(item => {
     let obj = {
-      icon: item.meta.icon,
+      icon: (item.meta && item.meta.icon) || '',
       name: item.name,
       meta: item.meta
     }
-    if (hasChild(item)) obj.to = item.name
+    if (!hasChild(item)) obj.to = item.path
     return obj
   })
-  return res
+  res = res.filter(item => {
+    console.log(item)
+    return !item.meta.hideInMenu
+  })
+  console.log(res)
+  return [{
+    name: 'home',
+    to: '/home'
+  }, ...res]
 }

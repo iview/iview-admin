@@ -63,6 +63,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$route)
     this.setBreadCrumb(this.$route.matched)
   }
 }
