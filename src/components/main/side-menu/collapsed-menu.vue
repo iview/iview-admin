@@ -1,10 +1,10 @@
 <template>
-  <Dropdown placement="right-start">
-    <Button type="text"><Icon :color="textColor" :type="parentItem.icon"/></Button>
+  <Dropdown transer trigger="click" placement="right-start">
+    <a class="drop-menu-a" type="text" :style="{textAlign: !hideTitle ? 'left' : ''}"><Icon :size="rootIconSize" :color="textColor" :type="parentItem.icon"/><span class="menu-title" v-if="!hideTitle">{{ showTitle(parentItem) }}</span><Icon v-if="!hideTitle" :size="10" :color="textColor" type="chevron-right" style="float: right;margin-top: 4px;"/></a>
     <DropdownMenu slot="list">
       <template v-for="child in children">
-        <collapsed-menu v-if="showChildren(child)" :parent-item="child" :key="`drop-${child.name}`"></collapsed-menu>
-        <DropdownItem v-else :key="`drop-${child.name}`"><Icon :type="child.icon"/><span>{{ showTitle(child) }}</span></DropdownItem>
+        <collapsed-menu v-if="showChildren(child)" :icon-size="iconSize" :parent-item="child" :key="`drop-${child.name}`"></collapsed-menu>
+        <DropdownItem v-else :key="`drop-${child.name}`"><Icon :size="iconSize" :type="child.icon"/><span class="menu-title">{{ showTitle(child) }}</span></DropdownItem>
       </template>
     </DropdownMenu>
   </Dropdown>
@@ -14,6 +14,16 @@ import mixin from './mixin'
 import itemMixin from './item-mixin'
 export default {
   name: 'collapsedMenu',
-  mixins: [ mixin, itemMixin ]
+  mixins: [ mixin, itemMixin ],
+  props: {
+    hideTitle: {
+      type: Boolean,
+      default: false
+    },
+    rootIconSize: {
+      type: Number,
+      default: 16
+    }
+  }
 }
 </script>

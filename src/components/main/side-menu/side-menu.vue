@@ -7,8 +7,8 @@
         <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
       </template>
     </Menu>
-    <div v-show="collapsed" :list="menuList">
-      <collapsed-menu :theme="theme" v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
+    <div class="menu-collapsed" v-show="collapsed" :list="menuList">
+      <collapsed-menu hide-title :root-icon-size="rootIconSize" :icon-size="iconSize" :theme="theme" v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
     </div>
   </div>
 </template>
@@ -40,6 +40,14 @@ export default {
     theme: {
       type: String,
       default: 'dark'
+    },
+    rootIconSize: {
+      type: Number,
+      default: 20
+    },
+    iconSize: {
+      type: Number,
+      default: 16
     }
   },
   methods: {
@@ -49,3 +57,6 @@ export default {
   }
 }
 </script>
+<style lang="less">
+@import './side-menu.less';
+</style>

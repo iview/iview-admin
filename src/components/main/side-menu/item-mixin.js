@@ -4,7 +4,8 @@ export default {
       type: Object,
       default: () => {}
     },
-    theme: String
+    theme: String,
+    iconSize: Number
   },
   computed: {
     parentName () {
