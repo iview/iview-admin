@@ -20,7 +20,7 @@
 <script>
 import sideMenu from '_c/main/side-menu'
 import headerBar from '_c/main/header-bar'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 export default {
@@ -45,6 +45,9 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations('app', [
+      'setBreadCrumb'
+    ]),
     turnToPage (name) {
       this.$router.push({
         name: name
@@ -53,6 +56,14 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     }
+  },
+  watch: {
+    '$route' (res) {
+      this.setBreadCrumb(res.matched)
+    }
+  },
+  mounted () {
+    this.setBreadCrumb(this.$route.matched)
   }
 }
 </script>

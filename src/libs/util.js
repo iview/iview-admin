@@ -15,6 +15,10 @@ export const getToken = () => {
   else return false
 }
 
+export const hasChild = (item) => {
+  return item.children && item.children.length !== 0
+}
+
 export const getMenuByRouter = list => {
   let res = []
   forEach(list, (item) => {
@@ -24,11 +28,24 @@ export const getMenuByRouter = list => {
         name: item.name,
         meta: item.meta
       }
-      if (item.children && item.children.length !== 0) {
+      if (hasChild(item)) {
         obj.children = getMenuByRouter(item.children)
       }
       res.push(obj)
     }
+  })
+  return res
+}
+
+export const getBreadCrumbList = (routeMetched) => {
+  let res = routeMetched.map(item => {
+    let obj = {
+      icon: item.meta.icon,
+      name: item.name,
+      meta: item.meta
+    }
+    if (hasChild(item)) obj.to = item.name
+    return obj
   })
   return res
 }

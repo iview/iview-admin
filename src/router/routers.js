@@ -49,7 +49,7 @@ export default [
     ]
   },
   {
-    path: 'multilevel',
+    path: '/multilevel',
     name: 'multilevel',
     meta: {
       icon: 'arrow-graph-up-right',
