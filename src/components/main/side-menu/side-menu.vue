@@ -3,14 +3,12 @@
     <slot></slot>
     <Menu v-show="!collapsed" theme="dark" width="auto" @on-select="handleSelect">
       <template v-for="item in menuList">
-        <side-menu-item v-if="item.children && item.children.length !== 0" :key="`menu-${item.name}`" :submenu-item="item" :list="item.children"></side-menu-item>
+        <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
         <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
       </template>
     </Menu>
     <div v-show="collapsed" :list="menuList">
-      <Dropdown v-for="item in menuList" :key="`drop-menu-${item.name}`">
-        <Button><Icon :type="item.icon"/></Button>
-      </Dropdown>
+      <collapsed-menu v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
     </div>
   </div>
 </template>

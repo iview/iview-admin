@@ -1,30 +1,20 @@
 <template>
-  <Submenu :name="`${submenuName}`">
+  <Submenu :name="`${parentName}`">
     <template slot="title">
-      <Icon :type="submenuItem.icon"/>
-      <span>{{ showTitle(submenuItem) }}</span>
+      <Icon :type="parentItem.icon"/>
+      <span>{{ showTitle(parentItem) }}</span>
     </template>
     <template v-for="item in children">
-      <side-menu-item v-if="item.children && item.children.length !== 0" :key="`menu-${item.name}`" :submenu-item="item"></side-menu-item>
+      <side-menu-item v-if="item.children && item.children.length !== 0" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
       <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
     </template>
   </Submenu>
 </template>
 <script>
 import mixin from './mixin'
+import itemMixin from './item-mixin'
 export default {
   name: 'sideMenuItem',
-  props: {
-    submenuItem: Object
-  },
-  mixins: [ mixin ],
-  computed: {
-    submenuName () {
-      return this.submenuItem.name
-    },
-    children () {
-      return this.submenuItem.children
-    }
-  }
+  mixins: [ mixin, itemMixin ]
 }
 </script>
