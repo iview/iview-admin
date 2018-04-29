@@ -6,11 +6,20 @@ import store from './store';
 import App from './app.vue';
 import '@/locale';
 import 'iview/dist/styles/iview.css';
+import locale from 'iview/dist/locale/zh-TW';
 import VueI18n from 'vue-i18n';
 import util from './libs/util';
+import axios from 'axios';
+import baseUrl from './baseUrl';
+import moment from 'moment';
 
+// Setup axios config
+axios.defaults.baseURL = baseUrl();
+axios.defaults.withCredentials = true;
+// Setup moment
+moment.locale('zh_tw');
 Vue.use(VueI18n);
-Vue.use(iView);
+Vue.use(iView, { locale });
 
 new Vue({
     el: '#app',

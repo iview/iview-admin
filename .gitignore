@@ -7,3 +7,5 @@ node_modules
 \.settings/
 build/env.js
 dist/
+/yarn-error.log
+/yarn.lock

@@ -5,7 +5,7 @@ export const loginRouter = {
     path: '/login',
     name: 'login',
     meta: {
-        title: 'Login - 登录'
+        title: '登入'
     },
     component: () => import('@/views/login.vue')
 };
@@ -14,7 +14,7 @@ export const page404 = {
     path: '/*',
     name: 'error-404',
     meta: {
-        title: '404-页面不存在'
+        title: '404-頁面不存在'
     },
     component: () => import('@/views/error-page/404.vue')
 };
@@ -22,7 +22,7 @@ export const page404 = {
 export const page403 = {
     path: '/403',
     meta: {
-        title: '403-权限不足'
+        title: '403-權限不足'
     },
     name: 'error-403',
     component: () => import('@//views/error-page/403.vue')
@@ -31,7 +31,7 @@ export const page403 = {
 export const page500 = {
     path: '/500',
     meta: {
-        title: '500-服务端错误'
+        title: '500-系統錯誤'
     },
     name: 'error-500',
     component: () => import('@/views/error-page/500.vue')
@@ -70,10 +70,23 @@ export const appRouter = [
         path: '/access',
         icon: 'key',
         name: 'access',
-        title: '权限管理',
+        title: '權限管理',
         component: Main,
         children: [
-            { path: 'index', title: '权限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
+            { path: 'index', title: '權限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
+        ]
+    }
+];
+
+export const iappRouter = [
+    {
+        path: '/access',
+        icon: 'key',
+        name: 'access',
+        title: '權限管理',
+        component: Main,
+        children: [
+            { path: 'index', title: '權限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
         ]
     },
     {
