@@ -24,6 +24,19 @@
 
 `注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
 
+## 2.0版本预告 Feature
+
+- 使用Vue-cli作为项目脚手架
+- 使用Webpack4版本（待定）
+- 重整项目结构，更好封装组件
+- 新增更多组件
+- 多级菜单
+- 动态路由
+- 重构权限控制体系
+- 使用最新版iView以及iView-editor
+- 加入大数据量表格[vue-bigdata-table](https://github.com/lison16/vue-bigdata-table)组件，几十万数据流畅渲染
+- ......
+
 ## Install
 ```bush
 // install dependencies
