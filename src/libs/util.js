@@ -21,8 +21,8 @@ export const hasChild = (item) => {
 
 export const getMenuByRouter = list => {
   let res = []
-  forEach(list, (item) => {
-    if (!(item.meta && item.meta.hideInMenu)) {
+  forEach(list, item => {
+    if (item.meta && !item.meta.hideInMenu) {
       let obj = {
         icon: (item.meta && item.meta.icon) || '',
         name: item.name,
@@ -44,14 +44,11 @@ export const getBreadCrumbList = (routeMetched) => {
       name: item.name,
       meta: item.meta
     }
-    if (!hasChild(item)) obj.to = item.path
     return obj
   })
   res = res.filter(item => {
-    console.log(item)
     return !item.meta.hideInMenu
   })
-  console.log(res)
   return [{
     name: 'home',
     to: '/home'

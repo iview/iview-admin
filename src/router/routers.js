@@ -5,9 +5,9 @@ export default [
   {
     path: '/login',
     name: 'login',
-    hideInMenu: true,
     meta: {
-      title: 'Login - 登录'
+      title: 'Login - 登录',
+      hideInMenu: true
     },
     component: () => import('@/view/login/login.vue')
   },
@@ -16,6 +16,10 @@ export default [
     name: 'index',
     // redirect: '/home',
     component: Main,
+    meta: {
+      hideInMenu: true,
+      notCache: true
+    },
     children: [
       {
         path: 'home',
