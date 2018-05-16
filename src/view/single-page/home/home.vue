@@ -1,10 +1,10 @@
 <template>
-  <div>count to</div>
+  <div>home</div>
 </template>
 
 <script>
 export default {
-  name: 'countTo'
+  name: 'home'
 }
 </script>
 

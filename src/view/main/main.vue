@@ -31,7 +31,7 @@
 <script>
 import sideMenu from '_c/main/side-menu'
 import headerBar from '_c/main/header-bar'
-import tagsNav from '_c/tags-nav'
+import tagsNav from '_c/main/tags-nav'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
