@@ -54,3 +54,50 @@ export const getBreadCrumbList = (routeMetched) => {
     to: '/home'
   }, ...res]
 }
+
+export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
+
+export const setTagNavListInLocalstorage = list => {
+  localStorage.tagNaveList = JSON.stringify(list)
+}
+
+export const getTagNavListFromLocalstorage = () => {
+  const list = localStorage.tagNaveList
+  return list ? JSON.parse(list) : []
+}
+
+/**
+ * @param {Array} routers 路由列表数组
+ * @description 用于找到路由列表中name为home的对象
+ */
+export const getHomeRoute = routers => {
+  let i = -1
+  let len = routers.length
+  let homeRoute = {}
+  while (++i < len) {
+    let item = routers[i]
+    if (item.children && item.children.length) {
+      let res = getHomeRoute(item.children)
+      if (res.name) return res
+    } else {
+      if (item.name === 'home') homeRoute = item
+    }
+  }
+  return homeRoute
+}
+
+export const getOpenedNames = (name, routers) => {
+  let i = -1
+  let len = routers.length
+  let homeRoute = {}
+  while (++i < len) {
+    let item = routers[i]
+    if (item.children && item.children.length) {
+      let res = getOpenedNames(item.children)
+      if (res.name) return res
+    } else {
+      if (item.name === 'home') homeRoute = item
+    }
+  }
+  return homeRoute
+}

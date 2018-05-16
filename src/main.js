@@ -6,10 +6,15 @@ import router from './router'
 import store from './store'
 import iView from 'iview'
 import i18n from '@/locale'
+import config from '@/config'
 import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)
 Vue.config.productionTip = false
+/**
+ * @description 全局注册应用配置
+ */
+Vue.prototype.$config = config
 
 /* eslint-disable no-new */
 new Vue({

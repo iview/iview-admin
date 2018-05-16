@@ -1,10 +1,11 @@
 import { getRouterReq } from '@/api/routers'
-import { getMenuByRouter } from '@/libs/util'
+import { getMenuByRouter, getHomeRoute } from '@/libs/util'
 import routers from '@/router/routers'
 export default {
   namespaced: true,
   state: {
-    routerList: []
+    routerList: [],
+    homeRoute: getHomeRoute(routers)
   },
   getters: {
     menuList: state => getMenuByRouter(routers)
