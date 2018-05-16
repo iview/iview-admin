@@ -18,7 +18,11 @@
           <div class="tag-nav-wrapper">
             <tags-nav :value="currentRoute" @input="handleClick" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
           </div>
-          <Content></Content>
+          <Content>
+            <keep-alive :include="cacheList">
+              <router-view/>
+            </keep-alive>
+          </Content>
         </Layout>
       </Content>
     </Layout>
@@ -183,7 +187,10 @@ export default {
     ]),
     ...mapState('routers', [
       'homeRoute'
-    ])
+    ]),
+    cacheList () {
+      return this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache))
+    }
   },
   methods: {
     ...mapMutations('app', [
