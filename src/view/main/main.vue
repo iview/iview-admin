@@ -1,7 +1,7 @@
 <template>
   <Layout style="height: 100%" class="main">
     <Sider hide-trigger collapsible :width="210" :collapsed-width="64" v-model="collapsed">
-      <side-menu accordion :active-name="currentRoute.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+      <side-menu accordion :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
           <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
@@ -16,7 +16,7 @@
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav :value="currentRoute" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"></tags-nav>
+            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"></tags-nav>
           </div>
           <Content>
             <keep-alive :include="cacheList">
@@ -33,6 +33,7 @@ import sideMenu from '_c/main/side-menu'
 import headerBar from '_c/main/header-bar'
 import tagsNav from '_c/main/tags-nav'
 import { mapState, mapGetters, mapMutations } from 'vuex'
+import { getNewTagList } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 export default {
@@ -47,7 +48,6 @@ export default {
       collapsed: false,
       minLogo,
       maxLogo,
-      currentRoute: {},
       tagList: [
         {
           name: '11111',
@@ -206,13 +206,6 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
-    getNewTagList (newRoute) {
-      const { name, path, meta } = newRoute
-      let newList = [...this.tagNavList]
-      if (newList.findIndex(item => item.name === name) >= 0) return newList
-      else newList.push({ name, path, meta })
-      return newList
-    },
     handleCloseTag (res, type) {
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
@@ -224,12 +217,10 @@ export default {
   watch: {
     '$route' (newRoute) {
       this.setBreadCrumb(newRoute.matched)
-      this.setTagNavList(this.getNewTagList(newRoute))
-      this.currentRoute = newRoute
+      this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
     }
   },
   mounted () {
-    this.currentRoute = this.$route
     this.setTagNavList()
     this.addTag(this.homeRoute)
     this.setBreadCrumb(this.$route.matched)
