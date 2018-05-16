@@ -1,0 +1,50 @@
+.size{
+  width: 100%;
+  height: 100%;
+}
+.tags-nav{
+  position: relative;
+  .size;
+  .scroll-outer-con{
+    position: relative;
+    .size;
+    border-top: 1px solid #F0F0F0;
+    border-bottom: 1px solid #F0F0F0;
+  }
+  .close-con{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100px;
+    background: #fff;
+    text-align: center;
+    .ivu-dropdown, .ivu-dropdown .ivu-dropdown-rel{
+      height: 100%;
+      button{
+        transform: translateY(-14px);
+      }
+    }
+  }
+  .btn-con{
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    background: #fff;
+    padding-top: 3px;
+    button{
+      vertical-align: top;
+      padding: 6px 10px;
+      text-align: center;
+    }
+    &.left-btn{
+      left: 0px;
+      box-shadow: 2px 0 3px 2px rgba(100,100,100,.1);
+    }
+    &.right-btn{
+      right: 100px;
+      border-right: 1px solid #F0F0F0;
+      box-shadow: -2px 0 3px 2px rgba(100,100,100,.1);
+    }
+  }
+}

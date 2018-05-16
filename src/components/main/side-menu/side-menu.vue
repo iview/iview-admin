@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu-wrapper">
     <slot></slot>
-    <Menu v-show="!collapsed" :theme="theme" width="auto" @on-select="handleSelect">
+    <Menu v-show="!collapsed" :accordion="accordion" :theme="theme" width="auto" @on-select="handleSelect">
       <template v-for="item in menuList">
         <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
         <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
@@ -48,7 +48,8 @@ export default {
     iconSize: {
       type: Number,
       default: 16
-    }
+    },
+    accordion: Boolean
   },
   methods: {
     handleSelect (name) {

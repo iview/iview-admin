@@ -1,18 +1,18 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules">
     <FormItem prop="userName">
-      <ivu-input v-model="form.userName" placeholder="请输入用户名">
+      <Input v-model="form.userName" placeholder="请输入用户名">
         <span slot="prepend">
           <Icon :size="16" type="person"></Icon>
         </span>
-      </ivu-input>
+      </Input>
     </FormItem>
     <FormItem prop="password">
-      <ivu-input type="password" v-model="form.password" placeholder="请输入密码">
+      <Input type="password" v-model="form.password" placeholder="请输入密码">
         <span slot="prepend">
           <Icon :size="14" type="locked"></Icon>
         </span>
-      </ivu-input>
+      </Input>
     </FormItem>
     <FormItem>
       <Button @click="handleSubmit" type="primary" long>登录</Button>
