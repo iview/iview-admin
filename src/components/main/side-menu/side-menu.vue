@@ -71,7 +71,7 @@ export default {
   watch: {
     activeName (name) {
       this.$nextTick(() => {
-        this.$refs.menu.updateActiveName()
+        this.$refs.menu.updateOpened()
       })
     },
     openNames (newNames) {

@@ -180,12 +180,16 @@ export default {
     ]),
     ...mapState('app', [
       'tagNavList'
+    ]),
+    ...mapState('routers', [
+      'homeRoute'
     ])
   },
   methods: {
     ...mapMutations('app', [
       'setBreadCrumb',
-      'setTagNavList'
+      'setTagNavList',
+      'addTag'
     ]),
     turnToPage (name) {
       this.$router.push({
@@ -196,9 +200,10 @@ export default {
       this.collapsed = state
     },
     getNewTagList (newRoute) {
+      const { name, path, meta } = newRoute
       let newList = [...this.tagNavList]
-      if (newList.findIndex(item => item.name === newRoute.name) >= 0) return newList
-      else newList.push(newRoute)
+      if (newList.findIndex(item => item.name === name) >= 0) return newList
+      else newList.push({ name, path, meta })
       return newList
     },
     handleClick (item) {
@@ -217,6 +222,7 @@ export default {
   mounted () {
     this.currentRoute = this.$route
     this.setTagNavList()
+    this.addTag(this.homeRoute)
     this.setBreadCrumb(this.$route.matched)
   }
 }
