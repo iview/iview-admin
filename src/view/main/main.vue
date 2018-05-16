@@ -18,7 +18,11 @@
           <div class="tag-nav-wrapper">
             <tags-nav :value="currentRoute" @input="handleClick" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
           </div>
-          <Content></Content>
+          <Content>
+            <keep-alive :include="cacheList">
+              <router-view/>
+            </keep-alive>
+          </Content>
         </Layout>
       </Content>
     </Layout>
@@ -27,7 +31,7 @@
 <script>
 import sideMenu from '_c/main/side-menu'
 import headerBar from '_c/main/header-bar'
-import tagsNav from '_c/tags-nav'
+import tagsNav from '_c/main/tags-nav'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -183,7 +187,10 @@ export default {
     ]),
     ...mapState('routers', [
       'homeRoute'
-    ])
+    ]),
+    cacheList () {
+      return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
+    }
   },
   methods: {
     ...mapMutations('app', [

@@ -71,17 +71,20 @@ export default {
   },
   watch: {
     activeName (name) {
-      //
+      if (this.accordion) this.openedNames = this.getOpenedNamesByActiveName(name)
+      else this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
     },
     openNames (newNames) {
       this.openedNames = newNames
+    },
+    openedNames () {
+      this.$nextTick(() => {
+        this.$refs.menu.updateOpened()
+      })
     }
   },
   mounted () {
     this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
-    this.$nextTick(() => {
-      this.$refs.menu.updateOpened()
-    })
   }
 }
 </script>
