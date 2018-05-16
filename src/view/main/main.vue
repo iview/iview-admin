@@ -206,6 +206,13 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
+    getNewTagList (newRoute) {
+      const { name, path, meta } = newRoute
+      let newList = [...this.tagNavList]
+      if (newList.findIndex(item => item.name === name) >= 0) return newList
+      else newList.push({ name, path, meta })
+      return newList
+    },
     handleClick (item) {
       this.$router.push({
         name: item.name
@@ -215,7 +222,7 @@ export default {
   watch: {
     '$route' (newRoute) {
       this.setBreadCrumb(newRoute.matched)
-      this.setTagNavList(newRoute)
+      this.setTagNavList(this.getNewTagList(newRoute))
       this.currentRoute = newRoute
     }
   },
