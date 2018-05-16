@@ -189,7 +189,7 @@ export default {
       'homeRoute'
     ]),
     cacheList () {
-      return this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache))
+      return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
     }
   },
   methods: {
