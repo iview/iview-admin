@@ -30,10 +30,6 @@ export default {
         return []
       }
     },
-    useI18n: {
-      type: Boolean,
-      default: false
-    },
     collapsed: {
       type: Boolean
     },

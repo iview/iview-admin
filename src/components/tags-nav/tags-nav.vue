@@ -19,34 +19,41 @@
       <div class="btn-con right-btn">
         <Button icon="chevron-right" type="text"></Button>
       </div>
-        <!-- <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px'}">
-            <transition-group name="taglist-moving-animation">
-                <Tag
-                    type="dot"
-                    v-for="(item) in pageTagsList"
-                    ref="tagsPageOpened"
-                    :key="item.name"
-                    :name="item.name"
-                    @on-close="closePage"
-                    @click.native="linkTo(item)"
-                    :closable="item.name==='home_index'?false:true"
-                    :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
-                >{{ itemTitle(item) }}</Tag>
-            </transition-group>
-        </div> -->
+      <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
+        <transition-group name="taglist-moving-animation">
+          <Tag
+            type="dot"
+            v-for="item in list"
+            ref="tagsPageOpened"
+            :key="`tag-nav-${item.name}`"
+            :name="item.name"
+            @on-close="handleClose"
+            @click.native="handleClick(item.name)"
+            :closable="item.name==='home_index'?false:true"
+            :color="item.name === value ? 'blue' : 'default'"
+          >{{ showTitleInside(item) }}</Tag>
+        </transition-group>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { showTitle } from '@/libs/util'
 export default {
   name: 'tagsNav',
   props: {
+    value: String,
     list: {
       type: Array,
       default () {
         return []
       }
+    }
+  },
+  data () {
+    return {
+      tagBodyLeft: 32
     }
   },
   methods: {
@@ -74,6 +81,15 @@ export default {
     },
     handleTagsOption () {
       //
+    },
+    handleClose (name) {
+      this.$emit('on-close', name)
+    },
+    handleClick (name) {
+      this.$emit('input', name)
+    },
+    showTitleInside (item) {
+      return showTitle(item, this)
     }
   }
 }

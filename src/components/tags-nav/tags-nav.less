@@ -19,11 +19,10 @@
     width: 100px;
     background: #fff;
     text-align: center;
+    z-index: 10;
     .ivu-dropdown, .ivu-dropdown .ivu-dropdown-rel{
       height: 100%;
-      button{
-        transform: translateY(-14px);
-      }
+      margin-top: 4px;
     }
   }
   .btn-con{
@@ -32,8 +31,8 @@
     height: 100%;
     background: #fff;
     padding-top: 3px;
+    z-index: 10;
     button{
-      vertical-align: top;
       padding: 6px 10px;
       text-align: center;
     }
@@ -45,6 +44,17 @@
       right: 100px;
       border-right: 1px solid #F0F0F0;
       box-shadow: -2px 0 3px 2px rgba(100,100,100,.1);
+    }
+  }
+  .scroll-body{
+    height: ~"calc(100% - 1px)";
+    padding-top: 1px;
+    position: absolute;
+    overflow: visible;
+    white-space: nowrap;
+    transition: left .3s ease;
+    .ivu-tag-dot-inner{
+      transition: background .2s ease;
     }
   }
 }
