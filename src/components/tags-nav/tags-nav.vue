@@ -1,24 +1,24 @@
 <template>
   <div class="tags-nav">
-    <div ref="scrollCon" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll" class="scroll-outer-con">
-      <div class="close-con">
-        <Dropdown transfer @on-click="handleTagsOption">
-          <Button size="small" type="primary">
-            标签选项
-            <Icon type="arrow-down-b"></Icon>
-          </Button>
-          <DropdownMenu slot="list">
-            <DropdownItem name="clearAll">关闭所有</DropdownItem>
-            <DropdownItem name="clearOthers">关闭其他</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </div>
-      <div class="btn-con left-btn">
-        <Button icon="chevron-left" type="text"></Button>
-      </div>
-      <div class="btn-con right-btn">
-        <Button icon="chevron-right" type="text"></Button>
-      </div>
+    <div class="close-con">
+      <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
+        <Button size="small" type="primary">
+          标签选项
+          <Icon type="arrow-down-b"></Icon>
+        </Button>
+        <DropdownMenu slot="list">
+          <DropdownItem name="close-all">关闭所有</DropdownItem>
+          <DropdownItem name="close-others">关闭其他</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </div>
+    <div class="btn-con left-btn">
+      <Button icon="chevron-left" type="text" @click="handleScroll(240)"></Button>
+    </div>
+    <div class="btn-con right-btn">
+      <Button icon="chevron-right" type="text" @click="handleScroll(-240)"></Button>
+    </div>
+    <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll">
       <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
         <transition-group name="taglist-moving-animation">
           <Tag
@@ -53,7 +53,7 @@ export default {
   },
   data () {
     return {
-      tagBodyLeft: 32
+      tagBodyLeft: 0
     }
   },
   methods: {
@@ -63,24 +63,25 @@ export default {
       if (type === 'DOMMouseScroll' || type === 'mousewheel') {
         delta = (e.wheelDelta) ? e.wheelDelta : -(e.detail || 0) * 40
       }
-      let left = 0
-      if (delta > 0) {
-        left = Math.min(0, this.tagBodyLeft + delta)
+      this.handleScroll(delta)
+    },
+    handleScroll (offset) {
+      if (offset > 0) {
+        this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset)
       } else {
-        if (this.$refs.scrollCon.offsetWidth - 100 < this.$refs.scrollBody.offsetWidth) {
-          if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollCon.offsetWidth + 100)) {
-            left = this.tagBodyLeft
+        if (this.$refs.scrollOuter.offsetWidth < this.$refs.scrollBody.offsetWidth) {
+          if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollOuter.offsetWidth)) {
+            this.tagBodyLeft = this.tagBodyLeft
           } else {
-            left = Math.max(this.tagBodyLeft + delta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth - 100)
+            this.tagBodyLeft = Math.max(this.tagBodyLeft + offset, this.$refs.scrollOuter.offsetWidth - this.$refs.scrollBody.offsetWidth)
           }
         } else {
           this.tagBodyLeft = 0
         }
       }
-      this.tagBodyLeft = left
     },
-    handleTagsOption () {
-      //
+    handleTagsOption (type) {
+      console.log(type)
     },
     handleClose (name) {
       this.$emit('on-close', name)

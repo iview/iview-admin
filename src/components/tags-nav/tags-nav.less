@@ -4,13 +4,9 @@
 }
 .tags-nav{
   position: relative;
+  border-top: 1px solid #F0F0F0;
+  border-bottom: 1px solid #F0F0F0;
   .size;
-  .scroll-outer-con{
-    position: relative;
-    .size;
-    border-top: 1px solid #F0F0F0;
-    border-bottom: 1px solid #F0F0F0;
-  }
   .close-con{
     position: absolute;
     right: 0;
@@ -20,10 +16,6 @@
     background: #fff;
     text-align: center;
     z-index: 10;
-    .ivu-dropdown, .ivu-dropdown .ivu-dropdown-rel{
-      height: 100%;
-      margin-top: 4px;
-    }
   }
   .btn-con{
     position: absolute;
@@ -46,15 +38,23 @@
       box-shadow: -2px 0 3px 2px rgba(100,100,100,.1);
     }
   }
-  .scroll-body{
-    height: ~"calc(100% - 1px)";
-    padding-top: 1px;
+  .scroll-outer{
     position: absolute;
-    overflow: visible;
-    white-space: nowrap;
-    transition: left .3s ease;
-    .ivu-tag-dot-inner{
-      transition: background .2s ease;
+    left: 28px;
+    right: 128px;
+    top: 0;
+    bottom: 0;
+    .scroll-body{
+      height: ~"calc(100% - 1px)";
+      display: inline-block;
+      padding: 1px 4px 0;
+      position: absolute;
+      overflow: visible;
+      white-space: nowrap;
+      transition: left .3s ease;
+      .ivu-tag-dot-inner{
+        transition: background .2s ease;
+      }
     }
   }
 }
