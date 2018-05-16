@@ -14,7 +14,7 @@ export default [
   {
     path: '/',
     name: 'index',
-    // redirect: '/home',
+    redirect: '/home',
     component: Main,
     meta: {
       hideInMenu: true,
