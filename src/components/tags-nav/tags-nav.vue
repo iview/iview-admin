@@ -28,7 +28,7 @@
             :key="`tag-nav-${item.name}`"
             :name="item.name"
             @on-close="handleClose"
-            @click.native="handleClick(item.name)"
+            @click.native="handleClick(item)"
             :closable="item.name==='home_index'?false:true"
             :color="item.name === value ? 'blue' : 'default'"
           >{{ showTitleInside(item) }}</Tag>
@@ -91,11 +91,12 @@ export default {
         this.$emit('on-close', res)
       }
     },
-    handleClose (name) {
-      this.$emit('on-close', name)
+    handleClose (e, name) {
+      let res = this.list.filter(item => item.name !== name)
+      this.$emit('on-close', name, res)
     },
-    handleClick (name) {
-      this.$emit('input', name)
+    handleClick (item) {
+      this.$emit('input', item)
     },
     showTitleInside (item) {
       return showTitle(item, this)
