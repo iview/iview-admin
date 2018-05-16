@@ -16,7 +16,7 @@
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav v-model="currentRoute" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
+            <tags-nav :value="currentRoute" @input="handleClick" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
           </div>
           <Content></Content>
         </Layout>
@@ -200,6 +200,11 @@ export default {
       if (newList.findIndex(item => item.name === newRoute.name) >= 0) return newList
       else newList.push(newRoute)
       return newList
+    },
+    handleClick (item) {
+      this.$router.push({
+        name: item.name
+      })
     }
   },
   watch: {

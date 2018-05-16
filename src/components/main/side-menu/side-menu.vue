@@ -65,22 +65,17 @@ export default {
       this.$emit('on-select', name)
     },
     getOpenedNamesByActiveName (name) {
-      console.log()
       return this.$route.matched.map(item => item.name).filter(item => item.name !== name)
     }
   },
   watch: {
     activeName (name) {
-      this.openedNames = this.getOpenedNamesByActiveName(name)
-      console.log(this.openedNames)
+      this.$nextTick(() => {
+        this.$refs.menu.updateActiveName()
+      })
     },
     openNames (newNames) {
       this.openedNames = newNames
-    },
-    openedNames () {
-      this.$nextTick(() => {
-        this.$refs.menu.updateOpened()
-      })
     }
   }
 }
