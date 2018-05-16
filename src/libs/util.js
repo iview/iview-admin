@@ -56,3 +56,12 @@ export const getBreadCrumbList = (routeMetched) => {
 }
 
 export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
+
+export const setTagNavListInLocalstorage = list => {
+  localStorage.tagNaveList = JSON.stringify(list)
+}
+
+export const getTagNavListFromLocalstorage = () => {
+  const list = localStorage.tagNaveList
+  return list ? JSON.parse(list) : []
+}

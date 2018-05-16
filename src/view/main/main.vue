@@ -16,7 +16,7 @@
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav v-model="currentTag" :list="tagList"></tags-nav>
+            <tags-nav v-model="currentTag" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
           </div>
           <Content></Content>
         </Layout>
@@ -43,12 +43,7 @@ export default {
       collapsed: false,
       minLogo,
       maxLogo,
-      currentTag: {
-        name: '5555',
-        meta: {
-          title: '5555'
-        }
-      },
+      currentTag: {},
       tagList: [
         {
           name: '11111',
@@ -72,6 +67,12 @@ export default {
           name: '4444',
           meta: {
             title: '4444'
+          }
+        },
+        {
+          name: 'level_1',
+          meta: {
+            title: 'level_1'
           }
         },
         {
@@ -178,12 +179,13 @@ export default {
       'menuList'
     ]),
     ...mapState('app', [
-      //
+      'tagNavList'
     ])
   },
   methods: {
     ...mapMutations('app', [
-      'setBreadCrumb'
+      'setBreadCrumb',
+      'setTagNavList'
     ]),
     turnToPage (name) {
       this.$router.push({
@@ -192,15 +194,24 @@ export default {
     },
     handleCollapsedChange (state) {
       this.collapsed = state
+    },
+    getNewTagList (newRoute) {
+      let newList = [...this.tagNavList]
+      if (newList.findIndex(item => item.name === newRoute.name) >= 0) return newList
+      else newList.push(newRoute)
+      return newList
     }
   },
   watch: {
-    '$route' (res) {
-      this.setBreadCrumb(res.matched)
+    '$route' (newRoute) {
+      this.setBreadCrumb(newRoute.matched)
+      this.setTagNavList(this.getNewTagList(newRoute))
+      this.currentTag = newRoute
     }
   },
   mounted () {
-    console.log(this.$route)
+    this.currentTag = this.$route
+    this.setTagNavList()
     this.setBreadCrumb(this.$route.matched)
   }
 }
