@@ -1,7 +1,7 @@
 <template>
   <Layout style="height: 100%" class="main">
     <Sider hide-trigger collapsible :width="210" :collapsed-width="64" v-model="collapsed">
-      <side-menu accordion :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+      <side-menu accordion :active-name="currentRoute.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
           <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
@@ -16,7 +16,7 @@
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav v-model="currentTag" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
+            <tags-nav v-model="currentRoute" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
           </div>
           <Content></Content>
         </Layout>
@@ -43,7 +43,7 @@ export default {
       collapsed: false,
       minLogo,
       maxLogo,
-      currentTag: {},
+      currentRoute: {},
       tagList: [
         {
           name: '11111',
@@ -206,11 +206,11 @@ export default {
     '$route' (newRoute) {
       this.setBreadCrumb(newRoute.matched)
       this.setTagNavList(this.getNewTagList(newRoute))
-      this.currentTag = newRoute
+      this.currentRoute = newRoute
     }
   },
   mounted () {
-    this.currentTag = this.$route
+    this.currentRoute = this.$route
     this.setTagNavList()
     this.setBreadCrumb(this.$route.matched)
   }

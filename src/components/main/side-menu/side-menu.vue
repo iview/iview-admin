@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu-wrapper">
     <slot></slot>
-    <Menu v-show="!collapsed" :accordion="accordion" :theme="theme" width="auto" @on-select="handleSelect">
+    <Menu ref="menu" v-show="!collapsed" :active-name="activeName" :open-names="openedNames" :accordion="accordion" :theme="theme" width="auto" @on-select="handleSelect">
       <template v-for="item in menuList">
         <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
         <menu-item v-else :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
@@ -45,11 +45,42 @@ export default {
       type: Number,
       default: 16
     },
-    accordion: Boolean
+    accordion: Boolean,
+    activeName: {
+      type: String,
+      default: ''
+    },
+    openNames: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data () {
+    return {
+      openedNames: []
+    }
   },
   methods: {
     handleSelect (name) {
       this.$emit('on-select', name)
+    },
+    getOpenedNamesByActiveName (name) {
+      console.log()
+      return this.$route.matched.map(item => item.name).filter(item => item.name !== name)
+    }
+  },
+  watch: {
+    activeName (name) {
+      this.openedNames = this.getOpenedNamesByActiveName(name)
+      console.log(this.openedNames)
+    },
+    openNames (newNames) {
+      this.openedNames = newNames
+    },
+    openedNames () {
+      this.$nextTick(() => {
+        this.$refs.menu.updateOpened()
+      })
     }
   }
 }
