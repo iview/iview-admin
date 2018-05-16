@@ -85,3 +85,19 @@ export const getHomeRoute = routers => {
   }
   return homeRoute
 }
+
+export const getOpenedNames = (name, routers) => {
+  let i = -1
+  let len = routers.length
+  let homeRoute = {}
+  while (++i < len) {
+    let item = routers[i]
+    if (item.children && item.children.length) {
+      let res = getOpenedNames(item.children)
+      if (res.name) return res
+    } else {
+      if (item.name === 'home') homeRoute = item
+    }
+  }
+  return homeRoute
+}

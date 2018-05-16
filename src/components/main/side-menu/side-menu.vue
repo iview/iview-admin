@@ -15,6 +15,7 @@
 <script>
 import sideMenuItem from './side-menu-item.vue'
 import collapsedMenu from './collapsed-menu.vue'
+import { getIntersection } from '@/libs/tools'
 import mixin from './mixin'
 export default {
   name: 'sideMenu',
@@ -65,18 +66,22 @@ export default {
       this.$emit('on-select', name)
     },
     getOpenedNamesByActiveName (name) {
-      return this.$route.matched.map(item => item.name).filter(item => item.name !== name)
+      return this.$route.matched.map(item => item.name).filter(item => item !== name)
     }
   },
   watch: {
     activeName (name) {
-      this.$nextTick(() => {
-        this.$refs.menu.updateOpened()
-      })
+      //
     },
     openNames (newNames) {
       this.openedNames = newNames
     }
+  },
+  mounted () {
+    this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
+    this.$nextTick(() => {
+      this.$refs.menu.updateOpened()
+    })
   }
 }
 </script>
