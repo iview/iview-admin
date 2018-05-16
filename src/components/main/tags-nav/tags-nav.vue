@@ -84,11 +84,10 @@ export default {
       if (type === 'close-all') {
         // 关闭所有，除了home
         let res = this.list.filter(item => item.name === 'home')
-        this.$emit('on-close', res)
       } else {
         // 关闭除当前页和home页的其他页
         let res = this.list.filter(item => item.name === this.value.name || item.name === 'home')
-        this.$emit('on-close', res)
+        this.$emit('on-close', res, 'others')
       }
     },
     handleClose (e, name) {

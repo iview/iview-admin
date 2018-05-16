@@ -16,7 +16,7 @@
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav :value="currentRoute" @input="handleClick" :list="tagNavList" @on-close="setTagNavList"></tags-nav>
+            <tags-nav :value="currentRoute" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"></tags-nav>
           </div>
           <Content>
             <keep-alive :include="cacheList">
@@ -213,10 +213,12 @@ export default {
       else newList.push({ name, path, meta })
       return newList
     },
+    handleCloseTag (res, type) {
+      this.setTagNavList(res)
+      if (type === 'all') this.turnToPage('home')
+    },
     handleClick (item) {
-      this.$router.push({
-        name: item.name
-      })
+      this.turnToPage(item.name)
     }
   },
   watch: {
