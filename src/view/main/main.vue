@@ -43,7 +43,12 @@ export default {
       collapsed: false,
       minLogo,
       maxLogo,
-      currentTag: 'home',
+      currentTag: {
+        name: '5555',
+        meta: {
+          title: '5555'
+        }
+      },
       tagList: [
         {
           name: '11111',
