@@ -15,11 +15,11 @@ export default {
     }
   },
   actions: {
-    getRouter ({ commit, state, rootState }) {
+    getRouter ({ commit, state, rootState }, access) {
       const token = rootState.user.token
       return new Promise((resolve, reject) => {
         if (token) {
-          getRouterReq().then(res => {
+          getRouterReq(access).then(res => {
             commit('setRouter', res.data.router)
             resolve(res.data.router)
           }).catch(err => {

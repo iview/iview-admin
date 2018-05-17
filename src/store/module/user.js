@@ -34,7 +34,6 @@ export default {
         }).then(res => {
           const data = res.data
           setToken(data.token)
-          commit('setAvator', data.avator)
           resolve()
         }).catch(err => {
           reject(err)

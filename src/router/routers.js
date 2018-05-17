@@ -123,5 +123,10 @@ export default [
         ]
       }
     ]
+  },
+  {
+    path: '/401',
+    name: 'error_401',
+    component: () => import('@/view/error-page/401.vue')
   }
 ]
