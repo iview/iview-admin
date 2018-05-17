@@ -29,10 +29,10 @@
   </Layout>
 </template>
 <script>
-import sideMenu from '_c/main/side-menu'
-import headerBar from '_c/main/header-bar'
-import tagsNav from '_c/main/tags-nav'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import sideMenu from './components/side-menu'
+import headerBar from './components/header-bar'
+import tagsNav from './components/tags-nav'
+import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -51,14 +51,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'menuList'
-    ]),
     tagNavList () {
       return this.$store.state.app.tagNavList
     },
     cacheList () {
       return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
+    },
+    menuList () {
+      console.log(this.$store.getters)
+      return this.$store.getters.menuList
     }
   },
   methods: {
