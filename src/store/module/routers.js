@@ -1,13 +1,10 @@
 import { getRouterReq } from '@/api/routers'
-import { getMenuByRouter, getHomeRoute } from '@/libs/util'
+import { getHomeRoute } from '@/libs/util'
 import routers from '@/router/routers'
 export default {
   state: {
     canViewRouterList: [],
     homeRoute: getHomeRoute(routers)
-  },
-  getters: {
-    menuList: state => getMenuByRouter(routers)
   },
   mutations: {
     setRouter (state, canViewRouterList) {

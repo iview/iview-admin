@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import { forEach } from '@/libs/tools'
+import { forEach, hasOneOf } from '@/libs/tools'
 
 const TOKEN_KEY = 'token'
 
@@ -19,11 +19,17 @@ export const hasChild = (item) => {
   return item.children && item.children.length !== 0
 }
 
+const showThisMenuEle = (item, access) => {
+  if (item.meta && item.meta.access && item.meta.access.length) {
+    if (hasOneOf(item.meta.access, access)) return true
+    else return false
+  } else return true
+}
 /**
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}
  */
-export const getMenuByRouter = list => {
+export const getMenuByRouter = (list, access) => {
   let res = []
   forEach(list, item => {
     if (item.meta && !item.meta.hideInMenu) {
@@ -32,10 +38,10 @@ export const getMenuByRouter = list => {
         name: item.name,
         meta: item.meta
       }
-      if (hasChild(item)) {
-        obj.children = getMenuByRouter(item.children)
+      if (hasChild(item) && showThisMenuEle(item, access)) {
+        obj.children = getMenuByRouter(item.children, access)
       }
-      res.push(obj)
+      if (showThisMenuEle(item, access)) res.push(obj)
     }
   })
   return res
@@ -128,11 +134,8 @@ export const getLockStatus = () => {
  * @param {*} route 路由列表
  */
 const hasAccess = (access, route) => {
-  if (route.meta && route.meta.access) {
-    return access.some(item => route.meta.access.indexOf(item) > -1)
-  } else {
-    return true
-  }
+  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
+  else return true
 }
 
 /**

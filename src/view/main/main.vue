@@ -58,7 +58,6 @@ export default {
       return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
     },
     menuList () {
-      console.log(this.$store.getters)
       return this.$store.getters.menuList
     }
   },

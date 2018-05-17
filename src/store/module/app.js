@@ -1,8 +1,12 @@
-import { getBreadCrumbList, setTagNavListInLocalstorage, getTagNavListFromLocalstorage } from '@/libs/util'
+import { getBreadCrumbList, setTagNavListInLocalstorage, getMenuByRouter, getTagNavListFromLocalstorage } from '@/libs/util'
+import routers from '@/router/routers'
 export default {
   state: {
     breadCrumbList: [],
     tagNavList: []
+  },
+  getters: {
+    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
   },
   mutations: {
     setBreadCrumb (state, routeMetched) {
