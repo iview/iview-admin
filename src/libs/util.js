@@ -93,3 +93,14 @@ export const getNewTagList = (list, newRoute) => {
   else newList.push({ name, path, meta })
   return newList
 }
+
+/**
+ * @param {Boolean} status 状态true/false
+ * @description 这里只是为了演示，实际应该将锁定状态的设置和获取用接口来实现
+ */
+export const setLockStatus = (status) => {
+  localStorage.isLocked = status
+}
+export const getLockStatus = () => {
+  return localStorage.isLocked
+}

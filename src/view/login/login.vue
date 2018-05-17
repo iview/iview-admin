@@ -23,7 +23,7 @@ export default {
     loginForm
   },
   methods: {
-    ...mapActions('user', [
+    ...mapActions([
       'handleLogin'
     ]),
     handleSubmit ({ userName, password }) {

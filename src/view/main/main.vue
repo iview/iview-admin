@@ -32,7 +32,7 @@
 import sideMenu from '_c/main/side-menu'
 import headerBar from '_c/main/header-bar'
 import tagsNav from '_c/main/tags-nav'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { getNewTagList } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -51,24 +51,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('routers', [
+    ...mapGetters([
       'menuList'
     ]),
-    ...mapState('app', [
-      'tagNavList'
-    ]),
-    ...mapState('routers', [
-      'homeRoute'
-    ]),
+    tagNavList () {
+      return this.$store.state.app.tagNavList
+    },
     cacheList () {
       return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
     }
   },
   methods: {
-    ...mapMutations('app', [
+    ...mapMutations([
       'setBreadCrumb',
       'setTagNavList',
       'addTag'
+    ]),
+    ...mapActions([
+      'handleLogin'
     ]),
     turnToPage (name) {
       this.$router.push({
@@ -93,9 +93,16 @@ export default {
     }
   },
   mounted () {
+    /**
+     * @description 初始化设置面包屑导航和标签导航
+     */
     this.setTagNavList()
-    this.addTag(this.homeRoute)
+    this.addTag(this.$store.state.routers.homeRoute)
     this.setBreadCrumb(this.$route.matched)
+    /**
+     * @description 获取登录用户信息和可访问路由列表
+     */
+    // this.
   }
 }
 </script>

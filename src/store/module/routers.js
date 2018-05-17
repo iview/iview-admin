@@ -2,17 +2,16 @@ import { getRouterReq } from '@/api/routers'
 import { getMenuByRouter, getHomeRoute } from '@/libs/util'
 import routers from '@/router/routers'
 export default {
-  namespaced: true,
   state: {
-    routerList: [],
+    canViewRouterList: [],
     homeRoute: getHomeRoute(routers)
   },
   getters: {
     menuList: state => getMenuByRouter(routers)
   },
   mutations: {
-    setRouter (state, routerList) {
-      state.routerList = routerList
+    setRouter (state, canViewRouterList) {
+      state.canViewRouterList = canViewRouterList
     }
   },
   actions: {
@@ -22,7 +21,7 @@ export default {
         if (token) {
           getRouterReq().then(res => {
             commit('setRouter', res.data.router)
-            resolve()
+            resolve(res.data.router)
           }).catch(err => {
             reject(err)
           })

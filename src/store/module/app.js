@@ -1,6 +1,5 @@
 import { getBreadCrumbList, setTagNavListInLocalstorage, getTagNavListFromLocalstorage } from '@/libs/util'
 export default {
-  namespaced: true,
   state: {
     breadCrumbList: [],
     tagNavList: []
