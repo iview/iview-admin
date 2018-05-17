@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import { forEach } from '@/libs/tools'
+import { forEach, hasOneOf } from '@/libs/tools'
 
 const TOKEN_KEY = 'token'
 
@@ -19,7 +19,17 @@ export const hasChild = (item) => {
   return item.children && item.children.length !== 0
 }
 
-export const getMenuByRouter = list => {
+const showThisMenuEle = (item, access) => {
+  if (item.meta && item.meta.access && item.meta.access.length) {
+    if (hasOneOf(item.meta.access, access)) return true
+    else return false
+  } else return true
+}
+/**
+ * @param {Array} list 通过路由列表得到菜单列表
+ * @returns {Array}
+ */
+export const getMenuByRouter = (list, access) => {
   let res = []
   forEach(list, item => {
     if (item.meta && !item.meta.hideInMenu) {
@@ -28,15 +38,19 @@ export const getMenuByRouter = list => {
         name: item.name,
         meta: item.meta
       }
-      if (hasChild(item)) {
-        obj.children = getMenuByRouter(item.children)
+      if (hasChild(item) && showThisMenuEle(item, access)) {
+        obj.children = getMenuByRouter(item.children, access)
       }
-      res.push(obj)
+      if (showThisMenuEle(item, access)) res.push(obj)
     }
   })
   return res
 }
 
+/**
+ * @param {Array} routeMetched 当前路由metched
+ * @returns {Array}
+ */
 export const getBreadCrumbList = (routeMetched) => {
   let res = routeMetched.map(item => {
     let obj = {
@@ -57,10 +71,15 @@ export const getBreadCrumbList = (routeMetched) => {
 
 export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
 
+/**
+ * @description 本地存储和获取标签导航列表
+ */
 export const setTagNavListInLocalstorage = list => {
   localStorage.tagNaveList = JSON.stringify(list)
 }
-
+/**
+ * @returns {Array} 其中的每个元素只包含路由原信息中的name, path, meta三项
+ */
 export const getTagNavListFromLocalstorage = () => {
   const list = localStorage.tagNaveList
   return list ? JSON.parse(list) : []
@@ -86,6 +105,11 @@ export const getHomeRoute = routers => {
   return homeRoute
 }
 
+/**
+ * @param {*} list 现有标签导航列表
+ * @param {*} newRoute 新添加的路由原信息对象
+ * @description 如果该newRoute已经存在则不再添加
+ */
 export const getNewTagList = (list, newRoute) => {
   const { name, path, meta } = newRoute
   let newList = [...list]
@@ -105,14 +129,21 @@ export const getLockStatus = () => {
   return parseInt(localStorage.isLocked)
 }
 
+/**
+ * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
+ * @param {*} route 路由列表
+ */
 const hasAccess = (access, route) => {
-  if (route.meta && route.meta.access) {
-    return access.some(item => route.meta.access.indexOf(item) > -1)
-  } else {
-    return true
-  }
+  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
+  else return true
 }
 
+/**
+ * @param {*} name 即将跳转的路由name
+ * @param {*} access 用户权限数组
+ * @param {*} routes 路由列表
+ * @description 用户是否可跳转到该页
+ */
 export const canTurnTo = (name, access, routes) => {
   const getHasAccessRouteNames = (list) => {
     let res = []
