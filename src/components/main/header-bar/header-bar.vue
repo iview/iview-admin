@@ -7,7 +7,6 @@
 <script>
 import siderTrigger from './sider-trigger'
 import customBreadCrumb from './custom-bread-crumb'
-import { mapState } from 'vuex'
 export default {
   name: 'headerBar',
   components: {
@@ -18,9 +17,9 @@ export default {
     collapsed: Boolean
   },
   computed: {
-    ...mapState('app', [
-      'breadCrumbList'
-    ])
+    breadCrumbList () {
+      return this.$store.state.app.breadCrumbList
+    }
   },
   methods: {
     handleCollpasedChange (state) {

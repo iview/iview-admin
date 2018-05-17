@@ -1,6 +1,5 @@
 import { getBreadCrumbList, setTagNavListInLocalstorage, getTagNavListFromLocalstorage } from '@/libs/util'
 export default {
-  namespaced: true,
   state: {
     breadCrumbList: [],
     tagNavList: []
@@ -9,14 +8,10 @@ export default {
     setBreadCrumb (state, routeMetched) {
       state.breadCrumbList = getBreadCrumbList(routeMetched)
     },
-    setTagNavList (state, newRoute) {
-      if (newRoute) {
-        const { name, path, meta } = newRoute
-        let newList = [...state.tagNavList]
-        if (newList.findIndex(item => item.name === name) >= 0) return newList
-        else newList.push({ name, path, meta })
-        state.tagNavList = [...newList]
-        setTagNavListInLocalstorage([...newList])
+    setTagNavList (state, list) {
+      if (list) {
+        state.tagNavList = [...list]
+        setTagNavListInLocalstorage([...list])
       } else state.tagNavList = getTagNavListFromLocalstorage()
     },
     addTag (state, item, type = 'unshift') {

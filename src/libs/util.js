@@ -85,3 +85,50 @@ export const getHomeRoute = routers => {
   }
   return homeRoute
 }
+
+export const getNewTagList = (list, newRoute) => {
+  const { name, path, meta } = newRoute
+  let newList = [...list]
+  if (newList.findIndex(item => item.name === name) >= 0) return newList
+  else newList.push({ name, path, meta })
+  return newList
+}
+
+/**
+ * @param {Boolean} status 状态 1 => locked  0 => unlocked
+ * @description 这里只是为了演示，实际应该将锁定状态的设置和获取用接口来实现
+ */
+export const setLockStatus = (status) => {
+  localStorage.isLocked = status
+}
+export const getLockStatus = () => {
+  return parseInt(localStorage.isLocked)
+}
+
+const hasAccess = (access, route) => {
+  if (route.meta && route.meta.access) {
+    return access.some(item => route.meta.access.indexOf(item) > -1)
+  } else {
+    return true
+  }
+}
+
+export const canTurnTo = (name, access, routes) => {
+  const getHasAccessRouteNames = (list) => {
+    let res = []
+    list.forEach(item => {
+      if (item.children && item.children.length) {
+        res = [].concat(res, getHasAccessRouteNames(item.children))
+      } else {
+        if (item.meta && item.meta.access) {
+          if (hasAccess(access, item)) res.push(item.name)
+        } else {
+          res.push(item.name)
+        }
+      }
+    })
+    return res
+  }
+  const canTurnToNames = getHasAccessRouteNames(routes)
+  return canTurnToNames.indexOf(name) > -1
+}

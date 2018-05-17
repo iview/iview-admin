@@ -23,13 +23,16 @@ export default {
     loginForm
   },
   methods: {
-    ...mapActions('user', [
-      'handleLogin'
+    ...mapActions([
+      'handleLogin',
+      'getUserInfo'
     ]),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
-        this.$router.push({
-          name: 'home'
+        this.getUserInfo().then(res => {
+          this.$router.push({
+            name: 'home'
+          })
         })
       })
     }

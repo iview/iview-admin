@@ -2,7 +2,6 @@ import { login, getUserInfo } from '@/api/user'
 import { setToken, getToken } from '@/libs/util'
 
 export default {
-  namespaced: true,
   state: {
     userName: '',
     userId: '',
@@ -35,7 +34,6 @@ export default {
         }).then(res => {
           const data = res.data
           setToken(data.token)
-          commit('setAvator', data.avator)
           resolve()
         }).catch(err => {
           reject(err)

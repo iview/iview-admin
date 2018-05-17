@@ -2,9 +2,9 @@
   <div class="tags-nav">
     <div class="close-con">
       <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
-        <Button size="small" type="primary">
-          标签选项
-          <Icon type="arrow-down-b"></Icon>
+        <Button size="small" type="text">
+          <Icon :size="18" type="ios-close-outline"></Icon>
+          <Icon style="transform:translateY(-1px)" type="arrow-down-b"></Icon>
         </Button>
         <DropdownMenu slot="list">
           <DropdownItem name="close-all">关闭所有</DropdownItem>
@@ -84,11 +84,11 @@ export default {
       if (type === 'close-all') {
         // 关闭所有，除了home
         let res = this.list.filter(item => item.name === 'home')
-        this.$emit('on-close', res)
+        this.$emit('on-close', res, 'all')
       } else {
         // 关闭除当前页和home页的其他页
         let res = this.list.filter(item => item.name === this.value.name || item.name === 'home')
-        this.$emit('on-close', res)
+        this.$emit('on-close', res, 'others')
       }
     },
     handleClose (e, name) {
