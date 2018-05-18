@@ -107,10 +107,6 @@ export default {
     this.setTagNavList()
     this.addTag(this.$store.state.routers.homeRoute)
     this.setBreadCrumb(this.$route.matched)
-    /**
-     * @description 获取登录用户信息和可访问路由列表
-     */
-    // this.
   }
 }
 </script>
