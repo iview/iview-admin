@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       form: {
-        userName: 'iview_admin',
+        userName: 'super_admin',
         password: ''
       }
     }

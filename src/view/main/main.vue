@@ -105,7 +105,7 @@ export default {
      * @description 初始化设置面包屑导航和标签导航
      */
     this.setTagNavList()
-    this.addTag(this.$store.state.routers.homeRoute)
+    this.addTag(this.$store.state.app.homeRoute)
     this.setBreadCrumb(this.$route.matched)
   }
 }
