@@ -39,6 +39,7 @@ import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
+import './main.less'
 export default {
   name: 'Main',
   components: {
@@ -113,6 +114,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import 'main.less';
-</style>

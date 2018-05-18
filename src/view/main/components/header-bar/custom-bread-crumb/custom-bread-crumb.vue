@@ -7,6 +7,7 @@
 </template>
 <script>
 import { showTitle } from '_c/common/util'
+import './custom-bread-crumb.less'
 export default {
   name: 'customBreadCrumb',
   props: {
@@ -30,6 +31,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import './custom-bread-crumb.less';
-</style>
