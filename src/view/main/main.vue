@@ -11,12 +11,14 @@
     </Sider>
     <Layout>
       <Header class="header-con">
-        <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange"></header-bar>
+        <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
+          <user :user-avator="userAvator"/>
+        </header-bar>
       </Header>
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"></tags-nav>
+            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
           <Content>
             <keep-alive :include="cacheList">
@@ -32,6 +34,7 @@
 import sideMenu from './components/side-menu'
 import headerBar from './components/header-bar'
 import tagsNav from './components/tags-nav'
+import user from './components/user'
 import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
@@ -41,7 +44,8 @@ export default {
   components: {
     sideMenu,
     headerBar,
-    tagsNav
+    tagsNav,
+    user
   },
   data () {
     return {
@@ -53,6 +57,9 @@ export default {
   computed: {
     tagNavList () {
       return this.$store.state.app.tagNavList
+    },
+    userAvator () {
+      return this.$store.state.user.avatorImgPath
     },
     cacheList () {
       return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
