@@ -4,7 +4,6 @@
       <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
         <Button size="small" type="text">
           <Icon :size="18" type="ios-close-outline"></Icon>
-          <Icon style="transform:translateY(-1px)" type="arrow-down-b"></Icon>
         </Button>
         <DropdownMenu slot="list">
           <DropdownItem name="close-all">关闭所有</DropdownItem>
