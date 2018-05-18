@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import config from '@/config'
 import { forEach, hasOneOf } from '@/libs/tools'
 
-const TOKEN_KEY = 'token'
+export const TOKEN_KEY = 'token'
 
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
@@ -162,4 +162,14 @@ export const canTurnTo = (name, access, routes) => {
   }
   const canTurnToNames = getHasAccessRouteNames(routes)
   return canTurnToNames.indexOf(name) > -1
+}
+
+export const getParams = url => {
+  const keyValueArr = url.split('?')[1].split('&')
+  let paramObj = {}
+  keyValueArr.forEach(item => {
+    const keyValue = item.split('=')
+    paramObj[keyValue[0]] = keyValue[1]
+  })
+  return paramObj
 }

@@ -11,12 +11,14 @@
     </Sider>
     <Layout>
       <Header class="header-con">
-        <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange"></header-bar>
+        <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
+          <user :user-avator="userAvator"/>
+        </header-bar>
       </Header>
       <Content>
         <Layout>
           <div class="tag-nav-wrapper">
-            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"></tags-nav>
+            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
           <Content>
             <keep-alive :include="cacheList">
@@ -32,16 +34,19 @@
 import sideMenu from './components/side-menu'
 import headerBar from './components/header-bar'
 import tagsNav from './components/tags-nav'
+import user from './components/user'
 import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
+import './main.less'
 export default {
   name: 'Main',
   components: {
     sideMenu,
     headerBar,
-    tagsNav
+    tagsNav,
+    user
   },
   data () {
     return {
@@ -53,6 +58,9 @@ export default {
   computed: {
     tagNavList () {
       return this.$store.state.app.tagNavList
+    },
+    userAvator () {
+      return this.$store.state.user.avatorImgPath
     },
     cacheList () {
       return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
@@ -97,15 +105,8 @@ export default {
      * @description 初始化设置面包屑导航和标签导航
      */
     this.setTagNavList()
-    this.addTag(this.$store.state.routers.homeRoute)
+    this.addTag(this.$store.state.app.homeRoute)
     this.setBreadCrumb(this.$route.matched)
-    /**
-     * @description 获取登录用户信息和可访问路由列表
-     */
-    // this.
   }
 }
 </script>
-<style lang="less">
-@import 'main.less';
-</style>
