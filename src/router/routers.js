@@ -1,5 +1,5 @@
 import Main from '@/view/main'
-import parentView from '@/components/main/parent-view'
+import parentView from '@/components/parent-view'
 
 export default [
   {
