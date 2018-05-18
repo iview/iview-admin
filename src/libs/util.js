@@ -1,271 +1,175 @@
-import axios from 'axios';
-import env from '../../build/env';
-import semver from 'semver';
-import packjson from '../../package.json';
+import Cookies from 'js-cookie'
+// cookie保存的天数
+import config from '@/config'
+import { forEach, hasOneOf } from '@/libs/tools'
 
-let util = {
+export const TOKEN_KEY = 'token'
 
-};
-util.title = function (title) {
-    title = title || 'iView admin';
-    window.document.title = title;
-};
+export const setToken = (token) => {
+  Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+}
 
-const ajaxUrl = env === 'development'
-    ? 'http://127.0.0.1:8888'
-    : env === 'production'
-    ? 'https://www.url.com'
-    : 'https://debug.url.com';
+export const getToken = () => {
+  const token = Cookies.get(TOKEN_KEY)
+  if (token) return token
+  else return false
+}
 
-util.ajax = axios.create({
-    baseURL: ajaxUrl,
-    timeout: 30000
-});
+export const hasChild = (item) => {
+  return item.children && item.children.length !== 0
+}
 
-util.inOf = function (arr, targetArr) {
-    let res = true;
-    arr.map(item => {
-        if (targetArr.indexOf(item) < 0) {
-            res = false;
-        }
-    });
-    return res;
-};
+const showThisMenuEle = (item, access) => {
+  if (item.meta && item.meta.access && item.meta.access.length) {
+    if (hasOneOf(item.meta.access, access)) return true
+    else return false
+  } else return true
+}
+/**
+ * @param {Array} list 通过路由列表得到菜单列表
+ * @returns {Array}
+ */
+export const getMenuByRouter = (list, access) => {
+  let res = []
+  forEach(list, item => {
+    if (item.meta && !item.meta.hideInMenu) {
+      let obj = {
+        icon: (item.meta && item.meta.icon) || '',
+        name: item.name,
+        meta: item.meta
+      }
+      if (hasChild(item) && showThisMenuEle(item, access)) {
+        obj.children = getMenuByRouter(item.children, access)
+      }
+      if (showThisMenuEle(item, access)) res.push(obj)
+    }
+  })
+  return res
+}
 
-util.oneOf = function (ele, targetArr) {
-    if (targetArr.indexOf(ele) >= 0) {
-        return true;
+/**
+ * @param {Array} routeMetched 当前路由metched
+ * @returns {Array}
+ */
+export const getBreadCrumbList = (routeMetched) => {
+  let res = routeMetched.map(item => {
+    let obj = {
+      icon: (item.meta && item.meta.icon) || '',
+      name: item.name,
+      meta: item.meta
+    }
+    return obj
+  })
+  res = res.filter(item => {
+    return !item.meta.hideInMenu
+  })
+  return [{
+    name: 'home',
+    to: '/home'
+  }, ...res]
+}
+
+export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
+
+/**
+ * @description 本地存储和获取标签导航列表
+ */
+export const setTagNavListInLocalstorage = list => {
+  localStorage.tagNaveList = JSON.stringify(list)
+}
+/**
+ * @returns {Array} 其中的每个元素只包含路由原信息中的name, path, meta三项
+ */
+export const getTagNavListFromLocalstorage = () => {
+  const list = localStorage.tagNaveList
+  return list ? JSON.parse(list) : []
+}
+
+/**
+ * @param {Array} routers 路由列表数组
+ * @description 用于找到路由列表中name为home的对象
+ */
+export const getHomeRoute = routers => {
+  let i = -1
+  let len = routers.length
+  let homeRoute = {}
+  while (++i < len) {
+    let item = routers[i]
+    if (item.children && item.children.length) {
+      let res = getHomeRoute(item.children)
+      if (res.name) return res
     } else {
-        return false;
+      if (item.name === 'home') homeRoute = item
     }
-};
+  }
+  return homeRoute
+}
 
-util.showThisRoute = function (itAccess, currentAccess) {
-    if (typeof itAccess === 'object' && itAccess.isArray()) {
-        return util.oneOf(currentAccess, itAccess);
-    } else {
-        return itAccess === currentAccess;
-    }
-};
+/**
+ * @param {*} list 现有标签导航列表
+ * @param {*} newRoute 新添加的路由原信息对象
+ * @description 如果该newRoute已经存在则不再添加
+ */
+export const getNewTagList = (list, newRoute) => {
+  const { name, path, meta } = newRoute
+  let newList = [...list]
+  if (newList.findIndex(item => item.name === name) >= 0) return newList
+  else newList.push({ name, path, meta })
+  return newList
+}
 
-util.getRouterObjByName = function (routers, name) {
-    let routerObj = {};
-    routers.forEach(item => {
-        if (item.name === 'otherRouter') {
-            item.children.forEach((child, i) => {
-                if (child.name === name) {
-                    routerObj = item.children[i];
-                }
-            });
+/**
+ * @param {Boolean} status 状态 1 => locked  0 => unlocked
+ * @description 这里只是为了演示，实际应该将锁定状态的设置和获取用接口来实现
+ */
+export const setLockStatus = (status) => {
+  localStorage.isLocked = status
+}
+export const getLockStatus = () => {
+  return parseInt(localStorage.isLocked)
+}
+
+/**
+ * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
+ * @param {*} route 路由列表
+ */
+const hasAccess = (access, route) => {
+  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
+  else return true
+}
+
+/**
+ * @param {*} name 即将跳转的路由name
+ * @param {*} access 用户权限数组
+ * @param {*} routes 路由列表
+ * @description 用户是否可跳转到该页
+ */
+export const canTurnTo = (name, access, routes) => {
+  const getHasAccessRouteNames = (list) => {
+    let res = []
+    list.forEach(item => {
+      if (item.children && item.children.length) {
+        res = [].concat(res, getHasAccessRouteNames(item.children))
+      } else {
+        if (item.meta && item.meta.access) {
+          if (hasAccess(access, item)) res.push(item.name)
         } else {
-            if (item.children.length === 1) {
-                if (item.children[0].name === name) {
-                    routerObj = item.children[0];
-                }
-            } else {
-                item.children.forEach((child, i) => {
-                    if (child.name === name) {
-                        routerObj = item.children[i];
-                    }
-                });
-            }
+          res.push(item.name)
         }
-    });
-    return routerObj;
-};
+      }
+    })
+    return res
+  }
+  const canTurnToNames = getHasAccessRouteNames(routes)
+  return canTurnToNames.indexOf(name) > -1
+}
 
-util.handleTitle = function (vm, item) {
-    return item.title;
-};
-
-util.setCurrentPath = function (vm, name) {
-    let title = '';
-    let isOtherRouter = false;
-    vm.$store.state.app.routers.forEach(item => {
-        if (item.children.length === 1) {
-            if (item.children[0].name === name) {
-                title = util.handleTitle(vm, item);
-                if (item.name === 'otherRouter') {
-                    isOtherRouter = true;
-                }
-            }
-        } else {
-            item.children.forEach(child => {
-                if (child.name === name) {
-                    title = util.handleTitle(vm, child);
-                    if (item.name === 'otherRouter') {
-                        isOtherRouter = true;
-                    }
-                }
-            });
-        }
-    });
-    let currentPathArr = [];
-    if (name === 'home_index') {
-        currentPathArr = [
-            {
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-                path: '',
-                name: 'home_index'
-            }
-        ];
-    } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
-        currentPathArr = [
-            {
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-                path: '/home',
-                name: 'home_index'
-            },
-            {
-                title: title,
-                path: '',
-                name: name
-            }
-        ];
-    } else {
-        let currentPathObj = vm.$store.state.app.routers.filter(item => {
-            if (item.children.length <= 1) {
-                return item.children[0].name === name;
-            } else {
-                let i = 0;
-                let childArr = item.children;
-                let len = childArr.length;
-                while (i < len) {
-                    if (childArr[i].name === name) {
-                        return true;
-                    }
-                    i++;
-                }
-                return false;
-            }
-        })[0];
-        if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '',
-                    name: 'home_index'
-                }
-            ];
-        } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '/home',
-                    name: 'home_index'
-                },
-                {
-                    title: currentPathObj.title,
-                    path: '',
-                    name: name
-                }
-            ];
-        } else {
-            let childObj = currentPathObj.children.filter((child) => {
-                return child.name === name;
-            })[0];
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '/home',
-                    name: 'home_index'
-                },
-                {
-                    title: currentPathObj.title,
-                    path: '',
-                    name: currentPathObj.name
-                },
-                {
-                    title: childObj.title,
-                    path: currentPathObj.path + '/' + childObj.path,
-                    name: name
-                }
-            ];
-        }
-    }
-    vm.$store.commit('setCurrentPath', currentPathArr);
-
-    return currentPathArr;
-};
-
-util.openNewPage = function (vm, name, argu, query) {
-    let pageOpenedList = vm.$store.state.app.pageOpenedList;
-    let openedPageLen = pageOpenedList.length;
-    let i = 0;
-    let tagHasOpened = false;
-    while (i < openedPageLen) {
-        if (name === pageOpenedList[i].name) {  // 页面已经打开
-            vm.$store.commit('pageOpenedList', {
-                index: i,
-                argu: argu,
-                query: query
-            });
-            tagHasOpened = true;
-            break;
-        }
-        i++;
-    }
-    if (!tagHasOpened) {
-        let tag = vm.$store.state.app.tagsList.filter((item) => {
-            if (item.children) {
-                return name === item.children[0].name;
-            } else {
-                return name === item.name;
-            }
-        });
-        tag = tag[0];
-        if (tag) {
-            tag = tag.children ? tag.children[0] : tag;
-            if (argu) {
-                tag.argu = argu;
-            }
-            if (query) {
-                tag.query = query;
-            }
-            vm.$store.commit('increateTag', tag);
-        }
-    }
-    vm.$store.commit('setCurrentPageName', name);
-};
-
-util.toDefaultPage = function (routers, name, route, next) {
-    let len = routers.length;
-    let i = 0;
-    let notHandle = true;
-    while (i < len) {
-        if (routers[i].name === name && routers[i].redirect === undefined) {
-            route.replace({
-                name: routers[i].children[0].name
-            });
-            notHandle = false;
-            next();
-            break;
-        }
-        i++;
-    }
-    if (notHandle) {
-        next();
-    }
-};
-
-util.fullscreenEvent = function (vm) {
-    // 权限菜单过滤相关
-    vm.$store.commit('updateMenulist');
-};
-
-util.checkUpdate = function (vm) {
-    axios.get('https://api.github.com/repos/iview/iview-admin/releases/latest').then(res => {
-        let version = res.data.tag_name;
-        vm.$Notice.config({
-            duration: 0
-        });
-        if (semver.lt(packjson.version, version)) {
-            vm.$Notice.info({
-                title: 'iview-admin更新啦',
-                desc: '<p>iView-admin更新到了' + version + '了，去看看有哪些变化吧</p><a style="font-size:13px;" href="https://github.com/iview/iview-admin/releases" target="_blank">前往github查看</a>'
-            });
-        }
-    });
-};
-
-export default util;
+export const getParams = url => {
+  const keyValueArr = url.split('?')[1].split('&')
+  let paramObj = {}
+  keyValueArr.forEach(item => {
+    const keyValue = item.split('=')
+    paramObj[keyValue[0]] = keyValue[1]
+  })
+  return paramObj
+}
