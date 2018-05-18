@@ -29,7 +29,6 @@ export default {
       switch (name) {
         case 'logout':
           this.handleLogOut().then(() => {
-            console.log(123)
             this.$router.push({
               name: 'login'
             })
