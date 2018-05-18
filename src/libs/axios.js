@@ -2,6 +2,7 @@ import Axios from 'axios'
 import baseURL from '_conf/url'
 import { Message } from 'iview'
 import Cookies from 'js-cookie'
+import { TOKEN_KEY } from '@/libs/util'
 class httpRequest {
   constructor () {
     this.options = {
@@ -22,7 +23,7 @@ class httpRequest {
     // 添加请求拦截器
     instance.interceptors.request.use(config => {
       if (!config.url.includes('/users')) {
-        config.headers['x-access-token'] = Cookies.get('d_tk')
+        config.headers['x-access-token'] = Cookies.get(TOKEN_KEY)
       }
       // Spin.show()
       // 在发送请求之前做些什么
@@ -45,7 +46,7 @@ class httpRequest {
         if (data.code !== 200) {
           // 后端服务在个别情况下回报201，待确认
           if (data.code === 401) {
-            Cookies.remove('d_tk')
+            Cookies.remove(TOKEN_KEY)
             window.location.href = '/#/login'
             Message.error('未登录，或登录失效，请登录')
           } else {
