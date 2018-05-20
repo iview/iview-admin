@@ -92,7 +92,7 @@ export default {
     },
     handleClose (e, name) {
       let res = this.list.filter(item => item.name !== name)
-      this.$emit('on-close', res, undefined, name)
+      this.$emit('on-close', name, res)
     },
     handleClick (item) {
       this.$emit('input', item)
