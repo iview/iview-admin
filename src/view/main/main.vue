@@ -88,7 +88,6 @@ export default {
       this.collapsed = state
     },
     handleCloseTag (res, type) {
-      console.log(res)
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
     },
