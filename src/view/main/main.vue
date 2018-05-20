@@ -63,7 +63,7 @@ export default {
       return this.$store.state.user.avatorImgPath
     },
     cacheList () {
-      return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
+      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)) : []
     },
     menuList () {
       return this.$store.getters.menuList
