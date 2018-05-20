@@ -63,7 +63,8 @@ export default {
       return this.$store.state.user.avatorImgPath
     },
     cacheList () {
-      return this.tagNavList.length ? this.tagNavList.map(item => item.name).filter(item => !(item.meta && item.meta.notCache)) : []
+      console.log(this.tagNavList)
+      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)) : []
     },
     menuList () {
       return this.$store.getters.menuList
@@ -87,6 +88,7 @@ export default {
       this.collapsed = state
     },
     handleCloseTag (res, type) {
+      console.log(res)
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
     },
