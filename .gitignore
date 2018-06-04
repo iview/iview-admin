@@ -22,3 +22,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+build/env.js

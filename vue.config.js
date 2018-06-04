@@ -5,7 +5,7 @@ const resolve = dir => {
   return path.join(__dirname, dir)
 }
 
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV || 'development'
 fs.writeFileSync(path.join(__dirname, './config/env.js'), `export default '${env}'
 `)
 

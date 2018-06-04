@@ -36,7 +36,7 @@ import headerBar from './components/header-bar'
 import tagsNav from './components/tags-nav'
 import user from './components/user'
 import { mapMutations, mapActions } from 'vuex'
-import { getNewTagList } from '@/libs/util'
+import { getNewTagList, getNextName } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -58,6 +58,9 @@ export default {
   computed: {
     tagNavList () {
       return this.$store.state.app.tagNavList
+    },
+    tagRouter () {
+      return this.$store.state.app.tagRouter
     },
     userAvator () {
       return this.$store.state.user.avatorImgPath
@@ -86,9 +89,11 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
-    handleCloseTag (res, type) {
+    handleCloseTag (res, type, name) {
+      const nextName = getNextName(this.tagNavList, name)
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
+      else if (this.$route.name === name) this.$router.push({ name: nextName })
     },
     handleClick (item) {
       this.turnToPage(item.name)
