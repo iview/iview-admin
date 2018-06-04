@@ -9,7 +9,7 @@
           </p>
           <Row type="flex" justify="center" align="middle" class="countto-page-row">
             <div class="count-to-con">
-                <count-to :end="2534"/>
+              <count-to :end="2534"/>
             </div>
           </Row>
         </Card>
@@ -23,8 +23,8 @@
             <Row type="flex" justify="center" align="middle" class="countto-page-row">
               <div class="count-to-con">
                 <count-to :end="2534">
-                  <span class="slot-text" slot="left">Total:&nbsp;</span>
-                  <span class="slot-text" slot="right">&nbsp;times</span>
+                  <span slot="left">Total:&nbsp;</span>
+                  <span slot="right">&nbsp;times</span>
                 </count-to>
               </div>
             </Row>

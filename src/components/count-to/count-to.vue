@@ -1,7 +1,7 @@
 <template>
   <div class="count-to-wrapper">
     <slot name="left"/>
-    <p class="content-outer"><span :class="['count-text', countClass]" :id="counterId">{{ init }}</span><i :class="['unit-text', unitClass]">{{ unitText }}</i></p>
+    <p class="content-outer"><span :class="['count-to-count-text', countClass]" :id="counterId">{{ init }}</span><i :class="['count-to-unit-text', unitClass]">{{ unitText }}</i></p>
     <slot name="right"/>
   </div>
 </template>
@@ -103,10 +103,6 @@ export default {
     unitClass: {
       type: String,
       default: ''
-    },
-    color: {
-      type: String,
-      default: '#000000'
     }
   },
   data () {
