@@ -1,6 +1,6 @@
 <template>
   <div>
-    <count-to simplify :end="end"></count-to>
+    <count-to :end="end"></count-to>
   </div>
 </template>
 

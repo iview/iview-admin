@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <div class="count-to-wrapper">
     <slot name="left"/>
-    <p><span :id="counterId">{{ init }}</span><i>{{ unitText }}</i></p>
+    <p><span :class="['count-text', countClass]" :style="{color: color}" :id="counterId">{{ init }}</span><i :class="['unit-text', unitClass]">{{ unitText }}</i></p>
     <slot name="right"/>
   </div>
 </template>
 
 <script>
 import CountUp from 'countup'
+import './index.less'
 export default {
   name: 'countTo',
   props: {
@@ -94,6 +95,18 @@ export default {
       default () {
         return [[3, 'K+'], [6, 'M+'], [9, 'B+']]
       }
+    },
+    countClass: {
+      type: String,
+      default: ''
+    },
+    unitClass: {
+      type: String,
+      default: ''
+    },
+    color: {
+      type: String,
+      default: '#000000'
     }
   },
   data () {
@@ -108,27 +121,26 @@ export default {
     }
   },
   methods: {
+    getHandleVal (val, len) {
+      return {
+        endVal: parseInt(val / Math.pow(10, this.unit[len - 1][0])),
+        unitText: this.unit[len - 1][1]
+      }
+    },
     transformValue (val) {
-      let endVal = 0
-      let unitText = ''
       let len = this.unit.length
-      if (val < Math.pow(10, this.unit[0][0])) endVal = val
+      let res = {
+        endVal: 0,
+        unitText: ''
+      }
+      if (val < Math.pow(10, this.unit[0][0])) res.endVal = val
       else {
         for (let i = 1; i < len; i++) {
-          if (val >= Math.pow(10, this.unit[i - 1][0]) && val < Math.pow(10, this.unit[i][0])) {
-            endVal = parseInt(val / Math.pow(10, this.unit[i - 1][0]))
-            unitText = this.unit[i - 1][1]
-          }
+          if (val >= Math.pow(10, this.unit[i - 1][0]) && val < Math.pow(10, this.unit[i][0])) res = this.getHandleVal(val, i)
         }
       }
-      if (val > Math.pow(10, this.unit[len - 1][0])) {
-        endVal = parseInt(val / Math.pow(10, this.unit[len - 1][0]))
-        unitText = this.unit[len - 1][1]
-      }
-      return {
-        endVal,
-        unitText
-      }
+      if (val > Math.pow(10, this.unit[len - 1][0])) res = this.getHandleVal(val, len)
+      return res
     },
     getValue (val) {
       let res = 0
@@ -164,7 +176,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
