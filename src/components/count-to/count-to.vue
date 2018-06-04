@@ -28,7 +28,7 @@ export default {
      */
     end: {
       type: Number,
-      default: 100
+      required: true
     },
     /**
      * @description 保留几位小数
