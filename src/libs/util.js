@@ -164,6 +164,10 @@ export const canTurnTo = (name, access, routes) => {
   return canTurnToNames.indexOf(name) > -1
 }
 
+/**
+ * @param {String} url
+ * @description 从URL中解析参数
+ */
 export const getParams = url => {
   const keyValueArr = url.split('?')[1].split('&')
   let paramObj = {}
@@ -172,4 +176,19 @@ export const getParams = url => {
     paramObj[keyValue[0]] = keyValue[1]
   })
   return paramObj
+}
+
+/**
+ * @param {Array} list 标签列表
+ * @param {String} name 当前关闭的标签的name
+ */
+export const getNextName = (list, name) => {
+  let res = ''
+  if (list.length === 2) {
+    res = 'home'
+  } else {
+    if (list.findIndex(item => item.name === name) === list.length - 1) res = list[list.length - 2].name
+    else res = list[list.findIndex(item => item.name === name) + 1].name
+  }
+  return res
 }
