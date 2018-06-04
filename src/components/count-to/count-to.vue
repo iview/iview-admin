@@ -1,7 +1,7 @@
 <template>
   <div class="count-to-wrapper">
     <slot name="left"/>
-    <p><span :class="['count-text', countClass]" :style="{color: color}" :id="counterId">{{ init }}</span><i :class="['unit-text', unitClass]">{{ unitText }}</i></p>
+    <p class="content-outer"><span :class="['count-text', countClass]" :id="counterId">{{ init }}</span><i :class="['unit-text', unitClass]">{{ unitText }}</i></p>
     <slot name="right"/>
   </div>
 </template>
