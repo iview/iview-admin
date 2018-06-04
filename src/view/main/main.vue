@@ -89,6 +89,7 @@ export default {
     handleCloseTag (res, type) {
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
+      else this.$router.go(-1)
     },
     handleClick (item) {
       this.turnToPage(item.name)
