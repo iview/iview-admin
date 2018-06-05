@@ -25,25 +25,6 @@ const btns = [
         })
       ])
     ])
-  },
-  (h, params, vm) => {
-    return h('Button', {
-      props: {
-        type: 'text'
-      },
-      on: {
-        click: () => {
-          console.log(params)
-        }
-      }
-    }, [
-      h('Icon', {
-        props: {
-          type: 'search',
-          size: 18
-        }
-      })
-    ])
   }
 ]
 

@@ -1,25 +1,42 @@
 <template>
-  <Table
-    :data="value"
-    :columns="insideColumns"
-    :stripe="stripe"
-    :border="border"
-    :show-header="showHeader"
-    :width="width"
-    :height="height"
-    :loading="loading"
-    :disabled-hover="disabledHover"
-    :highlight-row="highlightRow"
-    :row-class-name="rowClassName"
-    :size="size"
-    :no-data-text="noDataText"
-    :no-filtered-data-text="noFilteredDataText"
-  ></Table>
+  <div>
+    <div v-if="searchable && searchPlace === 'top'" class="search-con search-con-top">
+      <Select v-model="searchCol" class="search-col">
+        <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+      </Select>
+      <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
+      <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
+    </div>
+    <Table
+      :data="value"
+      :columns="insideColumns"
+      :stripe="stripe"
+      :border="border"
+      :show-header="showHeader"
+      :width="width"
+      :height="height"
+      :loading="loading"
+      :disabled-hover="disabledHover"
+      :highlight-row="highlightRow"
+      :row-class-name="rowClassName"
+      :size="size"
+      :no-data-text="noDataText"
+      :no-filtered-data-text="noFilteredDataText"
+    ></Table>
+    <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
+      <Select v-model="searchCol" class="search-col">
+        <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+      </Select>
+      <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
+      <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
+    </div>
+  </div>
 </template>
 
 <script>
 import TablesEdit from './edit.vue'
 import handleBtns from './handle-btns'
+import './index.less'
 export default {
   name: 'tables',
   props: {
@@ -83,6 +100,14 @@ export default {
     editable: {
       type: Boolean,
       default: false
+    },
+    searchable: {
+      type: Boolean,
+      default: false
+    },
+    searchPlace: {
+      type: String,
+      default: 'top'
     }
   },
   /**
@@ -95,7 +120,9 @@ export default {
     return {
       insideColumns: [],
       edittingCellId: '',
-      edittingText: ''
+      edittingText: '',
+      searchValue: '',
+      searchCol: ''
     }
   },
   methods: {
@@ -145,19 +172,20 @@ export default {
         if (res.key === 'handle') res = this.surportHandle(res)
         return res
       })
+    },
+    setDefaultSearchCol () {
+      this.searchCol = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
     }
   },
   watch: {
     columns (columns) {
       this.handleColumns(columns)
+      this.setDefaultSearchCol()
     }
   },
   mounted () {
     this.handleColumns(this.columns)
+    this.setDefaultSearchCol()
   }
 }
 </script>
-
-<style>
-
-</style>

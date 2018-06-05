@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tables v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
+    <tables searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
   </div>
 </template>
 
