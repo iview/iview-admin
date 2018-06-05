@@ -1,14 +1,14 @@
 <template>
   <div>
     <div v-if="searchable && searchPlace === 'top'" class="search-con search-con-top">
-      <Select v-model="searchCol" class="search-col">
+      <Select v-model="searchKey" class="search-col">
         <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
       </Select>
-      <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
-      <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
+      <Input @on-change="handleClear" clearable placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
+      <Button @click="handleSearch" class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
     </div>
     <Table
-      :data="value"
+      :data="insideTableData"
       :columns="insideColumns"
       :stripe="stripe"
       :border="border"
@@ -24,7 +24,7 @@
       :no-filtered-data-text="noFilteredDataText"
     ></Table>
     <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
-      <Select v-model="searchCol" class="search-col">
+      <Select v-model="searchKey" class="search-col">
         <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
       </Select>
       <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
@@ -119,10 +119,11 @@ export default {
   data () {
     return {
       insideColumns: [],
+      insideTableData: [],
       edittingCellId: '',
       edittingText: '',
       searchValue: '',
-      searchCol: ''
+      searchKey: ''
     }
   },
   methods: {
@@ -131,7 +132,7 @@ export default {
         return h(TablesEdit, {
           props: {
             params: params,
-            value: this.value[params.index][params.column.key],
+            value: this.insideTableData[params.index][params.column.key],
             edittingCellId: this.edittingCellId
           },
           on: {
@@ -173,19 +174,37 @@ export default {
         return res
       })
     },
-    setDefaultSearchCol () {
-      this.searchCol = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
+    setDefaultSearchKey () {
+      this.searchKey = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
+    },
+    handleClear (e) {
+      if (e.target.value === '') this.insideTableData = this.value
+    },
+    handleSearch () {
+      this.insideTableData = this.value.filter(item => item[this.searchKey].indexOf(this.searchValue) > -1)
+    },
+    handleTableData () {
+      this.insideTableData = this.value.map((item, index) => {
+        let res = item
+        res.initRowIndex = index
+        return res
+      })
     }
   },
   watch: {
     columns (columns) {
       this.handleColumns(columns)
-      this.setDefaultSearchCol()
+      this.setDefaultSearchKey()
+    },
+    value (val) {
+      this.handleTableData()
+      this.handleSearch()
     }
   },
   mounted () {
     this.handleColumns(this.columns)
-    this.setDefaultSearchCol()
+    this.setDefaultSearchKey()
+    this.handleTableData()
   }
 }
 </script>

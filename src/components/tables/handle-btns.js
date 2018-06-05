@@ -8,7 +8,7 @@ const btns = [
       on: {
         'on-ok': () => {
           vm.$emit('on-delete', params)
-          vm.$emit('input', params.tableData.filter((item, index) => index !== params.index))
+          vm.$emit('input', params.tableData.filter((item, index) => index !== params.row.initRowIndex))
         }
       }
     }, [
