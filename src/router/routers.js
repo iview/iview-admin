@@ -42,13 +42,22 @@ export default [
     component: Main,
     children: [
       {
-        path: 'count_to',
-        name: 'count_to',
+        path: 'count_to_page',
+        name: 'count_to_page',
         meta: {
           icon: 'arrow-graph-up-right',
           title: '数字渐变'
         },
         component: () => import('@/view/components/count-to/count-to.vue')
+      },
+      {
+        path: 'tables_page',
+        name: 'tables_page',
+        meta: {
+          icon: 'ios-grid-view',
+          title: '多功能表格'
+        },
+        component: () => import('@/view/components/tables/tables.vue')
       }
     ]
   },

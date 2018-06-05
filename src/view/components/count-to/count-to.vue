@@ -142,7 +142,7 @@
 <script>
 import countTo from '_c/count-to'
 export default {
-  name: 'count_to',
+  name: 'count_to_page',
   components: {
     countTo
   },
