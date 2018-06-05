@@ -28,7 +28,7 @@
             :name="item.name"
             @on-close="handleClose"
             @click.native="handleClick(item)"
-            :closable="item.name==='home_index'?false:true"
+            :closable="item.name !== 'home'"
             :color="item.name === value.name ? 'blue' : 'default'"
           >{{ showTitleInside(item) }}</Tag>
         </transition-group>
@@ -92,7 +92,7 @@ export default {
     },
     handleClose (e, name) {
       let res = this.list.filter(item => item.name !== name)
-      this.$emit('on-close', name, res)
+      this.$emit('on-close', res, undefined, name)
     },
     handleClick (item) {
       this.$emit('input', item)
