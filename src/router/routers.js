@@ -58,6 +58,15 @@ export default [
           title: '多功能表格'
         },
         component: () => import('@/view/components/tables/tables.vue')
+      },
+      {
+        path: 'split_pane_page',
+        name: 'split_pane_page',
+        meta: {
+          icon: 'pause',
+          title: '分割窗口'
+        },
+        component: () => import('@/view/components/split-pane/split-pane.vue')
       }
     ]
   },
