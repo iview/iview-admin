@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import loginForm from '_c/login-form'
+import LoginForm from '_c/login-form'
 import { mapActions } from 'vuex'
 export default {
   components: {
-    loginForm
+    LoginForm
   },
   methods: {
     ...mapActions([

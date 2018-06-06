@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import tables from '_c/tables'
+import Tables from '_c/tables'
 import { getTableData } from '@/api/data'
 export default {
   name: 'tables_page',
   components: {
-    tables
+    Tables
   },
   data () {
     return {

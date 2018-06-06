@@ -31,10 +31,10 @@
   </Layout>
 </template>
 <script>
-import sideMenu from './components/side-menu'
-import headerBar from './components/header-bar'
-import tagsNav from './components/tags-nav'
-import user from './components/user'
+import SideMenu from './components/side-menu'
+import HeaderBar from './components/header-bar'
+import TagsNav from './components/tags-nav'
+import User from './components/user'
 import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList, getNextName } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
@@ -43,10 +43,10 @@ import './main.less'
 export default {
   name: 'Main',
   components: {
-    sideMenu,
-    headerBar,
-    tagsNav,
-    user
+    SideMenu,
+    HeaderBar,
+    TagsNav,
+    User
   },
   data () {
     return {

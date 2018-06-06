@@ -54,7 +54,7 @@ import TablesEdit from './edit.vue'
 import handleBtns from './handle-btns'
 import './index.less'
 export default {
-  name: 'tables',
+  name: 'Tables',
   props: {
     value: {
       type: Array,

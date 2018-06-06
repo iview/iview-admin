@@ -10,7 +10,7 @@
 import CountUp from 'countup'
 import './index.less'
 export default {
-  name: 'countTo',
+  name: 'CountTo',
   props: {
     init: {
       type: Number,

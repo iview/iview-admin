@@ -3,6 +3,6 @@
 </template>
 <script>
 export default {
-  name: 'parentView'
+  name: 'ParentView'
 }
 </script>

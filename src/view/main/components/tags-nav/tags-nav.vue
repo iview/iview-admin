@@ -40,7 +40,7 @@
 <script>
 import { showTitle } from '@/libs/util'
 export default {
-  name: 'tagsNav',
+  name: 'TagsNav',
   props: {
     value: Object,
     list: {
