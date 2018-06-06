@@ -1,6 +1,7 @@
 <template>
   <div>
-    <tables searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
+    <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
+    <Button style="margin: 10px 0;" type="primary" @click="exportExcel">导出为Csv文件</Button>
   </div>
 </template>
 
@@ -21,6 +22,7 @@ export default {
         {
           title: 'Handle',
           key: 'handle',
+          options: ['delete'],
           button: [
             (h, params, vm) => {
               return h('Poptip', {
@@ -47,6 +49,11 @@ export default {
   methods: {
     handleDelete (params) {
       console.log(params)
+    },
+    exportExcel () {
+      this.$refs.tables.exportCsv({
+        filename: `table-${(new Date()).valueOf()}.csv`
+      })
     }
   },
   mounted () {

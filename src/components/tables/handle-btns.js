@@ -1,5 +1,5 @@
-const btns = [
-  (h, params, vm) => {
+const btns = {
+  delete: (h, params, vm) => {
     return h('Poptip', {
       props: {
         confirm: true,
@@ -26,6 +26,6 @@ const btns = [
       ])
     ])
   }
-]
+}
 
 export default btns
