@@ -13,16 +13,16 @@
   </div>
 </template>
 <script>
-import sideMenuItem from './side-menu-item.vue'
-import collapsedMenu from './collapsed-menu.vue'
+import SideMenuItem from './side-menu-item.vue'
+import CollapsedMenu from './collapsed-menu.vue'
 import { getIntersection } from '@/libs/tools'
 import mixin from './mixin'
 export default {
-  name: 'sideMenu',
+  name: 'SideMenu',
   mixins: [ mixin ],
   components: {
-    sideMenuItem,
-    collapsedMenu
+    SideMenuItem,
+    CollapsedMenu
   },
   props: {
     menuList: {

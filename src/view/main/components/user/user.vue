@@ -14,7 +14,7 @@
 import './user.less'
 import { mapActions } from 'vuex'
 export default {
-  name: 'user',
+  name: 'User',
   props: {
     userAvator: {
       type: String,

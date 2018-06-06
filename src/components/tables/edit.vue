@@ -2,7 +2,7 @@
   <div class="tables-edit-outer">
     <div v-if="!isEditting" class="tables-edit-con">
       <span class="value-con">{{ value }}</span>
-      <Button @click="startEdit" class="tables-edit-btn" style="padding: 2px 4px;" type="text"><Icon type="edit"></Icon></Button>
+      <Button v-if="editable" @click="startEdit" class="tables-edit-btn" style="padding: 2px 4px;" type="text"><Icon type="edit"></Icon></Button>
     </div>
     <div v-else class="tables-editting-con">
       <Input :value="value" @input="handleInput" class="tables-edit-input"/>
@@ -18,7 +18,8 @@ export default {
   props: {
     value: [String, Number],
     edittingCellId: String,
-    params: Object
+    params: Object,
+    editable: Boolean
   },
   computed: {
     isEditting () {

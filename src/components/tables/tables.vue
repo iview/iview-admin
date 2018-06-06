@@ -1,14 +1,15 @@
 <template>
   <div>
     <div v-if="searchable && searchPlace === 'top'" class="search-con search-con-top">
-      <Select v-model="searchCol" class="search-col">
+      <Select v-model="searchKey" class="search-col">
         <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
       </Select>
-      <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
-      <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
+      <Input @on-change="handleClear" clearable placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
+      <Button @click="handleSearch" class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
     </div>
     <Table
-      :data="value"
+      ref="tablesMain"
+      :data="insideTableData"
       :columns="insideColumns"
       :stripe="stripe"
       :border="border"
@@ -22,14 +23,29 @@
       :size="size"
       :no-data-text="noDataText"
       :no-filtered-data-text="noFilteredDataText"
-    ></Table>
+      @on-current-change="onCurrentChange"
+      @on-select="onSelect"
+      @on-select-cancel="onSelectCancel"
+      @on-select-all="onSelectAll"
+      @on-selection-change="onSelectionChange"
+      @on-sort-change="onSortChange"
+      @on-filter-change="onFilterChange"
+      @on-row-click="onRowClick"
+      @on-row-dblclick="onRowDblclick"
+      @on-expand="onExpand"
+    >
+      <slot name="header" slot="header"></slot>
+      <slot name="footer" slot="footer"></slot>
+      <slot name="loading" slot="loading"></slot>
+    </Table>
     <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
-      <Select v-model="searchCol" class="search-col">
+      <Select v-model="searchKey" class="search-col">
         <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
       </Select>
       <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
       <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
     </div>
+    <a id="hrefToExportTable" style="display: none;width: 0px;height: 0px;"></a>
   </div>
 </template>
 
@@ -38,7 +54,7 @@ import TablesEdit from './edit.vue'
 import handleBtns from './handle-btns'
 import './index.less'
 export default {
-  name: 'tables',
+  name: 'Tables',
   props: {
     value: {
       type: Array,
@@ -97,14 +113,23 @@ export default {
       type: Boolean,
       default: false
     },
+    /**
+     * @description 全局设置是否可编辑
+     */
     editable: {
       type: Boolean,
       default: false
     },
+    /**
+     * @description 是否可搜索
+     */
     searchable: {
       type: Boolean,
       default: false
     },
+    /**
+     * @description 搜索控件所在位置，'top' / 'bottom'
+     */
     searchPlace: {
       type: String,
       default: 'top'
@@ -119,10 +144,11 @@ export default {
   data () {
     return {
       insideColumns: [],
+      insideTableData: [],
       edittingCellId: '',
       edittingText: '',
       searchValue: '',
-      searchCol: ''
+      searchKey: ''
     }
   },
   methods: {
@@ -131,8 +157,9 @@ export default {
         return h(TablesEdit, {
           props: {
             params: params,
-            value: this.value[params.index][params.column.key],
-            edittingCellId: this.edittingCellId
+            value: this.insideTableData[params.index][params.column.key],
+            edittingCellId: this.edittingCellId,
+            editable: this.editable
           },
           on: {
             'input': val => {
@@ -158,7 +185,12 @@ export default {
       return item
     },
     surportHandle (item) {
-      let btns = item.button ? [].concat(handleBtns, item.button) : handleBtns
+      let options = item.options || []
+      let insideBtns = []
+      options.forEach(item => {
+        if (handleBtns[item]) insideBtns.push(handleBtns[item])
+      })
+      let btns = item.button ? [].concat(insideBtns, item.button) : insideBtns
       item.render = (h, params) => {
         params.tableData = this.value
         return h('div', btns.map(item => item(h, params, this)))
@@ -173,19 +205,73 @@ export default {
         return res
       })
     },
-    setDefaultSearchCol () {
-      this.searchCol = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
+    setDefaultSearchKey () {
+      this.searchKey = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
+    },
+    handleClear (e) {
+      if (e.target.value === '') this.insideTableData = this.value
+    },
+    handleSearch () {
+      this.insideTableData = this.value.filter(item => item[this.searchKey].indexOf(this.searchValue) > -1)
+    },
+    handleTableData () {
+      this.insideTableData = this.value.map((item, index) => {
+        let res = item
+        res.initRowIndex = index
+        return res
+      })
+    },
+    exportCsv (params) {
+      this.$refs.tablesMain.exportCsv(params)
+    },
+    clearCurrentRow () {
+      this.$refs.talbesMain.clearCurrentRow()
+    },
+    onCurrentChange (currentRow, oldCurrentRow) {
+      this.$emit('on-current-change', currentRow, oldCurrentRow)
+    },
+    onSelect (selection, row) {
+      this.$emit('on-select', selection, row)
+    },
+    onSelectCancel (selection, row) {
+      this.$emit('on-select-cancel', selection, row)
+    },
+    onSelectAll (selection) {
+      this.$emit('on-select-all', selection)
+    },
+    onSelectionChange (selection) {
+      this.$emit('on-selection-change', selection)
+    },
+    onSortChange (column, key, order) {
+      this.$emit('on-sort-change', column, key, order)
+    },
+    onFilterChange (row) {
+      this.$emit('on-filter-change', row)
+    },
+    onRowClick (row, index) {
+      this.$emit('on-row-click', row, index)
+    },
+    onRowDblclick (row, index) {
+      this.$emit('on-row-dblclick', row, index)
+    },
+    onExpand (row, status) {
+      this.$emit('on-expand', row, status)
     }
   },
   watch: {
     columns (columns) {
       this.handleColumns(columns)
-      this.setDefaultSearchCol()
+      this.setDefaultSearchKey()
+    },
+    value (val) {
+      this.handleTableData()
+      this.handleSearch()
     }
   },
   mounted () {
     this.handleColumns(this.columns)
-    this.setDefaultSearchCol()
+    this.setDefaultSearchKey()
+    this.handleTableData()
   }
 }
 </script>

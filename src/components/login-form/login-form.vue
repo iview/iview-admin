@@ -21,7 +21,7 @@
 </template>
 <script>
 export default {
-  name: 'loginForm',
+  name: 'LoginForm',
   props: {
     userNameRules: {
       type: Array,
