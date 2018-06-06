@@ -1,7 +1,9 @@
 <template>
   <div>
-    <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
-    <Button style="margin: 10px 0;" type="primary" @click="exportExcel">导出为Csv文件</Button>
+    <Card>
+      <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
+      <Button style="margin: 10px 0;" type="primary" @click="exportExcel">导出为Csv文件</Button>
+    </Card>
   </div>
 </template>
 
