@@ -18,18 +18,20 @@ let lang = 'zh-CN'
 Vue.config.lang = lang
 
 // vue-i18n 6.x+写法
-// Vue.locale = () => {}
-// const messages = {
-//   'zh-CN': Object.assign(zhCnLocale, customZhCn),
-//   'zh-TW': Object.assign(zhTwLocale, customZhTw),
-//   'en-US': Object.assign(enUsLocale, customEnUs)
-// }
-// const i18n = new VueI18n({
-//   locale: lang,
-//   messages
-// })
+Vue.locale = () => {}
+const messages = {
+  'zh-CN': Object.assign(zhCnLocale, customZhCn),
+  'zh-TW': Object.assign(zhTwLocale, customZhTw),
+  'en-US': Object.assign(enUsLocale, customEnUs)
+}
+const i18n = new VueI18n({
+  locale: lang,
+  messages
+})
+
+export default i18n
 
 // vue-i18n 5.x写法
-Vue.locale('zh-CN', Object.assign(zhCnLocale, customZhCn))
-Vue.locale('en-US', Object.assign(zhTwLocale, customZhTw))
-Vue.locale('zh-TW', Object.assign(enUsLocale, customEnUs))
+// Vue.locale('zh-CN', Object.assign(zhCnLocale, customZhCn))
+// Vue.locale('en-US', Object.assign(zhTwLocale, customZhTw))
+// Vue.locale('zh-TW', Object.assign(enUsLocale, customEnUs))
