@@ -23,7 +23,7 @@ export default {
       return this.iconType === 'Icons' ? this.getCustomIconName(this.type) : this.type
     },
     iconSize () {
-      return this.size || this.iconType === 'Icons' ? 12 : undefined
+      return this.size || (this.iconType === 'Icons' ? 12 : undefined)
     },
     iconColor () {
       return this.color || ''
