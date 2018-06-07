@@ -1,4 +1,13 @@
 @split-prefix-cls: ~"ivu-split";
+@box-shadow: 0 0 4px 0 rgba(28, 36, 56, 0.4);
+@trigger-bar-background: rgba(23, 35, 61, 0.25);
+@trigger-background: #F8F8F9;
+@trigger-width: 6px;
+@trigger-bar-width: 4px;
+@trigger-bar-offset: (@trigger-width - @trigger-bar-width) / 2;
+@trigger-bar-interval: 3px;
+@trigger-bar-weight: 1px;
+@trigger-bar-con-height: (@trigger-bar-weight + @trigger-bar-interval) * 8;
 
 .@{split-prefix-cls}{
   &-wrapper{
@@ -35,19 +44,49 @@
       transform: translate(-50%, -50%);
       z-index: 10;
     }
+    &-bar-con{
+      position: absolute;
+      overflow: hidden;
+      &.vertical{
+        left: @trigger-bar-offset;
+        top: 50%;
+        height: @trigger-bar-con-height;
+        transform: translate(0, -50%);
+      }
+      &.horizontal{
+        left: 50%;
+        top: @trigger-bar-offset;
+        width: @trigger-bar-con-height;
+        transform: translate(-50%, 0);
+      }
+    }
     &-vertical{
-      width: 6px;
+      width: @trigger-width;
       height: 100%;
-      background: #F8F8F9;
-      box-shadow: 0 0 4px 0 rgba(28, 36, 56, 0.32);
+      background: @trigger-background;
+      box-shadow: @box-shadow;
       cursor: col-resize;
+      .@{split-prefix-cls}-trigger-bar{
+        width: @trigger-bar-width;
+        height: 1px;
+        background: @trigger-bar-background;
+        float: left;
+        margin-top: @trigger-bar-interval;
+      }
     }
     &-horizontal{
-      height: 6px;
+      height: @trigger-width;
       width: 100%;
-      background: #F8F8F9;
-      box-shadow: 0 0 4px 0 rgba(28, 36, 56, 0.32);
+      background: @trigger-background;
+      box-shadow: @box-shadow;
       cursor: row-resize;
+      .@{split-prefix-cls}-trigger-bar{
+        height: @trigger-bar-width;
+        width: 1px;
+        background: @trigger-bar-background;
+        float: left;
+        margin-right: @trigger-bar-interval;
+      }
     }
   }
   &-horizontal{

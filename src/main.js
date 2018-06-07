@@ -8,6 +8,7 @@ import iView from 'iview'
 import '@/locale'
 import config from '@/config'
 import 'iview/dist/styles/iview.css'
+import '@/assets/icons/iconfont.css'
 import env from '../config/env'
 if (env === 'development') require('@/mock')
 
