@@ -67,6 +67,15 @@ export default [
           title: '分割窗口'
         },
         component: () => import('@/view/components/split-pane/split-pane.vue')
+      },
+      {
+        path: 'icons_page',
+        name: 'icons_page',
+        meta: {
+          icon: '_bear',
+          title: '自定义图标'
+        },
+        component: () => import('@/view/components/icons/icons.vue')
       }
     ]
   },
