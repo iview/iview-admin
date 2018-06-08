@@ -78,6 +78,15 @@ export default [
         component: () => import('@/view/components/markdown/markdown.vue')
       },
       {
+        path: 'editor_page',
+        name: 'editor_page',
+        meta: {
+          icon: 'compose',
+          title: '富文本编辑器'
+        },
+        component: () => import('@/view/components/editor/editor.vue')
+      },
+      {
         path: 'icons_page',
         name: 'icons_page',
         meta: {
