@@ -52,7 +52,9 @@ export const getMenuByRouter = (list, access) => {
  * @returns {Array}
  */
 export const getBreadCrumbList = (routeMetched) => {
-  let res = routeMetched.map(item => {
+  let res = routeMetched.filter(item => {
+    return item.meta === undefined || !item.meta.hide
+  }).map(item => {
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
       name: item.name,
