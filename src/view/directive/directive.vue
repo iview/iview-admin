@@ -59,7 +59,7 @@ export default {
   height: 140px;
 }
 .draggable-btn{
-  z-index: 1000;
+  margin-top: 20px;
 }
 .code-con{
   width: 400px;
