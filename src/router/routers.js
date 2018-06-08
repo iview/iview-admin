@@ -121,7 +121,7 @@ export default [
         name: 'directive_page',
         meta: {
           icon: 'ios-navigate',
-          title: '指令1'
+          title: '指令'
         },
         component: () => import('@/view/directive/directive.vue')
       }
