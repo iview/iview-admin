@@ -23,9 +23,19 @@ module.exports = {
                 loader: 'vue-loader',
                 options: {
                     loaders: {
-                        css: 'vue-style-loader!css-loader',
-                        less: 'vue-style-loader!css-loader!less-loader'
+                        less: ExtractTextPlugin.extract({
+                            use: ['css-loader?minimize', 'autoprefixer-loader', 'less-loader'],
+                            fallback: 'vue-style-loader'
+                        }),
+                        css: ExtractTextPlugin.extract({
+                            use: ['css-loader?minimize', 'autoprefixer-loader'],
+                            fallback: 'vue-style-loader'
+                        })
                     },
+                    // loaders: {
+                    //     css: 'vue-style-loader!css-loader',
+                    //     less: 'vue-style-loader!css-loader!less-loader'
+                    // },
                     postLoaders: {
                         html: 'babel-loader'
                     }
