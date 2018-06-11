@@ -31,7 +31,6 @@ module.exports = merge(webpackBaseConfig, {
         new HtmlWebpackPlugin({
             title: 'iView admin v' + package.version,
             filename: '../index.html',
-            template: './src/template/index.ejs',
             inject: false
         }),
         new CopyWebpackPlugin([

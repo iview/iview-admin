@@ -185,6 +185,9 @@ export default {
             if (this.showLevel === 3 || !this.auto) {
                 this.returnRes(3);
             }
+        },
+        value () {
+            this.init();
         }
     },
     methods: {
@@ -260,6 +263,9 @@ export default {
                 } else {
                     this[nextName] = '';
                     this[nextList] = [];
+                }
+                if ((this[nextName] === '市辖区' && this.auto) || (this[nextName] === '市辖区' && this.value.length !== 0)) {
+                    this.updateNextSelector('cityIndex', 'cityList', 'counList', '市辖区', 'currCou', 1);
                 }
             }
         },
@@ -361,9 +367,9 @@ export default {
             }
         }
     },
-    updated () {
-        this.init();
-    },
+    // updated () {
+    //     this.init();
+    // },
     mounted () {
         this.init();
     }

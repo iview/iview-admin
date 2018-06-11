@@ -41,20 +41,20 @@ module.exports = merge(webpackBaseConfig, {
                 NODE_ENV: '"production"'
             }
         }),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     }
-        // }),
-        new UglifyJsParallelPlugin({
-            workers: os.cpus().length,
-            mangle: true,
-            compressor: {
-              warnings: false,
-              drop_console: true,
-              drop_debugger: true
-             }
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
         }),
+        // new UglifyJsParallelPlugin({
+        //     workers: os.cpus().length,
+        //     mangle: true,
+        //     compressor: {
+        //       warnings: false,
+        //       drop_console: true,
+        //       drop_debugger: true
+        //      }
+        // }),
         new CopyWebpackPlugin([
             {
                 from: 'td_icon.ico'
@@ -78,7 +78,7 @@ module.exports = merge(webpackBaseConfig, {
             title: 'iView admin v' + package.version,
             favicon: './td_icon.ico',
             filename: '../index.html',
-            template: './src/template/index.ejs',
+            template: '!!ejs-loader!./src/template/index.ejs',
             inject: false
         })
     ]

@@ -1,0 +1,90 @@
+@prefix: ~'vue-scroller-bars';
+
+.@{prefix}{
+	&-wraper{
+		height: 100%;
+    	width: 100%;
+		overflow: hidden;
+		position: relative;
+		&.show-when-hover{
+			.@{prefix}-scroll{
+				opacity: 0;
+			}
+			.@{prefix}-place-holder{
+				opacity: 0;
+			}
+		}
+		&.show-when-hover:hover{
+			.@{prefix}-scroll{
+				opacity: 1;
+			}
+			.@{prefix}-place-holder{
+				opacity: 1;
+			}
+		}
+	}
+	&-content{
+		position: absolute;
+		min-width: 100%;
+		left: 0;
+		top: 0;
+	}
+	&-scroll{
+		position: relative;
+		transition: opacity .3s ease .2s;
+		background: rgba(250, 250, 250, 1);
+		box-sizing: border-box;
+		padding: 1px 2px;
+		z-index: 9999999;
+		&:hover &-bar{
+			background: rgb(100, 100, 100);
+		}
+		&-y{
+			width: 14px;
+			height: 100%;
+			float: right;
+			border-left: 1px solid rgba(190, 190, 190, .5);
+			border-right: 1px solid rgba(190, 190, 190, .5);
+			&.scroll-y-cover{
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+		}
+		&-x{
+			width: 100%;
+			height: 14px;
+			float: right;
+			border-top: 1px solid rgba(190, 190, 190, .5);
+			border-bottom: 1px solid rgba(190, 190, 190, .5);
+			&.scroll-x-cover{
+				position: absolute;
+				left: 0px;
+				bottom: 0px;
+			}
+		}
+		&-bar{
+			background: rgba(190, 190, 190, 1);
+			position: absolute;
+			border-radius: 4px;
+			transition: background .2s ease;
+			&-y{
+				width: ~'calc(100% - 4px)';
+				min-height: 14px;
+			}
+			&-x{
+				height: ~'calc(100% - 4px)';
+				min-width: 14px;
+			}
+		}
+	}
+	&-place-holder{
+		position: absolute;
+		transition: opacity .3s ease .2s;
+		right: 0px;
+		bottom: 0px;
+		width: 14px;
+		height: 14px;
+		background: rgba(250, 250, 250, 1);
+	}
+}

@@ -28,6 +28,9 @@
                         <pre>
 &lt;al-cascader v-model="res1" /&gt;
                         </pre>
+                        <Button @click="setAreaOne">set city</Button>
+                        <Button @click="setAreaTwo">set city</Button>
+                        <Button @click="setAreaThree">set city</Button>
                         <div>
                             <p>更多配置可参考iview-area组件官方文档：<a href="https://github.com/iview/iview-area" target="_block">iview-area</a></p>
                         </div>
@@ -179,18 +182,18 @@
 </template>
 
 <script>
-// import alSelector from './components/al-selector.vue';
-// import alCascader from './components/al-cascader.vue';
+import alSelector from './components/al-selector.vue';
+import alCascader from './components/al-cascader.vue';
 
-import Vue from 'vue';
-import iviewArea from 'iview-area';
-Vue.use(iviewArea);
+// import Vue from 'vue';
+// import iviewArea from 'iview-area';
+// Vue.use(iviewArea);
 
 export default {
-    // components: {
-    //     alSelector,
-    //     alCascader
-    // },
+    components: {
+        alSelector,
+        alCascader
+    },
     data () {
         return {
             res1: [],
@@ -201,6 +204,15 @@ export default {
     methods: {
         renderFormat (label) {
             return label.join(' => ');
+        },
+        setAreaOne () {
+            this.resDefault = ['北京市', '市辖区', '东城区', '东华门街道'];
+        },
+        setAreaTwo () {
+            this.resDefault = ['山西省', '太原市', '小店区', '北营街道'];
+        },
+        setAreaThree () {
+            this.resDefault = ['130000', '130700', '130730', '130730100000'];
         }
     },
     watch: {
