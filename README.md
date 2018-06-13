@@ -24,7 +24,10 @@
 
 `注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
 
-## 2.0版本预告 Feature
+## 2.0版本预告 Feature 
+`2.0版本现已公测，可以从2.0分支clone到本地，更多组件正在开发中
+Version 2.0 is now open beta, can be cloned from the 2.0 branch to the local, more components are under development.
+`
 
 - Webpack4 + Vue-cli3.0
 - 重整项目结构，更好封装组件
