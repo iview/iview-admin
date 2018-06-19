@@ -15,7 +15,7 @@
 <script>
 import sideMenuItem from './side-menu-item.vue'
 import collapsedMenu from './collapsed-menu.vue'
-import { getIntersection } from '@/libs/tools'
+import { getUnion } from '@/libs/tools'
 import mixin from './mixin'
 export default {
   name: 'sideMenu',
@@ -72,7 +72,7 @@ export default {
   watch: {
     activeName (name) {
       if (this.accordion) this.openedNames = this.getOpenedNamesByActiveName(name)
-      else this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
+      else this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
     },
     openNames (newNames) {
       this.openedNames = newNames
@@ -84,7 +84,7 @@ export default {
     }
   },
   mounted () {
-    this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
+    this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
   }
 }
 </script>
