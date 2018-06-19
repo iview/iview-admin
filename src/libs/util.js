@@ -52,7 +52,9 @@ export const getMenuByRouter = (list, access) => {
  * @returns {Array}
  */
 export const getBreadCrumbList = (routeMetched) => {
-  let res = routeMetched.map(item => {
+  let res = routeMetched.filter(item => {
+    return item.meta === undefined || !item.meta.hide
+  }).map(item => {
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
       name: item.name,
@@ -164,6 +166,10 @@ export const canTurnTo = (name, access, routes) => {
   return canTurnToNames.indexOf(name) > -1
 }
 
+/**
+ * @param {String} url
+ * @description 从URL中解析参数
+ */
 export const getParams = url => {
   const keyValueArr = url.split('?')[1].split('&')
   let paramObj = {}
@@ -172,4 +178,86 @@ export const getParams = url => {
     paramObj[keyValue[0]] = keyValue[1]
   })
   return paramObj
+}
+
+/**
+ * @param {Array} list 标签列表
+ * @param {String} name 当前关闭的标签的name
+ */
+export const getNextName = (list, name) => {
+  let res = ''
+  if (list.length === 2) {
+    res = 'home'
+  } else {
+    if (list.findIndex(item => item.name === name) === list.length - 1) res = list[list.length - 2].name
+    else res = list[list.findIndex(item => item.name === name) + 1].name
+  }
+  return res
+}
+
+/**
+ * @param {Number} times 回调函数需要执行的次数
+ * @param {Function} callback 回调函数
+ */
+export const doCustomTimes = (times, callback) => {
+  let i = -1
+  while (++i < times) {
+    callback()
+  }
+}
+
+/**
+ * @param {Object} file 从上传组件得到的文件对象
+ * @returns {Promise} resolve参数是解析后的二维数组
+ * @description 从Csv文件中解析出表格，解析成二维数组
+ */
+export const getArrayFromFile = (file) => {
+  let nameSplit = file.name.split('.')
+  let format = nameSplit[nameSplit.length - 1]
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader()
+    reader.readAsText(file) // 以文本格式读取
+    let arr = []
+    reader.onload = function (evt) {
+      let data = evt.target.result // 读到的数据
+      let pasteData = data.trim()
+      arr = pasteData.split((/[\n\u0085\u2028\u2029]|\r\n?/g)).map(row => {
+        return row.split('\t')
+      }).map(item => {
+        return item[0].split(',')
+      })
+      if (format === 'csv') resolve(arr)
+      else reject(new Error('[Format Error]:你上传的不是Csv文件'))
+    }
+  })
+}
+
+/**
+ * @param {Array} array 表格数据二维数组
+ * @returns {Object} { columns, tableData }
+ * @description 从二维数组中获取表头和表格数据，将第一行作为表头，用于在iView的表格中展示数据
+ */
+export const getTableDataFromArray = (array) => {
+  let columns = []
+  let tableData = []
+  if (array.length > 1) {
+    let titles = array.shift()
+    columns = titles.map(item => {
+      return {
+        title: item,
+        key: item
+      }
+    })
+    tableData = array.map(item => {
+      let res = {}
+      item.forEach((col, i) => {
+        res[titles[i]] = col
+      })
+      return res
+    })
+  }
+  return {
+    columns,
+    tableData
+  }
 }

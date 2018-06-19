@@ -20,7 +20,7 @@
           <div class="tag-nav-wrapper">
             <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
-          <Content>
+          <Content class="content-wrapper">
             <keep-alive :include="cacheList">
               <router-view/>
             </keep-alive>
@@ -31,22 +31,22 @@
   </Layout>
 </template>
 <script>
-import sideMenu from './components/side-menu'
-import headerBar from './components/header-bar'
-import tagsNav from './components/tags-nav'
-import user from './components/user'
+import SideMenu from './components/side-menu'
+import HeaderBar from './components/header-bar'
+import TagsNav from './components/tags-nav'
+import User from './components/user'
 import { mapMutations, mapActions } from 'vuex'
-import { getNewTagList } from '@/libs/util'
+import { getNewTagList, getNextName } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
 export default {
   name: 'Main',
   components: {
-    sideMenu,
-    headerBar,
-    tagsNav,
-    user
+    SideMenu,
+    HeaderBar,
+    TagsNav,
+    User
   },
   data () {
     return {
@@ -59,11 +59,14 @@ export default {
     tagNavList () {
       return this.$store.state.app.tagNavList
     },
+    tagRouter () {
+      return this.$store.state.app.tagRouter
+    },
     userAvator () {
       return this.$store.state.user.avatorImgPath
     },
     cacheList () {
-      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)) : []
+      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []
     },
     menuList () {
       return this.$store.getters.menuList
@@ -86,9 +89,11 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
-    handleCloseTag (res, type) {
+    handleCloseTag (res, type, name) {
+      const nextName = getNextName(this.tagNavList, name)
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
+      else if (this.$route.name === name) this.$router.push({ name: nextName })
     },
     handleClick (item) {
       this.turnToPage(item.name)

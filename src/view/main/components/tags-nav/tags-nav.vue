@@ -28,7 +28,7 @@
             :name="item.name"
             @on-close="handleClose"
             @click.native="handleClick(item)"
-            :closable="item.name==='home_index'?false:true"
+            :closable="item.name !== 'home'"
             :color="item.name === value.name ? 'blue' : 'default'"
           >{{ showTitleInside(item) }}</Tag>
         </transition-group>
@@ -40,7 +40,7 @@
 <script>
 import { showTitle } from '@/libs/util'
 export default {
-  name: 'tagsNav',
+  name: 'TagsNav',
   props: {
     value: Object,
     list: {
