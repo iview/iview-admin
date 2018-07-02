@@ -1,6 +1,6 @@
 <template>
   <div class="cropper-wrapper">
-    <img ref="cropperImg" :src="src" alt="">
+    <img id="aaa" ref="cropperImg" alt="">
   </div>
 </template>
 
@@ -28,10 +28,18 @@ export default {
       cropper: null
     }
   },
+  watch: {
+    src (src) {
+      console.log(src)
+      console.log(this.cropper)
+      this.cropper.replace(src)
+    }
+  },
   mounted () {
-    this.cropper = new Cropper(this.$refs.cropperImg, {
-      aspectRatio: 16 / 9,
-      dragMode: this.dragMode,
+    console.log(this.$refs.cropperImg)
+    const aaa = document.getElementById('aaa')
+    this.cropper = new Cropper(aaa, {
+      dragMode: 'move',
       preview: this.previewId,
       restore: false,
       center: false,

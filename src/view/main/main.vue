@@ -13,6 +13,8 @@
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
           <user :user-avator="userAvator"/>
+          <language @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
+          <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
         </header-bar>
       </Header>
       <Content>
@@ -35,6 +37,8 @@ import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
 import TagsNav from './components/tags-nav'
 import User from './components/user'
+import Fullscreen from './components/fullscreen'
+import Language from './components/language'
 import { mapMutations, mapActions } from 'vuex'
 import { getNewTagList, getNextName } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
@@ -45,14 +49,17 @@ export default {
   components: {
     SideMenu,
     HeaderBar,
+    Language,
     TagsNav,
+    Fullscreen,
     User
   },
   data () {
     return {
       collapsed: false,
       minLogo,
-      maxLogo
+      maxLogo,
+      isFullscreen: false
     }
   },
   computed: {
@@ -70,13 +77,17 @@ export default {
     },
     menuList () {
       return this.$store.getters.menuList
+    },
+    local () {
+      return this.$store.state.app.local
     }
   },
   methods: {
     ...mapMutations([
       'setBreadCrumb',
       'setTagNavList',
-      'addTag'
+      'addTag',
+      'setLocal'
     ]),
     ...mapActions([
       'handleLogin'
@@ -112,6 +123,8 @@ export default {
     this.setTagNavList()
     this.addTag(this.$store.state.app.homeRoute)
     this.setBreadCrumb(this.$route.matched)
+    // 设置初始语言
+    this.setLocal(this.$i18n.locale)
   }
 }
 </script>
