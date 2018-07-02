@@ -9,10 +9,13 @@ const env = process.env.NODE_ENV || 'development'
 fs.writeFileSync(path.join(__dirname, './config/env.js'), `export default '${env}'
 `)
 
-// 这里需要修改为你线上项目存放的路径
-// 比如你打包的文件放到服务器的my-app文件夹，域名为a.com，则应改为
-// http(s)://a.com/my-app/
-const BASE_URL = 'https://iview.github.io/iview-admin/'
+// 项目部署基础
+// 默认情况下，我们假设你的应用将被部署在域的根目录下,
+// 例如：https://www.my-app.com/
+// 如果您的应用程序部署在子路径中，则需要在这指定子路径
+// 例如：https://www.foobar.com/my-app/
+// 需要将它改为'/my-app/'
+const BASE_URL = '/'
 
 module.exports = {
   // Project deployment base

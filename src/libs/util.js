@@ -121,17 +121,6 @@ export const getNewTagList = (list, newRoute) => {
 }
 
 /**
- * @param {Boolean} status 状态 1 => locked  0 => unlocked
- * @description 这里只是为了演示，实际应该将锁定状态的设置和获取用接口来实现
- */
-export const setLockStatus = (status) => {
-  localStorage.isLocked = status
-}
-export const getLockStatus = () => {
-  return parseInt(localStorage.isLocked)
-}
-
-/**
  * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
  * @param {*} route 路由列表
  */
@@ -260,4 +249,31 @@ export const getTableDataFromArray = (array) => {
     columns,
     tableData
   }
+}
+
+export const findNodeUpper = (ele, tag) => {
+  if (ele.parentNode) {
+    if (ele.parentNode.tagName === tag.toUpperCase()) {
+      return ele.parentNode
+    } else {
+      return findNodeUpper(ele.parentNode, tag)
+    }
+  }
+}
+
+export const findNodeDownward = (ele, tag) => {
+  const tagName = tag.toUpperCase()
+  if (ele.childNodes.length) {
+    let i = -1
+    let len = ele.childNodes.length
+    while (++i < len) {
+      let child = ele.childNodes[i]
+      if (child.tagName === tagName) return child
+      else return findNodeDownward(child, tag)
+    }
+  }
+}
+
+export const showByAccess = (access, canViewAccess) => {
+  return hasOneOf(canViewAccess, access)
 }

@@ -4,11 +4,12 @@
       <i-col>
         <Card>
           <Row>
-            <i-col span="4">
+            <i-col span="5">
               <Button type="primary" @click="showModal">显示可拖动弹窗</Button>
+              <br/>
               <Button v-draggable="buttonOptions" class="draggable-btn">这个按钮也是可以拖动的</Button>
             </i-col>
-            <i-col span="20">
+            <i-col span="19">
               <div class="intro-con">
                 &lt;Modal v-draggable="options" v-model="visible"&gt;标题&lt;/Modal&gt;
                 <pre class="code-con">
@@ -22,10 +23,10 @@
           </Row>
         </Card>
       </i-col>
+      <Modal v-draggable="options" v-model="modalVisible">
+        拖动这里即可拖动整个弹窗
+      </Modal>
     </Row>
-    <Modal v-draggable="options" v-model="modalVisible">
-      拖动这里即可拖动整个弹窗
-    </Modal>
   </div>
 </template>
 
@@ -43,7 +44,8 @@ export default {
       buttonOptions: {
         trigger: '.draggable-btn',
         body: '.draggable-btn'
-      }
+      },
+      statu: 1
     }
   },
   methods: {
@@ -56,7 +58,7 @@ export default {
 
 <style>
 .intro-con{
-  height: 140px;
+  min-height: 140px;
 }
 .draggable-btn{
   margin-top: 20px;

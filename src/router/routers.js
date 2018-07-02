@@ -87,6 +87,15 @@ export default [
         component: () => import('@/view/components/editor/editor.vue')
       },
       {
+        path: 'img_cropper_page',
+        name: 'img_cropper_page',
+        meta: {
+          icon: 'crop',
+          title: '图片编辑器'
+        },
+        component: () => import('@/view/components/img-cropper/img-cropper.vue')
+      },
+      {
         path: 'icons_page',
         name: 'icons_page',
         meta: {
