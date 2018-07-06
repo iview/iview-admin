@@ -41,7 +41,7 @@ export const getMenuByRouter = (list, access) => {
       if (hasChild(item) && showThisMenuEle(item, access)) {
         obj.children = getMenuByRouter(item.children, access)
       }
-      if (item.href) obj.href = item.href
+      if (item.meta.href) obj.href = item.meta.href
       if (showThisMenuEle(item, access)) res.push(obj)
     }
   })
