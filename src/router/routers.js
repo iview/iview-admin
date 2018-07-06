@@ -52,6 +52,26 @@ export default [
     }
   },
   {
+    path: '/join',
+    name: 'join',
+    meta: {
+      title: 'QQ群',
+      icon: '_qq'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'join_page',
+        name: 'join_page',
+        meta: {
+          icon: '_qq',
+          title: 'QQ群'
+        },
+        component: () => import('@/view/join-page.vue')
+      }
+    ]
+  },
+  {
     path: '/components',
     name: 'components',
     meta: {
