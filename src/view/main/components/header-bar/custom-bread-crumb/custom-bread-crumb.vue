@@ -39,7 +39,6 @@ export default {
       return iconName.indexOf('_') === 0
     },
     getCustomIconName (iconName) {
-      console.log(iconName)
       return iconName.slice(1)
     }
   }
