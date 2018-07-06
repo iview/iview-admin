@@ -15,6 +15,10 @@ export default {
     pasteData: {
       type: String,
       default: ''
+    },
+    placeholder: {
+      type: String,
+      default: '从网页或其他应用软件复制表格数据，粘贴到这里 。默认第一行是表头，使用回车键添加新行，使用Tab键区分列。'
     }
   },
   data () {
@@ -97,7 +101,7 @@ export default {
       lineNumbers: true,
       tabSize: 1,
       lineWrapping: true,
-      placeholder: '从网页或其他应用软件复制表格数据，粘贴到这里 。默认第一行是表头，使用回车键添加新行，使用Tab键区分列。'
+      placeholder: this.placeholder
     })
     this.editor.on('change', (editor) => {
       this.handleContentChanged(editor.getValue())

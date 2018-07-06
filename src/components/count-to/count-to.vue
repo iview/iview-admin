@@ -52,7 +52,7 @@ export default {
       default: 2
     },
     /**
-     * @description 动画持续的时间，单位是秒
+     * @description 动画延迟开始的时间，单位是秒
      */
     delay: {
       type: Number,
