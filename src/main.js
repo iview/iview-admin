@@ -9,6 +9,7 @@ import i18n from '@/locale'
 import config from '@/config'
 import importDirective from '@/directive'
 import 'iview/dist/styles/iview.css'
+import './index.less'
 import '@/assets/icons/iconfont.css'
 import env from '../config/env'
 if (env === 'development') require('@/mock')
