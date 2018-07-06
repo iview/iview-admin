@@ -43,6 +43,35 @@ export default [
     ]
   },
   {
+    path: '',
+    name: 'doc',
+    meta: {
+      title: '文档',
+      href: 'https://lison16.github.io/iview-admin-doc/#/',
+      icon: 'ios-book'
+    }
+  },
+  {
+    path: '/join',
+    name: 'join',
+    meta: {
+      title: 'QQ群',
+      icon: '_qq'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'join_page',
+        name: 'join_page',
+        meta: {
+          icon: '_qq',
+          title: 'QQ群'
+        },
+        component: () => import('@/view/join-page.vue')
+      }
+    ]
+  },
+  {
     path: '/components',
     name: 'components',
     meta: {
