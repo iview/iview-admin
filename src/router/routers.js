@@ -43,6 +43,16 @@ export default [
     ]
   },
   {
+    path: '',
+    name: 'doc',
+    href: 'https://lison16.github.io/iview-admin-doc/#/',
+    meta: {
+      title: '文档',
+      icon: 'ios-book'
+    },
+    component: Main
+  },
+  {
     path: '/components',
     name: 'components',
     meta: {
