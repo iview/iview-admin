@@ -167,6 +167,7 @@ export default {
             },
             'on-start-edit': (params) => {
               this.edittingCellId = `editting-${params.index}-${params.column.key}`
+              this.edittingText = params.row[params.column.key]
               this.$emit('on-start-edit', params)
             },
             'on-cancel-edit': (params) => {
