@@ -51,25 +51,6 @@ export default [
       icon: 'ios-book'
     }
   },
-  // {
-  //   path: '/directive',
-  //   name: 'directive',
-  //   meta: {
-  //     hide: true
-  //   },
-  //   component: Main,
-  //   children: [
-  //     {
-  //       path: '/directive_page',
-  //       name: 'directive_page',
-  //       meta: {
-  //         icon: 'ios-navigate',
-  //         title: '指令'
-  //       },
-  //       component: () => import('@/view/directive/directive.vue')
-  //     }
-  //   ]
-  // },
   {
     path: '/join',
     name: 'join',
@@ -235,7 +216,7 @@ export default [
               icon: 'arrow-graph-up-right',
               title: '三级'
             },
-            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
+            component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
           }
         ]
       },
@@ -246,30 +227,8 @@ export default [
           icon: 'arrow-graph-up-right',
           title: '二级-3'
         },
-        component: parentView,
-        children: [
-          {
-            path: 'level_2_3_1',
-            name: 'level_2_3_1',
-            meta: {
-              access: ['super_admin'],
-              icon: 'arrow-graph-up-right',
-              title: '三级-1'
-            },
-            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
-          },
-          {
-            path: 'level_2_3_2',
-            name: 'level_2_3_2',
-            meta: {
-              access: ['super_admin', 'admin'],
-              icon: 'arrow-graph-up-right',
-              title: '三级-2'
-            },
-            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
-          }
-        ]
-      }
+        component: () => import('@/view/multilevel/level-2-3.vue')
+      },
     ]
   },
   {

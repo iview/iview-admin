@@ -1,5 +1,5 @@
 <template>
-  <div>level-2-1</div>
+  <div>多级菜单 -> 二级-1</div>
 </template>
 <script>
 export default {
