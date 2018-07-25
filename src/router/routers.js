@@ -54,10 +54,6 @@ export default [
   {
     path: '/join',
     name: 'join',
-    meta: {
-      title: 'QQ群',
-      icon: '_qq'
-    },
     component: Main,
     children: [
       {
@@ -174,7 +170,7 @@ export default [
     component: Main,
     children: [
       {
-        path: '/directive_page',
+        path: 'directive_page',
         name: 'directive_page',
         meta: {
           icon: 'ios-navigate',
@@ -200,7 +196,7 @@ export default [
           icon: 'arrow-graph-up-right',
           title: '二级-1'
         },
-        component: () => import('@/view/multilevel/level-1.vue')
+        component: () => import('@/view/multilevel/level-2-1.vue')
       },
       {
         path: 'level_2_2',
@@ -208,6 +204,7 @@ export default [
         meta: {
           access: ['super_admin'],
           icon: 'arrow-graph-up-right',
+          showAlways: true,
           title: '二级-2'
         },
         component: parentView,
@@ -219,7 +216,7 @@ export default [
               icon: 'arrow-graph-up-right',
               title: '三级'
             },
-            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
+            component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
           }
         ]
       },
@@ -230,45 +227,32 @@ export default [
           icon: 'arrow-graph-up-right',
           title: '二级-3'
         },
-        component: parentView,
-        children: [
-          {
-            path: 'level_2_3_1',
-            name: 'level_2_3_1',
-            meta: {
-              access: ['super_admin'],
-              icon: 'arrow-graph-up-right',
-              title: '三级-1'
-            },
-            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
-          },
-          {
-            path: 'level_2_3_2',
-            name: 'level_2_3_2',
-            meta: {
-              access: ['super_admin', 'admin'],
-              icon: 'arrow-graph-up-right',
-              title: '三级-2'
-            },
-            component: () => import('@/view/multilevel/level-2/level-2-1.vue')
-          }
-        ]
-      }
+        component: () => import('@/view/multilevel/level-2-3.vue')
+      },
     ]
   },
   {
     path: '/401',
     name: 'error_401',
+    meta: {
+      hideInMenu: true
+    },
     component: () => import('@/view/error-page/401.vue')
   },
   {
     path: '/500',
     name: 'error_500',
+    meta: {
+      hideInMenu: true
+    },
     component: () => import('@/view/error-page/500.vue')
   },
   {
     path: '*',
     name: 'error_404',
+    meta: {
+      hideInMenu: true
+    },
     component: () => import('@/view/error-page/404.vue')
   }
 ]

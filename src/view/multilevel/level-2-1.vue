@@ -1,8 +1,8 @@
 <template>
-  <div>level-2-2</div>
+  <div>多级菜单 -> 二级-1</div>
 </template>
 <script>
 export default {
-  name: 'level_2_2'
+  name: 'level_2_1'
 }
 </script>
