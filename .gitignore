@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 npm-debug.log
 node_modules
 .project
@@ -6,3 +7,31 @@ node_modules
 .DS_Store
 \.settings/
 build/env.js
+=======
+.DS_Store
+node_modules
+/dist
+
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+build/env.js
+>>>>>>> a70db92cfad6b85bccd993739d4a109954f61feb
