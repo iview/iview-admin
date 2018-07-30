@@ -6,6 +6,7 @@ node_modules
 .history
 .DS_Store
 \.settings/
+<<<<<<< HEAD
 build/env.js
 =======
 .DS_Store
@@ -35,3 +36,7 @@ yarn-error.log*
 
 build/env.js
 >>>>>>> a70db92cfad6b85bccd993739d4a109954f61feb
+=======
+build/env.js
+dist/
+>>>>>>> 7bec0188bb800dc80afbde9a79dabb98aa472733
