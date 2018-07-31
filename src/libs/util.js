@@ -137,23 +137,17 @@ const hasAccess = (access, route) => {
  * @description 用户是否可跳转到该页
  */
 export const canTurnTo = (name, access, routes) => {
-  const getHasAccessRouteNames = (list) => {
-    let res = []
-    list.forEach(item => {
+  const routePermissionJudge = (list) => {
+    return list.some(item => {
       if (item.children && item.children.length) {
-        res = [].concat(res, getHasAccessRouteNames(item.children))
-      } else {
-        if (item.meta && item.meta.access) {
-          if (hasAccess(access, item)) res.push(item.name)
-        } else {
-          res.push(item.name)
-        }
+        return routePermissionJudge(item.children)
+      } else if (item.name === name) {
+        return hasAccess(access, item)
       }
     })
-    return res
   }
-  const canTurnToNames = getHasAccessRouteNames(routes)
-  return canTurnToNames.indexOf(name) > -1
+
+  return routePermissionJudge(routes)
 }
 
 /**
