@@ -14,13 +14,15 @@ const btns = {
     }, [
       h('Button', {
         props: {
-          type: 'text'
+          type: 'text',
+          ghost: true
         }
       }, [
         h('Icon', {
           props: {
-            type: 'trash-b',
-            size: 18
+            type: 'md-trash',
+            size: 18,
+            color: '#000000'
           }
         })
       ])
