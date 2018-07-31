@@ -131,6 +131,7 @@ const hasAccess = (access, route) => {
 }
 
 /**
+ * 权鉴
  * @param {*} name 即将跳转的路由name
  * @param {*} access 用户权限数组
  * @param {*} routes 路由列表
