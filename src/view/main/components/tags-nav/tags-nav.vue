@@ -3,7 +3,7 @@
     <div class="close-con">
       <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
         <Button size="small" type="text">
-          <Icon :size="18" type="ios-close-outline"></Icon>
+          <Icon :size="18" type="ios-close-circle-outline" />
         </Button>
         <DropdownMenu slot="list">
           <DropdownItem name="close-all">关闭所有</DropdownItem>
@@ -12,10 +12,14 @@
       </Dropdown>
     </div>
     <div class="btn-con left-btn">
-      <Button icon="chevron-left" type="text" @click="handleScroll(240)"></Button>
+      <Button type="text" @click="handleScroll(240)">
+        <Icon :size="18" type="ios-arrow-back" />
+      </Button>
     </div>
     <div class="btn-con right-btn">
-      <Button icon="chevron-right" type="text" @click="handleScroll(-240)"></Button>
+      <Button type="text" @click="handleScroll(-240)">
+        <Icon :size="18" type="ios-arrow-forward" />
+      </Button>
     </div>
     <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll">
       <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
@@ -29,7 +33,7 @@
             @on-close="handleClose"
             @click.native="handleClick(item)"
             :closable="item.name !== 'home'"
-            :color="item.name === value.name ? 'blue' : 'default'"
+            :color="item.name === value.name ? 'primary' : 'default'"
           >{{ showTitleInside(item) }}</Tag>
         </transition-group>
       </div>

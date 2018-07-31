@@ -71,7 +71,7 @@ export default [
     path: '/components',
     name: 'components',
     meta: {
-      icon: 'social-buffer',
+      icon: 'logo-buffer',
       title: '组件'
     },
     component: Main,
@@ -80,7 +80,7 @@ export default [
         path: 'count_to_page',
         name: 'count_to_page',
         meta: {
-          icon: 'arrow-graph-up-right',
+          icon: 'md-trending-up',
           title: '数字渐变'
         },
         component: () => import('@/view/components/count-to/count-to.vue')
@@ -89,7 +89,7 @@ export default [
         path: 'tables_page',
         name: 'tables_page',
         meta: {
-          icon: 'ios-grid-view',
+          icon: 'md-grid',
           title: '多功能表格'
         },
         component: () => import('@/view/components/tables/tables.vue')
@@ -98,7 +98,7 @@ export default [
         path: 'split_pane_page',
         name: 'split_pane_page',
         meta: {
-          icon: 'pause',
+          icon: 'md-pause',
           title: '分割窗口'
         },
         component: () => import('@/view/components/split-pane/split-pane.vue')
@@ -107,7 +107,7 @@ export default [
         path: 'markdown_page',
         name: 'markdown_page',
         meta: {
-          icon: 'social-markdown',
+          icon: 'logo-markdown',
           title: 'Markdown编辑器'
         },
         component: () => import('@/view/components/markdown/markdown.vue')
@@ -116,7 +116,7 @@ export default [
         path: 'editor_page',
         name: 'editor_page',
         meta: {
-          icon: 'compose',
+          icon: 'ios-create',
           title: '富文本编辑器'
         },
         component: () => import('@/view/components/editor/editor.vue')
@@ -136,7 +136,7 @@ export default [
     path: '/update',
     name: 'update',
     meta: {
-      icon: 'upload',
+      icon: 'md-cloud-upload',
       title: '数据上传'
     },
     component: Main,
@@ -145,7 +145,7 @@ export default [
         path: 'update_table_page',
         name: 'update_table_page',
         meta: {
-          icon: 'document-text',
+          icon: 'ios-document',
           title: '上传Csv'
         },
         component: () => import('@/view/update/update-table.vue')
@@ -154,7 +154,7 @@ export default [
         path: 'update_paste_page',
         name: 'update_paste_page',
         meta: {
-          icon: 'clipboard',
+          icon: 'md-clipboard',
           title: '粘贴表格数据'
         },
         component: () => import('@/view/update/update-paste.vue')
@@ -184,7 +184,7 @@ export default [
     path: '/multilevel',
     name: 'multilevel',
     meta: {
-      icon: 'arrow-graph-up-right',
+      icon: 'md-menu',
       title: '多级菜单'
     },
     component: Main,
