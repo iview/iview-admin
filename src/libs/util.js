@@ -61,7 +61,9 @@ util.getRouterObjByName = function (routers, name) {
         if (item.name === name) {
             return item;
         }
-        routerObj = util.getRouterObjByName(item.children, name);
+        if(item.children){
+            routerObj = util.getRouterObjByName(item.children, name);
+        }
         if (routerObj) {
             return routerObj;
         }
