@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init": "webpack --progress --config build/webpack.dev.config.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --config build/webpack.dev.config.js",
+    "dev": "webpack-dev-server --open --inline --hot --compress --config build/webpack.dev.config.js",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "lint": "eslint --fix --ext .js,.vue src",
     "test": "npm run lint"
