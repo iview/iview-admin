@@ -32,7 +32,7 @@ export default [
     },
     children: [
       {
-        path: 'home',
+        path: '/home',
         name: 'home',
         meta: {
           hideInMenu: true,
