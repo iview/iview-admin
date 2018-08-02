@@ -36,6 +36,7 @@ export default [
         name: 'home',
         meta: {
           hideInMenu: true,
+          title: '首页',
           notCache: true
         },
         component: () => import('@/view/single-page/home')
