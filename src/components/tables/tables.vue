@@ -2,7 +2,7 @@
   <div>
     <div v-if="searchable && searchPlace === 'top'" class="search-con search-con-top">
       <Select v-model="searchKey" class="search-col">
-        <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+        <Option v-for="item in columns" v-if="item.key !== 'handle' && item.searchable && item.title" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
       </Select>
       <Input @on-change="handleClear" clearable placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
       <Button @click="handleSearch" class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
@@ -40,7 +40,7 @@
     </Table>
     <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
       <Select v-model="searchKey" class="search-col">
-        <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+        <Option v-for="item in columns" v-if="item.key !== 'handle' && item.searchable && item.title" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
       </Select>
       <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
       <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
@@ -206,13 +206,19 @@ export default {
       })
     },
     setDefaultSearchKey () {
-      this.searchKey = this.columns[0].key !== 'handle' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
+      let column = this.columns.find(column => column.key !== 'handle' && column.searchable && column.title)
+      if (column) this.searchKey = column.key
     },
     handleClear (e) {
       if (e.target.value === '') this.insideTableData = this.value
     },
     handleSearch () {
-      this.insideTableData = this.value.filter(item => item[this.searchKey].indexOf(this.searchValue) > -1)
+      if (this.searchKey) this.insideTableData = this.value.filter(item => item[this.searchKey].indexOf(this.searchValue) > -1)
+      let params = {
+        key: this.searchKey,
+        value: this.searchValue
+      }
+      this.$emit('on-search', params)
     },
     handleTableData () {
       this.insideTableData = this.value.map((item, index) => {
