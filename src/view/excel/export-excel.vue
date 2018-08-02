@@ -2,16 +2,16 @@
     @import "./excel.less";
 </style>
 <template>
-<div>
+  <div>
     <Card title="导出EXCEL">
-        <Row>
-            <Button icon="md-download" :loading="exportLoading" @click="exportExcel">导出文件</Button>
-        </Row>
+      <Row>
+        <Button icon="md-download" :loading="exportLoading" @click="exportExcel">导出文件</Button>
+      </Row>
     </Card>
     <Row class="margin-top-10">
-        <Table :columns="tableTitle" :data="tableData"></Table>
+      <Table :columns="tableTitle" :data="tableData"></Table>
     </Row>
-</div>
+  </div>
 </template>
 <script>
 export default {

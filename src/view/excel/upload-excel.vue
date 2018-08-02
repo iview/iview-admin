@@ -2,35 +2,35 @@
     @import "./excel.less";
 </style>
 <template>
-<div>
+  <div>
     <Card title="导入EXCEL">
-        <Row>
-            <Upload action="" :before-upload="handleBeforeUpload" accept=".xls, .xlsx">
-                <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">上传文件</Button>
-            </Upload>
-        </Row>
-        <Row>
-            <div class="ivu-upload-list-file" v-if="file !== null">
-                <Icon type="ios-stats"></Icon>
-                    {{ file.name }}
-                <Icon v-show="showRemoveFile" type="ios-close" class="ivu-upload-list-remove" @click.native="handleRemove()"></Icon>
+      <Row>
+        <Upload action="" :before-upload="handleBeforeUpload" accept=".xls, .xlsx">
+          <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">上传文件</Button>
+        </Upload>
+      </Row>
+      <Row>
+        <div class="ivu-upload-list-file" v-if="file !== null">
+          <Icon type="ios-stats"></Icon>
+            {{ file.name }}
+          <Icon v-show="showRemoveFile" type="ios-close" class="ivu-upload-list-remove" @click.native="handleRemove()"></Icon>
+        </div>
+      </Row>
+      <Row>
+        <transition name="fade">
+          <Progress v-if="showProgress" :percent="progressPercent" :stroke-width="2">
+            <div v-if="progressPercent == 100">
+              <Icon type="ios-checkmark-circle"></Icon>
+              <span>成功</span>
             </div>
-        </Row>
-        <Row>
-            <transition name="fade">
-                <Progress v-if="showProgress" :percent="progressPercent" :stroke-width="2">
-                    <div v-if="progressPercent == 100">
-                        <Icon type="ios-checkmark-circle"></Icon>
-                        <span>成功</span>
-                    </div>
-                </Progress>
-            </transition>
-        </Row>
+          </Progress>
+        </transition>
+      </Row>
     </Card>
     <Row class="margin-top-10">
-        <Table :columns="tableTitle" :data="tableData" :loading="tableLoading"></Table>
+      <Table :columns="tableTitle" :data="tableData" :loading="tableLoading"></Table>
     </Row>
-</div>
+  </div>
 </template>
 <script>
 export default {
@@ -93,15 +93,15 @@ export default {
       reader.onload = e => {
         this.$Message.info('文件读取成功')
         const data = e.target.result
-                import('@/libs/excel').then(excel => {
-                  const {header, results} = excel.read(data, 'array')
-                  const tableTitle = header.map(item => { return { title: item, key: item } })
-                  this.tableData = results
-                  this.tableTitle = tableTitle
-                  this.uploadLoading = false
-                  this.tableLoading = false
-                  this.showRemoveFile = true
-                })
+        import('@/libs/excel').then(excel => {
+          const {header, results} = excel.read(data, 'array')
+          const tableTitle = header.map(item => { return { title: item, key: item } })
+          this.tableData = results
+          this.tableTitle = tableTitle
+          this.uploadLoading = false
+          this.tableLoading = false
+          this.showRemoveFile = true
+        })
       }
     }
   },
