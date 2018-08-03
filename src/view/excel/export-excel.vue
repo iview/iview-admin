@@ -56,17 +56,17 @@ export default {
     exportExcel () {
       if (this.tableData.length) {
         this.exportLoading = true
-                import('@/libs/excel').then(excel => {
-                  const params = {
-                    title: ['一级分类', '二级分类', '三级分类'],
-                    key: ['category1', 'category2', 'category3'],
-                    data: this.tableData,
-                    autoWidth: true,
-                    filename: '分类列表'
-                  }
-                  excel.export_array_to_excel(params)
-                  this.exportLoading = false
-                })
+        import('@/libs/excel').then(excel => {
+          const params = {
+            title: ['一级分类', '二级分类', '三级分类'],
+            key: ['category1', 'category2', 'category3'],
+            data: this.tableData,
+            autoWidth: true,
+            filename: '分类列表'
+          }
+          excel.export_array_to_excel(params)
+          this.exportLoading = false
+        })
       } else {
         this.$Message.info('表格数据不能为空！')
       }

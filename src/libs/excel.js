@@ -74,7 +74,7 @@ export const export_json_to_excel = ({data, key, title, filename, autoWidth}) =>
     data.unshift(title);
     const ws = XLSX.utils.json_to_sheet(data, {header: key, skipHeader: true});
     if(autoWidth){
-        const arr = json_to_array(key, paraarr);
+        const arr = json_to_array(key, data);
         auto_width(ws, arr);
     }    
     XLSX.utils.book_append_sheet(wb, ws, filename);
@@ -97,10 +97,10 @@ export const read = (data, type) => {
     /* if type == 'base64' must fix data first */
     // const fixedData = fixdata(data)
     // const workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
-    const workbook = XLSX.read(data, { type: type })
-    const firstSheetName = workbook.SheetNames[0]
-    const worksheet = workbook.Sheets[firstSheetName]
-    const header = get_header_row(worksheet)
-    const results = XLSX.utils.sheet_to_json(worksheet)
-    return {header, results}
+    const workbook = XLSX.read(data, { type: type });
+    const firstSheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[firstSheetName];
+    const header = get_header_row(worksheet);
+    const results = XLSX.utils.sheet_to_json(worksheet);
+    return {header, results};
 }
