@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "./excel.less";
+    @import "./common.less";
 </style>
 <template>
   <div>
