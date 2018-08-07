@@ -92,13 +92,23 @@ export default {
     ...mapActions([
       'handleLogin'
     ]),
-    turnToPage (name) {
+    turnToPage (route) {
+      let { name, params, query } = {}
+      if (typeof route === 'string') name = route
+      else name = route.name
+      console.log({
+        name,
+        params,
+        query
+      })
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return
       }
       this.$router.push({
-        name: name
+        name,
+        params,
+        query
       })
     },
     handleCollapsedChange (state) {
@@ -111,7 +121,7 @@ export default {
       else if (this.$route.name === name) this.$router.push({ name: nextName })
     },
     handleClick (item) {
-      this.turnToPage(item.name)
+      this.turnToPage(item)
     }
   },
   watch: {
@@ -125,7 +135,9 @@ export default {
      * @description 初始化设置面包屑导航和标签导航
      */
     this.setTagNavList()
-    this.addTag(this.$store.state.app.homeRoute)
+    this.addTag({
+      route: this.$store.state.app.homeRoute
+    })
     this.setBreadCrumb(this.$route.matched)
     // 设置初始语言
     this.setLocal(this.$i18n.locale)

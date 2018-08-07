@@ -26,9 +26,9 @@
         <transition-group name="taglist-moving-animation">
           <Tag
             type="dot"
-            v-for="item in list"
+            v-for="(item, index) in list"
             ref="tagsPageOpened"
-            :key="`tag-nav-${item.name}`"
+            :key="`tag-nav-${index}`"
             :name="item.name"
             @on-close="handleClose"
             @click.native="handleClick(item)"

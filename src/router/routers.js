@@ -163,6 +163,25 @@ export default [
     ]
   },
   {
+    path: '/tools_methods',
+    name: 'tools_methods',
+    meta: {
+      hide: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'tools_methods_page',
+        name: 'tools_methods_page',
+        meta: {
+          icon: 'ios-hammer',
+          title: '工具方法'
+        },
+        component: () => import('@/view/tools-methods/tools-methods.vue')
+      }
+    ]
+  },
+  {
     path: '/directive',
     name: 'directive',
     meta: {
@@ -231,6 +250,16 @@ export default [
         component: () => import('@/view/multilevel/level-2-3.vue')
       },
     ]
+  },
+  {
+    path: 'argu_page/:id',
+    name: 'argu_page',
+    meta: {
+      icon: 'md-flower',
+      title: '动态路由',
+      hideInMenu: true
+    },
+    component: () => import('@/view/argu-page/page.vue')
   },
   {
     path: '/401',

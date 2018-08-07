@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import { forEach, hasOneOf } from '@/libs/tools'
+import { forEach, hasOneOf, hasKey, objEqual } from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
 
@@ -184,7 +184,7 @@ export const getNextName = (list, name) => {
 export const doCustomTimes = (times, callback) => {
   let i = -1
   while (++i < times) {
-    callback()
+    callback(i)
   }
 }
 
@@ -269,4 +269,22 @@ export const findNodeDownward = (ele, tag) => {
 
 export const showByAccess = (access, canViewAccess) => {
   return hasOneOf(canViewAccess, access)
+}
+
+/**
+ * 判断打开的标签列表里是否已存在这个新添加的路由对象
+ */
+export const routeHasExist = (tagNavList, routeItem) => {
+  let len = tagNavList.length
+  const { name, params, query } = routeItem
+  console.log(len, { name, params, query })
+  doCustomTimes(len, (index) => {
+    console.log(tagNavList[index])
+    if (tagNavList[index].name === name) {
+      if (params === undefined && query === undefined) return true
+      if (params && hasKey(params)) return objEqual(tagNavList[index].params, params)
+      if (query && hasKey(query)) return objEqual(tagNavList[index].query, query)
+    }
+  })
+  return false
 }

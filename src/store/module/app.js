@@ -1,4 +1,4 @@
-import { getBreadCrumbList, setTagNavListInLocalstorage, getMenuByRouter, getTagNavListFromLocalstorage, getHomeRoute } from '@/libs/util'
+import { getBreadCrumbList, setTagNavListInLocalstorage, getMenuByRouter, getTagNavListFromLocalstorage, getHomeRoute, routeHasExist } from '@/libs/util'
 import routers from '@/router/routers'
 export default {
   state: {
@@ -20,10 +20,13 @@ export default {
         setTagNavListInLocalstorage([...list])
       } else state.tagNavList = getTagNavListFromLocalstorage()
     },
-    addTag (state, item, type = 'unshift') {
-      if (state.tagNavList.findIndex(tag => tag.name === item.name) < 0) {
-        if (type === 'push') state.tagNavList.push(item)
-        else state.tagNavList.unshift(item)
+    addTag (state, { route, type = 'unshift' }) {
+      console.log(state.tagNavList, routeHasExist(state.tagNavList, route), route)
+      // const { name, params, query } = route
+      // const nameNotExist = state.tagNavList.findIndex(tag => tag.name === name) < 0
+      if (!routeHasExist(state.tagNavList, route)) {
+        if (type === 'push') state.tagNavList.push(route)
+        else state.tagNavList.unshift(route)
         setTagNavListInLocalstorage([...state.tagNavList])
       }
     },
