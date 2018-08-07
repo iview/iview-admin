@@ -111,7 +111,11 @@ export default {
       else if (this.$route.name === name) this.$router.push({ name: nextName })
     },
     handleClick (item) {
-      this.turnToPage(item.name)
+      let routerObj = {}
+      routerObj.name = item.name
+      if (item.params) routerObj.params = item.params
+      if (item.query) routerObj.query = item.query
+      this.$router.push(routerObj)
     }
   },
   watch: {
