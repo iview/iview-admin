@@ -194,7 +194,7 @@ export default [
         path: 'level_2_1',
         name: 'level_2_1',
         meta: {
-          icon: 'arrow-graph-up-right',
+          icon: 'md-funnel',
           title: '二级-1'
         },
         component: () => import('@/view/multilevel/level-2-1.vue')
@@ -204,7 +204,7 @@ export default [
         name: 'level_2_2',
         meta: {
           access: ['super_admin'],
-          icon: 'arrow-graph-up-right',
+          icon: 'md-funnel',
           showAlways: true,
           title: '二级-2'
         },
@@ -214,7 +214,7 @@ export default [
             path: 'level_2_2_1',
             name: 'level_2_2_1',
             meta: {
-              icon: 'arrow-graph-up-right',
+              icon: 'md-funnel',
               title: '三级'
             },
             component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
@@ -225,7 +225,7 @@ export default [
         path: 'level_2_3',
         name: 'level_2_3',
         meta: {
-          icon: 'arrow-graph-up-right',
+          icon: 'md-funnel',
           title: '二级-3'
         },
         component: () => import('@/view/multilevel/level-2-3.vue')
