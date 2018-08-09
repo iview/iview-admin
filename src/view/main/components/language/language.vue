@@ -3,7 +3,7 @@
     <Dropdown trigger="click" @on-click="selectLang">
       <a href="javascript:void(0)">
         {{ title }}
-        <Icon type="arrow-down-b"></Icon>
+        <Icon :size="18" type="md-arrow-dropdown" />
       </a>
       <DropdownMenu slot="list">
         <DropdownItem v-for="(value, key) in localList" :name="key" :key="`lang-${key}`">{{ value }}</DropdownItem>

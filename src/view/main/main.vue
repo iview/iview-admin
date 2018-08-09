@@ -130,7 +130,7 @@ export default {
     // 设置初始语言
     this.setLocal(this.$i18n.locale)
     // 文档提示
-    this.$Notice.open({
+    this.$Notice.info({
       title: '想快速上手，去看文档吧',
       duration: 0,
       render: (h) => {

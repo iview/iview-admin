@@ -3,12 +3,12 @@
     <i-col span="6">
       <Card>
         <Upload action="" :before-upload="beforeUpload">
-          <Button type="ghost" icon="ios-cloud-upload-outline">上传Csv文件</Button>
+          <Button icon="ios-cloud-upload-outline">上传Csv文件</Button>
           &nbsp;&nbsp;&nbsp;&nbsp;点击上传Csv文件
         </Upload>
         <p>util.js提供两个方法用来实现这个功能：</p>
-        <p class="update-table-intro"><Icon style="margin-right: 10px;" :size="10" type="heart"/><span class="code-high-line">getArrayFromFile</span>：将Csv文件解析为二维数组</p>
-        <p class="update-table-intro"><Icon style="margin-right: 10px;" :size="10" type="heart"/><span class="code-high-line">getTableDataFromArray</span>：将二维数组转为表格数据，具体请看文档</p>
+        <p class="update-table-intro"><Icon style="margin-right: 10px;" :size="10" type="md-heart"/><span class="code-high-line">getArrayFromFile</span>：将Csv文件解析为二维数组</p>
+        <p class="update-table-intro"><Icon style="margin-right: 10px;" :size="10" type="md-heart"/><span class="code-high-line">getTableDataFromArray</span>：将二维数组转为表格数据，具体请看文档</p>
       </Card>
     </i-col>
     <i-col span="18">

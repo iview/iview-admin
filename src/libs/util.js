@@ -52,7 +52,7 @@ export const getMenuByRouter = (list, access) => {
  * @param {Array} routeMetched 当前路由metched
  * @returns {Array}
  */
-export const getBreadCrumbList = (routeMetched) => {
+export const getBreadCrumbList = (routeMetched, homeRoute) => {
   let res = routeMetched.filter(item => {
     return item.meta === undefined || !item.meta.hide
   }).map(item => {
@@ -66,10 +66,7 @@ export const getBreadCrumbList = (routeMetched) => {
   res = res.filter(item => {
     return !item.meta.hideInMenu
   })
-  return [{
-    name: 'home',
-    to: '/home'
-  }, ...res]
+  return [Object.assign(homeRoute, { to: homeRoute.path }), ...res]
 }
 
 export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
@@ -131,29 +128,24 @@ const hasAccess = (access, route) => {
 }
 
 /**
+ * 权鉴
  * @param {*} name 即将跳转的路由name
  * @param {*} access 用户权限数组
  * @param {*} routes 路由列表
  * @description 用户是否可跳转到该页
  */
 export const canTurnTo = (name, access, routes) => {
-  const getHasAccessRouteNames = (list) => {
-    let res = []
-    list.forEach(item => {
+  const routePermissionJudge = (list) => {
+    return list.some(item => {
       if (item.children && item.children.length) {
-        res = [].concat(res, getHasAccessRouteNames(item.children))
-      } else {
-        if (item.meta && item.meta.access) {
-          if (hasAccess(access, item)) res.push(item.name)
-        } else {
-          res.push(item.name)
-        }
+        return routePermissionJudge(item.children)
+      } else if (item.name === name) {
+        return hasAccess(access, item)
       }
     })
-    return res
   }
-  const canTurnToNames = getHasAccessRouteNames(routes)
-  return canTurnToNames.indexOf(name) > -1
+
+  return routePermissionJudge(routes)
 }
 
 /**
