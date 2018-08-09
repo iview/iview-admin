@@ -12,6 +12,17 @@
   .header-con{
     background: #fff;
     padding: 0 20px;
+    position: 'fixed';
+    width: '100%';
+  }
+  .main-layout-con{
+    height: 100%;
+    overflow: hidden;
+  }
+  .main-content-con{
+    margin-top: 64px;
+    height: ~"calc(100% - 60px)";
+    overflow: hidden;
   }
   .tag-nav-wrapper{
     padding: 0;
@@ -20,7 +31,9 @@
     overflow: hidden;
   }
   .content-wrapper{
-    padding: 24px;
+    padding: 18px;
+    height: ~"calc(100% - 80px)";
+    overflow: auto;
   }
   .left-sider{
     .ivu-layout-sider-children{
