@@ -1,5 +1,5 @@
 <template>
-  <Dropdown @on-click="handleClick" transer placement="right-start">
+  <Dropdown @on-click="handleClick" placement="right-start">
     <a class="drop-menu-a" type="text" :style="{textAlign: !hideTitle ? 'left' : ''}"><common-icon :size="rootIconSize" :color="textColor" :type="parentItem.icon"/><span class="menu-title" v-if="!hideTitle">{{ showTitle(parentItem) }}</span><Icon v-if="!hideTitle" :size="10" :color="textColor" type="chevron-right" style="float: right;margin-top: 4px;"/></a>
     <DropdownMenu slot="list">
       <template v-for="child in children">
