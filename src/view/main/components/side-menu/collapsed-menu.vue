@@ -1,6 +1,6 @@
 <template>
   <Dropdown @on-click="handleClick" placement="right-start">
-    <a class="drop-menu-a" type="text" :style="{textAlign: !hideTitle ? 'left' : ''}"><common-icon :size="rootIconSize" :color="textColor" :type="parentItem.icon"/><span class="menu-title" v-if="!hideTitle">{{ showTitle(parentItem) }}</span><Icon v-if="!hideTitle" :size="10" :color="textColor" type="chevron-right" style="float: right;margin-top: 4px;"/></a>
+    <a class="drop-menu-a" type="text" :style="{textAlign: !hideTitle ? 'left' : ''}"><common-icon :size="rootIconSize" :color="textColor" :type="parentItem.icon"/><span class="menu-title" v-if="!hideTitle">{{ showTitle(parentItem) }}</span><Icon v-if="!hideTitle" :size="10" :color="textColor" type="chevron-right" style="float: right;margin-top: 4px;"/><Icon style="float: right;" v-if="!hideTitle" type="ios-arrow-forward" :size="16"/></a>
     <DropdownMenu slot="list">
       <template v-for="child in children">
         <collapsed-menu v-if="showChildren(child)" :icon-size="iconSize" :parent-item="child" :key="`drop-${child.name}`"></collapsed-menu>
