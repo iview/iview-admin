@@ -152,14 +152,14 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
+      let endVal = this.getValue(this.end)
+      this.counter = new CountUp(this.counterId, this.startVal, endVal, this.decimals, this.duration, {
+        useEasing: !this.uneasing,
+        useGrouping: this.useGroup,
+        separator: this.separator,
+        decimal: this.decimal
+      })
       setTimeout(() => {
-        let endVal = this.getValue(this.end)
-        this.counter = new CountUp(this.counterId, this.startVal, endVal, this.decimals, this.duration, {
-          useEasing: !this.uneasing,
-          useGrouping: this.useGroup,
-          separator: this.separator,
-          decimal: this.decimal
-        })
         if (!this.counter.error) this.counter.start()
       }, this.delay)
     })
