@@ -94,8 +94,15 @@ export default {
         this.$emit('on-close', res, 'all')
       } else {
         // 关闭除当前页和home页的其他页
-        let res = this.list.filter(item => item.name === this.value.name || item.name === 'home')
+        let currentName = ''
+        let res = this.list.filter(item => {
+          if (item.name === this.value.name) currentName = item.name
+          return item.name === this.value.name || item.name === 'home'
+        })
         this.$emit('on-close', res, 'others')
+        setTimeout(() => {
+          this.getTagElementByName(currentName)
+        }, 100)
       }
     },
     handleClose (e, name) {
@@ -110,12 +117,15 @@ export default {
     },
     moveToView (tag) {
       const outerWidth = this.$refs.scrollOuter.offsetWidth
-      if (tag.offsetLeft < -this.tagBodyLeft) {
+      const bodyWidth = this.$refs.scrollBody.offsetWidth
+      if (bodyWidth < outerWidth) {
+        this.tagBodyLeft = 0
+      } else if (tag.offsetLeft < -this.tagBodyLeft) {
         // 标签在可视区域左侧
         this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
-      } else if (tag.offsetLeft + 0 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
+      } else if (tag.offsetLeft > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
         // 标签在可视区域
-        // this.tagBodyLeft = Math.min(this.outerPadding, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
+        this.tagBodyLeft = Math.min(0, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
       } else {
         // 标签在可视区域右侧
         this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
