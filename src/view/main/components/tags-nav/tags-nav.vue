@@ -74,18 +74,15 @@ export default {
       const outerWidth = this.$refs.scrollOuter.offsetWidth
       const bodyWidth = this.$refs.scrollBody.offsetWidth
       if (offset > 0) {
-        console.log(111)
         this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset)
       } else {
         if (outerWidth < bodyWidth) {
-          console.log(222)
           if (this.tagBodyLeft < -(bodyWidth - outerWidth)) {
             this.tagBodyLeft = this.tagBodyLeft
           } else {
             this.tagBodyLeft = Math.max(this.tagBodyLeft + offset, outerWidth - bodyWidth)
           }
         } else {
-          console.log(333)
           this.tagBodyLeft = 0
         }
       }
@@ -114,17 +111,13 @@ export default {
     moveToView (tag) {
       const outerWidth = this.$refs.scrollOuter.offsetWidth
       if (tag.offsetLeft < -this.tagBodyLeft) {
-        console.log(1111111)
         // 标签在可视区域左侧
         this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
       } else if (tag.offsetLeft + 0 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
         // 标签在可视区域
-        console.log(222222)
         // this.tagBodyLeft = Math.min(this.outerPadding, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
       } else {
         // 标签在可视区域右侧
-        console.log(3433333)
-        console.log(tag.offsetLeft, outerWidth, tag.offsetWidth)
         this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
       }
     },
@@ -137,7 +130,6 @@ export default {
             this.moveToView(tag)
           }
         })
-        // this.tagsCount = this.list.length
       })
     }
   },
@@ -147,7 +139,9 @@ export default {
     }
   },
   mounted () {
-    this.getTagElementByName(this.$route.name)
+    setTimeout(() => {
+      this.getTagElementByName(this.$route.name)
+    }, 200)
   }
 }
 </script>
