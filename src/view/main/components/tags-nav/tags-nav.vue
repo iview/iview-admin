@@ -57,7 +57,8 @@ export default {
   data () {
     return {
       tagBodyLeft: 0,
-      rightOffset: 40
+      rightOffset: 40,
+      outerPadding: 4
     }
   },
   methods: {
@@ -70,16 +71,21 @@ export default {
       this.handleScroll(delta)
     },
     handleScroll (offset) {
+      const outerWidth = this.$refs.scrollOuter.offsetWidth
+      const bodyWidth = this.$refs.scrollBody.offsetWidth
       if (offset > 0) {
+        console.log(111)
         this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset)
       } else {
-        if (this.$refs.scrollOuter.offsetWidth < this.$refs.scrollBody.offsetWidth) {
-          if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollOuter.offsetWidth)) {
+        if (outerWidth < bodyWidth) {
+          console.log(222)
+          if (this.tagBodyLeft < -(bodyWidth - outerWidth)) {
             this.tagBodyLeft = this.tagBodyLeft
           } else {
-            this.tagBodyLeft = Math.max(this.tagBodyLeft + offset, this.$refs.scrollOuter.offsetWidth - this.$refs.scrollBody.offsetWidth)
+            this.tagBodyLeft = Math.max(this.tagBodyLeft + offset, outerWidth - bodyWidth)
           }
         } else {
+          console.log(333)
           this.tagBodyLeft = 0
         }
       }
@@ -106,30 +112,42 @@ export default {
       return showTitle(item, this)
     },
     moveToView (tag) {
+      const outerWidth = this.$refs.scrollOuter.offsetWidth
       if (tag.offsetLeft < -this.tagBodyLeft) {
+        console.log(1111111)
         // 标签在可视区域左侧
-        this.tagBodyLeft = -tag.offsetLeft + 10
-      } else if (tag.offsetLeft + 10 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + this.$refs.scrollOuter.offsetWidth - this.rightOffset) {
+        this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
+      } else if (tag.offsetLeft + 0 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
         // 标签在可视区域
-        this.tagBodyLeft = Math.min(0, this.$refs.scrollOuter.offsetWidth - this.rightOffset - tag.offsetWidth - tag.offsetLeft - 20)
+        console.log(222222)
+        // this.tagBodyLeft = Math.min(this.outerPadding, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
       } else {
         // 标签在可视区域右侧
-        this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollOuter.offsetWidth - this.rightOffset - tag.offsetWidth) + 20)
+        console.log(3433333)
+        console.log(tag.offsetLeft, outerWidth, tag.offsetWidth)
+        this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
       }
+    },
+    getTagElementByName (name) {
+      this.$nextTick(() => {
+        this.refsTag = this.$refs.tagsPageOpened
+        this.refsTag.forEach((item, index) => {
+          if (name === item.name) {
+            let tag = this.refsTag[index].$el
+            this.moveToView(tag)
+          }
+        })
+        // this.tagsCount = this.list.length
+      })
+    }
+  },
+  watch: {
+    '$route' (to) {
+      this.getTagElementByName(to.name)
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      this.refsTag = this.$refs.tagsPageOpened
-      this.refsTag.forEach((item, index) => {
-        console.log(this.$route.name, item.name)
-        if (this.$route.name === item.name) {
-          let tag = this.refsTag[index].$el
-          console.log(tag)
-          this.moveToView(tag)
-        }
-      })
-    }) // 这里不设定时器就会有偏移bug
+    this.getTagElementByName(this.$route.name)
   }
 }
 </script>
