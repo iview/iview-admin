@@ -23,9 +23,10 @@
             <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
           <Content class="content-wrapper">
-            <keep-alive :include="cacheList">
-              <router-view/>
+            <keep-alive>
+              <router-view v-if="!($route.meta && $route.meta.notCache)"></router-view>
             </keep-alive>
+            <router-view v-if="$route.meta && $route.meta.notCache"></router-view>
           </Content>
         </Layout>
       </Content>
@@ -71,9 +72,6 @@ export default {
     },
     userAvator () {
       return this.$store.state.user.avatorImgPath
-    },
-    cacheList () {
-      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []
     },
     menuList () {
       return this.$store.getters.menuList
