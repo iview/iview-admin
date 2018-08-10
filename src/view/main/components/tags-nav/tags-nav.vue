@@ -56,7 +56,8 @@ export default {
   },
   data () {
     return {
-      tagBodyLeft: 0
+      tagBodyLeft: 0,
+      rightOffset: 40
     }
   },
   methods: {
@@ -108,12 +109,12 @@ export default {
       if (tag.offsetLeft < -this.tagBodyLeft) {
         // 标签在可视区域左侧
         this.tagBodyLeft = -tag.offsetLeft + 10
-      } else if (tag.offsetLeft + 10 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + this.$refs.scrollCon.offsetWidth - 100) {
+      } else if (tag.offsetLeft + 10 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + this.$refs.scrollOuter.offsetWidth - this.rightOffset) {
         // 标签在可视区域
-        this.tagBodyLeft = Math.min(0, this.$refs.scrollCon.offsetWidth - 100 - tag.offsetWidth - tag.offsetLeft - 20)
+        this.tagBodyLeft = Math.min(0, this.$refs.scrollOuter.offsetWidth - this.rightOffset - tag.offsetWidth - tag.offsetLeft - 20)
       } else {
         // 标签在可视区域右侧
-        this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollCon.offsetWidth - 100 - tag.offsetWidth) + 20)
+        this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollOuter.offsetWidth - this.rightOffset - tag.offsetWidth) + 20)
       }
     }
   },
