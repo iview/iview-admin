@@ -104,6 +104,18 @@ export default {
     showTitleInside (item) {
       return showTitle(item, this)
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.refsTag = this.$refs.tagsPageOpened
+      this.refsTag.forEach((item, index) => {
+        console.log(this.$route.name, item.name)
+        if (this.$route.name === item.name) {
+          let tag = this.refsTag[index].$el
+          this.moveToView(tag)
+        }
+      })
+    }) // 这里不设定时器就会有偏移bug
   }
 }
 </script>
