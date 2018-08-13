@@ -8,7 +8,7 @@
 import Simplemde from 'simplemde'
 import 'simplemde/dist/simplemde.min.css'
 export default {
-  naem: 'MarkdownEditor',
+  name: 'MarkdownEditor',
   props: {
     value: {
       type: String,
@@ -48,7 +48,8 @@ export default {
   },
   mounted () {
     this.editor = new Simplemde(Object.assign(this.options, {
-      element: this.$refs.editor
+      element: this.$refs.editor,
+      initialValue: this.value
     }))
     /**
      * 事件列表为Codemirror编辑器的事件，更多事件类型，请参考：
@@ -57,6 +58,12 @@ export default {
     this.addEvents()
     let content = localStorage.markdownContent
     if (content) this.editor.value(content)
+  },
+  watch: {
+    value (val) {
+      if (val === this.editor.value()) return
+      this.editor.value(val)
+    }
   }
 }
 </script>
