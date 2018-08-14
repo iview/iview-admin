@@ -3,6 +3,7 @@ node_modules
 .project
 .vscode
 .history
+.idea
 .DS_Store
 \.settings/
 build/env.js

@@ -134,7 +134,7 @@
                         上周每日来访量统计
                     </p>
                     <div class="data-source-row">
-                        <visite-volume></visite-volume>
+                        <visit-volume></visit-volume>
                     </div>
                 </Card>
             </Col>
@@ -179,7 +179,7 @@
 import cityData from './map-data/get-city-value.js';
 import homeMap from './components/map.vue';
 import dataSourcePie from './components/dataSourcePie.vue';
-import visiteVolume from './components/visiteVolume.vue';
+import visitVolume from './components/visitVolume.vue';
 import serviceRequests from './components/serviceRequests.vue';
 import userFlow from './components/userFlow.vue';
 import countUp from './components/countUp.vue';
@@ -192,7 +192,7 @@ export default {
     components: {
         homeMap,
         dataSourcePie,
-        visiteVolume,
+        visitVolume,
         serviceRequests,
         userFlow,
         countUp,
