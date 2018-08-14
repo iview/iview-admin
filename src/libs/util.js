@@ -111,10 +111,12 @@ export const getHomeRoute = routers => {
  * @description 如果该newRoute已经存在则不再添加
  */
 export const getNewTagList = (list, newRoute) => {
-  const { name, path, meta } = newRoute
+  const { name, path, meta, params, query } = newRoute
   let newList = [...list]
-  if (newList.findIndex(item => item.name === name) >= 0) return newList
-  else newList.push({ name, path, meta })
+  let tag = newList.find(item => item.name === name)
+  if (tag) {
+    Object.assign(tag, { name, path, meta, params, query })
+  } else newList.push({ name, path, meta, params, query })
   return newList
 }
 

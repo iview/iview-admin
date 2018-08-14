@@ -118,7 +118,11 @@ export default {
       this.$refs.sideMenu.updateOpenName(openName)
     },
     handleClick (item) {
-      this.turnToPage(item.name)
+      let routerObj = {}
+      routerObj.name = item.name
+      if (item.params) routerObj.params = item.params
+      if (item.query) routerObj.query = item.query
+      this.$router.push(routerObj)
     }
   },
   watch: {
