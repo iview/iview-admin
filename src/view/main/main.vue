@@ -40,7 +40,7 @@ import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import Language from './components/language'
 import { mapMutations, mapActions } from 'vuex'
-import { getNewTagList, getNextName } from '@/libs/util'
+import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -92,33 +92,41 @@ export default {
     ...mapActions([
       'handleLogin'
     ]),
-    turnToPage (name) {
+    turnToPage (route) {
+      let { name, params, query } = {}
+      if (typeof route === 'string') name = route
+      else {
+        name = route.name
+        params = route.params
+        query = route.query
+      }
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return
       }
       this.$router.push({
-        name: name
+        name,
+        params,
+        query
       })
     },
     handleCollapsedChange (state) {
       this.collapsed = state
     },
-    handleCloseTag (res, type, name) {
-      const nextName = getNextName(this.tagNavList, name)
+    handleCloseTag (res, type, route) {
       this.setTagNavList(res)
       let openName = ''
       if (type === 'all') {
         this.turnToPage('home')
         openName = 'home'
-      } else if (this.$route.name === name) {
-        this.$router.push({ name: nextName })
-        openName = nextName
+      } else if (type === 'other' && routeEqual(this.$route, route)) {
+        this.$router.push(getNextRoute(this.tagNavList, route))
+        openName = route.name
       }
       this.$refs.sideMenu.updateOpenName(openName)
     },
     handleClick (item) {
-      this.turnToPage(item.name)
+      this.turnToPage(item)
     }
   },
   watch: {
@@ -132,7 +140,9 @@ export default {
      * @description 初始化设置面包屑导航和标签导航
      */
     this.setTagNavList()
-    this.addTag(this.$store.state.app.homeRoute)
+    this.addTag({
+      route: this.$store.state.app.homeRoute
+    })
     this.setBreadCrumb(this.$route.matched)
     // 设置初始语言
     this.setLocal(this.$i18n.locale)

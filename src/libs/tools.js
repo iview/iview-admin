@@ -187,3 +187,29 @@ export const off = (function () {
     }
   }
 })()
+
+/**
+ * 判断一个对象是否存在key，如果传入第二个参数key，则是判断这个obj对象是否存在key这个属性
+ * 如果没有传入key这个参数，则判断obj对象是否有键值对
+ */
+export const hasKey = (obj, key) => {
+  if (key) return key in obj
+  else {
+    let keysArr = Object.keys(obj)
+    return keysArr.length
+  }
+}
+
+/**
+ * @param {*} obj1 对象
+ * @param {*} obj2 对象
+ * @description 判断两个对象是否相等，这两个对象的值只能是数字或字符串
+ */
+export const objEqual = (obj1, obj2) => {
+  const keysArr1 = Object.keys(obj1)
+  const keysArr2 = Object.keys(obj2)
+  if (keysArr1.length !== keysArr2.length) return false
+  else if (keysArr1.length === 0 && keysArr2.length === 0) return true
+  /* eslint-disable-next-line */
+  else return !keysArr1.some(key => obj1[key] != obj2[key])
+}
