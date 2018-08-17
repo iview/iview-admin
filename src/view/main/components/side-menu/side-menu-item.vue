@@ -1,7 +1,7 @@
 <template>
   <Submenu :name="`${parentName}`">
     <template slot="title">
-      <Icon :type="parentItem.icon"/>
+      <common-icon :type="parentItem.icon || ''"/>
       <span>{{ showTitle(parentItem) }}</span>
     </template>
     <template v-for="item in children">
