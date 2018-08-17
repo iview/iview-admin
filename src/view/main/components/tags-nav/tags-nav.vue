@@ -107,9 +107,9 @@ export default {
         }, 100)
       }
     },
-    handleClose (item) {
-      let res = this.list.filter(item => !routeEqual(this.currentRouteObj, item))
-      this.$emit('on-close', res, undefined, item)
+    handleClose (current) {
+      let res = this.list.filter(item => !routeEqual(current, item))
+      this.$emit('on-close', res, undefined, current)
     },
     handleClick (item) {
       this.$emit('input', item)
