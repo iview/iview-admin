@@ -98,6 +98,9 @@ export default {
         // 关闭除当前页和home页的其他页
         let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === 'home')
         this.$emit('on-close', res, 'others')
+        setTimeout(() => {
+          this.getTagElementByName(currentName)
+        }, 100)
       }
     },
     handleClose (item) {
@@ -112,6 +115,38 @@ export default {
     },
     isCurrentTag (item) {
       return routeEqual(this.currentRouteObj, item)
+    },
+    moveToView (tag) {
+      const outerWidth = this.$refs.scrollOuter.offsetWidth
+      const bodyWidth = this.$refs.scrollBody.offsetWidth
+      if (bodyWidth < outerWidth) {
+        this.tagBodyLeft = 0
+      } else if (tag.offsetLeft < -this.tagBodyLeft) {
+        // 标签在可视区域左侧
+        this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
+      } else if (tag.offsetLeft > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
+        // 标签在可视区域
+        this.tagBodyLeft = Math.min(0, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
+      } else {
+        // 标签在可视区域右侧
+        this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
+      }
+    },
+    getTagElementByName (name) {
+      this.$nextTick(() => {
+        this.refsTag = this.$refs.tagsPageOpened
+        this.refsTag.forEach((item, index) => {
+          if (name === item.name) {
+            let tag = this.refsTag[index].$el
+            this.moveToView(tag)
+          }
+        })
+      })
+    }
+  },
+  watch: {
+    '$route' (to) {
+      this.getTagElementByName(to.name)
     }
   }
 }

@@ -115,10 +115,15 @@ export default {
     },
     handleCloseTag (res, type, route) {
       this.setTagNavList(res)
-      if (type === 'all') this.turnToPage('home')
-      else if (type === 'other' && routeEqual(this.$route, route)) {
+      let openName = ''
+      if (type === 'all') {
+        this.turnToPage('home')
+        openName = 'home'
+      } else if (type === 'other' && routeEqual(this.$route, route)) {
         this.$router.push(getNextRoute(this.tagNavList, route))
+        openName = route.name
       }
+      this.$refs.sideMenu.updateOpenName(openName)
     },
     handleClick (item) {
       this.turnToPage(item)
