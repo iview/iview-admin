@@ -114,15 +114,17 @@ export default {
       this.collapsed = state
     },
     handleCloseTag (res, type, route) {
-      this.setTagNavList(res)
       let openName = ''
       if (type === 'all') {
         this.turnToPage('home')
         openName = 'home'
-      } else if (type === 'other' && routeEqual(this.$route, route)) {
-        this.$router.push(getNextRoute(this.tagNavList, route))
-        openName = route.name
+      } else if (routeEqual(this.$route, route)) {
+        const nextRoute = getNextRoute(this.tagNavList, route)
+        this.$router.push(nextRoute)
+        if (type === 'other') openName = route.name
+        else openName = nextRoute.name
       }
+      this.setTagNavList(res)
       this.$refs.sideMenu.updateOpenName(openName)
     },
     handleClick (item) {

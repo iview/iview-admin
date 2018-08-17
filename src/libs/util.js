@@ -167,17 +167,14 @@ export const getParams = url => {
  * @param {String} name 当前关闭的标签的name
  */
 export const getNextRoute = (list, route) => {
-  console.log(list, route)
   let res = {}
   if (list.length === 2) {
-    res = 'home'
+    res = getHomeRoute(list)
   } else {
-    console.log(list.findIndex(item => routeEqual(item, route)), list.length)
     const index = list.findIndex(item => routeEqual(item, route))
     if (index === list.length - 1) res = list[list.length - 2]
     else res = list[index + 1]
   }
-  console.log(res)
   return res
 }
 
