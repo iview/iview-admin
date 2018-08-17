@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import { forEach, hasOneOf, hasKey, objEqual } from '@/libs/tools'
+import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
 
@@ -166,14 +166,18 @@ export const getParams = url => {
  * @param {Array} list 标签列表
  * @param {String} name 当前关闭的标签的name
  */
-export const getNextName = (list, name) => {
-  let res = ''
+export const getNextRoute = (list, route) => {
+  console.log(list, route)
+  let res = {}
   if (list.length === 2) {
     res = 'home'
   } else {
-    if (list.findIndex(item => item.name === name) === list.length - 1) res = list[list.length - 2].name
-    else res = list[list.findIndex(item => item.name === name) + 1].name
+    console.log(list.findIndex(item => routeEqual(item, route)), list.length)
+    const index = list.findIndex(item => routeEqual(item, route))
+    if (index === list.length - 1) res = list[list.length - 2]
+    else res = list[index + 1]
   }
+  console.log(res)
   return res
 }
 
@@ -272,19 +276,26 @@ export const showByAccess = (access, canViewAccess) => {
 }
 
 /**
+ * @description 根据name/params/query判断两个路由对象是否相等
+ * @param {*} route1 路由对象
+ * @param {*} route2 路由对象
+ */
+export const routeEqual = (route1, route2) => {
+  const params1 = route1.params || {}
+  const params2 = route2.params || {}
+  const query1 = route1.query || {}
+  const query2 = route2.query || {}
+  return (route1.name === route2.name) && objEqual(params1, params2) && objEqual(query1, query2)
+}
+
+/**
  * 判断打开的标签列表里是否已存在这个新添加的路由对象
  */
 export const routeHasExist = (tagNavList, routeItem) => {
   let len = tagNavList.length
-  const { name, params, query } = routeItem
-  console.log(len, { name, params, query })
+  let res = false
   doCustomTimes(len, (index) => {
-    console.log(tagNavList[index])
-    if (tagNavList[index].name === name) {
-      if (params === undefined && query === undefined) return true
-      if (params && hasKey(params)) return objEqual(tagNavList[index].params, params)
-      if (query && hasKey(query)) return objEqual(tagNavList[index].query, query)
-    }
+    if (routeEqual(tagNavList[index], routeItem)) res = true
   })
-  return false
+  return res
 }

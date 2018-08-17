@@ -2,10 +2,22 @@
   <div>
     <Card shadow>
       <Row>
-        <i-col span="6">
-          <Button @click="createTag">添加一个标签</Button>
+        <i-col span="4">
+          <Button @click="createTagParams">添加一个标签</Button>
         </i-col>
-        <i-col span="18"></i-col>
+        <i-col span="20">
+          <p>动态路由，添加params</p>
+        </i-col>
+      </Row>
+    </Card>
+    <Card shadow style="margin-top: 10px;">
+      <Row>
+        <i-col span="4">
+          <Button @click="createTagQuery">添加一个标签</Button>
+        </i-col>
+        <i-col span="20">
+          <p>动态路由，添加query</p>
+        </i-col>
       </Row>
     </Card>
   </div>
@@ -19,16 +31,39 @@ export default {
     ...mapMutations([
       'addTag'
     ]),
-    createTag () {
-      this.addTag({
-        route: {
-          name: 'argu_page',
-          params: {
-            id: parseInt(Math.random() * 100000)
-          }
+    createTagParams () {
+      const id = parseInt(Math.random() * 100000)
+      const route = {
+        name: 'params',
+        params: {
+          id
         },
+        meta: {
+          title: `动态路由-${id}`
+        }
+      }
+      this.addTag({
+        route: route,
         type: 'push'
       })
+      this.$router.push(route)
+    },
+    createTagQuery () {
+      const id = parseInt(Math.random() * 100000)
+      const route = {
+        name: 'query',
+        query: {
+          id
+        },
+        meta: {
+          title: `参数-${id}`
+        }
+      }
+      this.addTag({
+        route: route,
+        type: 'push'
+      })
+      this.$router.push(route)
     }
   }
 }

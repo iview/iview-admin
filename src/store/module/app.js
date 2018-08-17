@@ -21,12 +21,12 @@ export default {
       } else state.tagNavList = getTagNavListFromLocalstorage()
     },
     addTag (state, { route, type = 'unshift' }) {
-      console.log(state.tagNavList, routeHasExist(state.tagNavList, route), route)
-      // const { name, params, query } = route
-      // const nameNotExist = state.tagNavList.findIndex(tag => tag.name === name) < 0
       if (!routeHasExist(state.tagNavList, route)) {
         if (type === 'push') state.tagNavList.push(route)
-        else state.tagNavList.unshift(route)
+        else {
+          if (route.name === 'home') state.tagNavList.unshift(route)
+          else state.tagNavList.splice(1, 0, route)
+        }
         setTagNavListInLocalstorage([...state.tagNavList])
       }
     },

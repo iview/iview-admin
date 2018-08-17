@@ -30,10 +30,10 @@
             ref="tagsPageOpened"
             :key="`tag-nav-${index}`"
             :name="item.name"
-            @on-close="handleClose"
+            @on-close="handleClose(item)"
             @click.native="handleClick(item)"
             :closable="item.name !== 'home'"
-            :color="item.name === value.name ? 'primary' : 'default'"
+            :color="isCurrentTag(item) ? 'primary' : 'default'"
           >{{ showTitleInside(item) }}</Tag>
         </transition-group>
       </div>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { showTitle } from '@/libs/util'
+import { showTitle, routeEqual } from '@/libs/util'
 export default {
   name: 'TagsNav',
   props: {
@@ -57,6 +57,12 @@ export default {
   data () {
     return {
       tagBodyLeft: 0
+    }
+  },
+  computed: {
+    currentRouteObj () {
+      const { name, params, query } = this.value
+      return { name, params, query }
     }
   },
   methods: {
@@ -90,19 +96,22 @@ export default {
         this.$emit('on-close', res, 'all')
       } else {
         // 关闭除当前页和home页的其他页
-        let res = this.list.filter(item => item.name === this.value.name || item.name === 'home')
+        let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === 'home')
         this.$emit('on-close', res, 'others')
       }
     },
-    handleClose (e, name) {
-      let res = this.list.filter(item => item.name !== name)
-      this.$emit('on-close', res, undefined, name)
+    handleClose (item) {
+      let res = this.list.filter(item => !routeEqual(this.currentRouteObj, item))
+      this.$emit('on-close', res, undefined, item)
     },
     handleClick (item) {
       this.$emit('input', item)
     },
     showTitleInside (item) {
       return showTitle(item, this)
+    },
+    isCurrentTag (item) {
+      return routeEqual(this.currentRouteObj, item)
     }
   }
 }

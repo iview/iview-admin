@@ -40,7 +40,7 @@ import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import Language from './components/language'
 import { mapMutations, mapActions } from 'vuex'
-import { getNewTagList, getNextName } from '@/libs/util'
+import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -95,12 +95,11 @@ export default {
     turnToPage (route) {
       let { name, params, query } = {}
       if (typeof route === 'string') name = route
-      else name = route.name
-      console.log({
-        name,
-        params,
-        query
-      })
+      else {
+        name = route.name
+        params = route.params
+        query = route.query
+      }
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return
@@ -114,11 +113,12 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
-    handleCloseTag (res, type, name) {
-      const nextName = getNextName(this.tagNavList, name)
+    handleCloseTag (res, type, route) {
       this.setTagNavList(res)
       if (type === 'all') this.turnToPage('home')
-      else if (this.$route.name === name) this.$router.push({ name: nextName })
+      else if (type === 'other' && routeEqual(this.$route, route)) {
+        this.$router.push(getNextRoute(this.tagNavList, route))
+      }
     },
     handleClick (item) {
       this.turnToPage(item)
