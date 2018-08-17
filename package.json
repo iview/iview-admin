@@ -27,7 +27,8 @@
     "vue-i18n": "^7.8.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^3.1.1",
+    "xlsx": "^0.13.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.10",
