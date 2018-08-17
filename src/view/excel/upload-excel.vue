@@ -33,6 +33,7 @@
   </div>
 </template>
 <script>
+import excel from '@/libs/excel'
 export default {
   name: 'upload-excel',
   data () {
@@ -93,15 +94,13 @@ export default {
       reader.onload = e => {
         this.$Message.info('文件读取成功')
         const data = e.target.result
-        import('@/libs/excel').then(excel => {
-          const {header, results} = excel.read(data, 'array')
-          const tableTitle = header.map(item => { return { title: item, key: item } })
-          this.tableData = results
-          this.tableTitle = tableTitle
-          this.uploadLoading = false
-          this.tableLoading = false
-          this.showRemoveFile = true
-        })
+        const { header, results } = excel.read(data, 'array')
+        const tableTitle = header.map(item => { return { title: item, key: item } })
+        this.tableData = results
+        this.tableTitle = tableTitle
+        this.uploadLoading = false
+        this.tableLoading = false
+        this.showRemoveFile = true
       }
     }
   },

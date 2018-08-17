@@ -69,26 +69,26 @@ export const export_table_to_excel= (id, filename) => {
     // XLSX.writeFile(wb, filename);
 }
 
-export const export_json_to_excel = ({data, key, title, filename, autoWidth}) => {   
+export const export_json_to_excel = ({data, key, title, filename, autoWidth}) => {
     const wb = XLSX.utils.book_new();
     data.unshift(title);
     const ws = XLSX.utils.json_to_sheet(data, {header: key, skipHeader: true});
     if(autoWidth){
         const arr = json_to_array(key, data);
         auto_width(ws, arr);
-    }    
+    }
     XLSX.utils.book_append_sheet(wb, ws, filename);
     XLSX.writeFile(wb, filename + '.xlsx');
 }
 
-export const export_array_to_excel = ({key, data, title, filename, autoWidth}) => {   
+export const export_array_to_excel = ({key, data, title, filename, autoWidth}) => {
     const wb = XLSX.utils.book_new();
     const arr = json_to_array(key, data);
     arr.unshift(title);
     const ws = XLSX.utils.aoa_to_sheet(arr);
     if(autoWidth){
         auto_width(ws, arr);
-    }  
+    }
     XLSX.utils.book_append_sheet(wb, ws, filename);
     XLSX.writeFile(wb, filename + '.xlsx');
 }
@@ -103,4 +103,11 @@ export const read = (data, type) => {
     const header = get_header_row(worksheet);
     const results = XLSX.utils.sheet_to_json(worksheet);
     return {header, results};
+}
+
+export default {
+  export_table_to_excel,
+  export_array_to_excel,
+  export_json_to_excel,
+  read
 }
