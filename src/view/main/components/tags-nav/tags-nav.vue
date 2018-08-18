@@ -101,7 +101,7 @@ export default {
       } else {
         // 关闭除当前页和home页的其他页
         let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === 'home')
-        this.$emit('on-close', res, 'others')
+        this.$emit('on-close', res, 'others', this.currentRouteObj)
         setTimeout(() => {
           this.getTagElementByName(this.currentRouteObj.name)
         }, 100)
