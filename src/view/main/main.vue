@@ -119,10 +119,13 @@ export default {
         this.turnToPage('home')
         openName = 'home'
       } else if (routeEqual(this.$route, route)) {
-        const nextRoute = getNextRoute(this.tagNavList, route)
-        this.$router.push(nextRoute)
-        if (type === 'other') openName = route.name
-        else openName = nextRoute.name
+        if (type === 'others') {
+          openName = route.name
+        } else {
+          const nextRoute = getNextRoute(this.tagNavList, route)
+          this.$router.push(nextRoute)
+          openName = nextRoute.name
+        }
       }
       this.setTagNavList(res)
       this.$refs.sideMenu.updateOpenName(openName)
