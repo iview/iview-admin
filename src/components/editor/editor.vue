@@ -45,6 +45,11 @@ export default {
       return `editor${this._uid}`
     }
   },
+  methods: {
+    setHtml (val) {
+      this.editor.txt.html(val)
+    }
+  },
   mounted () {
     this.editor = new Editor(`#${this.editorId}`)
     this.editor.customConfig.onchange = (html) => {
@@ -57,7 +62,7 @@ export default {
     // create这个方法一定要在所有配置项之后调用
     this.editor.create()
     // 如果本地有存储加载本地存储内容
-    let html = localStorage.editorCache
+    let html = this.value || localStorage.editorCache
     if (html) this.editor.txt.html(html)
   }
 }

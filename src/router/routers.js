@@ -293,7 +293,8 @@ export default [
         name: 'params',
         meta: {
           icon: 'md-flower',
-          title: '动态路由'
+          title: '动态路由',
+          notCache: true
         },
         component: () => import('@/view/argu-page/params.vue')
       },
@@ -302,7 +303,8 @@ export default [
         name: 'query',
         meta: {
           icon: 'md-flower',
-          title: '带参路由'
+          title: '带参路由',
+          notCache: true
         },
         component: () => import('@/view/argu-page/query.vue')
       }
