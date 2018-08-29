@@ -1,16 +1,8 @@
 <template>
   <div class="tags-nav">
-    <div class="close-con">
-      <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
-        <Button size="small" type="text">
-          <Icon :size="18" type="ios-close-circle-outline" />
-        </Button>
-        <DropdownMenu slot="list">
-          <DropdownItem name="close-all">关闭所有</DropdownItem>
-          <DropdownItem name="close-others">关闭其他</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </div>
+    <ul v-show="visible" :style="{left: contextMenuLeft + 'px', top: contextMenuTop + 'px'}" class="contextmenu">
+      <li v-for="(item, key) of menuList" @click="handleTagsOption(key)" :key="key">{{item}}</li>
+    </ul>
     <div class="btn-con left-btn">
       <Button type="text" @click="handleScroll(240)">
         <Icon :size="18" type="ios-arrow-back" />
@@ -34,6 +26,7 @@
             @click.native="handleClick(item)"
             :closable="item.name !== 'home'"
             :color="isCurrentTag(item) ? 'primary' : 'default'"
+            @contextmenu.prevent.native="contextMenu(item, $event)"
           >{{ showTitleInside(item) }}</Tag>
         </transition-group>
       </div>
@@ -58,7 +51,15 @@ export default {
     return {
       tagBodyLeft: 0,
       rightOffset: 40,
-      outerPadding: 4
+      outerPadding: 4,
+      contextMenuLeft: 0,
+      contextMenuTop: 0,
+      visible: false,
+      menuList: {
+        self: '关闭',
+        others: '关闭其他',
+        all: '关闭所有'
+      }
     }
   },
   computed: {
@@ -94,17 +95,20 @@ export default {
       }
     },
     handleTagsOption (type) {
-      if (type === 'close-all') {
+      if (type === 'all') {
         // 关闭所有，除了home
         let res = this.list.filter(item => item.name === 'home')
         this.$emit('on-close', res, 'all')
-      } else {
+      } else if (type === 'others') {
         // 关闭除当前页和home页的其他页
         let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === 'home')
         this.$emit('on-close', res, 'others', this.currentRouteObj)
         setTimeout(() => {
           this.getTagElementByName(this.currentRouteObj.name)
         }, 100)
+      } else {
+        let res = this.list.filter(item => !routeEqual(this.currentRouteObj, item))
+        this.$emit('on-close', res, undefined, this.currentRouteObj)
       }
     },
     handleClose (current) {
@@ -146,11 +150,30 @@ export default {
           }
         })
       })
+    },
+    contextMenu (item, e) {
+      if (item.name === 'home') {
+        return
+      }
+      this.visible = true
+      const offsetLeft = this.$el.getBoundingClientRect().left
+      this.contextMenuLeft = e.clientX - offsetLeft + 10
+      this.contextMenuTop = e.clientY - 64
+    },
+    closeMenu () {
+      this.visible = false
     }
   },
   watch: {
     '$route' (to) {
       this.getTagElementByName(to.name)
+    },
+    visible (value) {
+      if (value) {
+        document.body.addEventListener('click', this.closeMenu)
+      } else {
+        document.body.removeEventListener('click', this.closeMenu)
+      }
     }
   },
   mounted () {
