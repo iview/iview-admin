@@ -87,6 +87,15 @@ export default [
         component: () => import('@/view/components/count-to/count-to.vue')
       },
       {
+        path: 'drag_list_page',
+        name: 'drag_list_page',
+        meta: {
+          icon: 'md-trending-up',
+          title: '拖拽列表'
+        },
+        component: () => import('@/view/components/drag-list/drag-list.vue')
+      },
+      {
         path: 'tables_page',
         name: 'tables_page',
         meta: {
