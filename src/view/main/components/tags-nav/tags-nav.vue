@@ -56,7 +56,6 @@ export default {
       contextMenuTop: 0,
       visible: false,
       menuList: {
-        self: '关闭',
         others: '关闭其他',
         all: '关闭所有'
       }
@@ -106,9 +105,6 @@ export default {
         setTimeout(() => {
           this.getTagElementByName(this.currentRouteObj.name)
         }, 100)
-      } else {
-        let res = this.list.filter(item => !routeEqual(this.currentRouteObj, item))
-        this.$emit('on-close', res, undefined, this.currentRouteObj)
       }
     },
     handleClose (current) {
