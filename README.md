@@ -11,7 +11,7 @@
 [![npm](https://img.shields.io/npm/l/express.svg)]()
 
 
-## 当前版本：v2.0-beta.2
+## 当前版本：v2.0-beta.3
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用文档](https://lison16.github.io/iview-admin-doc/#/)
