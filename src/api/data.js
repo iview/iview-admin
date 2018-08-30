@@ -6,3 +6,10 @@ export const getTableData = () => {
     method: 'get'
   })
 }
+
+export const getDragList = () => {
+  return axios.request({
+    url: 'get_drag_list',
+    method: 'get'
+  })
+}
