@@ -90,7 +90,7 @@ export default [
         path: 'drag_list_page',
         name: 'drag_list_page',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'ios-infinite',
           title: '拖拽列表'
         },
         component: () => import('@/view/components/drag-list/drag-list.vue')
