@@ -20,6 +20,8 @@
 
 [简化版模板](https://github.com/iview/iview-admin/tree/template)
 
+[教学视频(26课时)](https://segmentfault.com/ls/1650000016221751?utm_source=banner)
+
 `注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
 
 ## Install
