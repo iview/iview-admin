@@ -21,9 +21,19 @@ export default {
       } else state.tagNavList = getTagNavListFromLocalstorage()
     },
     addTag (state, { route, type = 'unshift' }) {
+      state.tagNavList = getTagNavListFromLocalstorage()
       if (!routeHasExist(state.tagNavList, route)) {
-        if (type === 'push') state.tagNavList.push(route)
-        else {
+        if (type === 'push') {
+          const tagIndex = state.tagNavList.findIndex(v => v.name === route.name)
+          if (tagIndex && state.tagNavList[tagIndex]) {
+            const isParamsOrQuery = ['params', 'query'].some(v => state.tagNavList[tagIndex][v])
+            if (!isParamsOrQuery) {
+              state.tagNavList.splice(tagIndex, 1, route)
+            } else state.tagNavList.push(route)
+          } else {
+            state.tagNavList.push(route)
+          }
+        } else {
           if (route.name === 'home') state.tagNavList.unshift(route)
           else state.tagNavList.splice(1, 0, route)
         }
