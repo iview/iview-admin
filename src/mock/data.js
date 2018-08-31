@@ -11,11 +11,7 @@ export const getTableData = req => {
       createTime: '@date'
     }))
   })
-  return {
-    code: 200,
-    data: tableData,
-    msg: ''
-  }
+  return tableData
 }
 
 export const getDragList = req => {
@@ -26,9 +22,5 @@ export const getDragList = req => {
       id: Random.increment(10)
     }))
   })
-  return {
-    code: 200,
-    data: dragList,
-    msg: ''
-  }
+  return dragList
 }

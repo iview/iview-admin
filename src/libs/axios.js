@@ -1,88 +1,52 @@
-import Axios from 'axios'
-import baseURL from '_conf/url'
-import { Message } from 'iview'
-import Cookies from 'js-cookie'
-import { TOKEN_KEY } from '@/libs/util'
-class httpRequest {
-  constructor () {
-    this.options = {
-      method: '',
-      url: ''
-    }
-    // 存储请求队列
+import axios from 'axios'
+// import { Spin } from 'iview'
+class HttpRequest {
+  constructor (baseUrl = baseURL) {
+    this.baseUrl = baseUrl
     this.queue = {}
   }
-  // 销毁请求实例
-  destroy (url) {
-    delete this.queue[url]
-    const queue = Object.keys(this.queue)
-    return queue.length
-  }
-  // 请求拦截
-  interceptors (instance, url) {
-    // 添加请求拦截器
-    instance.interceptors.request.use(config => {
-      if (!config.url.includes('/users')) {
-        config.headers['x-access-token'] = Cookies.get(TOKEN_KEY)
-      }
-      // Spin.show()
-      // 在发送请求之前做些什么
-      return config
-    }, error => {
-      // 对请求错误做些什么
-      return Promise.reject(error)
-    })
-
-    // 添加响应拦截器
-    instance.interceptors.response.use((res) => {
-      let { data } = res
-      const is = this.destroy(url)
-      if (!is) {
-        setTimeout(() => {
-          // Spin.hide()
-        }, 500)
-      }
-      if (data.code !== 200) {
-        // 后端服务在个别情况下回报201，待确认
-        if (data.code === 401) {
-          Cookies.remove(TOKEN_KEY)
-          window.location.href = window.location.pathname + '#/login'
-          Message.error('未登录，或登录失效，请登录')
-        } else {
-          if (data.msg) Message.error(data.msg)
-        }
-        return false
-      }
-      return data
-    }, (error) => {
-      Message.error('服务内部错误')
-      // 对响应错误做点什么
-      return Promise.reject(error)
-    })
-  }
-  // 创建实例
-  create () {
-    let conf = {
-      baseURL: baseURL,
-      // timeout: 2000,
+  getInsideConfig () {
+    const config = {
+      baseURL: this.baseUrl,
       headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-URL-PATH': location.pathname
+        //
       }
     }
-    return Axios.create(conf)
+    return config
   }
-  // 合并请求实例
-  mergeReqest (instances = []) {
-    //
+  distroy (url) {
+    delete this.queue[url]
+    if (!Object.keys(this.queue).length) {
+      // Spin.hide()
+    }
   }
-  // 请求实例
+  interceptors (instance, url) {
+    // 请求拦截
+    instance.interceptors.request.use(config => {
+      // 添加全局的loading...
+      if (!Object.keys(this.queue).length) {
+        // Spin.show() // 不建议开启，因为界面不友好
+      }
+      this.queue[url] = true
+      return config
+    }, error => {
+      return Promise.reject(error)
+    })
+    // 响应拦截
+    instance.interceptors.response.use(res => {
+      this.distroy(url)
+      const { data, status } = res
+      return { data, status }
+    }, error => {
+      this.distroy(url)
+      return Promise.reject(error)
+    })
+  }
   request (options) {
-    var instance = this.create()
+    const instance = axios.create()
+    options = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance, options.url)
-    options = Object.assign({}, options)
-    this.queue[options.url] = instance
     return instance(options)
   }
 }
-export default httpRequest
+export default HttpRequest
