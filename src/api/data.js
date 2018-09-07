@@ -13,3 +13,15 @@ export const getDragList = () => {
     method: 'get'
   })
 }
+export const getPageTableData = ({ index, size }) => {
+  debugger
+  const data = {
+    index,
+    size
+  }
+  return axios.request({
+    url: 'get_page_table_data',
+    data,
+    method: 'get'
+  })
+}

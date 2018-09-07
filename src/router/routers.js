@@ -105,6 +105,15 @@ export default [
         component: () => import('@/view/components/tables/tables.vue')
       },
       {
+        path: 'remote_table_page',
+        name: 'remote_table_page',
+        meta: {
+          icon: 'md-grid',
+          title: '远程数据表格'
+        },
+        component: () => import('@/view/components/remote-table/remote-table.vue')
+      },
+      {
         path: 'split_pane_page',
         name: 'split_pane_page',
         meta: {

@@ -24,3 +24,20 @@ export const getDragList = req => {
   })
   return dragList
 }
+const total = 34
+export const getPageTableData = req => {
+  req = JSON.parse(req.body)
+  let index = req.index || 1
+  let size = req.size || 10
+  let returnCount = total - size * (index - 1)
+  returnCount = returnCount > size ? size : returnCount
+  let tableData = []
+  doCustomTimes(returnCount, () => {
+    tableData.push(Mock.mock({
+      name: '@name',
+      email: '@email',
+      createTime: '@date'
+    }))
+  })
+  return { total: total, items: tableData }
+}
