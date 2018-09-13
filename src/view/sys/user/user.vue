@@ -3,12 +3,18 @@
       <Row>
         <Form ref="formInline" inline :label-width="70">
           <Form-item label="用户名称:">
-            <Input type="text" clearable placeholder="请输入用户名" style="width: 200px"/>
+            <Input type="text" clearable placeholder="请输入用户名"/>
           </Form-item>
           <Form-item label="用户名称:">
-            <Input type="text" clearable placeholder="请输入用户名" style="width: 200px"/>
+            <Input type="text" clearable placeholder="请输入用户名"/>
           </Form-item>
-          <Form-item style="margin-left:-35px;" class="br">
+          <Form-item label="用户名称:">
+            <Input type="text" clearable placeholder="请输入用户名"/>
+          </Form-item>
+          <Form-item label="用户名称:">
+            <Input type="text" clearable placeholder="请输入用户名"/>
+          </Form-item>
+          <Form-item style="margin-left:-60px;">
             <div class="opt-group">
               <Button class="opt-btn" type="primary" icon="ios-search">搜索</Button>
               <Button class="opt-btn">重置</Button>
@@ -26,17 +32,69 @@
         </div>
       </Row>
       <Row>
-        <Table border stripe></Table>
+        <Table border stripe :columns="columns" :data="data1"></Table>
       </Row>
       <Row type="flex" justify="center" class="page">
-        <Page :total="100" show-sizer />
+        <Page show-sizer :total="filter.total" @on-change="onChange" @on-page-size-change="onPageSizeChange" />
       </Row>
   </Card>
 </template>
 
 <script>
+import { getUserList } from '@/api/user'
 export default {
-  name: 'user'
+  name: 'user',
+  data () {
+    return {
+      filter: {
+        current: 1,
+        size: 10,
+        total: 0
+      },
+      columns: [
+        {
+          title: '用户名',
+          key: 'username'
+        },
+        {
+          title: '昵称',
+          key: 'nickname'
+        },
+        {
+          title: '状态',
+          key: 'status'
+        }
+      ],
+      data1: []
+    }
+  },
+  methods: {
+    init () {
+      console.log('ajax')
+      getUserList({
+        current: this.filter.current,
+        size: this.filter.size
+      }).then(res => {
+        console.log(res.data)
+        this.data1 = res.data.data.records
+        this.filter.current = res.data.data.current
+        this.filter.size = res.data.data.size
+        this.filter.total = res.data.data.total
+      })
+    },
+    onChange (current) {
+      this.filter.current = current
+      this.init()
+    },
+    onPageSizeChange (size) {
+      this.filter.size = size
+      this.init()
+    }
+  },
+  mounted () {
+    console.log('init')
+    this.init()
+  }
 }
 </script>
 

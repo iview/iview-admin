@@ -28,3 +28,11 @@ export const logout = (token) => {
     method: 'post'
   })
 }
+
+export const getUserList = (data) => {
+  return axios.request({
+    url: 'admin/sys/user/list',
+    data: data,
+    method: 'post'
+  })
+}
