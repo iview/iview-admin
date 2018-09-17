@@ -12,7 +12,7 @@ export const setToken = (token) => {
 export const getToken = () => {
   const token = Cookies.get(TOKEN_KEY)
   if (token) return token
-  else return false
+  else return ''
 }
 
 export const hasChild = (item) => {
@@ -64,7 +64,11 @@ export const getBreadCrumbList = (routeMetched, homeRoute) => {
     return obj
   })
   res = res.filter(item => {
-    return !item.meta.hideInMenu
+    if (item.name === 'home') {
+      return false
+    } else {
+      return !item.meta.hideInMenu
+    }
   })
   return [Object.assign(homeRoute, { to: homeRoute.path }), ...res]
 }
