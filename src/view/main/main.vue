@@ -136,6 +136,7 @@ export default {
   },
   watch: {
     '$route' (newRoute) {
+      console.log(newRoute)
       this.setBreadCrumb(newRoute.matched)
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
     }
