@@ -32,7 +32,7 @@
         </div>
       </Row>
       <Row>
-        <Table border stripe :columns="columns" :data="data1"></Table>
+        <Table border stripe :columns="table.columns" :data="table.data" :loading="table.loading"></Table>
       </Row>
       <Row type="flex" justify="center" class="page">
         <Page show-sizer :total="filter.total" @on-change="onChange" @on-page-size-change="onPageSizeChange" />
@@ -51,35 +51,41 @@ export default {
         size: 10,
         total: 0
       },
-      columns: [
-        {
-          title: '用户名',
-          key: 'username'
-        },
-        {
-          title: '昵称',
-          key: 'nickname'
-        },
-        {
-          title: '状态',
-          key: 'status'
-        }
-      ],
-      data1: []
+      table: {
+        loading: false,
+        data: [],
+        columns: [
+          {
+            title: '用户名',
+            key: 'username'
+          },
+          {
+            title: '昵称',
+            key: 'nickname'
+          },
+          {
+            title: '状态',
+            key: 'status'
+          }
+        ]
+      }
     }
   },
   methods: {
     init () {
-      console.log('ajax')
+      this.getList()
+    },
+    getList () {
+      this.table.loading = true
       getUserList({
         current: this.filter.current,
         size: this.filter.size
       }).then(res => {
-        console.log(res.data)
-        this.data1 = res.data.data.records
+        this.table.data = res.data.data.records
         this.filter.current = res.data.data.current
         this.filter.size = res.data.data.size
         this.filter.total = res.data.data.total
+        this.table.loading = false
       })
     },
     onChange (current) {
@@ -92,7 +98,6 @@ export default {
     }
   },
   mounted () {
-    console.log('init')
     this.init()
   }
 }
