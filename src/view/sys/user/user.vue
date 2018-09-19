@@ -2,22 +2,16 @@
   <Card>
       <Row>
         <Form ref="formInline" inline :label-width="70">
-          <Form-item label="用户名称:">
-            <Input type="text" clearable placeholder="请输入用户名"/>
+          <Form-item label="用户名:">
+            <Input type="text" v-model="filter.querys[0].value" clearable placeholder="请输入用户名"/>
           </Form-item>
-          <Form-item label="用户名称:">
-            <Input type="text" clearable placeholder="请输入用户名"/>
-          </Form-item>
-          <Form-item label="用户名称:">
-            <Input type="text" clearable placeholder="请输入用户名"/>
-          </Form-item>
-          <Form-item label="用户名称:">
-            <Input type="text" clearable placeholder="请输入用户名"/>
+          <Form-item label="昵称:">
+            <Input type="text" v-model="filter.querys[1].value" clearable placeholder="请输入昵称"/>
           </Form-item>
           <Form-item style="margin-left:-60px;">
             <div class="opt-group">
-              <Button class="opt-btn" type="primary" icon="ios-search">搜索</Button>
-              <Button class="opt-btn">重置</Button>
+              <Button class="opt-btn" type="primary" icon="ios-search" @click="handleSearch">搜索</Button>
+              <Button class="opt-btn" @click="handleReset">重置</Button>
             </div>
           </Form-item>
         </Form>
@@ -28,14 +22,14 @@
           <Button class="opt-btn" icon="md-trash">删除</Button>
         </div>
         <div>
-          <Button icon="md-refresh">刷新</Button>
+          <Button icon="md-refresh" @click="handleSearch">刷新</Button>
         </div>
       </Row>
       <Row>
         <Table border stripe :columns="table.columns" :data="table.data" :loading="table.loading"></Table>
       </Row>
       <Row type="flex" justify="center" class="page">
-        <Page show-sizer :total="filter.total" @on-change="onChange" @on-page-size-change="onPageSizeChange" />
+        <Page show-sizer :total="table.total" @on-change="onChange" @on-page-size-change="onPageSizeChange" />
       </Row>
   </Card>
 </template>
@@ -47,14 +41,30 @@ export default {
   data () {
     return {
       filter: {
+        querys: [
+          {
+            column: 'username',
+            type: 'eq',
+            value: ''
+          },
+          {
+            column: 'nickname',
+            type: 'eq',
+            value: ''
+          }
+        ],
         current: 1,
-        size: 10,
-        total: 0
+        pageSize: 10
       },
       table: {
         loading: false,
+        total: 0,
         data: [],
         columns: [
+          {
+            title: 'ID',
+            key: 'id'
+          },
           {
             title: '用户名',
             key: 'username'
@@ -75,26 +85,30 @@ export default {
     init () {
       this.getList()
     },
+    handleSearch () {
+      this.getList()
+    },
+    handleReset () {
+      this.filter.querys[0].value = ''
+      this.filter.querys[1].value = ''
+    },
     getList () {
       this.table.loading = true
-      getUserList({
-        current: this.filter.current,
-        size: this.filter.size
-      }).then(res => {
-        this.table.data = res.data.data.records
+      getUserList(this.filter).then(res => {
         this.filter.current = res.data.data.current
         this.filter.size = res.data.data.size
-        this.filter.total = res.data.data.total
+        this.table.data = res.data.data.records
+        this.table.total = res.data.data.total
         this.table.loading = false
       })
     },
     onChange (current) {
-      this.filter.current = current
-      this.init()
+      this.table.current = current
+      this.getList()
     },
-    onPageSizeChange (size) {
-      this.filter.size = size
-      this.init()
+    onPageSizeChange (pageSize) {
+      this.table.pageSize = pageSize
+      this.getList()
     }
   },
   mounted () {
