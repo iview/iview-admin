@@ -136,12 +136,12 @@ export default {
   },
   watch: {
     '$route' (newRoute) {
-      console.log(newRoute)
       this.setBreadCrumb(newRoute.matched)
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
     }
   },
   mounted () {
+    console.log(123123123131231)
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
