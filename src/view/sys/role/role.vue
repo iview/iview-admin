@@ -15,7 +15,7 @@
       </Row>
       <Row class="operation" type="flex" justify="space-between">
         <div class="opt-group">
-          <Button class="opt-btn" type="primary" icon="md-add">添加</Button>
+          <Button class="opt-btn" type="primary" icon="md-add" @click="form.addForm.visible = true">添加</Button>
           <Button class="opt-btn" icon="md-trash">删除</Button>
         </div>
         <div>
@@ -28,13 +28,24 @@
       <Row type="flex" justify="center" class="page">
         <Page show-sizer :total="table.total" @on-change="onChange" @on-page-size-change="onPageSizeChange" />
       </Row>
+    <coustom-form title="添加角色" v-model="form.addForm.visible"
+                  :form-column="form.addForm.formColumn"
+                  :loading="form.addForm.loading"
+                  @on-visible-change="addOnVisibleChange"
+                  @form-data="addFormData"
+                  @on-ok="handleAddForm"></coustom-form>
   </Card>
 </template>
 
 <script>
+import { addForm } from '@/api/common'
 import { getRoleList } from '@/api/role'
+import CoustomForm from '../../components/form/coustom-form'
 export default {
   name: 'user',
+  components: {
+    CoustomForm
+  },
   data () {
     return {
       filter: {
@@ -74,6 +85,58 @@ export default {
             key: 'description'
           }
         ]
+      },
+      form: {
+        addForm: {
+          visible: false,
+          loading: true,
+          formColumn: [
+            {
+              key: 'name',
+              label: '角色名',
+              type: 'input',
+              placeholder: '请输入角色名',
+              ext: {
+                clearable: true
+              },
+              data: 1
+            },
+            {
+              key: 'sort',
+              label: '排序号',
+              type: 'input-number',
+              ext: {
+              },
+              data: 1
+            },
+            {
+              key: 'status',
+              label: '状态',
+              type: 'switch',
+              ext: {
+                trueValue: 1,
+                falseValue: 0
+              },
+              data: [
+                {
+                  name: '打开',
+                  value: 'open'
+                },
+                {
+                  name: '关闭',
+                  value: 'close'
+                }
+              ]
+            },
+            {
+              key: 'description',
+              label: '描述',
+              type: 'textarea',
+              placeholder: '请输入描述'
+            }
+          ],
+          formData: {}
+        }
       }
     }
   },
@@ -91,19 +154,33 @@ export default {
       this.table.loading = true
       getRoleList(this.filter).then(res => {
         this.filter.current = res.data.data.current
-        this.filter.size = res.data.data.size
+        this.filter.pageSize = res.data.data.size
         this.table.data = res.data.data.records
         this.table.total = res.data.data.total
         this.table.loading = false
       })
     },
     onChange (current) {
-      this.table.current = current
+      this.filter.current = current
       this.getList()
     },
     onPageSizeChange (pageSize) {
-      this.table.pageSize = pageSize
+      this.filter.pageSize = pageSize
       this.getList()
+    },
+    addOnVisibleChange (val) {
+      this.form.addForm.visible = val
+    },
+    addFormData (val) {
+      this.form.addForm.formData = val
+    },
+    handleAddForm () {
+      addForm({data: this.form.addForm.formData, url: 'admin/sys/role'}).then(res => {
+        if (res.data.code == 200) {
+          this.form.addForm.visible = false
+          this.$Message.success('添加成功')
+        }
+      })
     }
   },
   mounted () {
