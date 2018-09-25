@@ -1,8 +1,8 @@
 <template>
   <div>
     <Modal v-model="visible" :title="title" @on-ok="onOk" @on-cancel="onCancel" :loading="loading">
-      <Form :label-width="60">
-        <FormItem v-for="(item, index) in formColumn" :label="item.label">
+      <Form ref="form" :model="formData" :label-width="60">
+        <FormItem v-for="(item, index) in formColumn" :label="item.label" :prop="item.key">
           <Input v-if="item.type == 'input'" v-model="formData[item.key]" :type="item.ext.type" :clearable="item.ext.clearable" :placeholder="item.placeholder" :value="item.data"></Input>
           <Select v-if="item.type == 'select'" v-model="formData[item.key]">
             <Option v-for="temp in item.data" :value="temp.value">{{temp.name}}</Option>
@@ -84,6 +84,9 @@ export default {
     },
     onCancel () {
       this.$emit('on-cancel')
+    },
+    handleResetForm () {
+      this.$refs.form.resetFields()
     }
   },
   watch: {
