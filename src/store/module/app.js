@@ -1,17 +1,18 @@
-import { getBreadCrumbList, setTagNavListInLocalstorage, getMenuByRouter, getTagNavListFromLocalstorage, getHomeRoute } from '@/libs/util'
+import { getBreadCrumbList, setTagNavListInLocalstorage, getMenuByRouter, getTagNavListFromLocalstorage, getHomeRoute, routeHasExist } from '@/libs/util'
 import routers from '@/router/routers'
 export default {
   state: {
     breadCrumbList: [],
     tagNavList: [],
-    homeRoute: getHomeRoute(routers)
+    homeRoute: getHomeRoute(routers),
+    local: ''
   },
   getters: {
     menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
   },
   mutations: {
     setBreadCrumb (state, routeMetched) {
-      state.breadCrumbList = getBreadCrumbList(routeMetched)
+      state.breadCrumbList = getBreadCrumbList(routeMetched, state.homeRoute)
     },
     setTagNavList (state, list) {
       if (list) {
@@ -19,12 +20,18 @@ export default {
         setTagNavListInLocalstorage([...list])
       } else state.tagNavList = getTagNavListFromLocalstorage()
     },
-    addTag (state, item, type = 'unshift') {
-      if (state.tagNavList.findIndex(tag => tag.name === item.name) < 0) {
-        if (type === 'push') state.tagNavList.push(item)
-        else state.tagNavList.unshift(item)
+    addTag (state, { route, type = 'unshift' }) {
+      if (!routeHasExist(state.tagNavList, route)) {
+        if (type === 'push') state.tagNavList.push(route)
+        else {
+          if (route.name === 'home') state.tagNavList.unshift(route)
+          else state.tagNavList.splice(1, 0, route)
+        }
         setTagNavListInLocalstorage([...state.tagNavList])
       }
+    },
+    setLocal (state, lang) {
+      state.local = lang
     }
   }
 }

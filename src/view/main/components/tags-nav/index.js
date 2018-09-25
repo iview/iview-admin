@@ -1,2 +1,2 @@
-import tagsNav from './tags-nav.vue'
-export default tagsNav
+import TagsNav from './tags-nav.vue'
+export default TagsNav

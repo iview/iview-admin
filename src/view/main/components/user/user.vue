@@ -2,7 +2,7 @@
   <div class="user-avator-dropdown">
     <Dropdown @on-click="handleClick">
       <Avatar :src="userAvator"/>
-      <Icon :size="12" type="arrow-down-b"></Icon>
+      <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
@@ -14,7 +14,7 @@
 import './user.less'
 import { mapActions } from 'vuex'
 export default {
-  name: 'user',
+  name: 'User',
   props: {
     userAvator: {
       type: String,

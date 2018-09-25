@@ -1,0 +1,26 @@
+.paste-editor-wrapper{
+	width: 100%;
+	height: 100%;
+	border: 1px dashed gainsboro;
+	textarea.textarea-el{
+		width: 100%;
+		height: 100%;
+	}
+	.CodeMirror{
+		height: 100%;
+    padding: 0;
+		.CodeMirror-code div .CodeMirror-line > span > span.cm-tab{
+			&::after{
+				content: '→';
+				color: #BFBFBF;
+			}
+		}
+	}
+	.first-row{
+		font-weight: 700;
+		font-size: 14px;
+	}
+	.incorrect-row{
+		background: #F5CBD1;
+	}
+}

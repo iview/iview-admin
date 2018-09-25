@@ -34,21 +34,22 @@
     padding-top: 3px;
     z-index: 10;
     button{
-      padding: 6px 10px;
+      padding: 6px 4px;
+      line-height: 14px;
       text-align: center;
     }
     &.left-btn{
       left: 0px;
     }
     &.right-btn{
-      right: 32px;
+      right: 0px;
       border-right: 1px solid #F0F0F0;
     }
   }
   .scroll-outer{
     position: absolute;
     left: 28px;
-    right: 61px;
+    right: 28px;
     top: 0;
     bottom: 0;
     box-shadow: 0px 0 3px 2px rgba(100,100,100,.1) inset;
@@ -62,6 +63,24 @@
       transition: left .3s ease;
       .ivu-tag-dot-inner{
         transition: background .2s ease;
+      }
+    }
+  }
+  .contextmenu {
+    position: absolute;
+    margin: 0;
+    padding: 5px 0;
+    background: #fff;
+    z-index: 100;
+    list-style-type: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    li {
+      margin: 0;
+      padding: 5px 15px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
       }
     }
   }
