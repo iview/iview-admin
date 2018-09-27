@@ -114,21 +114,16 @@ export default {
       this.collapsed = state
     },
     handleCloseTag (res, type, route) {
-      let openName = ''
       if (type === 'all') {
         this.turnToPage('home')
-        openName = 'home'
       } else if (routeEqual(this.$route, route)) {
         if (type === 'others') {
-          openName = route.name
         } else {
           const nextRoute = getNextRoute(this.tagNavList, route)
           this.$router.push(nextRoute)
-          openName = nextRoute.name
         }
       }
       this.setTagNavList(res)
-      this.$refs.sideMenu.updateOpenName(openName)
     },
     handleClick (item) {
       this.turnToPage(item)
@@ -136,12 +131,17 @@ export default {
   },
   watch: {
     '$route' (newRoute) {
+      const { name, query, params, meta } = newRoute
+      this.addTag({
+        route: { name, query, params, meta },
+        type: 'push'
+      })
       this.setBreadCrumb(newRoute.matched)
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
+      this.$refs.sideMenu.updateOpenName(newRoute.name)
     }
   },
   mounted () {
-    console.log(123123123131231)
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
