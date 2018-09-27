@@ -114,21 +114,16 @@ export default {
       this.collapsed = state
     },
     handleCloseTag (res, type, route) {
-      let openName = ''
       if (type === 'all') {
         this.turnToPage('home')
-        openName = 'home'
       } else if (routeEqual(this.$route, route)) {
         if (type === 'others') {
-          openName = route.name
         } else {
           const nextRoute = getNextRoute(this.tagNavList, route)
           this.$router.push(nextRoute)
-          openName = nextRoute.name
         }
       }
       this.setTagNavList(res)
-      this.$refs.sideMenu.updateOpenName(openName)
     },
     handleClick (item) {
       this.turnToPage(item)
@@ -143,6 +138,7 @@ export default {
       })
       this.setBreadCrumb(newRoute.matched)
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
+      this.$refs.sideMenu.updateOpenName(newRoute.name)
     }
   },
   mounted () {
