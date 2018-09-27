@@ -1,4 +1,4 @@
-import Main from '@/view/main'
+import Main from '@/components/main'
 import parentView from '@/components/parent-view'
 
 /**
@@ -8,6 +8,7 @@ import parentView from '@/components/parent-view'
  *  notCache: (false) 设为true后页面不会缓存
  *  access: (null) 可访问该页面的权限数组，当前路由设置的权限会影响子路由
  *  icon: (-) 该页面在左侧菜单、面包屑和标签导航处显示的图标，如果是自定义图标，需要在图标名称前加下划线'_'
+ *  beforeCloseName: (-) 设置该字段，则在关闭当前tab页时会去'@/router/before-close.js'里寻找该字段名对应的方法，作为关闭前的钩子函数
  * }
  */
 
@@ -213,7 +214,8 @@ export default [
         name: 'tools_methods_page',
         meta: {
           icon: 'ios-hammer',
-          title: '工具方法'
+          title: '工具方法',
+          beforeCloseName: 'before_close_normal'
         },
         component: () => import('@/view/tools-methods/tools-methods.vue')
       }
@@ -303,7 +305,8 @@ export default [
         meta: {
           icon: 'md-flower',
           title: '动态路由',
-          notCache: true
+          notCache: true,
+          beforeCloseName: 'before_close_normal'
         },
         component: () => import('@/view/argu-page/params.vue')
       },

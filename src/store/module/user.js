@@ -7,7 +7,8 @@ export default {
     userId: '',
     avatorImgPath: '',
     token: getToken(),
-    access: ''
+    access: '',
+    hasGetInfo: false
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -25,6 +26,9 @@ export default {
     setToken (state, token) {
       state.token = token
       setToken(token)
+    },
+    setHasGetInfo (state, status) {
+      state.hasGetInfo = status
     }
   },
   actions: {
@@ -63,16 +67,21 @@ export default {
     // 获取用户相关信息
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.token).then(res => {
-          const data = res.data
-          commit('setAvator', data.avator)
-          commit('setUserName', data.user_name)
-          commit('setUserId', data.user_id)
-          commit('setAccess', data.access)
-          resolve(data)
-        }).catch(err => {
-          reject(err)
-        })
+        try {
+          getUserInfo(state.token).then(res => {
+            const data = res.data
+            commit('setAvator', data.avator)
+            commit('setUserName', data.user_name)
+            commit('setUserId', data.user_id)
+            commit('setAccess', data.access)
+            commit('setHasGetInfo', true)
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
       })
     }
   }
