@@ -1,4 +1,4 @@
-import Main from '@/view/main'
+import Main from '@/components/main'
 import parentView from '@/components/parent-view'
 
 /**
