@@ -26,7 +26,7 @@
           <Button @click="handleCloseTag">关闭工具方法页</Button>
         </i-col>
         <i-col span="20">
-          <p>动态路由，添加query</p>
+          <p>手动关闭页面</p>
         </i-col>
       </Row>
     </Card>
