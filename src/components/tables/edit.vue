@@ -1,7 +1,7 @@
 <template>
   <div class="tables-edit-outer">
     <div v-if="!isEditting" class="tables-edit-con">
-      <span class="value-con">{{ value }}</span>
+      <span class="value-con">&ensp;{{ value }}&ensp;</span>
       <Button v-if="editable" @click="startEdit" class="tables-edit-btn" style="padding: 2px 4px;" type="text"><Icon type="md-create"></Icon></Button>
     </div>
     <div v-else class="tables-editting-con">
