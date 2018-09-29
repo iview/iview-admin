@@ -6,7 +6,8 @@ import {
   getHomeRoute,
   getNextRoute,
   routeHasExist,
-  routeEqual
+  routeEqual,
+  getRouteTitleHandled
 } from '@/libs/util'
 import beforeClose from '@/router/before-close'
 import router from '@/router'
@@ -31,8 +32,8 @@ export default {
     menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
   },
   mutations: {
-    setBreadCrumb (state, routeMetched) {
-      state.breadCrumbList = getBreadCrumbList(routeMetched, state.homeRoute)
+    setBreadCrumb (state, route) {
+      state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
     },
     setTagNavList (state, list) {
       if (list) {
@@ -55,11 +56,12 @@ export default {
       }
     },
     addTag (state, { route, type = 'unshift' }) {
-      if (!routeHasExist(state.tagNavList, route)) {
-        if (type === 'push') state.tagNavList.push(route)
+      let router = getRouteTitleHandled(route)
+      if (!routeHasExist(state.tagNavList, router)) {
+        if (type === 'push') state.tagNavList.push(router)
         else {
-          if (route.name === 'home') state.tagNavList.unshift(route)
-          else state.tagNavList.splice(1, 0, route)
+          if (router.name === 'home') state.tagNavList.unshift(router)
+          else state.tagNavList.splice(1, 0, router)
         }
         setTagNavListInLocalstorage([...state.tagNavList])
       }
