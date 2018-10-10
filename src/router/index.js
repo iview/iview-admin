@@ -4,6 +4,8 @@ import routes from './routers'
 import store from '@/store'
 import iView from 'iview'
 import { getToken, canTurnTo } from '@/libs/util'
+import config from '@/config'
+const { homeName } = config
 
 Vue.use(Router)
 const router = new Router({
@@ -31,7 +33,7 @@ router.beforeEach((to, from, next) => {
   } else if (token && to.name === LOGIN_PAGE_NAME) {
     // 已登录且要跳转的页面是登录页
     next({
-      name: 'home' // 跳转到home页
+      name: homeName // 跳转到homeName页
     })
   } else {
     if (store.state.user.hasGetInfo) {
