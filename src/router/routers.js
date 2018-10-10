@@ -38,7 +38,8 @@ export default [
         meta: {
           hideInMenu: true,
           title: '首页',
-          notCache: true
+          notCache: true,
+          icon: 'md-home'
         },
         component: () => import('@/view/single-page/home')
       }
@@ -218,6 +219,25 @@ export default [
           beforeCloseName: 'before_close_normal'
         },
         component: () => import('@/view/tools-methods/tools-methods.vue')
+      }
+    ]
+  },
+  {
+    path: '/i18n',
+    name: 'i18n',
+    meta: {
+      hide: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'i18n_page',
+        name: 'i18n_page',
+        meta: {
+          icon: 'md-planet',
+          title: '指令'
+        },
+        component: () => import('@/view/i18n/i18n-page.vue')
       }
     ]
   },
