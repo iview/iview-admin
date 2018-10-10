@@ -18,7 +18,7 @@ export default {
   methods: {
     backHome () {
       this.$router.replace({
-        name: 'home'
+        name: this.$config.homeName
       })
     },
     backPrev () {
