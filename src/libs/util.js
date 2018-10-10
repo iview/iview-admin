@@ -100,7 +100,7 @@ export const getTagNavListFromLocalstorage = () => {
  * @param {Array} routers 路由列表数组
  * @description 用于找到路由列表中name为home的对象
  */
-export const getHomeRoute = routers => {
+export const getHomeRoute = (routers, homeName = 'home') => {
   let i = -1
   let len = routers.length
   let homeRoute = {}
@@ -110,7 +110,7 @@ export const getHomeRoute = routers => {
       let res = getHomeRoute(item.children)
       if (res.name) return res
     } else {
-      if (item.name === 'home') homeRoute = item
+      if (item.name === homeName) homeRoute = item
     }
   }
   return homeRoute
@@ -319,4 +319,12 @@ export const routeHasExist = (tagNavList, routeItem) => {
     if (routeEqual(tagNavList[index], routeItem)) res = true
   })
   return res
+}
+
+export const localSave = (key, value) => {
+  localStorage.setItem(key, value)
+}
+
+export const localRead = (key) => {
+  return localStorage.getItem(key) || ''
 }

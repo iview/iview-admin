@@ -1,4 +1,5 @@
 export default {
+  home: 'Home',
   components: 'Components',
   count_to_page: 'Count-to',
   tables_page: 'Table',
@@ -16,5 +17,15 @@ export default {
   directive_page: 'Directive',
   level_1: 'level-1',
   level_2: 'level-2',
-  level_2_1: 'level-2-1'
+  level_2_1: 'level-2-1',
+  excel: 'Excel',
+  'upload-excel': 'Upload Excel',
+  'export-excel': 'Export Excel',
+  tools_methods_page: 'Tools Methods',
+  drag_list_page: 'Drag-list',
+  i18n_page: 'Internationalization',
+  modalTitle: 'Modal Title',
+  content: 'This is the modal box content.',
+  buttonText: 'Show Modal',
+  'i18n-tip': 'Note: Only this page is multi-language, other pages do not add language content to the multi-language package.'
 }

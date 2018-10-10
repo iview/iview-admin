@@ -1,4 +1,5 @@
 export default {
+  home: '首页',
   components: '组件',
   count_to_page: '数字渐变',
   tables_page: '多功能表格',
@@ -16,5 +17,15 @@ export default {
   directive_page: '指令',
   level_1: 'level-1',
   level_2: 'level-2',
-  level_2_1: 'level-2-1'
+  level_2_1: 'level-2-1',
+  excel: 'Excel',
+  'upload-excel': '上传excel',
+  'export-excel': '导出excel',
+  tools_methods_page: '工具函数',
+  drag_list_page: '拖拽列表',
+  i18n_page: '多语言',
+  modalTitle: '模态框题目',
+  content: '这是模态框内容',
+  buttonText: '显示模态框',
+  'i18n-tip': '注：仅此页做了多语言，其他页面没有在多语言包中添加语言内容'
 }
