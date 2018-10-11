@@ -27,5 +27,7 @@ export default {
   modalTitle: '模态框题目',
   content: '这是模态框内容',
   buttonText: '显示模态框',
-  'i18n-tip': '注：仅此页做了多语言，其他页面没有在多语言包中添加语言内容'
+  'i18n-tip': '注：仅此页做了多语言，其他页面没有在多语言包中添加语言内容',
+  error_store_page: '错误收集',
+  error_logger_page: '错误日志'
 }

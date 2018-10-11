@@ -12,6 +12,7 @@ import {
   localRead
 } from '@/libs/util'
 import beforeClose from '@/router/before-close'
+import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
@@ -30,10 +31,13 @@ export default {
     breadCrumbList: [],
     tagNavList: [],
     homeRoute: getHomeRoute(routers, homeName),
-    local: localRead('local')
+    local: localRead('local'),
+    errorList: [],
+    hasReadErrorPage: false
   },
   getters: {
-    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
+    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
+    errorCount: state => state.errorList.length
   },
   mutations: {
     setBreadCrumb (state, route) {
@@ -81,6 +85,24 @@ export default {
     setLocal (state, lang) {
       localSave('local', lang)
       state.local = lang
+    },
+    addError (state, error) {
+      state.errorList.push(error)
+    },
+    setHasReadErrorLoggerStatus (state, status = true) {
+      state.hasReadErrorPage = status
+    }
+  },
+  actions: {
+    addErrorLog ({ commit }, info) {
+      if (!window.location.href.includes('error_logger_page')) commit('setHasReadErrorLoggerStatus', false)
+      let data = {
+        ...info,
+        time: Date.parse(new Date())
+      }
+      saveErrorLogger(info).then(() => {
+        commit('addError', data)
+      })
     }
   }
 }
