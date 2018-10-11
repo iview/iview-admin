@@ -145,10 +145,10 @@ export default {
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
-    this.setTagNavList()
     this.addTag({
       route: this.$store.state.app.homeRoute
     })
+    this.setTagNavList()
     this.setBreadCrumb(this.$route)
     // 设置初始语言
     this.setLocal(this.$i18n.locale)
