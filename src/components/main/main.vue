@@ -14,6 +14,7 @@
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
           <user :user-avator="userAvator"/>
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
+          <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
         </header-bar>
       </Header>
@@ -39,7 +40,8 @@ import TagsNav from './components/tags-nav'
 import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import Language from './components/language'
-import { mapMutations, mapActions } from 'vuex'
+import ErrorStore from './components/error-store'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -52,6 +54,7 @@ export default {
     Language,
     TagsNav,
     Fullscreen,
+    ErrorStore,
     User
   },
   data () {
@@ -63,6 +66,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'errorCount'
+    ]),
     tagNavList () {
       return this.$store.state.app.tagNavList
     },
@@ -80,6 +86,9 @@ export default {
     },
     local () {
       return this.$store.state.app.local
+    },
+    hasReadErrorPage () {
+      return this.$store.state.app.hasReadErrorPage
     }
   },
   methods: {
