@@ -12,8 +12,11 @@
 [![iview ui](https://img.shields.io/badge/iview-3.0.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 [![npm](https://img.shields.io/npm/l/express.svg)]()
 
+<<<<<<< HEAD
 
 ## 当前版本：v2.0-beta.6
+=======
+>>>>>>> 2.0
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用文档](https://lison16.github.io/iview-admin-doc/#/)
