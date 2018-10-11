@@ -43,7 +43,7 @@ export default {
       let tagList = []
       if (list) {
         tagList = [...list]
-      } else tagList = getTagNavListFromLocalstorage()
+      } else tagList = getTagNavListFromLocalstorage() || []
       if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
       let homeTagIndex = tagList.findIndex(item => item.name === homeName)
       if (homeTagIndex > 0) {
