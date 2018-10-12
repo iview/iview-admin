@@ -33,7 +33,6 @@
     "xlsx": "^0.13.3"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0-rc.1",
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-plugin-unit-mocha": "^3.0.1",
