@@ -124,10 +124,9 @@ export default {
     },
     handleCloseTag (res, type, route) {
       if (type === 'all') {
-        this.turnToPage('home')
+        this.turnToPage(this.$config.homeName)
       } else if (routeEqual(this.$route, route)) {
-        if (type === 'others') {
-        } else {
+        if (type !== 'others') {
           const nextRoute = getNextRoute(this.tagNavList, route)
           this.$router.push(nextRoute)
         }
