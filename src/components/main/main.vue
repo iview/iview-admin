@@ -13,7 +13,8 @@
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
           <user :user-avator="userAvator"/>
-          <language @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
+          <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
+          <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
         </header-bar>
       </Header>
@@ -39,7 +40,8 @@ import TagsNav from './components/tags-nav'
 import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import Language from './components/language'
-import { mapMutations, mapActions } from 'vuex'
+import ErrorStore from './components/error-store'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -52,6 +54,7 @@ export default {
     Language,
     TagsNav,
     Fullscreen,
+    ErrorStore,
     User
   },
   data () {
@@ -63,6 +66,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'errorCount'
+    ]),
     tagNavList () {
       return this.$store.state.app.tagNavList
     },
@@ -80,6 +86,9 @@ export default {
     },
     local () {
       return this.$store.state.app.local
+    },
+    hasReadErrorPage () {
+      return this.$store.state.app.hasReadErrorPage
     }
   },
   methods: {
@@ -115,10 +124,9 @@ export default {
     },
     handleCloseTag (res, type, route) {
       if (type === 'all') {
-        this.turnToPage('home')
+        this.turnToPage(this.$config.homeName)
       } else if (routeEqual(this.$route, route)) {
-        if (type === 'others') {
-        } else {
+        if (type !== 'others') {
           const nextRoute = getNextRoute(this.tagNavList, route)
           this.$router.push(nextRoute)
         }
@@ -136,7 +144,7 @@ export default {
         route: { name, query, params, meta },
         type: 'push'
       })
-      this.setBreadCrumb(newRoute.matched)
+      this.setBreadCrumb(newRoute)
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
       this.$refs.sideMenu.updateOpenName(newRoute.name)
     }
@@ -149,30 +157,15 @@ export default {
     this.addTag({
       route: this.$store.state.app.homeRoute
     })
-    this.setBreadCrumb(this.$route.matched)
+    this.setBreadCrumb(this.$route)
     // 设置初始语言
     this.setLocal(this.$i18n.locale)
-    // 文档提示
-    this.$Notice.info({
-      title: '想快速上手，去看文档吧',
-      duration: 0,
-      render: (h) => {
-        return h('p', {
-          style: {
-            fontSize: '13px'
-          }
-        }, [
-          '点击',
-          h('a', {
-            attrs: {
-              href: 'https://lison16.github.io/iview-admin-doc/#/',
-              target: '_blank'
-            }
-          }, 'iview-admin2.0文档'),
-          '快速查看'
-        ])
-      }
-    })
+    // 如果当前打开页面不在标签栏中，跳到homeName页
+    if (!this.tagNavList.find(item => item.name === this.$route.name)) {
+      this.$router.push({
+        name: this.$config.homeName
+      })
+    }
   }
 }
 </script>

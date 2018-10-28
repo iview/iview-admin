@@ -1,5 +1,16 @@
 <template>
   <div class="tags-nav">
+    <div class="close-con">
+      <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
+        <Button size="small" type="text">
+          <Icon :size="18" type="ios-close-circle-outline" />
+        </Button>
+        <DropdownMenu slot="list">
+          <DropdownItem name="close-all">关闭所有</DropdownItem>
+          <DropdownItem name="close-others">关闭其他</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </div>
     <ul v-show="visible" :style="{left: contextMenuLeft + 'px', top: contextMenuTop + 'px'}" class="contextmenu">
       <li v-for="(item, key) of menuList" @click="handleTagsOption(key)" :key="key">{{item}}</li>
     </ul>
@@ -24,7 +35,7 @@
             :name="item.name"
             @on-close="handleClose(item)"
             @click.native="handleClick(item)"
-            :closable="item.name !== 'home'"
+            :closable="item.name !== $config.homeName"
             :color="isCurrentTag(item) ? 'primary' : 'default'"
             @contextmenu.prevent.native="contextMenu(item, $event)"
           >{{ showTitleInside(item) }}</Tag>
@@ -95,13 +106,13 @@ export default {
       }
     },
     handleTagsOption (type) {
-      if (type === 'all') {
+      if (type.includes('all')) {
         // 关闭所有，除了home
-        let res = this.list.filter(item => item.name === 'home')
+        let res = this.list.filter(item => item.name === this.$config.homeName)
         this.$emit('on-close', res, 'all')
-      } else if (type === 'others') {
+      } else if (type.includes('others')) {
         // 关闭除当前页和home页的其他页
-        let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === 'home')
+        let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.homeName)
         this.$emit('on-close', res, 'others', this.currentRouteObj)
         setTimeout(() => {
           this.getTagElementByName(this.currentRouteObj.name)
@@ -160,7 +171,7 @@ export default {
       })
     },
     contextMenu (item, e) {
-      if (item.name === 'home') {
+      if (item.name === this.$config.homeName) {
         return
       }
       this.visible = true

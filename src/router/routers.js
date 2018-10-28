@@ -38,7 +38,8 @@ export default [
         meta: {
           hideInMenu: true,
           title: '首页',
-          notCache: true
+          notCache: true,
+          icon: 'md-home'
         },
         component: () => import('@/view/single-page/home')
       }
@@ -222,6 +223,64 @@ export default [
     ]
   },
   {
+    path: '/i18n',
+    name: 'i18n',
+    meta: {
+      hide: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'i18n_page',
+        name: 'i18n_page',
+        meta: {
+          icon: 'md-planet',
+          title: '国际化'
+        },
+        component: () => import('@/view/i18n/i18n-page.vue')
+      }
+    ]
+  },
+  {
+    path: '/error_store',
+    name: 'error_store',
+    meta: {
+      hide: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'error_store_page',
+        name: 'error_store_page',
+        meta: {
+          icon: 'ios-bug',
+          title: '错误收集'
+        },
+        component: () => import('@/view/error-store/error-store.vue')
+      }
+    ]
+  },
+  {
+    path: '/error_logger',
+    name: 'error_logger',
+    meta: {
+      hide: true,
+      hideInMenu: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'error_logger_page',
+        name: 'error_logger_page',
+        meta: {
+          icon: 'ios-bug',
+          title: '错误收集'
+        },
+        component: () => import('@/view/single-page/error-logger.vue')
+      }
+    ]
+  },
+  {
     path: '/directive',
     name: 'directive',
     meta: {
@@ -288,7 +347,7 @@ export default [
           title: '二级-3'
         },
         component: () => import('@/view/multilevel/level-2-3.vue')
-      },
+      }
     ]
   },
   {
@@ -304,7 +363,7 @@ export default [
         name: 'params',
         meta: {
           icon: 'md-flower',
-          title: '动态路由',
+          title: route => `动态路由-${route.params.id}`,
           notCache: true,
           beforeCloseName: 'before_close_normal'
         },
@@ -315,7 +374,7 @@ export default [
         name: 'query',
         meta: {
           icon: 'md-flower',
-          title: '带参路由',
+          title: route => `带参路由-${route.query.id}`,
           notCache: true
         },
         component: () => import('@/view/argu-page/query.vue')
