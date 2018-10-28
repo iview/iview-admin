@@ -1,4 +1,4 @@
-import Main from '@/view/main'
+import Main from '@/components/main'
 import parentView from '@/components/parent-view'
 
 /**
@@ -8,6 +8,7 @@ import parentView from '@/components/parent-view'
  *  notCache: (false) 设为true后页面不会缓存
  *  access: (null) 可访问该页面的权限数组，当前路由设置的权限会影响子路由
  *  icon: (-) 该页面在左侧菜单、面包屑和标签导航处显示的图标，如果是自定义图标，需要在图标名称前加下划线'_'
+ *  beforeCloseName: (-) 设置该字段，则在关闭当前tab页时会去'@/router/before-close.js'里寻找该字段名对应的方法，作为关闭前的钩子函数
  * }
  */
 
@@ -37,7 +38,8 @@ export default [
         meta: {
           hideInMenu: true,
           title: '首页',
-          notCache: true
+          notCache: true,
+          icon: 'md-home'
         },
         component: () => import('@/view/single-page/home')
       }
@@ -242,9 +244,68 @@ export default [
         name: 'tools_methods_page',
         meta: {
           icon: 'ios-hammer',
-          title: '工具方法'
+          title: '工具方法',
+          beforeCloseName: 'before_close_normal'
         },
         component: () => import('@/view/tools-methods/tools-methods.vue')
+      }
+    ]
+  },
+  {
+    path: '/i18n',
+    name: 'i18n',
+    meta: {
+      hide: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'i18n_page',
+        name: 'i18n_page',
+        meta: {
+          icon: 'md-planet',
+          title: '国际化'
+        },
+        component: () => import('@/view/i18n/i18n-page.vue')
+      }
+    ]
+  },
+  {
+    path: '/error_store',
+    name: 'error_store',
+    meta: {
+      hide: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'error_store_page',
+        name: 'error_store_page',
+        meta: {
+          icon: 'ios-bug',
+          title: '错误收集'
+        },
+        component: () => import('@/view/error-store/error-store.vue')
+      }
+    ]
+  },
+  {
+    path: '/error_logger',
+    name: 'error_logger',
+    meta: {
+      hide: true,
+      hideInMenu: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'error_logger_page',
+        name: 'error_logger_page',
+        meta: {
+          icon: 'ios-bug',
+          title: '错误收集'
+        },
+        component: () => import('@/view/single-page/error-logger.vue')
       }
     ]
   },
@@ -315,7 +376,7 @@ export default [
           title: '二级-3'
         },
         component: () => import('@/view/multilevel/level-2-3.vue')
-      },
+      }
     ]
   },
   {
@@ -331,8 +392,9 @@ export default [
         name: 'params',
         meta: {
           icon: 'md-flower',
-          title: '动态路由',
-          notCache: true
+          title: route => `动态路由-${route.params.id}`,
+          notCache: true,
+          beforeCloseName: 'before_close_normal'
         },
         component: () => import('@/view/argu-page/params.vue')
       },
@@ -341,7 +403,7 @@ export default [
         name: 'query',
         meta: {
           icon: 'md-flower',
-          title: '带参路由',
+          title: route => `带参路由-${route.query.id}`,
           notCache: true
         },
         component: () => import('@/view/argu-page/query.vue')

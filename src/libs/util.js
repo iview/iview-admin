@@ -52,21 +52,34 @@ export const getMenuByRouter = (list, access) => {
  * @param {Array} routeMetched 当前路由metched
  * @returns {Array}
  */
-export const getBreadCrumbList = (routeMetched, homeRoute) => {
+export const getBreadCrumbList = (route, homeRoute) => {
+  let homeItem = { ...homeRoute, icon: homeRoute.meta.icon }
+  let routeMetched = route.matched
+  if (routeMetched.some(item => item.name === homeRoute.name)) return [homeItem]
   let res = routeMetched.filter(item => {
     return item.meta === undefined || !item.meta.hide
   }).map(item => {
+    let meta = {...item.meta}
+    if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
       name: item.name,
-      meta: item.meta
+      meta: meta
     }
     return obj
   })
   res = res.filter(item => {
     return !item.meta.hideInMenu
   })
-  return [Object.assign(homeRoute, { to: homeRoute.path }), ...res]
+  return [{...homeItem, to: homeRoute.path}, ...res]
+}
+
+export const getRouteTitleHandled = route => {
+  let router = {...route}
+  let meta = {...route.meta}
+  if (meta.title && typeof meta.title === 'function') meta.title = meta.title(router)
+  router.meta = meta
+  return router
 }
 
 export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
@@ -89,17 +102,17 @@ export const getTagNavListFromLocalstorage = () => {
  * @param {Array} routers 路由列表数组
  * @description 用于找到路由列表中name为home的对象
  */
-export const getHomeRoute = routers => {
+export const getHomeRoute = (routers, homeName = 'home') => {
   let i = -1
   let len = routers.length
   let homeRoute = {}
   while (++i < len) {
     let item = routers[i]
     if (item.children && item.children.length) {
-      let res = getHomeRoute(item.children)
+      let res = getHomeRoute(item.children, homeName)
       if (res.name) return res
     } else {
-      if (item.name === 'home') homeRoute = item
+      if (item.name === homeName) homeRoute = item
     }
   }
   return homeRoute
@@ -172,6 +185,7 @@ export const getNextRoute = (list, route) => {
     res = getHomeRoute(list)
   } else {
     const index = list.findIndex(item => routeEqual(item, route))
+    console.log(route, index, list.length)
     if (index === list.length - 1) res = list[list.length - 2]
     else res = list[index + 1]
   }
@@ -307,4 +321,12 @@ export const routeHasExist = (tagNavList, routeItem) => {
     if (routeEqual(tagNavList[index], routeItem)) res = true
   })
   return res
+}
+
+export const localSave = (key, value) => {
+  localStorage.setItem(key, value)
+}
+
+export const localRead = (key) => {
+  return localStorage.getItem(key) || ''
 }

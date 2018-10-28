@@ -31,7 +31,7 @@ export default {
       this.handleLogin({ userName, password }).then(res => {
         this.getUserInfo().then(res => {
           this.$router.push({
-            name: 'home'
+            name: this.$config.homeName
           })
         })
       })

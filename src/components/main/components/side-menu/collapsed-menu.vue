@@ -1,5 +1,5 @@
 <template>
-  <Dropdown ref="dropdown" @on-click="handleClick" class="collased-menu-dropdown" :transfer="hideTitle" :placement="placement">
+  <Dropdown ref="dropdown" @on-click="handleClick" :class="hideTitle ? '' : 'collased-menu-dropdown'" :transfer="hideTitle" :placement="placement">
     <a class="drop-menu-a" type="text" @mouseover="handleMousemove($event, children)" :style="{textAlign: !hideTitle ? 'left' : ''}"><common-icon :size="rootIconSize" :color="textColor" :type="parentItem.icon"/><span class="menu-title" v-if="!hideTitle">{{ showTitle(parentItem) }}</span><Icon style="float: right;" v-if="!hideTitle" type="ios-arrow-forward" :size="16"/></a>
     <DropdownMenu ref="dropdown" slot="list">
       <template v-for="child in children">
