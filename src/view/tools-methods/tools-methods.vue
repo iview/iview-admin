@@ -39,7 +39,6 @@ export default {
   name: 'tools_methods_page',
   methods: {
     ...mapMutations([
-      'addTag',
       'closeTag'
     ]),
     createTagParams () {

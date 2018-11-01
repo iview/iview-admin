@@ -74,15 +74,27 @@ export const getBreadCrumbList = (route, homeRoute) => {
   return [{...homeItem, to: homeRoute.path}, ...res]
 }
 
-export const getRouteTitleHandled = route => {
+export const getRouteTitleHandled = (route) => {
   let router = {...route}
   let meta = {...route.meta}
-  if (meta.title && typeof meta.title === 'function') meta.title = meta.title(router)
+  let title = ''
+  if (meta.title) {
+    if (typeof meta.title === 'function') title = meta.title(router)
+    else title = meta.title
+  }
+  meta.title = title
   router.meta = meta
   return router
 }
 
-export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
+export const showTitle = (item, vm) => {
+  let title = item.meta.title
+  if (vm.$config.useI18n) {
+    if (title.includes('{{') && title.includes('}}') && vm.$config.useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
+    else title = vm.$t(item.name)
+  } else title = (item.meta && item.meta.title) || item.name
+  return title
+}
 
 /**
  * @description 本地存储和获取标签导航列表
