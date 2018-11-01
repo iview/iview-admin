@@ -4,6 +4,7 @@ import parentView from '@/components/parent-view'
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
  * meta: {
+ *  title: { String|Number|Function } 显示在侧边栏和
  *  hideInMenu: (false) 设为true后在左侧菜单不会显示该页面选项
  *  notCache: (false) 设为true后页面不会缓存
  *  access: (null) 可访问该页面的权限数组，当前路由设置的权限会影响子路由
@@ -235,7 +236,7 @@ export default [
         name: 'i18n_page',
         meta: {
           icon: 'md-planet',
-          title: '国际化'
+          title: 'i18n - {{ i18n_page }}'
         },
         component: () => import('@/view/i18n/i18n-page.vue')
       }
@@ -363,7 +364,7 @@ export default [
         name: 'params',
         meta: {
           icon: 'md-flower',
-          title: route => `动态路由-${route.params.id}`,
+          title: route => `{{ params }}-${route.params.id}`,
           notCache: true,
           beforeCloseName: 'before_close_normal'
         },
@@ -374,7 +375,7 @@ export default [
         name: 'query',
         meta: {
           icon: 'md-flower',
-          title: route => `带参路由-${route.query.id}`,
+          title: route => `{{ query }}-${route.query.id}`,
           notCache: true
         },
         component: () => import('@/view/argu-page/query.vue')
