@@ -33,6 +33,7 @@
             ref="tagsPageOpened"
             :key="`tag-nav-${index}`"
             :name="item.name"
+            :data-route-item="item"
             @on-close="handleClose(item)"
             @click.native="handleClick(item)"
             :closable="item.name !== $config.homeName"
@@ -159,11 +160,11 @@ export default {
         this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
       }
     },
-    getTagElementByName (name) {
+    getTagElementByName (route) {
       this.$nextTick(() => {
         this.refsTag = this.$refs.tagsPageOpened
         this.refsTag.forEach((item, index) => {
-          if (name === item.name) {
+          if (routeEqual(route, item.$attrs['data-route-item'])) {
             let tag = this.refsTag[index].$el
             this.moveToView(tag)
           }
@@ -185,7 +186,7 @@ export default {
   },
   watch: {
     '$route' (to) {
-      this.getTagElementByName(to.name)
+      this.getTagElementByName(to)
     },
     visible (value) {
       if (value) {
@@ -197,7 +198,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.getTagElementByName(this.$route.name)
+      this.getTagElementByName(this.$route)
     }, 200)
   }
 }
