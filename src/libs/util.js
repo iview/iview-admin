@@ -57,7 +57,7 @@ export const getBreadCrumbList = (route, homeRoute) => {
   let routeMetched = route.matched
   if (routeMetched.some(item => item.name === homeRoute.name)) return [homeItem]
   let res = routeMetched.filter(item => {
-    return item.meta === undefined || !item.meta.hide
+    return item.meta === undefined || !item.meta.hideInBread
   }).map(item => {
     let meta = {...item.meta}
     if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
@@ -89,6 +89,7 @@ export const getRouteTitleHandled = (route) => {
 
 export const showTitle = (item, vm) => {
   let title = item.meta.title
+  if (!title) return
   if (vm.$config.useI18n) {
     if (title.includes('{{') && title.includes('}}') && vm.$config.useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
     else title = vm.$t(item.name)
