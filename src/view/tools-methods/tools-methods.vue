@@ -20,6 +20,16 @@
         </i-col>
       </Row>
     </Card>
+    <Card shadow style="margin-top: 10px;">
+      <Row>
+        <i-col span="4">
+          <Button @click="handleCloseTag">关闭工具方法页</Button>
+        </i-col>
+        <i-col span="20">
+          <p>手动关闭页面</p>
+        </i-col>
+      </Row>
+    </Card>
   </div>
 </template>
 
@@ -29,7 +39,7 @@ export default {
   name: 'tools_methods_page',
   methods: {
     ...mapMutations([
-      'addTag'
+      'closeTag'
     ]),
     createTagParams () {
       const id = parseInt(Math.random() * 100000)
@@ -42,11 +52,6 @@ export default {
           title: `动态路由-${id}`
         }
       }
-      this.addTag({
-        route: route,
-        type: 'push'
-      })
-      console.log(route)
       this.$router.push(route)
     },
     createTagQuery () {
@@ -60,11 +65,12 @@ export default {
           title: `参数-${id}`
         }
       }
-      this.addTag({
-        route: route,
-        type: 'push'
-      })
       this.$router.push(route)
+    },
+    handleCloseTag () {
+      this.closeTag({
+        name: 'tools_methods_page'
+      })
     }
   }
 }

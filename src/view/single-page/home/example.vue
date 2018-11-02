@@ -104,11 +104,11 @@ export default {
     this.$nextTick(() => {
       this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)
-      on(window, 'resize', this.resize())
+      on(window, 'resize', this.resize)
     })
   },
   beforeDestroy () {
-    off(window, 'resize', this.resize())
+    off(window, 'resize', this.resize)
   }
 }
 </script>
