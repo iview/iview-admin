@@ -106,6 +106,15 @@ export default [
         component: () => import('@/view/components/drag-list/drag-list.vue')
       },
       {
+        path: 'cropper_page',
+        name: 'cropper_page',
+        meta: {
+          icon: 'md-crop',
+          title: '图片裁剪'
+        },
+        component: () => import('@/view/components/cropper/cropper.vue')
+      },
+      {
         path: 'tables_page',
         name: 'tables_page',
         meta: {
