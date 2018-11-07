@@ -24,3 +24,7 @@ export const getDragList = req => {
   })
   return dragList
 }
+
+export const uploadImage = req => {
+  return Promise.resolve()
+}
