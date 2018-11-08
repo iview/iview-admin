@@ -35,5 +35,6 @@ export default {
   error_logger_page: '错误日志',
   query: '带参路由',
   params: '动态路由',
-  cropper_page: '图片裁剪'
+  cropper_page: '图片裁剪',
+  message_page: '消息中心'
 }
