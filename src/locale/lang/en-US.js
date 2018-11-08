@@ -35,5 +35,6 @@ export default {
   error_logger_page: 'Error Logger',
   query: 'Query',
   params: 'Params',
-  cropper_page: 'Cropper'
+  cropper_page: 'Cropper',
+  message_page: 'Message Center'
 }
