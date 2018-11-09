@@ -121,7 +121,7 @@ export default {
       default: false
     },
     /**
-     * @description 编辑类型,'select'/‘text’
+     * @description 编辑类型,'select'/‘text’/'date'
      */
     editType: {
       type: String,
