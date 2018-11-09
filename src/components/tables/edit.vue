@@ -10,6 +10,7 @@
       <Select v-if="editType == 'select'" :value="value" label-in-value filterable @on-change="selectChange"  class="tables-edit-input">
          <Option v-for="item in selectItem" :value="item.value" :key="item.value">{{ item.label }}</Option>
        </Select>
+        <DatePicker v-if="editType == 'date'" type="date" :value="value" @on-change="handleInput" class="tables-edit-input"></DatePicker>
       <Button @click="saveEdit" style="padding: 6px 4px;" type="text"><Icon type="md-checkmark"></Icon></Button>
       <Button @click="canceltEdit" style="padding: 6px 4px;" type="text"><Icon type="md-close"></Icon></Button>
     </div>
@@ -50,6 +51,8 @@ export default {
       this.$emit('input', val)
     },
     startEdit () {
+      // 在text模式下，开始编辑后如果不点击输入框而直接点击确定按钮，则不会触发 handleInput 事件从而导致值丢失
+      this.handleInput(this.value)
       this.$emit('on-start-edit', this.params)
     },
     saveEdit () {

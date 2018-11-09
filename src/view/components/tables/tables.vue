@@ -19,8 +19,9 @@ export default {
     return {
       columns: [
         {title: 'Name', key: 'name', sortable: true},
-        {title: 'Email', key: 'email'},
+        {title: 'Email', key: 'email', editable: true},
         {title: 'Gender', key: 'gender', editable: true, editType: 'select', selectItem: [{value: '0', label: '女'}, {value: '1', label: '男'}]},
+        {title: 'Birthday', key: 'birthday', editable: true, editType: 'date'},
         {title: 'Create-Time', key: 'createTime'},
         {
           title: 'Handle',
@@ -50,32 +51,37 @@ export default {
         {
           'name': 'Charles Young',
           'email': 'j.uwdur@ekzteeh.mq',
-          'createTime': '1992-03-06',
-          'gender': '1'
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '1992-03-06'
         },
         {
           'name': 'Paul Martinez',
           'email': 'k.xrtak@atfqbjrrmn.sh',
-          'createTime': '1995-07-06',
-          'gender': '1'
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '1995-07-06'
         },
         {
           'name': 'Thomas Taylor',
           'email': 'o.lywr@byiig.tw',
-          'createTime': '2002-07-16',
-          'gender': '1'
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '2002-07-16'
         },
         {
           'name': 'Sharon Robinson',
           'email': 'b.hywyrigqo@vszks.lr',
-          'createTime': '2003-05-01',
-          'gender': '1'
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '2003-05-01'
         },
         {
           'name': 'Jennifer Miller',
           'email': 'm.knzkdwh@qoe.gw',
-          'createTime': '1993-04-08',
-          'gender': '1'
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '1993-04-08'
         }
       ]
     }
