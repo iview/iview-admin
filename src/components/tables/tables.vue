@@ -121,7 +121,7 @@ export default {
       default: false
     },
     /**
-     * @description 编辑类型
+     * @description 编辑类型,'select'/‘text’
      */
     editType: {
       type: String,
