@@ -32,6 +32,9 @@ export default {
   buttonText: '显示模态框',
   'i18n-tip': '注：仅此页做了多语言，其他页面没有在多语言包中添加语言内容',
   error_store_page: '错误收集',
-  error_logger_page: '错误日志'
-
+  error_logger_page: '错误日志',
+  query: '带参路由',
+  params: '动态路由',
+  cropper_page: '图片裁剪',
+  message_page: '消息中心'
 }

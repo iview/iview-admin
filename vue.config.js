@@ -12,7 +12,7 @@ const resolve = dir => {
 // 例如：https://www.foobar.com/my-app/
 // 需要将它改为'/my-app/'
 const BASE_URL = process.env.NODE_ENV === 'production'
-  ? '/iview-admin/'
+  ? '/'
   : '/'
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
       .set('_c', resolve('src/components'))
   },
   // 打包时不生成.map文件
-  productionSourceMap: true
+  productionSourceMap: false
   // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
   // devServer: {
   //   proxy: 'localhost:3000'

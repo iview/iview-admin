@@ -8,7 +8,7 @@
 import Simplemde from 'simplemde'
 import 'simplemde/dist/simplemde.min.css'
 export default {
-  naem: 'MarkdownEditor',
+  name: 'MarkdownEditor',
   props: {
     value: {
       type: String,

@@ -12,7 +12,7 @@
     <Layout>
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-          <user :user-avator="userAvator"/>
+          <user :message-unread-count="messageUnreadCount" :user-avator="userAvator"/>
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
           <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
@@ -43,6 +43,7 @@ import Language from './components/language'
 import ErrorStore from './components/error-store'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
+import routers from '@/router/routers'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -67,7 +68,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'errorCount'
+      'errorCount',
+      'messageUnreadCount'
     ]),
     tagNavList () {
       return this.$store.state.app.tagNavList
@@ -79,7 +81,7 @@ export default {
       return this.$store.state.user.avatorImgPath
     },
     cacheList () {
-      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []
+      return ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
     },
     menuList () {
       return this.$store.getters.menuList
@@ -96,7 +98,8 @@ export default {
       'setBreadCrumb',
       'setTagNavList',
       'addTag',
-      'setLocal'
+      'setLocal',
+      'setHomeRoute'
     ]),
     ...mapActions([
       'handleLogin'
@@ -154,6 +157,7 @@ export default {
      * @description 初始化设置面包屑导航和标签导航
      */
     this.setTagNavList()
+    this.setHomeRoute(routers)
     this.addTag({
       route: this.$store.state.app.homeRoute
     })

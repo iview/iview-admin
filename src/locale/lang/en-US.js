@@ -32,5 +32,9 @@ export default {
   buttonText: 'Show Modal',
   'i18n-tip': 'Note: Only this page is multi-language, other pages do not add language content to the multi-language package.',
   error_store_page: 'Error Collection',
-  error_logger_page: 'Error Logger'
+  error_logger_page: 'Error Logger',
+  query: 'Query',
+  params: 'Params',
+  cropper_page: 'Cropper',
+  message_page: 'Message Center'
 }
