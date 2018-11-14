@@ -177,7 +177,15 @@ export default {
       }
       this.visible = true
       const offsetLeft = this.$el.getBoundingClientRect().left
-      this.contextMenuLeft = e.clientX - offsetLeft + 10
+      const left = e.clientX - offsetLeft + 10
+      const offsetWidth = this.$el.offsetWidth
+      const minTagWidth = 80
+      const maxLeft = offsetWidth - minTagWidth
+      if (maxLeft < left) {
+        this.contextMenuLeft = maxLeft
+      } else {
+        this.contextMenuLeft = left
+      }
       this.contextMenuTop = e.clientY - 64
     },
     closeMenu () {
