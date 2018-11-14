@@ -60,7 +60,10 @@ export const getBreadCrumbList = (route, homeRoute) => {
     return item.meta === undefined || !item.meta.hideInBread
   }).map(item => {
     let meta = {...item.meta}
-    if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
+    if (meta.title && typeof meta.title === 'function') {
+      meta.__titleIsFunction__ = true
+      meta.title = meta.title(route)
+    }
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
       name: item.name,
@@ -79,8 +82,10 @@ export const getRouteTitleHandled = (route) => {
   let meta = {...route.meta}
   let title = ''
   if (meta.title) {
-    if (typeof meta.title === 'function') title = meta.title(router)
-    else title = meta.title
+    if (typeof meta.title === 'function') {
+      meta.__titleIsFunction__ = true
+      title = meta.title(router)
+    } else title = meta.title
   }
   meta.title = title
   router.meta = meta
@@ -88,10 +93,11 @@ export const getRouteTitleHandled = (route) => {
 }
 
 export const showTitle = (item, vm) => {
-  let title = item.meta.title
+  let { title, __titleIsFunction__ } = item.meta
   if (!title) return
   if (vm.$config.useI18n) {
     if (title.includes('{{') && title.includes('}}') && vm.$config.useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
+    else if (__titleIsFunction__) title = item.meta.title
     else title = vm.$t(item.name)
   } else title = (item.meta && item.meta.title) || item.name
   return title
