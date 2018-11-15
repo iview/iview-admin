@@ -48,7 +48,8 @@ export default {
   },
   mounted () {
     this.editor = new Simplemde(Object.assign(this.options, {
-      element: this.$refs.editor
+      element: this.$refs.editor,
+      spellChecker: false
     }))
     /**
      * 事件列表为Codemirror编辑器的事件，更多事件类型，请参考：
@@ -56,7 +57,11 @@ export default {
      */
     this.addEvents()
     let content = localStorage.markdownContent
-    if (content) this.editor.value(content)
+    if (this.value) {
+      this.editor.value(this.value)
+    } else if (content) {
+      this.editor.value(content)
+    }
   }
 }
 </script>
