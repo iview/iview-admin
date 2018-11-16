@@ -49,3 +49,7 @@ export const removeReaded = () => {
 export const restoreTrash = () => {
   return true
 }
+
+export const messageCount = () => {
+  return 3
+}
