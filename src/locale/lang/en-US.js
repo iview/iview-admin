@@ -36,5 +36,6 @@ export default {
   query: 'Query',
   params: 'Params',
   cropper_page: 'Cropper',
-  message_page: 'Message Center'
+  message_page: 'Message Center',
+  tree_table_page: 'Tree Table'
 }
