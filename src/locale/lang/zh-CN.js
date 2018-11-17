@@ -36,5 +36,6 @@ export default {
   query: '带参路由',
   params: '动态路由',
   cropper_page: '图片裁剪',
-  message_page: '消息中心'
+  message_page: '消息中心',
+  tree_table_page: '树状表格'
 }

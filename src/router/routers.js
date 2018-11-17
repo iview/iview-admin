@@ -126,6 +126,15 @@ export default [
         component: () => import('@/view/components/drag-list/drag-list.vue')
       },
       {
+        path: 'tree_table_page',
+        name: 'tree_table_page',
+        meta: {
+          icon: 'md-git-branch',
+          title: '树状表格'
+        },
+        component: () => import('@/view/components/tree-table/index.vue')
+      },
+      {
         path: 'cropper_page',
         name: 'cropper_page',
         meta: {

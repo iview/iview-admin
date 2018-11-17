@@ -29,6 +29,13 @@ export const logout = (token) => {
   })
 }
 
+export const getUnreadCount = () => {
+  return axios.request({
+    url: 'message/count',
+    method: 'get'
+  })
+}
+
 export const getMessage = () => {
   return axios.request({
     url: 'message/init',
