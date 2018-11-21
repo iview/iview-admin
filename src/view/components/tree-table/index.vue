@@ -4,7 +4,7 @@
       树状表格组件tree-table-vue，基于<a href="https://github.com/MisterTaki/vue-table-with-tree-grid">vue-table-with-tree-grid</a>进行开发，修复了一些bug，添加了一些新属性
       <p><b>支持使用slot-scope进行自定义列渲染内容</b></p>
       <p>文档请看<a href="https://github.com/lison16/tree-table-vue">https://github.com/lison16/tree-table-vue</a></p>
-      <tree-table expand-key="sex" :expand-type="false" :selection-type="false" :columns="columns" :data="data" >
+      <tree-table expand-key="sex" :expand-type="false" :selectable="false" :columns="columns" :data="data" >
         <template slot="likes" slot-scope="scope">
           <Button @click="handle(scope)">123</Button>
         </template>
@@ -20,22 +20,22 @@ export default {
     return {
       columns: [
         {
-          label: 'name',
-          prop: 'name',
+          title: 'name',
+          key: 'name',
           width: '400px'
         },
         {
-          label: 'sex',
-          prop: 'sex',
+          title: 'sex',
+          key: 'sex',
           minWidth: '50px'
         },
         {
-          label: 'score',
-          prop: 'score'
+          title: 'score',
+          key: 'score'
         },
         {
-          label: 'likes',
-          prop: 'likes',
+          title: 'likes',
+          key: 'likes',
           minWidth: '200px',
           type: 'template',
           template: 'likes'
