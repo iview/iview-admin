@@ -81,6 +81,7 @@ export default {
           userName,
           password
         }).then(res => {
+          debugger
           const data = res.data
           commit('setToken', data.token)
           resolve()

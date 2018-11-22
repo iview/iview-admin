@@ -9,7 +9,7 @@ Mock.setup({
 })
 
 // 登录相关和获取用户信息
-Mock.mock(/\/login/, login)
+// Mock.mock(/\/login/, login)
 Mock.mock(/\/get_info/, getUserInfo)
 Mock.mock(/\/logout/, logout)
 Mock.mock(/\/get_table_data/, getTableData)
