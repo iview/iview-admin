@@ -121,6 +121,22 @@ export default {
       default: false
     },
     /**
+     * @description 编辑类型,'select'/‘text’/'date'
+     */
+    editType: {
+      type: String,
+      default: 'text'
+    },
+    /**
+     * @description 编辑类型为select时的下拉选择框的内容
+     */
+    selectItem: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    /**
      * @description 是否可搜索
      */
     searchable: {
@@ -159,7 +175,9 @@ export default {
             params: params,
             value: this.insideTableData[params.index][params.column.key],
             edittingCellId: this.edittingCellId,
-            editable: this.editable
+            editable: this.editable,
+            editType: item.editType ? item.editType : this.editType,
+            selectItem: item.selectItem ? item.selectItem : this.selectItem
           },
           on: {
             'input': val => {

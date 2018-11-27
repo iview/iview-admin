@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-      <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>
+      <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete" @on-save-edit="selectEdit"/>
       <Button style="margin: 10px 0;" type="primary" @click="exportExcel">导出为Csv文件</Button>
     </Card>
   </div>
@@ -20,6 +20,8 @@ export default {
       columns: [
         {title: 'Name', key: 'name', sortable: true},
         {title: 'Email', key: 'email', editable: true},
+        {title: 'Gender', key: 'gender', editable: true, editType: 'select', selectItem: [{value: '0', label: '女'}, {value: '1', label: '男'}]},
+        {title: 'Birthday', key: 'birthday', editable: true, editType: 'date'},
         {title: 'Create-Time', key: 'createTime'},
         {
           title: 'Handle',
@@ -45,11 +47,50 @@ export default {
           ]
         }
       ],
-      tableData: []
+      tableData: [
+        {
+          'name': 'Charles Young',
+          'email': 'j.uwdur@ekzteeh.mq',
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '1992-03-06'
+        },
+        {
+          'name': 'Paul Martinez',
+          'email': 'k.xrtak@atfqbjrrmn.sh',
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '1995-07-06'
+        },
+        {
+          'name': 'Thomas Taylor',
+          'email': 'o.lywr@byiig.tw',
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '2002-07-16'
+        },
+        {
+          'name': 'Sharon Robinson',
+          'email': 'b.hywyrigqo@vszks.lr',
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '2003-05-01'
+        },
+        {
+          'name': 'Jennifer Miller',
+          'email': 'm.knzkdwh@qoe.gw',
+          'gender': '1',
+          'birthday': '1990-01-01',
+          'createTime': '1993-04-08'
+        }
+      ]
     }
   },
   methods: {
     handleDelete (params) {
+      console.log(params)
+    },
+    selectEdit (params) {
       console.log(params)
     },
     exportExcel () {
@@ -60,7 +101,8 @@ export default {
   },
   mounted () {
     getTableData().then(res => {
-      this.tableData = res.data
+      console.log(res)
+      // this.tableData = res.data
     })
   }
 }
