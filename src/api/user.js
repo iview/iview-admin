@@ -11,6 +11,33 @@ export const login1 = ({ username, password }) => {
     method: 'post'
   })
 }
+export const isLogin=()=>{
+  return axios.request({
+    url: '/sys/isLogin',
+    method: 'get'
+  })
+}
+export const addUser=(data)=>{
+  return axios.request({
+    url: '/sys/add/user',
+    method: 'post',
+    data:data
+  })
+}
+export const isExist=(username)=>{
+  return axios.request({
+    url: '/sys/checkUsername',
+    params:{username:username},
+    method: 'get'
+  })
+}
+export const getAllUser= query =>{
+  return axios.request({
+    url: '/sys/users',
+    params:query,
+    method: 'get'
+  })
+}
 export const login = ({ userName, password }) => {
   const data = {
     userName,
@@ -25,10 +52,7 @@ export const login = ({ userName, password }) => {
 
 export const getUserInfo = (token) => {
   return axios.request({
-    url: 'get_info',
-    params: {
-      token
-    },
+    url: '/sys/loginUser',
     method: 'get'
   })
 }

@@ -22,7 +22,8 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         //
-      }
+      },
+      withCredentials: true
     }
     return config
   }
@@ -35,6 +36,7 @@ class HttpRequest {
   interceptors (instance, url) {
     // 请求拦截
     instance.interceptors.request.use(config => {
+
       // 添加全局的loading...
       if (!Object.keys(this.queue).length) {
         // Spin.show() // 不建议开启，因为界面不友好
@@ -46,6 +48,7 @@ class HttpRequest {
     })
     // 响应拦截
     instance.interceptors.response.use(res => {
+      console.log(res.headers['Set-Cookie']);
       this.destroy(url)
       const { data, status } = res
       return { data, status }
@@ -56,7 +59,8 @@ class HttpRequest {
     })
   }
   request (options) {
-    const instance = axios.create()
+    axios.defaults.withCredentials=true;
+    const instance = axios.create({withCredentials: true})
     options = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance, options.url)
     return instance(options)

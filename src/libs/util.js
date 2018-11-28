@@ -169,6 +169,7 @@ const hasAccess = (access, route) => {
 export const canTurnTo = (name, access, routes) => {
   const routePermissionJudge = (list) => {
     return list.some(item => {
+      debugger
       if (item.children && item.children.length) {
         return routePermissionJudge(item.children)
       } else if (item.name === name) {

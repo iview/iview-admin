@@ -28,6 +28,54 @@ export default [
     component: () => import('@/view/login/login.vue')
   },
   {
+  path: '/backend',
+  name: 'backend',
+  meta: {
+    icon: 'md-menu',
+    title: '后台管理'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'user',
+      name: '用户管理',
+      meta: {
+        icon: 'md-funnel',
+        title: '用户管理'
+      },
+      component: () => import('@/view/backend/user.vue')
+    },
+    {
+      path: 'role',
+      name: '角色管理',
+      meta: {
+        icon: 'md-funnel',
+        title: '角色管理'
+      },
+      component: () => import('@/view/backend/role.vue')
+    },
+    {
+      path: 'res',
+      name: '资源管理',
+      meta: {
+        icon: 'md-funnel',
+        title: '资源管理'
+      },
+      component: () => import('@/view/backend/res.vue')
+    },
+    {
+      path: 'org',
+      name: '组织管理',
+      meta: {
+        icon: 'md-funnel',
+        title: '组织管理'
+      },
+      component: () => import('@/view/backend/org.vue')
+    }
+    
+  ]
+},
+  {
     path: '/',
     name: '_home',
     redirect: '/home',
