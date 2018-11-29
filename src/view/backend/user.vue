@@ -6,8 +6,7 @@
             <Select v-model="query.status" class="search-col">
                 <Option v-for="item in select.status" :value="item.key" :key="item.key">{{ item.title }}</Option>
             </Select>
-            <Input  @on-change="handleClear" clearable placeholder="输入关键字搜索" class="search-input"
-             v-model="query.nickname"/>
+            <Input  clearable placeholder="输入关键字搜索" class="search-input" v-model="query.nickname"/>
             <Button @click="handleGetUsers" class="search-btn" type="primary"><Icon type="search"/>搜索</Button>
             <Button @click="drawer.edit = true" class="search-btn" type="success"><Icon type="search"/>新增</Button>
         </div>
@@ -69,7 +68,7 @@
 
 <script>
 import './index.less'
-import { getAllUser,isExist,addUser } from '@/api/user'
+import { getAllUser,isExist,addUser,deleteUser } from '@/api/user'
 export default {
   data () {
     const validatorUsername=(rule,value,callback)=>{
@@ -138,7 +137,7 @@ export default {
                 }
             },
             {
-                title: '状态',
+                title: '操作',
                 key: 'status',
                 width: 150,
                 align: 'center',
@@ -151,7 +150,7 @@ export default {
                             },
                             on: {
                                 click: () => {
-                                    this.remove(params.index)
+                                    this.handleDelete(params)
                                 }
                             }
                         }, '删除')
@@ -194,7 +193,15 @@ export default {
         });
     },
     handleDelete (params) {
-      console.log(params)
+        let id = params.row.id;
+        deleteUser(id).then(res =>{
+            if(res.data.status == 1){
+                this.$Message.success(res.data.msg)
+            }else{
+                this.$Message.error(res.data.msg)
+            }
+        })
+        console.log(params)
     },
     exportExcel () {
       this.$refs.tables.exportCsv({

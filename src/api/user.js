@@ -24,6 +24,12 @@ export const addUser=(data)=>{
     data:data
   })
 }
+export const deleteUser=(id)=>{
+  return axios.request({
+    url: '/sys/user/'+id,
+    method: 'delete',
+  })
+}
 export const isExist=(username)=>{
   return axios.request({
     url: '/sys/checkUsername',

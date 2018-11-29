@@ -1,6 +1,10 @@
 export default {
   home: '首页',
   backend:'后台管理',
+  user:'用户管理',
+  role:'角色管理',
+  res:'资源管理',
+  org:'组织管理',
   components: '组件',
   count_to_page: '数字渐变',
   tables_page: '多功能表格',

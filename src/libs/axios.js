@@ -48,7 +48,6 @@ class HttpRequest {
     })
     // 响应拦截
     instance.interceptors.response.use(res => {
-      console.log(res.headers['Set-Cookie']);
       this.destroy(url)
       const { data, status } = res
       return { data, status }

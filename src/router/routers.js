@@ -38,7 +38,7 @@ export default [
   children: [
     {
       path: 'user',
-      name: '用户管理',
+      name: 'user',
       meta: {
         icon: 'md-funnel',
         title: '用户管理'
@@ -47,7 +47,7 @@ export default [
     },
     {
       path: 'role',
-      name: '角色管理',
+      name: 'role',
       meta: {
         icon: 'md-funnel',
         title: '角色管理'
@@ -56,7 +56,7 @@ export default [
     },
     {
       path: 'res',
-      name: '资源管理',
+      name: 'res',
       meta: {
         icon: 'md-funnel',
         title: '资源管理'
@@ -65,7 +65,7 @@ export default [
     },
     {
       path: 'org',
-      name: '组织管理',
+      name: 'org',
       meta: {
         icon: 'md-funnel',
         title: '组织管理'

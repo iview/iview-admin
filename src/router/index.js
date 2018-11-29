@@ -24,23 +24,22 @@ const turnTo = (to, access, next) => {
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   next()
-  // if(to.name === LOGIN_PAGE_NAME){//登录页面不拦截
-  //   next()
-  // }else if(to.name === homeName){
-  //   debugger
-  //   isLogin().then(res=>{
-  //     console.log(res);
-  //     if(res.data === true){
-  //       next()
-  //     }else{
-  //       next({
-  //         name: LOGIN_PAGE_NAME // 跳转到登录页
-  //       })
-  //     }
-  //   });
-  // }else{
-  //   next()
-  // }
+  if(to.name === LOGIN_PAGE_NAME){//登录页面不拦截
+    next()
+  }else if(to.name === homeName){
+    isLogin().then(res=>{
+      console.log(res);
+      if(res.data === true){
+        next()
+      }else{
+        next({
+          name: LOGIN_PAGE_NAME // 跳转到登录页
+        })
+      }
+    });
+  }else{
+    next()
+  }
   // next()
   // const token = true
   // if (!token && to.name !== LOGIN_PAGE_NAME) {
