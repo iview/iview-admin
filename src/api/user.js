@@ -24,10 +24,17 @@ export const addUser=(data)=>{
     data:data
   })
 }
+export const updateUser=(data)=>{
+  return axios.request({
+    url: '/sys/update/user',
+    method: 'post',
+    data:data
+  })
+}
 export const deleteUser=(id)=>{
   return axios.request({
-    url: '/sys/user/'+id,
-    method: 'delete',
+    url: '/sys/user/delete/'+id,
+    method: 'get',
   })
 }
 export const isExist=(username)=>{
@@ -41,6 +48,12 @@ export const getAllUser= query =>{
   return axios.request({
     url: '/sys/users',
     params:query,
+    method: 'get'
+  })
+}
+export const getUser= id =>{
+  return axios.request({
+    url: '/sys/user/'+id,
     method: 'get'
   })
 }
