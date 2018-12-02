@@ -1,11 +1,15 @@
 <template>
   <div class="tables-edit-outer">
     <div v-if="!isEditting" class="tables-edit-con">
-      <span class="value-con">{{ value }}</span>
+      <span class="value-con">{{ editType=="select"?selectText:value }}</span>
       <Button v-if="editable" @click="startEdit" class="tables-edit-btn" style="padding: 2px 4px;" type="text"><Icon type="md-create"></Icon></Button>
     </div>
     <div v-else class="tables-editting-con">
-      <Input :value="value" @input="handleInput" class="tables-edit-input"/>
+      <Input v-if="editType == 'text'" :value="value" @input="handleInput" class="tables-edit-input"/>
+
+      <Select v-if="editType == 'select'" :value="value" label-in-value filterable @on-change="selectChange"  class="tables-edit-input">
+         <Option v-for="item in selectItem" :value="item.value" :key="item.value">{{ item.label }}</Option>
+       </Select>
       <Button @click="saveEdit" style="padding: 6px 4px;" type="text"><Icon type="md-checkmark"></Icon></Button>
       <Button @click="canceltEdit" style="padding: 6px 4px;" type="text"><Icon type="md-close"></Icon></Button>
     </div>
@@ -19,7 +23,22 @@ export default {
     value: [String, Number],
     edittingCellId: String,
     params: Object,
-    editable: Boolean
+    editable: Boolean,
+    editType: {
+      type: String,
+      default: 'text'
+    },
+    selectItem: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  data () {
+    return {
+      selectText: ''
+    }
   },
   computed: {
     isEditting () {
@@ -38,6 +57,20 @@ export default {
     },
     canceltEdit () {
       this.$emit('on-cancel-edit', this.params)
+    },
+    selectChange (option) {
+      this.handleInput(option.value)
+      this.selectText = option.label
+    }
+  },
+  mounted () {
+    let _this = this
+    if (_this.editType === 'select') {
+      _this.selectItem.forEach(item => {
+        if (item.value === _this.value) {
+          _this.selectText = item.label
+        }
+      })
     }
   }
 }
@@ -68,6 +101,9 @@ export default {
     .tables-edit-input{
       width: ~"calc(100% - 60px)";
     }
+  }
+  .tables-select{
+    width: 50%
   }
 }
 </style>
