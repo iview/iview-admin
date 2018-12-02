@@ -30,7 +30,7 @@ export default {
   state: {
     breadCrumbList: [],
     tagNavList: [],
-    homeRoute: getHomeRoute(routers, homeName),
+    homeRoute: {},
     local: localRead('local'),
     errorList: [],
     hasReadErrorPage: false
@@ -42,6 +42,9 @@ export default {
   mutations: {
     setBreadCrumb (state, route) {
       state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
+    },
+    setHomeRoute (state, routes) {
+      state.homeRoute = getHomeRoute(routes, homeName)
     },
     setTagNavList (state, list) {
       let tagList = []
