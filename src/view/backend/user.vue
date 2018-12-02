@@ -129,7 +129,11 @@
             <Button style="margin-right: 8px" @click="drawer.update=false">取消</Button>
             <Button type="primary" @click="handleUpdate('form.update')">提交</Button>
         </div>
-    </Drawer>    
+    </Drawer> 
+    <Modal v-model="modal.delete" title="提醒" @on-ok="ok"
+        @on-cancel="this.modal.delete=false">
+        <p>确认要删除这条内容？</p>
+    </Modal>   
   </div>
 </template>
 
@@ -166,6 +170,9 @@ export default {
         }
     };
     return {
+        modal:{
+            delete:false
+        },
         drawer:{
             edit:false,
             update:false,
@@ -298,25 +305,14 @@ export default {
     handleSubmit (name) {
         this.$refs[name].validate((valid) => {
             if (valid) {
-                if(this.form.edit.id){
-                    updateUser(this.form.edit).then(res=>{
-                        if(res.data.status == 1){
-                            this.$Message.success('修改成功');
-                            this.handleGetUsers();
-                            this.$refs[name].resetFields();
-                            this.drawer.edit=false
-                        }
-                    });
-                }else{
-                    addUser(this.form.edit).then(res=>{
-                        if(res.data.status == 1){
-                            this.$Message.success('保存成功');
-                            this.handleGetUsers();
-                            this.$refs[name].resetFields();
-                            this.drawer.edit=false
-                        }
-                    });
-                }
+                addUser(this.form.edit).then(res=>{
+                    if(res.data.status == 1){
+                        this.$Message.success('保存成功');
+                        this.handleGetUsers();
+                        this.$refs[name].resetFields();
+                        this.drawer.edit=false
+                    }
+                });
             } else {
                 this.$Message.error('请按照格式填写表单!');
             }
@@ -347,16 +343,23 @@ export default {
         });
     },
     handleDelete (params) {
-        let id = params.row.id;
-        deleteUser(id).then(res =>{
-            if(res.data.status == 1){
-                this.$Message.success(res.data.msg)
-                this.handleGetUsers()
-            }else{
-                this.$Message.error(res.data.msg)
-            }
-        })
-        console.log(params)
+        let config={
+            title:'提醒',
+            content:'确定要删除id为：'+params.row.id+"的记录？",
+            onOk:()=>{
+                let id = params.row.id;
+                deleteUser(id).then(res =>{
+                    if(res.data.status == 1){
+                        this.$Message.success(res.data.msg)
+                        this.handleGetUsers()
+                    }else{
+                        this.$Message.error(res.data.msg)
+                    }
+                })
+            },
+            onCancel:()=>{return false},
+        }
+        let confirm = this.$Modal.confirm(config);
     },
     handleEdit (params) {
         let id = params.row.id;

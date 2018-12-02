@@ -31,7 +31,7 @@ export default [
   path: '/backend',
   name: 'backend',
   meta: {
-    icon: 'md-menu',
+    icon: 'md-contacts',
     title: '后台管理'
   },
   component: Main,
@@ -40,7 +40,7 @@ export default [
       path: 'user',
       name: 'user',
       meta: {
-        icon: 'md-funnel',
+        icon: 'ios-contacts',
         title: '用户管理'
       },
       component: () => import('@/view/backend/user.vue')
@@ -49,7 +49,7 @@ export default [
       path: 'role',
       name: 'role',
       meta: {
-        icon: 'md-funnel',
+        icon: 'ios-ribbon',
         title: '角色管理'
       },
       component: () => import('@/view/backend/role.vue')
@@ -58,7 +58,7 @@ export default [
       path: 'res',
       name: 'res',
       meta: {
-        icon: 'md-funnel',
+        icon: 'md-restaurant',
         title: '资源管理'
       },
       component: () => import('@/view/backend/res.vue')
@@ -67,7 +67,7 @@ export default [
       path: 'org',
       name: 'org',
       meta: {
-        icon: 'md-funnel',
+        icon: 'ios-git-network',
         title: '组织管理'
       },
       component: () => import('@/view/backend/org.vue')
