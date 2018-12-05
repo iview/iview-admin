@@ -52,8 +52,32 @@
             <Button type="primary" @click="handleSubmit('form.edit')">提交</Button>
         </div>
     </Drawer>    
-    <Drawer title="配置" v-model="drawer.config" width="600" :mask-closable="true" >
-        
+    <Drawer title="配置" v-model="drawer.config" width="100%" :mask-closable="true" >
+        <Tabs value="resConfig">
+            <TabPane label="配置资源" name="resConfig">
+                <Row>
+                    <Col span="11">
+                        <Card >
+                            <p slot="title">全部资源</p>
+                            <p>
+                                <Tree :data="dataAllRes" :render="renderAllContent" ></Tree>
+                            </p>
+                        </Card>
+                    </Col>
+                    <Col span="11" offset="1">
+                        <Card >
+                            <p slot="title">{{id.drawer.role_name}}的资源</p>
+                            <p>
+                                <Tree :data="dataMyRes" :render="renderMyContent" ></Tree>
+                            </p>
+                        </Card>
+                    </Col>
+                </Row>
+            </TabPane>
+            <TabPane label="配置用户" name="userConfig">
+                <RoleConfigUser :role_id="id.drawer.role_id"></RoleConfigUser>
+            </TabPane>
+        </Tabs>
     </Drawer>    
     <Modal v-model="modal.delete" title="提醒" 
         @on-cancel="this.modal.delete=false">
@@ -64,9 +88,13 @@
 
 <script>
 import './index.less'
+import RoleConfigUser from '@/view/backend/role_config_user'
 import { getAllUser,isExist,addUser,deleteUser,getUser,updateUser } from '@/api/user'
-import { listRole,updateRole,deleteRole,getRole,isCodeExsits } from '@/api/role'
+import { listRole,updateRole,deleteRole,getRole,isCodeExsits,getResTree,addRoleRes,deleteRoleRes } from '@/api/role'
 export default {
+    components: {
+        RoleConfigUser  
+    },
   data () {
     const validatorRolecode=(rule,value,callback)=>{
         if(value === ''){
@@ -82,6 +110,8 @@ export default {
         }
     };
     return {
+        dataMyRes: [],
+        dataAllRes: [],
         modal:{
             delete:false
         },
@@ -185,13 +215,30 @@ export default {
           role_name:'',
           role_enable:'Y',
           page:1
+      },
+      id:{
+          drawer:{
+              role_id:'',
+              role_name:'',
+          }
       }
 
     }
   },
   methods: {
     handleConfig(params){
-        this.drawer.config = true;
+        this.id.drawer.role_id = params.row.id
+        this.id.drawer.role_name = params.row.role_name
+        this.drawer.config = true
+        this.handleInitRes(params.row.id)
+    },
+    handleInitRes(role_id){
+        getResTree(role_id).then(res => {
+            this.dataMyRes = res.data;
+        });
+        getResTree().then(res => {
+            this.dataAllRes = res.data;
+        });
     },
     handleAdd(){
         this.drawer.edit = true;
@@ -272,7 +319,92 @@ export default {
                 this.drawer.edit = true;
             }
         })
-    }
+    },
+    renderAllContent (h, { root, node, data }) {
+                return h('span', {
+                    style: {
+                        display: 'inline-block',
+                        width: '100%'
+                    }
+                }, [
+                    h('span', [
+                        h('span', data.title)
+                    ]),
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            float: 'right',
+                            marginRight: '32px'
+                        }
+                    }, [
+                        h('Button', {
+                            props: Object.assign({}, this.buttonProps, {
+                                icon: 'md-add-circle',size:'small',type:'primary'
+                            }),
+                            on: {
+                                click: () => { 
+                                    // console.log(root,"1111",node,"1111",data);
+                                    let role_id=this.id.drawer.role_id;
+                                    let res_id = node.node.id;
+                                    addRoleRes(role_id,res_id).then(res => {
+                                        if(res.data.status == 1){
+                                             this.$Message.success(res.data.msg)
+                                             this.handleInitRes(role_id)
+                                        }else{
+                                             this.$Message.error(res.data.msg)
+                                        }
+                                    }).catch(e =>{
+                                        console.log(e);
+                                        this.$Message.error("操作失败，请联系管理员。")
+                                    });
+                                 }
+                            }
+                        })
+                    ])
+                ]);
+            },
+    renderMyContent (h, { root, node, data }) {
+                return h('span', {
+                    style: {
+                        display: 'inline-block',
+                        width: '100%'
+                    }
+                }, [
+                    h('span', [
+                        h('span', data.title)
+                    ]),
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            float: 'right',
+                            marginRight: '32px'
+                        }
+                    }, [
+                        h('Button', {
+                            props: Object.assign({}, this.buttonProps, {
+                                icon: 'ios-trash',size:'small',type:'error'
+                            }),
+                            on: {
+                                click: () => {
+                                    let role_id=this.id.drawer.role_id;
+                                    let res_id = node.node.id;
+                                    deleteRoleRes(role_id,res_id).then(res => {
+                                        if(res.data.status == 1){
+                                             this.$Message.success(res.data.msg)
+                                             this.handleInitRes(role_id)
+                                        }else{
+                                             this.$Message.error(res.data.msg)
+                                        }
+                                    }).catch(e =>{
+                                        console.log(e);
+                                        this.$Message.error("操作失败，请联系管理员。")
+                                    })
+                                }
+                            }
+                        })
+                    ])
+                ]);
+            },
   },
   mounted () {
     this.handleGetRoles();

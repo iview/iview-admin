@@ -34,4 +34,25 @@ export const isCodeExsits=(code)=>{
     params:{role_code:code}
   })
 }
+export const getResTree=(role_id)=>{
+  return axios.request({
+    url: '/sys/res/tree',
+    method: 'get',
+    params:{role_id:role_id}
+  })
+}
+export const addRoleRes=(role_id,res_id)=>{
+  return axios.request({
+    url: '/sys/role/res',
+    method: 'post',
+    data:{role_id:role_id,res_id:res_id}
+  })
+}
+export const deleteRoleRes=(role_id,res_id)=>{
+  return axios.request({
+    url: '/sys/role/res/delete',
+    method: 'post',
+    data:{role_id:role_id,res_id:res_id}
+  })
+}
 
