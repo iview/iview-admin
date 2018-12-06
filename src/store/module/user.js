@@ -9,7 +9,8 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
+import {getRouterReq} from '@/api/routers'
+import { setToken, getToken, routersConfigAssembly } from '@/libs/util'
 
 export default {
   state: {
@@ -211,6 +212,16 @@ export default {
         }).catch(error => {
           reject(error)
         })
+      })
+    },
+    // 获取用户路由
+    getRoutersConfig ({state, commit}) {
+      return getRouterReq().then((routersData) => {
+        debugger
+        let routersConfig = _.cloneDeep(routersData.data)
+        let newRoutersConfigObj = routersConfigAssembly(routersConfig)
+        commit('setRoutersConfig', {newRouters: newRoutersConfigObj, routersData: routersData.data})
+        return newRoutersConfigObj
       })
     }
   }
