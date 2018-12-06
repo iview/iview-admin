@@ -30,7 +30,7 @@ export default {
   methods: {
     beforeUpload (file) {
       getArrayFromFile(file).then(data => {
-        let {columns, tableData} = getTableDataFromArray(data)
+        let { columns, tableData } = getTableDataFromArray(data)
         this.columns = columns
         this.tableData = tableData
       }).catch(() => {
