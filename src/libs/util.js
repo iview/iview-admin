@@ -2,6 +2,8 @@ import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
+import { routerMap, staticRouters } from '@/router/routers-map'
+import _ from 'lodash'
 const { title, cookieExpires, useI18n } = config
 
 export const TOKEN_KEY = 'token'
@@ -396,4 +398,39 @@ export const setTitle = (routeItem, vm) => {
   const pageTitle = showTitle(handledRoute, vm)
   const resTitle = pageTitle ? `${title} - ${pageTitle}` : title
   window.document.title = resTitle
+}
+
+/**
+ * @description 本地存储和获取路由配置
+ */
+export const setRoutersConfig = routers => {
+  localStorage.routersConfig = JSON.stringify(routers)
+}
+
+/**
+ * @description 本地存储和获取路由配置
+ */
+export const getRoutersConfig = () => {
+  const routers = localStorage.routersConfig
+  return routers ? _.concat(staticRouters, routersConfigAssembly(JSON.parse(routers))) : staticRouters
+}
+
+/**
+ * @description 路由配置数据组装
+ */
+export const routersConfigAssembly = (routersData) => {
+  let routersConfig = routersData
+  let traversalRouterData = (obj) => {
+    _.forEach(obj, (value, key) => {
+      if (typeof (obj[key]) === 'object') {
+        traversalRouterData(obj[key])
+      } else if (key === 'component') {
+        // 组装路由组件
+        obj[key] = routerMap[value]
+      }
+    })
+  }
+  // 递归路由数据对象
+  traversalRouterData(routersConfig)
+  return _.differenceWith(routersConfig, staticRouters, _.isEqual)
 }
