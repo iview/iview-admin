@@ -55,4 +55,18 @@ export const deleteRoleRes=(role_id,res_id)=>{
     data:{role_id:role_id,res_id:res_id}
   })
 }
+export const addRoleUser=(role_id,user_id)=>{
+  return axios.request({
+    url: '/sys/role/user',
+    method: 'post',
+    data:{role_id:role_id,user_id:user_id}
+  })
+}
+export const delRoleUser=(role_id,user_id)=>{
+  return axios.request({
+    url: '/sys/role/user/delete',
+    method: 'post',
+    data:{role_id:role_id,user_id:user_id}
+  })
+}
 

@@ -95,20 +95,7 @@ export default {
     components: {
         RoleConfigUser  
     },
-  data () {
-    const validatorRolecode=(rule,value,callback)=>{
-        if(value === ''){
-            callback(new Error('请输入帐号!!!'));
-        }else{
-            isCodeExsits(value).then(res=>{
-                if(res.data == false){
-                    callback(new Error('帐号已经被占用，请换一个帐号。'));
-                }else{
-                    callback();
-                }
-            });
-        }
-    };
+    data () {
     return {
         dataMyRes: [],
         dataAllRes: [],
