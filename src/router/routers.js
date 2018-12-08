@@ -71,7 +71,16 @@ export default [
         title: '组织管理'
       },
       component: () => import('@/view/backend/org.vue')
-    }
+    },
+    {
+      path: 'self',
+      name: 'self',
+      meta: {
+        icon: 'ios-shirt',
+        title: '个人中心'
+      },
+      component: () => import('@/view/backend/self.vue')
+    },
     
   ]
 },

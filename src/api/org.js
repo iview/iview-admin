@@ -41,4 +41,18 @@ export const orgTree=(params)=>{
     params:params
   })
 }
+export const addOrgUser=(data)=>{
+  return axios.request({
+    url: '/sys/org/user',
+    method: 'post',
+    data:data
+  })
+}
+export const delOrgUser=(data)=>{
+  return axios.request({
+    url: '/sys/org/delete/user',
+    method: 'post',
+    data:data
+  })
+}
 

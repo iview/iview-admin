@@ -5,6 +5,7 @@ export default {
   role:'角色管理',
   res:'资源管理',
   org:'组织管理',
+  self:'个人中心',
   components: '组件',
   count_to_page: '数字渐变',
   tables_page: '多功能表格',

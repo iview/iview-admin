@@ -6,6 +6,7 @@
       </Badge>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
+        <DropdownItem name="self">个人中心</DropdownItem>
         <DropdownItem name="message">
           消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
         </DropdownItem>
@@ -17,13 +18,15 @@
 
 <script>
 import './user.less'
+import { getAllUser,isExist,addUser,deleteUser,getUser,updateUser,logoutUser } from '@/api/user'
 import { mapActions } from 'vuex'
 export default {
   name: 'User',
   props: {
     userAvator: {
       type: String,
-      default: ''
+      default: '',
+      src:'https://gw.alicdn.com/tps/TB1W_X6OXXXXXcZXVXXXXXXXXXX-400-400.png'
     },
     messageUnreadCount: {
       type: Number,
@@ -35,15 +38,20 @@ export default {
       'handleLogOut'
     ]),
     logout () {
-      this.handleLogOut().then(() => {
+      logoutUser().then(() =>{
         this.$router.push({
           name: 'login'
         })
-      })
+      });
     },
     message () {
       this.$router.push({
         name: 'message_page'
+      })
+    },
+    self () {
+      this.$router.push({
+        name: 'self'
       })
     },
     handleClick (name) {
@@ -51,6 +59,8 @@ export default {
         case 'logout': this.logout()
           break
         case 'message': this.message()
+          break
+        case 'self': this.self()
           break
       }
     }

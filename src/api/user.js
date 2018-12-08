@@ -24,6 +24,12 @@ export const addUser=(data)=>{
     data:data
   })
 }
+export const getCurrentUser=()=>{
+  return axios.request({
+    url: '/sys/user/login',
+    method: 'get',
+  })
+}
 export const updateUser=(data)=>{
   return axios.request({
     url: '/sys/update/user',
@@ -134,5 +140,11 @@ export const restoreTrash = msg_id => {
     data: {
       msg_id
     }
+  })
+}
+export const logoutUser = () => {
+  return axios.request({
+    url: '/sys/user/logout',
+    method: 'post',
   })
 }
