@@ -85,6 +85,55 @@ export default [
   ]
 },
   {
+  path: '/truck',
+  name: 'truck',
+  meta: {
+    icon: 'md-contacts',
+    title: '卡车管理'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'truckInfo',
+      name: 'truckInfo',
+      meta: {
+        icon: 'ios-car',
+        title: '卡车信息'
+      },
+      component: () => import('@/view/truck/info.vue')
+    },
+    {
+      path: 'driverInfo',
+      name: 'driverInfo',
+      meta: {
+        icon: 'ios-contacts',
+        title: '司机信息'
+      },
+      component: () => import('@/view/backend/user.vue')
+    }
+  ]
+},
+  {
+  path: '/base',
+  name: 'base',
+  meta: {
+    icon: 'md-contacts',
+    title: '基础配置'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'select',
+      name: 'select',
+      meta: {
+        icon: 'ios-car',
+        title: '字典信息'
+      },
+      component: () => import('@/view/base/select.vue')
+    },
+  ]
+},
+  {
     path: '/',
     name: '_home',
     redirect: '/home',
