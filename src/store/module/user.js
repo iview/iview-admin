@@ -82,8 +82,9 @@ export default {
           userName,
           password
         }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
+          // const data = res.data
+          const token = res.token
+          commit('setToken', token)
           resolve()
         }).catch(err => {
           reject(err)
@@ -111,7 +112,7 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo(state.token).then(res => {
-            const data = res.data
+            const data = res
             commit('setAvator', data.avator)
             commit('setUserName', data.name)
             commit('setUserId', data.user_id)
@@ -129,8 +130,7 @@ export default {
     // 此方法用来获取未读消息条数，接口只返回数值，不返回消息列表
     getUnreadMessageCount ({ state, commit }) {
       getUnreadCount().then(res => {
-        const { data } = res
-        commit('setMessageCount', data)
+        commit('setMessageCount', res)
       })
     },
     // 获取消息列表，其中包含未读、已读、回收站三个列表
@@ -217,7 +217,6 @@ export default {
     // 获取用户路由
     getRoutersConfig ({state, commit}) {
       return getRouterReq().then((routersData) => {
-        debugger
         let routersConfig = _.cloneDeep(routersData.data)
         let newRoutersConfigObj = routersConfigAssembly(routersConfig)
         commit('setRoutersConfig', {newRouters: newRoutersConfigObj, routersData: routersData.data})
