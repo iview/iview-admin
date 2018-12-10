@@ -11,7 +11,7 @@
         <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
         show-total style="margin: 10px 0" @on-change="handleChangePage" />
     </Card>
-    <Drawer title="编辑组织机构" v-model="drawer.edit" width="720" :mask-closable="true" >
+    <Drawer title="编辑字典" v-model="drawer.edit" width="720" :mask-closable="true" >
         <Form ref="form.edit" :model="form.edit" :rules="rules.edit">
             <Row :gutter="32">
                 <Col span="24">
@@ -40,6 +40,20 @@
             <Button type="primary" @click="handleSubmit('form.edit')">提交</Button>
         </div>
     </Drawer>
+    <Drawer title="配置字典" v-model="drawer.manage" width="100%" :mask-closable="true" >
+        <Card>
+            <p slot="title">
+                所有键值
+            </p>
+            <Table size="small" stripe  :columns="columns_option" :data="data_option"></Table>
+            <Page :total="pageOption.total" :current="pageOption.current" :page-size="pageOption.pageSize" size="small" 
+            show-total style="margin: 10px 0" @on-change="handleChangePageOption" />
+        </Card>
+        <div style="margin-left:40%;margin-top:10%">
+            <Button style="margin-right: 8px" @click="drawer.manage=false">取消</Button>
+            <Button type="primary" @click="handleSubmit('form.edit')">提交</Button>
+        </div>
+    </Drawer>
   </div>
 </template>
 
@@ -49,9 +63,11 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import Treeselect from '@riophae/vue-treeselect'
 import { getOrgs,addOrUpdateOrg,delOrg,getOrg,orgTree,orgTreeIview,addOrgUser,delOrgUser } from '@/api/org'
 import { getSelects,getSelect,delSelect,saveSelect } from '@/api/base/select'
+import expandRow from './select-expand.vue';
 export default {
     components: {
-        Treeselect  
+        Treeselect  ,
+        expandRow 
     },
   data () {
     return {
@@ -64,7 +80,6 @@ export default {
             edit:false,
             manage:false,
         },
-        options: [],
         form:{
             edit:{
                 code:'',
@@ -79,6 +94,17 @@ export default {
             },
         },
         columns: [
+            {
+                type: 'expand',
+                width: 50,
+                render: (h, params) => {
+                    return h(expandRow, {
+                        props: {
+                            row: params.row
+                        }
+                    })
+                }
+            },
             {title: 'ID',key: 'id'},
             {title: '代码',key: 'code'},
             {title: '名称',key: 'name'},
@@ -128,12 +154,57 @@ export default {
                                     this.handleManage(params)
                                 }
                             }
-                        }, '管理'),
+                        }, '级联'),
+                    ]);
+                }
+            }
+        ],
+        columns_option: [
+            {title: 'ID',key: 'id'},
+            {title: '值',key: 'value'},
+            {title: '显示',key: 'name'},
+            {title: '所属字典',key: 'select_code'},
+            {
+                title: '操作',
+                key: 'status',
+                width: 200,
+                align: 'center',
+                render: (h, params) => {
+                    return h('div', [
+                        h('Button', {
+                            props: {
+                                type: 'error',
+                                size: 'small'
+                            },
+                            style:{
+                                marginRight: '5px'
+                            },
+                            on: {
+                                click: () => {
+                                    this.handleDelete(params)
+                                }
+                            }
+                        }, '删除'),
+                        h('Button', {
+                            props: {
+                                type: 'info',
+                                size: 'small'
+                            },
+                            style:{
+                                marginRight: '5px'
+                            },
+                            on: {
+                                click: () => {
+                                    this.handleEdit(params)
+                                }
+                            }
+                        }, '编辑'),
                     ]);
                 }
             }
         ],
         data: [],
+        data_option: [],
         query:{
             org_name:'',
             page:1
@@ -143,17 +214,23 @@ export default {
             total:0,
             pageSize:10,
         },
+        pageOption:{
+            current:1,
+            total:0,
+            pageSize:10,
+        },
+        select_id:'',
+        select_name:'',
     }
   },
   methods: {
     handleNewSelect(){
+        this.form.edit={};
         this.drawer.edit = true
     },
     handleManage(params){
-        this.org_id = params.row.id;
-        this.org_name = params.row.org_name;
-        this.handleGetUsers('all');
-        this.handleGetUsers('my');
+        this.select_id = params.row.id;
+        this.select_name = params.row.name;
         this.drawer.manage = true
     },
     handleChangePage(page){
@@ -207,7 +284,7 @@ export default {
     },
     handleEdit (params) {
         let id = params.row.id;
-        getOrg(id).then(res =>{
+        getSelect(id).then(res =>{
             if(res.data.status == 1){
                 console.log(res);
                 this.form.edit = res.data.data

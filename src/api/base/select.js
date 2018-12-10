@@ -28,4 +28,38 @@ export const saveSelect=(data)=>{
   })
 }
 
+export const getOptions=(params)=>{
+  return axios.request({
+    url: '/select/options',
+    method: 'get',
+    params:params
+  })
+}
+export const getOption=(id)=>{
+  return axios.request({
+    url: '/select/option/'+id,
+    method: 'get',
+  })
+}
+export const getOptionTree=(code)=>{
+  return axios.request({
+    url: '/select/option/tree',
+    method: 'get',
+    params:{code:code}
+  })
+}
+export const delOption=(id)=>{
+  return axios.request({
+    url: '/select/delete/option/'+id,
+    method: 'get',
+  })
+}
+export const saveOption=(data)=>{
+  return axios.request({
+    url: '/select/option/addOrUpdate',
+    method: 'post',
+    data:data
+  })
+}
+
 
