@@ -130,10 +130,6 @@
             <Button type="primary" @click="handleUpdate('form.update')">提交</Button>
         </div>
     </Drawer> 
-    <Modal v-model="modal.delete" title="提醒" @on-ok="ok"
-        @on-cancel="this.modal.delete=false">
-        <p>确认要删除这条内容？</p>
-    </Modal>   
   </div>
 </template>
 
@@ -365,15 +361,15 @@ export default {
         let id = params.row.id;
         getUser(id).then(res =>{
             if(res.data.status == 1){
-                this.form.update.id = res.data.id;
-                this.form.update.status = res.data.status;
-                this.form.update.username = res.data.username;
+                this.form.update.id = res.data.data.id;
+                this.form.update.status = res.data.data.status;
+                this.form.update.username = res.data.data.username;
                 this.form.update.password = '';
-                this.form.update.nickname = res.data.nickname;
-                this.form.update.phonenumber = res.data.phonenumber;
-                this.form.update.email = res.data.email;
-                this.form.update.valid = res.data.valid;
-                this.form.update.u_order = res.data.u_order;
+                this.form.update.nickname = res.data.data.nickname;
+                this.form.update.phonenumber = res.data.data.phonenumber;
+                this.form.update.email = res.data.data.email;
+                this.form.update.valid = res.data.data.valid;
+                this.form.update.u_order = res.data.data.u_order;
                 this.drawer.update = true;
             }
         })

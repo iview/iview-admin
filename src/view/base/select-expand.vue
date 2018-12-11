@@ -40,7 +40,7 @@
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import Treeselect from '@riophae/vue-treeselect'
-import { getOptions,getOption,delOption,saveOption,getOptionTree } from '@/api/base/select'
+import { getOptions,getOption,delOption,saveOption,getOptionTreeSelect } from '@/api/base/select'
 export default {
     props:{
         row:Object
@@ -69,6 +69,7 @@ export default {
         },
         columns_option: [
             {title: 'ID',key: 'id'},
+            {title: '父ID',key: 'pid'},
             {title: '值',key: 'value'},
             {title: '显示',key: 'name'},
             {title: '所属字典',key: 'select_code'},
@@ -142,7 +143,7 @@ export default {
                 saveOption(this.form.edit).then(res=>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg);
-                        this.handleGetOptions({code:this.row.select_code});
+                        this.handleGetOptions(this.row.select_code);
                         this.$refs[name].resetFields();
                         this.drawer.edit=false
                     }
@@ -160,10 +161,11 @@ export default {
             content:'确定要删除id为：'+params.row.id+"的记录？",
             onOk:()=>{
                 let id = params.row.id;
-                delSelect(id).then(res =>{
+                let code = params.row.select_code;
+                delOption(id).then(res =>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg)
-                        this.handleGetSelects()
+                        this.handleGetOptions(code)
                     }else{
                         this.$Message.error(res.data.msg)
                     }
@@ -175,16 +177,16 @@ export default {
     },
     handleEdit (params) {
         let id = params.row.id;
-        getSelect(id).then(res =>{
+        getOption(id).then(res =>{
             if(res.data.status == 1){
                 console.log(res);
                 this.form.edit = res.data.data
-                this.drawer.edit = true;
+                this.modal.edit = true
             }
         })
     },
-    handleGetOptions(row){
-        let param={code:row.code}
+    handleGetOptions(code){
+        let param={code:code}
         getOptions(param).then(res =>{
             if(res.data.status == 1){
                 this.data_option = res.data.data
@@ -193,8 +195,8 @@ export default {
     },
   },
   mounted () {
-      this.handleGetOptions(this.row)
-      this.handleGetOptionTree(this.row.code);
+      this.handleGetOptions(this.row.code)
+      this.handleGetOptionTreeSelect(this.row.code);
   }
 }
 </script>

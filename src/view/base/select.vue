@@ -2,8 +2,8 @@
   <div>
     <Card>
         <div class="search-con search-con-top">
-            <Input  clearable placeholder="输入id搜索" class="search-input" v-model="query.id"/>
-            <Input  clearable placeholder="输入资源名称搜索" class="search-input" v-model="query.org_name"/>
+            <Input  clearable placeholder="输入代码搜索" class="search-input" v-model="query.code"/>
+            <Input  clearable placeholder="输入名称搜索" class="search-input" v-model="query.name"/>
             <Button @click="handleGetSelects" class="search-btn" type="primary">搜索</Button>
             <Button @click="handleNewSelect" class="search-btn" type="success">新增</Button>
         </div>
@@ -40,14 +40,12 @@
             <Button type="primary" @click="handleSubmit('form.edit')">提交</Button>
         </div>
     </Drawer>
-    <Drawer title="配置字典" v-model="drawer.manage" width="100%" :mask-closable="true" >
+    <Drawer title="配置字典" v-model="drawer.manage" width="720" :mask-closable="true" >
         <Card>
             <p slot="title">
-                所有键值
+                {{this.select_name}}-键值树
             </p>
-            <Table size="small" stripe  :columns="columns_option" :data="data_option"></Table>
-            <Page :total="pageOption.total" :current="pageOption.current" :page-size="pageOption.pageSize" size="small" 
-            show-total style="margin: 10px 0" @on-change="handleChangePageOption" />
+            <Tree :data="data_tree" :render="renderContent"></Tree>
         </Card>
         <div style="margin-left:40%;margin-top:10%">
             <Button style="margin-right: 8px" @click="drawer.manage=false">取消</Button>
@@ -59,19 +57,14 @@
 
 <script>
 import './index.less'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import Treeselect from '@riophae/vue-treeselect'
-import { getOrgs,addOrUpdateOrg,delOrg,getOrg,orgTree,orgTreeIview,addOrgUser,delOrgUser } from '@/api/org'
-import { getSelects,getSelect,delSelect,saveSelect } from '@/api/base/select'
+import { getSelects,getSelect,delSelect,saveSelect,getOptionTree } from '@/api/base/select'
 import expandRow from './select-expand.vue';
 export default {
     components: {
-        Treeselect  ,
         expandRow 
     },
   data () {
     return {
-        dataAllOrg:[],
         modal:{
             delete:false,
             tree:false
@@ -204,10 +197,10 @@ export default {
             }
         ],
         data: [],
-        data_option: [],
+        data_tree: [],
         query:{
-            org_name:'',
-            page:1
+            code:'',
+            name:''
         },
         page:{
             current:1,
@@ -231,7 +224,12 @@ export default {
     handleManage(params){
         this.select_id = params.row.id;
         this.select_name = params.row.name;
-        this.drawer.manage = true
+        getOptionTree(params.row.code).then(res => {
+            if(res.data.status == 1){
+                this.data_tree = res.data.data
+                this.drawer.manage = true
+            }
+        });
     },
     handleChangePage(page){
         this.query.page = page;
@@ -289,8 +287,39 @@ export default {
                 console.log(res);
                 this.form.edit = res.data.data
                 this.drawer.edit = true;
+            }else{
+                this.$Message.error(res.data.msg);
             }
         })
+    },
+    renderContent (h, { root, node, data }) {
+        return h('span', {
+            style: {
+                display: 'inline-block',
+                width: '100%'
+            }
+        }, [
+            h('span', [
+                h('Icon', {
+                    props: {
+                        type: 'ios-paper-outline'
+                    },
+                    style: {
+                        marginRight: '8px'
+                    }
+                }),
+                h('span', data.title)
+            ]),
+            h('span', {
+                style: {
+                    display: 'inline-block',
+                    float: 'right',
+                    marginRight: '200px'
+                }
+            }, [
+                h('span', data.attributes?data.attributes.value:'')
+            ])
+        ]);
     },
   },
   mounted () {

@@ -48,6 +48,13 @@ export const getOptionTree=(code)=>{
     params:{code:code}
   })
 }
+export const getOptionTreeSelect=(code)=>{
+  return axios.request({
+    url: '/select/option/tree/select',
+    method: 'get',
+    params:{code:code}
+  })
+}
 export const delOption=(id)=>{
   return axios.request({
     url: '/select/delete/option/'+id,
