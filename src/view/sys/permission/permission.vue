@@ -36,23 +36,23 @@
           <FormItem label="ID">
             <Input v-model="updatePermission.id" :disabled="true"></Input>
           </FormItem>
-          <FormItem prop="title" label="名称">
-            <Input v-model="updatePermission.title" placeholder=""></Input>
+          <FormItem prop="title" label="标题">
+            <Input v-model="updatePermission.title" placeholder="菜单显示的名称"></Input>
+          </FormItem>
+          <FormItem v-if="updatePermission.type == 0" prop="name" label="名称">
+            <Input v-model="updatePermission.name" placeholder="菜单唯一标记，不可重复"></Input>
           </FormItem>
           <FormItem v-if="updatePermission.type == 0" prop="path" label="路由">
-            <Input v-model="updatePermission.path" placeholder=""></Input>
-          </FormItem>
-          <FormItem v-if="updatePermission.type == 0" prop="name" label="Key">
-            <Input v-model="updatePermission.name" placeholder=""></Input>
+            <Input v-model="updatePermission.path" placeholder="前端路由"></Input>
           </FormItem>
           <FormItem v-if="updatePermission.type == 0" prop="icon" label="图标">
-            <Input v-model="updatePermission.icon" placeholder=""></Input>
+            <Input v-model="updatePermission.icon" placeholder="菜单图标"></Input>
           </FormItem>
           <FormItem v-if="updatePermission.type == 0" prop="component" label="组件名">
-            <Input v-model="updatePermission.component" placeholder=""></Input>
+            <Input v-model="updatePermission.component" placeholder="组件名称"></Input>
           </FormItem>
           <FormItem label="备注" prop="description">
-            <Input v-model="updatePermission.description" type="textarea"/>
+            <Input v-model="updatePermission.description" type="textarea" placeholder="备注"/>
           </FormItem>
           <div v-if="updatePermission.type == 0" style="display: flex;justify-content: space-between;">
             <FormItem label="是否隐藏菜单" :label-width="100">
@@ -119,23 +119,23 @@
             <span v-text="addPermission.pid"></span>
           </FormItem>
         </div>
-        <FormItem label="名称" prop="title">
-          <Input v-model="addPermission.title" placeholder="请输入菜单名称"></Input>
+        <FormItem label="标题" prop="title">
+          <Input v-model="addPermission.title" placeholder="菜单显示的名称"></Input>
+        </FormItem>
+        <FormItem v-if="addPermission.type == 0" prop="name" label="名称">
+          <Input v-model="addPermission.name" placeholder="菜单唯一标记，不可重复"></Input>
         </FormItem>
         <FormItem v-if="addPermission.type == 0" prop="path" label="路由">
-          <Input v-model="addPermission.path" placeholder="请输入路由"></Input>
-        </FormItem>
-        <FormItem v-if="addPermission.type == 0" prop="name" label="Key">
-          <Input v-model="addPermission.name" placeholder="请输入Key"></Input>
+          <Input v-model="addPermission.path" placeholder="前端路由"></Input>
         </FormItem>
         <FormItem v-if="addPermission.type == 0" prop="icon" label="图标">
-          <Input v-model="addPermission.icon" placeholder="请输入图标"></Input>
+          <Input v-model="addPermission.icon" placeholder="菜单图标"></Input>
         </FormItem>
         <FormItem v-if="addPermission.type == 0" prop="component" label="组件名">
-          <Input v-model="addPermission.component" placeholder="请输入组件"></Input>
+          <Input v-model="addPermission.component" placeholder="组件名称"></Input>
         </FormItem>
         <FormItem label="备注" prop="description">
-          <Input v-model="addPermission.description" type="textarea" placeholder="请输入备注"/>
+          <Input v-model="addPermission.description" type="textarea" placeholder="备注"/>
         </FormItem>
         <div v-if="addPermission.type == 0" style="display: flex;justify-content: space-between;">
           <FormItem label="是否隐藏菜单" :label-width="100">
@@ -207,13 +207,13 @@ export default {
       updatePermission: {},
       permissionRuleValidate: {
         title: [
-          {required: true, message: '请输入菜单名称', trigger: 'blur'}
+          {required: true, message: '请输入标题', trigger: 'blur'}
+        ],
+        name: [
+          {required: true, message: '请输入名称', trigger: 'blur'}
         ],
         path: [
           {required: true, message: '请输入路由', trigger: 'blur'}
-        ],
-        name: [
-          {required: true, message: '请输入Key', trigger: 'blur'}
         ],
         icon: [
           {required: true, message: '请输入图标', trigger: 'blur'}
