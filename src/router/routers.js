@@ -94,8 +94,8 @@ export default [
   component: Main,
   children: [
     {
-      path: 'truckInfo',
-      name: 'truckInfo',
+      path: '/info',
+      name: 'info',
       meta: {
         icon: 'ios-car',
         title: '卡车信息'
@@ -103,8 +103,8 @@ export default [
       component: () => import('@/view/truck/info.vue')
     },
     {
-      path: 'driverInfo',
-      name: 'driverInfo',
+      path: '/driver',
+      name: 'driver',
       meta: {
         icon: 'ios-contacts',
         title: '司机信息'

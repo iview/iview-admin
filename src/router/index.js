@@ -1,12 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routers'
-import store from '@/store'
 import iView from 'iview'
-import { setToken, getToken, canTurnTo } from '@/libs/util'
 import { isLogin } from '@/api/user'
 import config from '@/config'
-const { homeName } = config
 
 Vue.use(Router)
 const router = new Router({
@@ -23,6 +20,7 @@ const turnTo = (to, access, next) => {
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
+  console.log(to);
   // next()
   if(to.name === LOGIN_PAGE_NAME){//登录页面不拦截
     next()

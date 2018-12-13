@@ -11,7 +11,7 @@
             <Button @click="handleNewRes" class="search-btn" type="success"><Icon type="search"/>新增</Button>
         </div>
         <Table size="small" stripe  :columns="columns" :data="data"></Table>
-        <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
+        <Page :total="page.total" :current="page.current" :page-size="page.pageSize"  
         show-total style="margin: 10px 0" @on-change="handleChangePage" />
     </Card>
     <Drawer title="编辑资源" v-model="drawer.edit" width="720" :mask-closable="true" >
@@ -218,6 +218,7 @@ export default {
             res_order:100,
             res_type:'link',
         }
+        this.handleGetResTree();
     },
     handleSubmit (name) {
         this.$refs[name].validate((valid) => {
@@ -273,7 +274,7 @@ export default {
         let id = params.row.id;
         getRes(id).then(res =>{
             if(res.data.status == 1){
-                console.log(res);
+                this.handleGetResTree();
                 this.form.edit = res.data.data
                 this.drawer.edit = true;
             }
