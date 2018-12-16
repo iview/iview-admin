@@ -52,6 +52,7 @@
                         <Input size="small" v-model="queryParams.all.username" style="width:150px" placeholder="请输入帐号"/>&nbsp;
                         <Input size="small" v-model="queryParams.all.nickname" style="width:150px" placeholder="请输入昵称"/>&nbsp;
                         <Button size="small" shape="circle" icon="ios-search" @click="handleGetUsers('all')" type="primary">查询</Button>
+                        <Button size="small" shape="circle" icon="ios-search" @click="handleGetUsers('all')" type="primary">查询</Button>
                     </div>
                     <Table stripe style="margin-top:10px"  size="small" :columns="columnAll" :data="dataUser.all"></Table>
                     <Page :total="page.all.total" :current="page.all.current" :page-size="page.all.pageSize" show-elevator

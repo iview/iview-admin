@@ -7,8 +7,14 @@ export default {
   org:'组织管理',
   self:'个人中心',
   truck:'卡车管理',
-  truckInfo:'卡车信息',
-  driverInfo:'司机信息',
+  driver:'司机信息',
+  info:'卡车信息',
+
+  mobile:'手机后台',
+  notice:'顶部公告',
+  carousel:'首页轮播',
+
+
   base:'基础配置',
   select:'字典信息',
   components: '组件',

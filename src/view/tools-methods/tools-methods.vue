@@ -4,6 +4,7 @@
       <Row>
         <i-col span="4">
           <Button @click="createTagParams">添加一个标签</Button>
+          <Button @click="handleAddRoute">添加一个标签2</Button>
         </i-col>
         <i-col span="20">
           <p>动态路由，添加params</p>
@@ -71,6 +72,22 @@ export default {
       this.closeTag({
         name: 'tools_methods_page'
       })
+    },
+    handleAddRoute(){
+      let routers=[
+        {
+          path: '/login',
+          name: 'login2',
+          meta: {
+            title: 'Login - 登录',
+            hideInMenu: true
+          },
+          component: () => import('@/view/login/login.vue')
+        },
+      ]
+      this.$router.addRoutes(routers)
+      this.$router.options.routes.push(routers)
+      debugger
     }
   }
 }

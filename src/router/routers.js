@@ -17,6 +17,12 @@ import parentView from '@/components/parent-view'
  * }
  */
 
+const componentMap={
+  main:Main,
+  login:() => import('@/view/login/login.vue'),
+  user:() => import('@/view/backend/user.vue')
+
+}
 export default [
   {
     path: '/login',
@@ -28,63 +34,63 @@ export default [
     component: () => import('@/view/login/login.vue')
   },
   {
-  path: '/backend',
-  name: 'backend',
-  meta: {
-    icon: 'md-contacts',
-    title: '后台管理'
-  },
-  component: Main,
-  children: [
-    {
-      path: 'user',
-      name: 'user',
-      meta: {
-        icon: 'ios-contacts',
-        title: '用户管理'
-      },
-      component: () => import('@/view/backend/user.vue')
+    path: '/backend',
+    name: 'backend',
+    meta: {
+      icon: 'md-contacts',
+      title: '后台管理'
     },
-    {
-      path: 'role',
-      name: 'role',
-      meta: {
-        icon: 'ios-ribbon',
-        title: '角色管理'
+    component: Main,
+    children: [
+      {
+        path: 'user',
+        name: 'user',
+        meta: {
+          icon: 'ios-contacts',
+          title: '用户管理'
+        },
+        component: componentMap.user
       },
-      component: () => import('@/view/backend/role.vue')
-    },
-    {
-      path: 'res',
-      name: 'res',
-      meta: {
-        icon: 'md-restaurant',
-        title: '资源管理'
+      {
+        path: 'role',
+        name: 'role',
+        meta: {
+          icon: 'ios-ribbon',
+          title: '角色管理'
+        },
+        component: () => import('@/view/backend/role.vue')
       },
-      component: () => import('@/view/backend/res.vue')
-    },
-    {
-      path: 'org',
-      name: 'org',
-      meta: {
-        icon: 'ios-git-network',
-        title: '组织管理'
+      {
+        path: 'res',
+        name: 'res',
+        meta: {
+          icon: 'md-restaurant',
+          title: '资源管理'
+        },
+        component: () => import('@/view/backend/res.vue')
       },
-      component: () => import('@/view/backend/org.vue')
-    },
-    {
-      path: 'self',
-      name: 'self',
-      meta: {
-        icon: 'ios-shirt',
-        title: '个人中心'
+      {
+        path: 'org',
+        name: 'org',
+        meta: {
+          icon: 'ios-git-network',
+          title: '组织管理'
+        },
+        component: () => import('@/view/backend/org.vue')
       },
-      component: () => import('@/view/backend/self.vue')
-    },
-    
-  ]
+      {
+        path: 'self',
+        name: 'self',
+        meta: {
+          icon: 'ios-shirt',
+          title: '个人中心'
+        },
+        component: () => import('@/view/backend/self.vue')
+      },
+      
+    ]
 },
-  {
+{
   path: '/truck',
   name: 'truck',
   meta: {
@@ -94,7 +100,7 @@ export default [
   component: Main,
   children: [
     {
-      path: '/info',
+      path: 'info',
       name: 'info',
       meta: {
         icon: 'ios-car',
@@ -103,14 +109,32 @@ export default [
       component: () => import('@/view/truck/info.vue')
     },
     {
-      path: '/driver',
+      path: 'driver',
       name: 'driver',
       meta: {
         icon: 'ios-contacts',
         title: '司机信息'
       },
       component: () => import('@/view/backend/user.vue')
-    }
+    },
+    {
+      path: 'notice',
+      name: 'notice',
+      meta: {
+        icon: 'ios-contacts',
+        title: '顶部公告'
+      },
+      component: () => import('@/view/truck/notice.vue')
+    },
+    {
+      path: 'carousel',
+      name: 'carousel',
+      meta: {
+        icon: 'ios-contacts',
+        title: '首页轮播'
+      },
+      component: () => import('@/view/truck/carousel.vue')
+    },
   ]
 },
   {
