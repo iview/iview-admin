@@ -1,7 +1,7 @@
 {
   "name": "iview-admin",
   "version": "2.0.0",
-  "author": "Lison<lison.modern@gmail.com>",
+  "author": "Lison<lison16new@163.com>",
   "private": false,
   "scripts": {
     "dev": "vue-cli-service serve --open",
