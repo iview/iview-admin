@@ -37,7 +37,7 @@
             <Row :gutter="32">
                 <Col span="24">
                     <FormItem label="轮播图片：" prop="url" label-position="top">
-                        <Upload action="/api/carousel/upload" name = "file">
+                        <Upload action="http://api.grelove.com/carousel/upload" :headers="headers" :with-credentials="withCredentials" name = "file">
                             <Button icon="ios-cloud-upload-outline">选择轮播图片</Button>
                         </Upload>
                     </FormItem>
@@ -71,6 +71,10 @@ export default {
     },
   data () {
     return {
+        headers: {
+            'Access-Control-Allow-Origin' : '*'
+        },
+        withCredentials:true,
         modal:{
             delete:false
         },
