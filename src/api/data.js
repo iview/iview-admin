@@ -35,3 +35,10 @@ export const uploadImg = formData => {
     data: formData
   })
 }
+
+export const getOrgData = () => {
+  return axios.request({
+    url: 'get_org_data',
+    method: 'get'
+  })
+}
