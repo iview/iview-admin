@@ -6,9 +6,11 @@ export default {
   res:'资源管理',
   org:'组织管理',
   self:'个人中心',
+
   truck:'卡车管理',
   driver:'司机信息',
   info:'卡车信息',
+  news:'新闻管理',
 
   mobile:'手机后台',
   notice:'顶部公告',
@@ -17,6 +19,9 @@ export default {
 
   base:'基础配置',
   select:'字典信息',
+  upload:'文件上传',
+
+
   components: '组件',
   count_to_page: '数字渐变',
   tables_page: '多功能表格',

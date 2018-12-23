@@ -2,37 +2,43 @@
   <div>
     <Card>
         <div class="search-con search-con-top">
-            <Input  clearable placeholder="输入标题搜索" class="search-input" v-model="query.title"/>
-            <Button @click="handleGetCarousels" class="search-btn" type="primary"><Icon type="search"/>搜索</Button>
-            <Button @click="handleNewCarousel" class="search-btn" type="success"><Icon type="search"/>新增</Button>
+            <Input  clearable placeholder="输入新闻标题搜索" class="search-input" v-model="query.title"/>
+            <Button @click="handleGetNewss" class="search-btn" type="primary"><Icon type="search"/>搜索</Button>
+            <Button @click="handleAddNew" class="search-btn" type="success"><Icon type="search"/>新增</Button>
         </div>
         <Table size="small" stripe  :columns="columns" :data="data"></Table>
         <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
         show-total style="margin: 10px 0" @on-change="handleChangePage" />
     </Card>
-    <Drawer title="编辑信息" v-model="drawer.edit" width="720" :mask-closable="true" >
+    <Drawer title="编辑新闻" v-model="drawer.edit" width="720" :mask-closable="true" >
         <Form ref="form.edit" :model="form.edit" :rules="rules.edit">
             <Row :gutter="32">
                 <Col span="12">
                     <FormItem label="标题：" prop="title" label-position="left">
-                        <Input v-model="form.edit.title" placeholder="请输入轮播名称" />
+                        <Input v-model="form.edit.title" placeholder="请输入新闻标题" />
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    <FormItem label="是否使用：" prop="valid" label-position="top">
-                        <Select v-model="form.edit.valid" class="search-col">
-                            <Option v-for="item in select.valid" :value="item.value" :key="item.value">{{ item.title }}</Option>
+                    <FormItem label="状态：" prop="status" label-position="top">
+                        <Select v-model="form.edit.status" class="search-col">
+                            <Option v-for="item in select.status" :value="item.value" :key="item.value">{{ item.name }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                
             </Row>
             <Row :gutter="32">
                 <Col span="12">
-                    <FormItem label="链接：" prop="url" label-position="top">
-                        <Input  v-model="form.edit.url"  placeholder="请输入链接" />
+                    <FormItem label="来源：" prop="source" label-position="left">
+                        <Input v-model="form.edit.source" placeholder="请输入新闻来源" />
                     </FormItem>
                 </Col>
+                <Col span="12">
+                    <FormItem label="标签：" prop="tag" label-position="left">
+                        <Input v-model="form.edit.tag" placeholder="请输入新闻标签" />
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row :gutter="32">
                 <Col span="12">
                     <FormItem label="顺序：" prop="order" label-position="top">
                         <Input  v-model="form.edit.order"  placeholder="请输入顺序" />
@@ -40,92 +46,80 @@
                 </Col>
             </Row>
             <Row :gutter="32">
-                <Col span="24">
-                    <FormItem label="轮播图片：" prop="pic" label-position="top">
-                        <Upload :action="url.upload"  :max-size="maxSize"
-                        :headers="headers" :with-credentials="withCredentials" name = "file"
-                        :on-success="handleGetUpId" :format="['jpg','jpeg','png']" :default-file-list="defaultList"
-                        >
-                            <Button icon="ios-cloud-upload-outline">选择轮播图片</Button>
-                        </Upload>
+                <Col span="12">
+                    <FormItem label="上传宣传图：" prop="pic" label-position="left">
+                       <BaseUpload :upid.sync="form.edit.img_id" />
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="32">
                 <Col span="24">
-                    <FormItem label="轮播描述：" prop="description" label-position="top">
-                        <Input v-model="form.edit.description" type="textarea" :rows="4" placeholder="请输入轮播描述。" />
+                    <FormItem label="描述：" prop="desc" label-position="left">
+                        <Input v-model="form.edit.desc" type="textarea" :rows="4" placeholder="请输入描述" />
                     </FormItem>
                 </Col>
             </Row>
+            <Row :gutter="32">
+                <Col span="24">
+                    <editor ref="editor" @on-change="handleChange" :value="form.edit.content"/>
+                </Col>
+            </Row>
         </Form>
-        <div style="margin-left:40%;margin-top:10%">
+        <div style="margin-left:40%">
             <Button style="margin-right: 8px" @click="drawer.edit=false">取消</Button>
             <Button type="primary" @click="handleSubmit('form.edit')">提交</Button>
         </div>
-    </Drawer>   
-    <Modal v-model="modal.view" title="预览图片">
-        <img :src="url.view" style="width:300px;height:200px;">
-    </Modal> 
+    </Drawer>    
   </div>
 </template>
 
 <script>
 import './index.less'
-import { getCarousels,getCarousel,saveCarousel,delCarousel } from '@/api/truck/carousel'
-import config from '@/config'
-const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+import Editor from '_c/editor'
+import BaseUpload from '@/view/base/base_upload'
+import { getNewss,saveNews,getNews,delNews,getContent } from '@/api/truck/news'
 export default {
+  components: {
+    Editor,BaseUpload
+  },
   data () {
     return {
-        defaultList:[],
-        maxSize:1024 * 5,
-        url:{
-            upload:baseUrl+"/carousel/upload",
-            view:'',
-        },
-        headers: {
-            'Access-Control-Allow-Origin' : '*'
-        },
-        withCredentials:true,
+        content:'',
         modal:{
-            delete:false,
-            view:false,
+            delete:false
         },
         drawer:{
             edit:false,
         },
         form:{
             edit:{
+                id:'',
                 title:'',
-                url:'',
-                description:'',
-                valid:1,
-                order:1,
+                status:'1',
+                content:''
             },
         },
         rules:{
             edit:{
                 title:[{required:true,message:'标题不能为空',trigger:'blur'}],
-                valid:[{required:true,message:'请选择是否使用',trigger:'change'}],
-                url:[{required:true,message:'链接不能为空',trigger:'blur'}],
             },
         },
         select:{
-            valid:[
-                {title:'有效' ,value:'1' },
-                {title:'无效' ,value:'0'},
+            status:[
+                {name:'草稿' ,value:'0' },
+                {name:'发表' ,value:'1' },
+                {name:'撤回' ,value:'2' },
             ],
         },
         columns: [
             {title: 'ID',key: 'id'},
             {title: '标题',key: 'title'},
-            {title: '跳转地址',key: 'url'},
-            {title: '描述',key: 'description'},
+            {title: '用户ID',key: 'user_id'},
+            {title: '状态',key: 'status'},
             {
                 title: '操作',
                 key: 'status',
-                width: 250,
+                width: 150,
                 align: 'center',
                 render: (h, params) => {
                     return h('div', [
@@ -148,26 +142,12 @@ export default {
                                 type: 'info',
                                 size: 'small'
                             },
-                            style:{
-                                marginRight: '5px'
-                            },
                             on: {
                                 click: () => {
                                     this.handleEdit(params)
                                 }
                             }
-                        }, '编辑'),
-                        h('Button', {
-                            props: {
-                                type: 'success',
-                                size: 'small'
-                            },
-                            on: {
-                                click: () => {
-                                    this.handleView(params)
-                                }
-                            }
-                        }, '预览'),
+                        }, '编辑')
                     ]);
                 }
             }
@@ -185,42 +165,33 @@ export default {
     }
   },
   methods: {
-    handleGetUpId(res,file,fileList){
-        this.form.edit.up_id = res.data
-        let path =baseUrl+"/upload/file/"+res.data
-        this.defaultList=[
-            {
-                name:'轮播图',
-                url:path,
-            }
-        ]
+    handleChange (html, text) {
+        console.log(html);
+        this.form.edit.content = html
     },
     handleChangePage(page){
         this.query.page = page;
-        this.handleGetCarousels();
+        this.handleGetNewss();
     },
-    handleNewCarousel(){
+    handleAddNew(){
         this.drawer.edit = true
         this.form.edit={
+            id:'',
             title:'',
-            url:'',
-            description:'',
-            valid:'1',
+            status:'0',
             order:1,
+            content:'',
+            // img_id:''
         }
+        this.$refs.editor.setHtml('<p>请输入</p>')
     },
     handleSubmit (name) {
-        console.log(this.form.edit)
         this.$refs[name].validate((valid) => {
             if (valid) {
-                if(!this.form.edit.up_id){
-                    this.$Message.error('请上传图片')
-                    return
-                }
-                saveCarousel(this.form.edit).then(res=>{
+                saveNews(this.form.edit).then(res=>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg);
-                        this.handleGetCarousels();
+                        this.handleGetNewss();
                         this.$refs[name].resetFields();
                         this.drawer.edit=false
                     }
@@ -232,8 +203,8 @@ export default {
             }
         })
     },
-    handleGetCarousels(){
-        getCarousels(this.query).then((res)=>{
+    handleGetNewss(){
+        getNewss(this.query).then((res)=>{
             this.data = res.data.data.rows;
             this.page.current=res.data.pageNum
             this.page.total=res.data.total
@@ -243,13 +214,13 @@ export default {
     handleDelete (params) {
         let config={
             title:'提醒',
-            content:'确定要删除记录？',
+            content:'确定要删除id为：'+params.row.id+"的记录？",
             onOk:()=>{
                 let id = params.row.id;
-                delCarousel(id).then(res =>{
+                delNews(id).then(res =>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg)
-                        this.handleGetCarousels()
+                        this.handleGetNewss()
                     }else{
                         this.$Message.error(res.data.msg)
                     }
@@ -261,29 +232,19 @@ export default {
     },
     handleEdit (params) {
         let id = params.row.id;
-        getCarousel(id).then(res =>{
+        getNews(id).then(res =>{
             if(res.data.status == 1){
-                console.log(res);
                 this.form.edit = res.data.data
                 this.drawer.edit = true;
-                let path =baseUrl+"/upload/file/"+res.data.data.up_id
-                this.defaultList=[
-                    {
-                        name:'轮播图',
-                        url:path,
-                    }
-                ]
+                getContent(res.data.data.content_id).then(res =>{
+                    this.$refs.editor.setHtml(res.data.data.content)
+                })
             }
         })
-    },
-    handleView (params) {
-         let uid = params.row.up_id;
-         this.url.view = baseUrl+"/upload/file/"+uid;
-        this.modal.view =true
     }
   },
   mounted () {
-    this.handleGetCarousels();
+    this.handleGetNewss();
   }
 }
 </script>

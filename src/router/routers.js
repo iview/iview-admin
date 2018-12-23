@@ -135,6 +135,15 @@ export default [
       },
       component: () => import('@/view/truck/carousel.vue')
     },
+    {
+      path: 'news',
+      name: 'news',
+      meta: {
+        icon: 'ios-contacts',
+        title: '新闻'
+      },
+      component: () => import('@/view/truck/news.vue')
+    },
   ]
 },
   {
@@ -154,6 +163,15 @@ export default [
         title: '字典信息'
       },
       component: () => import('@/view/base/select.vue')
+    },
+    {
+      path: 'upload',
+      name: 'upload',
+      meta: {
+        icon: 'ios-car',
+        title: '文件上传'
+      },
+      component: () => import('@/view/base/upload.vue')
     },
   ]
 },

@@ -10,6 +10,7 @@ const router = new Router({
   routes,
   mode: 'history'
 })
+
 const LOGIN_PAGE_NAME = 'login'
 
 const turnTo = (to, access, next) => {
@@ -20,13 +21,21 @@ const turnTo = (to, access, next) => {
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
-  console.log(to);
-  // next()
   if(to.name === LOGIN_PAGE_NAME){//登录页面不拦截
+    isLogin().then(res=>{
+      if(res.data === true){
+        next({
+          name: 'home' // 跳转到登录页
+        })
+      }else{
+        next()
+      }
+    }).catch(e=>{
+      next()
+    });
     next()
   }else{
     isLogin().then(res=>{
-      console.log(res);
       if(res.data === true){
         next()
       }else{

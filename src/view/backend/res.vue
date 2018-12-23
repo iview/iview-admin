@@ -240,10 +240,12 @@ export default {
     },
     handleGetRess(){
         getRess(this.query).then((res)=>{
-            this.data = res.data.rows;
-            this.page.current=res.data.pageNum
-            this.page.total=res.data.total
-            this.page.pageSize=res.data.pageSize
+            if(res.data.status ==1){
+                this.data = res.data.data.rows;
+                this.page.current=res.data.data.pageNum
+                this.page.total=res.data.data.total
+                this.page.pageSize=res.data.data.pageSize
+            }
         });
     },
     handleGetResTree(){
