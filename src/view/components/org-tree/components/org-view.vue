@@ -160,11 +160,9 @@ export default {
     }
   },
   mounted () {
-    on(document, 'mousedown', this.mousedownView)
     on(document, 'contextmenu', this.handleDocumentContextmenu)
   },
   beforeDestroy () {
-    off(document, 'mousedown', this.mousedownView)
     off(document, 'contextmenu', this.handleDocumentContextmenu)
   }
 }
