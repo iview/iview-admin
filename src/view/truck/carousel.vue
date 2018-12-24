@@ -42,12 +42,7 @@
             <Row :gutter="32">
                 <Col span="24">
                     <FormItem label="轮播图片：" prop="pic" label-position="top">
-                        <Upload :action="url.upload"  :max-size="maxSize"
-                        :headers="headers" :with-credentials="withCredentials" name = "file"
-                        :on-success="handleGetUpId" :format="['jpg','jpeg','png']" :default-file-list="defaultList"
-                        >
-                            <Button icon="ios-cloud-upload-outline">选择轮播图片</Button>
-                        </Upload>
+                       <BaseUpload :upid.sync="form.edit.up_id" />
                     </FormItem>
                 </Col>
             </Row>
@@ -73,21 +68,18 @@
 <script>
 import './index.less'
 import { getCarousels,getCarousel,saveCarousel,delCarousel } from '@/api/truck/carousel'
+import BaseUpload from '@/view/base/base_upload'
 import config from '@/config'
 const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 export default {
+  components: {
+    BaseUpload
+  },
   data () {
     return {
-        defaultList:[],
-        maxSize:1024 * 5,
         url:{
-            upload:baseUrl+"/carousel/upload",
             view:'',
         },
-        headers: {
-            'Access-Control-Allow-Origin' : '*'
-        },
-        withCredentials:true,
         modal:{
             delete:false,
             view:false,
@@ -185,16 +177,6 @@ export default {
     }
   },
   methods: {
-    handleGetUpId(res,file,fileList){
-        this.form.edit.up_id = res.data
-        let path =baseUrl+"/upload/file/"+res.data
-        this.defaultList=[
-            {
-                name:'轮播图',
-                url:path,
-            }
-        ]
-    },
     handleChangePage(page){
         this.query.page = page;
         this.handleGetCarousels();

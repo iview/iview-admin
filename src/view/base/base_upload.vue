@@ -48,6 +48,9 @@ export default {
     handleOkUpload(res,file,fileList){
         let id=res.data.id
         this.$emit('update:upid',id)
+        let url_path = baseUrl+"/upload/file/"+id
+        this.fileList = [{path:url_path}]
+
     },
     handleGetFile(upid){
         if(upid){
