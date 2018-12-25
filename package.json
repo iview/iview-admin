@@ -1,7 +1,7 @@
 {
   "name": "iview-admin",
   "version": "2.0.0",
-  "author": "Lison<lison.modern@gmail.com>",
+  "author": "Lison<lison16new@163.com>",
   "private": false,
   "scripts": {
     "dev": "vue-cli-service serve --open",
@@ -25,6 +25,7 @@
     "simplemde": "^1.11.2",
     "sortablejs": "^1.7.0",
     "tree-table-vue": "^1.1.0",
+    "v-org-tree": "^1.0.6",
     "vue": "^2.5.10",
     "vue-i18n": "^7.8.0",
     "vue-router": "^3.0.1",

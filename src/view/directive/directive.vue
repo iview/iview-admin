@@ -44,7 +44,7 @@
                   <br/>
                 &lt;/Input&gt;
                 <pre class="code-con">
-    inputValue = {
+    clipOptions: {
       value: this.inputValue,
       success: (e) => {
         this.$Message.success('复制成功')
