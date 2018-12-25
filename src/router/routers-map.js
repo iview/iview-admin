@@ -98,6 +98,24 @@ export const staticRouters = [
         component: () => import('@/view/sys/user/user.vue')
       },
       {
+        path: 'permission_table_page',
+        name: 'permission_table_page',
+        meta: {
+          icon: 'md-contacts',
+          title: '权限管理'
+        },
+        component: () => import('@/view/sys/permission/permission.vue')
+      },
+      {
+        path: 'role_table_page',
+        name: 'role_table_page',
+        meta: {
+          icon: 'md-contacts',
+          title: '角色管理'
+        },
+        component: () => import('@/view/sys/role/role.vue')
+      },
+      {
         path: 'update_paste_page',
         name: 'update_paste_page',
         meta: {
