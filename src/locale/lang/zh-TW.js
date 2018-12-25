@@ -38,5 +38,7 @@ export default {
   params: '動態路由',
   cropper_page: '圖片裁剪',
   message_page: '消息中心',
-  tree_table_page: '樹狀表格'
+  tree_table_page: '樹狀表格',
+  org_tree_page: '組織結構樹',
+  drag_drawer_page: '可拖動抽屜'
 }
