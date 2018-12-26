@@ -10,7 +10,7 @@
         <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
         show-total style="margin: 10px 0" @on-change="handleChangePage" />
     </Card>
-    <Drawer title="编辑新闻" v-model="drawer.edit" width="720" :mask-closable="true" >
+    <Drawer title="编辑新闻" v-model="drawer.edit" width="720" :mask-closable="false" >
         <Form ref="form.edit" :model="form.edit" :rules="rules.edit">
             <Row :gutter="32">
                 <Col span="12">
