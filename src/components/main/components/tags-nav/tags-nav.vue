@@ -34,7 +34,7 @@
             :key="`tag-nav-${index}`"
             :name="item.name"
             :data-route-item="item"
-            @on-close="handleClose(item)"
+            @on-close="close(item)"
             @click.native="handleClick(item)"
             :closable="item.name !== $config.homeName"
             :color="isCurrentTag(item) ? 'primary' : 'default'"

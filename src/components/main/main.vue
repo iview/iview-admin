@@ -104,7 +104,8 @@ export default {
       'setTagNavList',
       'addTag',
       'setLocal',
-      'setHomeRoute'
+      'setHomeRoute',
+      'closeTag'
     ]),
     ...mapActions([
       'handleLogin',
@@ -140,6 +141,7 @@ export default {
           this.$router.push(nextRoute)
         }
       }
+      this.closeTag(route)
       this.setTagNavList(res)
     },
     handleClick (item) {
