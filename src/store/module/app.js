@@ -19,11 +19,12 @@ import config from '@/config'
 const { homeName } = config
 
 const closePage = (state, route) => {
-  const nextRoute = getNextRoute(state.tagNavList, route)
+  // const nextRoute = getNextRoute(state.tagNavList, route)
   state.tagNavList = state.tagNavList.filter(item => {
     return !routeEqual(item, route)
   })
-  router.push(nextRoute)
+  // router.push(nextRoute)
+  router.go(-1)
 }
 
 export default {
