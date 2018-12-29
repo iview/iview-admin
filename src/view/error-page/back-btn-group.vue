@@ -11,7 +11,7 @@ export default {
   name: 'backBtnGroup',
   data () {
     return {
-      second: 5,
+      second: this.$config.error_page_stay_time,
       timer: null
     }
   },
@@ -22,7 +22,11 @@ export default {
       })
     },
     backPrev () {
-      this.$router.go(-1)
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.replace({
+          name: this.$config.homeName
+        })
     }
   },
   mounted () {
