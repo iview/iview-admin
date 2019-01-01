@@ -1,0 +1,66 @@
+
+<template>
+  <div>
+        <Select
+            v-model="value"
+            filterable
+            remote
+            :remote-method="handleGetSelect"
+            @on-change="handleChangeSelect"
+            :loading="loading">
+            <Option v-for="(option, index) in options" :value="option.value" :key="index">{{option.label}}</Option>
+        </Select>
+  </div>
+</template>
+
+<script>
+import { getOptions} from '@/api/base/select'
+export default {
+    props:{
+        code:String,
+        value:String
+    },
+  data () {
+    return {
+        loading : true,
+        options:[],
+    }
+  },
+  methods: {
+    handleChangeSelect(value){
+        this.$emit('update:value',value)
+    },
+    handlegetSelect(query){
+        this.loading = true
+        getOptions({code:this.code}).then(res => {
+            if(res.data.status == 1){
+                this.loading=false
+                const list = res.data.data.map(item => {
+                    return {
+                        value:item.value,
+                        label:item.name
+                    };
+                });
+                if(query){
+                    this.options = list.filter(
+                        item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
+                    );
+                }else{
+                    this.options = list
+                }
+            }
+        })
+    }
+  },
+  watch:{
+      name(newValue,oldValue){
+          this.handlegetSelect(newValue)
+      }
+  },
+  mounted () {
+      this.handlegetSelect()
+  }
+}
+</script>
+<style>
+</style>

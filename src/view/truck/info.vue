@@ -2,9 +2,9 @@
   <div>
     <Card>
         <div class="search-con search-con-top">
-            <Input  clearable placeholder="输入资源名称搜索" class="search-input" v-model="query.res_name"/>
+            <Input  clearable placeholder="输入搜索" class="search-input" v-model="query.name"/>
             <Button @click="handleGetTrucks" class="search-btn" type="primary"><Icon type="search"/>搜索</Button>
-            <Button @click="handleNewRes" class="search-btn" type="success"><Icon type="search"/>新增</Button>
+            <Button @click="handleNewTruck" class="search-btn" type="success"><Icon type="search"/>新增</Button>
         </div>
         <Table size="small" stripe  :columns="columns" :data="data"></Table>
         <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
@@ -15,7 +15,7 @@
             <Row :gutter="32">
                 <Col span="12">
                     <FormItem label="品牌：" prop="brand" label-position="left">
-                        <Input v-model="form.edit.res_code" placeholder="请输入资源代码" />
+                        <BaseSelect code="truck_brand" :value.sync="this.form.edit.brand" />
                     </FormItem>
                 </Col>
                 <Col span="12">
@@ -78,15 +78,14 @@
 
 <script>
 import './index.less'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import Treeselect from '@riophae/vue-treeselect'
+import BaseSelect from '@/view/base/base_select'
 import { getRess,addOrUpdateRes,delRes,getRes,resTree } from '@/api/res'
 import { getTrucks } from '@/api/truck/info'
 export default {
     components: {
-        Treeselect  
+        BaseSelect
     },
-  data () {
+    data () {
     return {
         modal:{
             delete:false
@@ -179,8 +178,7 @@ export default {
             pageSize:10
         },
       query:{
-          res_enable:'Y',
-          res_name:'',
+          name:'',
           page:1
       }
 
@@ -191,7 +189,7 @@ export default {
         this.query.page = page;
         this.handleGetTrucks();
     },
-    handleNewRes(){
+    handleNewTruck(){
         this.drawer.edit = true
         this.form.edit={
             res_code:'',
