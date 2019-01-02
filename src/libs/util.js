@@ -25,6 +25,40 @@ const showThisMenuEle = (item, access) => {
     else return false
   } else return true
 }
+
+/**
+ * @description 将后端菜单树转换为路由树
+ * @param {Array} menus
+ * @returns {Array}
+ */
+export const backendMenusToRouters = (menus) => {
+  let routers = []
+  forEach(menus, (menu) => {
+    // 将后端数据转换成路由数据
+    let route = backendMenuToRoute(menu)
+    // 如果后端数据有下级，则递归处理下级
+    if (menu.children && menu.children.length !== 0) {
+      route.children = backendMenusToRouters(menu.children)
+    }
+    routers.push(route)
+  })
+  return routers
+}
+
+/**
+ * @description 将后端菜单转换为路由
+ * @param {Object} menu
+ * @returns {Object}
+ */
+const backendMenuToRoute = (menu) => {
+  // 具体内容根据自己的数据结构来定，这里需要注意的一点是
+  // 原先routers写法是component: () => import('@/view/error-page/404.vue')
+  // 经过json数据转换，这里会丢失，所以需要按照上面提过的做转换，下面只写了核心点，其他自行处理
+  let route = Object.assign({}, menu)
+  route.component = () => import(`@/${menu.component}`)
+  return route
+}
+
 /**
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}

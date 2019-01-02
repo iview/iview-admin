@@ -29,9 +29,7 @@ export default {
       switch (name) {
         case 'logout':
           this.handleLogOut().then(() => {
-            this.$router.push({
-              name: 'login'
-            })
+            window.location = '/login'
           })
           break
       }

@@ -28,3 +28,10 @@ export const logout = (token) => {
     method: 'post'
   })
 }
+
+export const listUserMenus = () => {
+  return axios.request({
+    url: 'get_user_menus',
+    method: 'get'
+  })
+}
