@@ -116,7 +116,7 @@ export default {
         let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.homeName)
         this.$emit('on-close', res, 'others', this.currentRouteObj)
         setTimeout(() => {
-          this.getTagElementByName(this.currentRouteObj.name)
+          this.getTagElementByRoute(this.currentRouteObj)
         }, 100)
       }
     },
@@ -160,7 +160,7 @@ export default {
         this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
       }
     },
-    getTagElementByName (route) {
+    getTagElementByRoute (route) {
       this.$nextTick(() => {
         this.refsTag = this.$refs.tagsPageOpened
         this.refsTag.forEach((item, index) => {
@@ -186,7 +186,7 @@ export default {
   },
   watch: {
     '$route' (to) {
-      this.getTagElementByName(to)
+      this.getTagElementByRoute(to)
     },
     visible (value) {
       if (value) {
@@ -198,7 +198,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.getTagElementByName(this.$route)
+      this.getTagElementByRoute(this.$route)
     }, 200)
   }
 }
