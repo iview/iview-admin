@@ -72,6 +72,13 @@
     <Drawer title="用户修改" v-model="drawer.update" width="720" :mask-closable="true" >
         <Form ref="form.update" :model="form.update" label-position="right" :label-width="70"  :rules="rules.update">
             <Row :gutter="32">
+                <Col span="24">
+                    <FormItem label="头像：" prop="avatar"  >
+                        <BaseUpload :upid.sync="form.update.avatar_id" />
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row :gutter="32">
                 <Col span="12">
                     <FormItem label="帐号：" prop="username"  >
                         {{form.update.username}}
@@ -135,8 +142,12 @@
 
 <script>
 import './index.less'
+import BaseUpload from '@/view/base/base_upload'
 import { getAllUser,isExist,addUser,deleteUser,getUser,updateUser } from '@/api/user'
 export default {
+    components: {
+        BaseUpload
+    },
   data () {
     const validatorUsername=(rule,value,callback)=>{
         if(value === ''){
@@ -370,6 +381,7 @@ export default {
                 this.form.update.email = res.data.data.email;
                 this.form.update.valid = res.data.data.valid;
                 this.form.update.u_order = res.data.data.u_order;
+                this.form.update.avatar_id = res.data.data.avatar_id;
                 this.drawer.update = true;
             }
         })
