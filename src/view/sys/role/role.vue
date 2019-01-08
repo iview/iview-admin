@@ -15,52 +15,70 @@
     </Row>
     <Row class="operation" type="flex" justify="space-between">
       <div class="opt-group">
-        <Button class="opt-btn" type="primary" icon="md-add" @click="form.addForm.visible = true">添加</Button>
-        <Button class="opt-btn" icon="md-git-pull-request" @click="assignPermissionModal">分配权限</Button>
-        <Button class="opt-btn" icon="md-trash">删除</Button>
+        <Button class="opt-btn" type="primary" icon="md-add" @click="handleAddRole">添加</Button>
+        <!--<Button class="opt-btn" icon="md-git-pull-request" @click="assignPermissionModal">分配权限</Button>-->
+        <Button class="opt-btn" icon="md-trash" @click="handleDeletRole">删除</Button>
       </div>
       <div>
         <Button icon="md-refresh" @click="handleSearch">刷新</Button>
       </div>
     </Row>
     <Row>
-      <Table ref="table" border stripe :columns="table.columns" :data="table.data" :loading="table.loading"></Table>
+      <Table ref="table" border stripe :columns="table.columns" :data="table.data" :loading="table.loading" @on-selection-change="onSelectionChange"></Table>
     </Row>
     <Row type="flex" justify="center" class="page">
       <Page show-sizer :total="table.total" @on-change="onChange" @on-page-size-change="onPageSizeChange"/>
     </Row>
-    <!--<coustom-form title="添加角色" v-model="form.addForm.visible"-->
-    <!--:form-column="form.addForm.formColumn"-->
-    <!--:loading="form.addForm.loading"-->
-    <!--@on-visible-change="addOnVisibleChange"-->
-    <!--@form-data="addFormData"-->
-    <!--@on-ok="handleAddForm"></coustom-form>-->
+    <Modal ref="addOrUpdateModal" v-model="view.showAddOrUpdateModal" :title="view.addOrUpdateTitle" :mask-closable="false" ok-text="提交" :loading="true" @on-ok="onOk" :width="600">
+      <Form ref="addOrUpdateFormRef" :model="addOrUpdateRoleDto" :rules="roleRuleValidate" :label-width="80">
+        <FormItem prop="name" label="角色名">
+          <Input v-model="addOrUpdateRoleDto.name"></Input>
+        </FormItem>
+        <FormItem label="排序号">
+          <InputNumber v-model="addOrUpdateRoleDto.sort"></InputNumber>
+        </FormItem>
+        <FormItem label="状态">
+          <i-switch size="large" v-model="addOrUpdateRoleDto.status" :true-value="1" :false-value="0">
+            <span slot="open">正常</span>
+            <span slot="close">禁用</span>
+          </i-switch>
+        </FormItem>
+        <FormItem prop="description" label="备注">
+          <Input type="textarea" v-model="addOrUpdateRoleDto.description"/>
+        </FormItem>
+      </Form>
+    </Modal>
 
-    <Modal ref="assignPermissionModal" v-model="view.assignPermissionModal" title="分配权限">
-      <div class="tree-z">
-        <Tree ref="tree" :data="dataTree" show-checkbox></Tree>
-      </div>
-      <div slot="footer">
-        <Button type="primary" @click="updateRolePermission">提交</Button>
+    <Modal ref="assignPermissionModal" v-model="view.showAssignPermissionModal" title="分配权限" :mask-closable="false" ok-text="提交" :loading="true" @on-ok="onOkAssignPermission" :width="600">
+      <div class="tree-z" style="position: relative">
+        <!--@on-select-change="onSelectChange"-->
+        <Tree ref="tree" :data="dataTree" empty-text="暂无数据" show-checkbox></Tree>
+        <Spin  size="large" fix v-if="view.assignPermissionLoading">
+          <Icon type="ios-loading" size=18 class="spin-icon-load"></Icon>
+          <div>加载中</div>
+        </Spin>
       </div>
     </Modal>
   </Card>
 </template>
 
 <script>
-import {addForm} from '@/api/common'
-import {getRoleList, getRolePermissionTree, updateRolePermission} from '@/api/sys/role'
+import { apiGetRoleList, apiAddRole, apiUpdateRole, apiDeleteRole, apiGetRolePermissionTree, apiUpdateRolePermission } from '@/api/sys/role'
 import CoustomForm from '../../components/form/coustom-form'
 
 export default {
-  name: 'user',
+  name: 'role',
   components: {
     CoustomForm
   },
   data () {
     return {
       view: {
-        assignPermissionModal: false
+        showAddOrUpdateModal: false,
+        showAssignPermissionModal: false,
+        assignPermissionLoading: true,
+        addOrUpdateTitle: '',
+        isAddOrUpdate: false
       },
       filter: {
         querys: [
@@ -73,15 +91,11 @@ export default {
         current: 1,
         pageSize: 10
       },
-      dataTree: [],
-      assignPermission: {
-        roleId: null,
-        permIds: null
-      },
       table: {
         loading: false,
         total: 0,
         data: [],
+        selectionData: [],
         columns: [
           {
             type: 'selection',
@@ -90,19 +104,43 @@ export default {
           },
           {
             title: 'ID',
-            key: 'id'
+            key: 'id',
+            width: 100,
+            align: 'center'
           },
           {
             title: '角色名',
-            key: 'name'
+            key: 'name',
+            align: 'center'
           },
           {
             title: '排序号',
-            key: 'sort'
+            key: 'sort',
+            align: 'center'
           },
           {
             title: '状态',
-            key: 'status'
+            key: 'status',
+            align: 'center',
+            render: (h, params) => {
+              if (params.row.status === 0) {
+                return h('div', [
+                  h('tag', {
+                    props: {
+                      color: 'warning'
+                    }
+                  }, '禁用')
+                ])
+              } else if (params.row.status === 1) {
+                return h('div', [
+                  h('tag', {
+                    props: {
+                      color: 'success'
+                    }
+                  }, '正常')
+                ])
+              }
+            }
           },
           {
             title: '备注',
@@ -127,6 +165,7 @@ export default {
                     on: {
                       click: () => {
                         console.log(params.row)
+                        this.assignPermission(params.row)
                       }
                     }
                   },
@@ -143,11 +182,12 @@ export default {
                     },
                     on: {
                       click: () => {
-                        this.edit(params.row)
+                        console.log(params.row)
+                        this.handleUpdateRole(params.row)
                       }
                     }
                   },
-                  '编辑'
+                  '修改'
                 ),
                 h(
                   'Button',
@@ -158,7 +198,7 @@ export default {
                     },
                     on: {
                       click: () => {
-                        this.remove(params.row)
+                        this.deletRole(params.row)
                       }
                     }
                   },
@@ -169,57 +209,30 @@ export default {
           }
         ]
       },
-      tableSelectionData: [],
-      form: {
-        addForm: {
-          visible: false,
-          loading: true,
-          formColumn: [
-            {
-              key: 'name',
-              label: '角色名',
-              type: 'input',
-              placeholder: '请输入角色名',
-              ext: {
-                clearable: true
-              },
-              data: 1
-            },
-            {
-              key: 'sort',
-              label: '排序号',
-              type: 'input-number',
-              ext: {},
-              data: 1
-            },
-            {
-              key: 'status',
-              label: '状态',
-              type: 'switch',
-              ext: {
-                trueValue: 1,
-                falseValue: 0
-              },
-              data: [
-                {
-                  name: '打开',
-                  value: 'open'
-                },
-                {
-                  name: '关闭',
-                  value: 'close'
-                }
-              ]
-            },
-            {
-              key: 'description',
-              label: '描述',
-              type: 'textarea',
-              placeholder: '请输入描述'
-            }
-          ],
-          formData: {}
-        }
+      dataTree: [],
+      roleInitDto: {
+        name: '',
+        sort: 0,
+        status: 1,
+        description: ''
+      },
+      addOrUpdateRoleDto: {
+        name: '',
+        sort: 0,
+        status: 1,
+        description: ''
+      },
+      assignPermissionDto: {
+        roleId: null,
+        permIds: []
+      },
+      roleRuleValidate: {
+        name: [
+          { required: true, message: '请输入角色名', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '请输入备注', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -235,7 +248,7 @@ export default {
     },
     getList () {
       this.table.loading = true
-      getRoleList(this.filter).then(res => {
+      apiGetRoleList(this.filter).then(res => {
         this.filter.current = res.data.current
         this.filter.pageSize = res.data.size
         this.table.data = res.data.records
@@ -251,43 +264,100 @@ export default {
       this.filter.pageSize = pageSize
       this.getList()
     },
-    assignPermissionModal () {
-      if (this.$refs.table.getSelection().length <= 0 || this.$refs.table.getSelection().length > 1) {
-        this.$Message.warning('请选择需要分配权限的一条数据')
-        return
-      }
-      this.dataTree = []
-      getRolePermissionTree(this.$refs.table.getSelection()[0].id).then(res => {
-        this.assignPermission.roleId = this.$refs.table.getSelection()[0].id
-        this.dataTree = res.data
-        this.view.assignPermissionModal = true
+    handleAddRole: function () {
+      this.view.addOrUpdateTitle = '添加角色'
+      this.view.isAddOrUpdate = true
+      this.addOrUpdateRoleDto = _.cloneDeep(this.roleInitDto)
+      this.view.showAddOrUpdateModal = true
+    },
+    handleUpdateRole: function (row) {
+      this.view.addOrUpdateTitle = '修改角色'
+      this.view.isAddOrUpdate = false
+      let { id, name, sort, status, description } = row
+      this.addOrUpdateRoleDto = { id, name, sort, status, description }
+      this.view.showAddOrUpdateModal = true
+    },
+    onOk: function () {
+      this.$refs.addOrUpdateFormRef.validate(valid => {
+        if (valid) {
+          if (this.view.isAddOrUpdate) {
+            apiAddRole(this.addOrUpdateRoleDto).then(res => {
+              this.$Message.success('添加成功')
+              this.view.showAddOrUpdateModal = false
+              this.getList()
+            })
+          } else {
+            apiUpdateRole(this.addOrUpdateRoleDto).then(res => {
+              this.$Message.success('修改成功')
+              this.view.showAddOrUpdateModal = false
+              this.getList()
+            })
+          }
+        } else {
+          this.$refs.addOrUpdateModal.buttonLoading = false
+        }
       })
     },
-    updateRolePermission () {
+    onSelectionChange: function (e) {
+      this.table.selectionData = e
+    },
+    handleDeletRole: function () {
+      if (this.table.selectionData.length <= 0) {
+        this.$Message.warning('请选择要删除的数据')
+        return
+      }
+      this.$Modal.confirm({
+        title: '确认删除',
+        content: '您确认要删除所选的 ' + this.table.selectionData.length + ' 条数据?',
+        onOk: () => {
+          let ids = ''
+          this.table.selectionData.forEach(function (e) {
+            ids += e.id + ','
+          })
+          ids = ids.substring(0, ids.length - 1)
+          apiDeleteRole(ids).then(res => {
+            this.$Message.success('删除成功')
+            this.init()
+          })
+        }
+      })
+    },
+    deletRole: function (row) {
+      this.$Modal.confirm({
+        title: '确认删除',
+        content: '您确认要删除角色' + row.name + ' ?',
+        onOk: () => {
+          let ids = ''
+          ids = row.id
+          apiDeleteRole(ids).then(res => {
+            this.$Message.success('删除成功')
+            this.init()
+          })
+        }
+      })
+    },
+    assignPermission: function (row) {
+      this.dataTree = []
+      this.view.showAssignPermissionModal = true
+      this.view.assignPermissionLoading = true
+      this.assignPermissionDto.roleId = row.id
+      apiGetRolePermissionTree(row.id).then(res => {
+        this.view.assignPermissionLoading = false
+        this.dataTree = res.data
+      })
+    },
+    onOkAssignPermission: function () {
       let permIds = []
-      // let selectedNodes = this.$refs.tree.getSelectedNodes();
       let selectedNodes = this.$refs.tree.getCheckedNodes()
       selectedNodes.forEach(function (e) {
         permIds.push(e.id)
       })
-      this.assignPermission.permIds = permIds
-      updateRolePermission(this.assignPermission).then(res => {
-        console.log(res)
+      this.assignPermissionDto.permIds = permIds
+      apiUpdateRolePermission(this.assignPermissionDto).then(res => {
+        this.view.showAssignPermissionModal = false
+        this.$Message.success('分配成功')
       })
-    },
-    addOnVisibleChange (val) {
-      this.form.addForm.visible = val
-    },
-    addFormData (val) {
-      this.form.addForm.formData = val
-    },
-    handleAddForm () {
-      addForm({data: this.form.addForm.formData, url: 'admin/sys/role'}).then(res => {
-        if (res.code === 200) {
-          this.form.addForm.visible = false
-          this.$Message.success('添加成功')
-        }
-      })
+      this.$refs.assignPermissionModal.buttonLoading = false
     }
   },
   mounted () {
@@ -319,7 +389,8 @@ export default {
   }
 
   .tree-z {
-    max-height: 500px;
+    max-height: 430px;
+    min-height: 50px;
     overflow: auto;
   }
 
@@ -332,5 +403,9 @@ export default {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 0 2px #d1d1d1;
     background: #e4e4e4;
+  }
+
+  .spin-icon-load {
+    animation: ani-demo-spin 1s linear infinite;
   }
 </style>
