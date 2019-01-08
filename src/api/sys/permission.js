@@ -1,31 +1,31 @@
 import axios from '@/libs/api.request'
 
-export const getPermissionTree = () => {
+export const apiGetPermissionTree = () => {
   return axios.request({
-    url: '/sys/permission/getPermissionTree',
+    url: '/admin/sys/permission/getPermissionTree',
     method: 'GET'
   })
 }
 
-export const addPermission = (data) => {
+export const apiAddPermission = (data) => {
   return axios.request({
-    url: '/sys/permission',
+    url: '/admin/sys/permission',
     data: data,
     method: 'POST'
   })
 }
 
-export const updatePermission = (data) => {
+export const apiUpdatePermission = (data) => {
   return axios.request({
-    url: '/sys/permission',
+    url: '/admin/sys/permission',
     data: data,
     method: 'PUT'
   })
 }
 
-export const deletePermissions = (data) => {
+export const apiDeletePermissions = (data) => {
   return axios.request({
-    url: '/sys/permission/' + data,
+    url: '/admin/sys/permission/' + data,
     method: 'DELETE'
   })
 }

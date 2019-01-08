@@ -1,62 +1,69 @@
 <template>
   <Card>
     <Row class="operation">
-      <Button type="primary" icon="md-add" @click="handleAddPermission">添加菜单</Button>
-      <Button icon="ios-trash" @click="handleDelPermission">删除菜单</Button>
-      <Button icon="md-barcode" @click="getPermissionTree">刷新</Button>
+      <Button type="primary" icon="md-add" @click="handleAddPermission(0)">添加一级菜单</Button>
+      <Button type="primary" icon="md-add" @click="handleAddPermission(1)">添加子节点</Button>
+      <Button icon="ios-trash" @click="handleDeletePermission">删除菜单</Button>
+      <Button icon="md-barcode" @click="initPermissionTree">刷新</Button>
     </Row>
     <Row type="flex" justify="start" style="margin-top: 10px">
       <Col span="6">
-        <Alert show-icon v-if="!view.loadingUpdate">当前选择：{{view.selectTitle}}</Alert>
-        <Alert show-icon v-if="view.loadingUpdate">暂无选择：</Alert>
-        <div class="tree-z">
-          <Tree ref="tree" :data="dataTree" show-checkbox @on-select-change="onSelectChange"></Tree>
+        <Alert show-icon v-if="!view.updatePermissionLoading">当前选择：{{view.selectTitle}}</Alert>
+        <Alert show-icon v-if="view.updatePermissionLoading">暂无选择：</Alert>
+        <div class="tree-z" style="position: relative">
+          <Tree ref="tree" :data="dataTree" empty-text="暂无数据" show-checkbox @on-select-change="onSelectChange"></Tree>
+          <Spin  size="large" fix v-if="view.treeLoading">
+            <Icon type="ios-loading" size=18 class="spin-icon-load"></Icon>
+            <div>加载中</div>
+          </Spin>
         </div>
       </Col>
       <Col span="14">
-        <Form :label-width="80" :model="updatePermission" ref="updatePermissionFormValidate"
-              :rules="permissionRuleValidate">
+        <Form ref="updateFormRef" :model="updatePermissionDto" :rules="permissionRuleValidate" :label-width="80">
           <div style="display: flex;justify-content: start;">
+            <FormItem label="ID">
+              <Input v-model="updatePermissionDto.id" :disabled="true"></Input>
+            </FormItem>
             <FormItem label="类型">
-              <RadioGroup v-model="updatePermission.type">
-                <Radio :label="0" :disabled="updatePermission.type == 1">
+              <RadioGroup v-model="updatePermissionDto.type">
+                <Radio :label="0" :disabled="updatePermissionDto.type == 1">
                   <Icon type="md-menu" size="16"/>
                   <span>菜单</span>
                 </Radio>
-                <Radio :label="1" :disabled="updatePermission.type == 0">
+                <Radio :label="1" :disabled="updatePermissionDto.type == 0">
                   <Icon type="logo-youtube" size="16"/>
                   <span>按钮</span>
                 </Radio>
               </RadioGroup>
             </FormItem>
             <FormItem label="排序号">
-              <InputNumber v-model="updatePermission.sort"></InputNumber>
+              <InputNumber v-model="updatePermissionDto.sort"></InputNumber>
             </FormItem>
           </div>
-          <FormItem label="ID">
-            <Input v-model="updatePermission.id" :disabled="true"></Input>
-          </FormItem>
           <FormItem prop="title" label="标题">
-            <Input v-model="updatePermission.title" placeholder="菜单显示的名称"></Input>
+            <Input v-model="updatePermissionDto.title"></Input>
           </FormItem>
-          <FormItem v-if="updatePermission.type == 0" prop="name" label="名称">
-            <Input v-model="updatePermission.name" placeholder="菜单唯一标记，不可重复"></Input>
+          <FormItem prop="name" label="英文名" v-if="updatePermissionDto.type == 0">
+            <Input v-model="updatePermissionDto.name"></Input>
           </FormItem>
-          <FormItem v-if="updatePermission.type == 0" prop="path" label="路由">
-            <Input v-model="updatePermission.path" placeholder="前端路由"></Input>
+          <FormItem prop="path" label="前端路由" v-if="updatePermissionDto.type == 0">
+            <Input v-model="updatePermissionDto.path"></Input>
           </FormItem>
-          <FormItem v-if="updatePermission.type == 0" prop="icon" label="图标">
-            <Input v-model="updatePermission.icon" placeholder="菜单图标"></Input>
+          <FormItem prop="component" label="前端组件" v-if="updatePermissionDto.type == 0">
+            <Input v-model="updatePermissionDto.component"></Input>
           </FormItem>
-          <FormItem v-if="updatePermission.type == 0" prop="component" label="组件名">
-            <Input v-model="updatePermission.component" placeholder="组件名称"></Input>
+          <FormItem prop="icon" label="图标" v-if="updatePermissionDto.type == 0">
+            <Input v-model="updatePermissionDto.icon"></Input>
           </FormItem>
-          <FormItem label="备注" prop="description">
-            <Input v-model="updatePermission.description" type="textarea" placeholder="备注"/>
+          <FormItem prop="permCode" label="权限编码" v-if="updatePermissionDto.type == 1">
+            <Input v-model="updatePermissionDto.permCode"></Input>
           </FormItem>
-          <div v-if="updatePermission.type == 0" style="display: flex;justify-content: space-between;">
-            <FormItem label="是否隐藏菜单" :label-width="100">
-              <RadioGroup v-model="updatePermission.hideInMenu">
+          <FormItem prop="description" label="备注">
+            <Input type="textarea" v-model="updatePermissionDto.description"/>
+          </FormItem>
+          <div style="display: flex;justify-content: space-between;">
+            <FormItem label="是否隐藏菜单" :label-width="100" v-if="updatePermissionDto.type == 0">
+              <RadioGroup v-model="updatePermissionDto.hideInMenu">
                 <Radio :label="1">
                   是
                 </Radio>
@@ -65,8 +72,8 @@
                 </Radio>
               </RadioGroup>
             </FormItem>
-            <FormItem label="是否隐藏面包屑" :label-width="100">
-              <RadioGroup v-model="updatePermission.hideInBread">
+            <FormItem label="是否隐藏面包屑" :label-width="100" v-if="updatePermissionDto.type == 0">
+              <RadioGroup v-model="updatePermissionDto.hideInBread">
                 <Radio :label="1">
                   是
                 </Radio>
@@ -75,8 +82,8 @@
                 </Radio>
               </RadioGroup>
             </FormItem>
-            <FormItem label="是否缓存" :label-width="100">
-              <RadioGroup v-model="updatePermission.notCache">
+            <FormItem label="是否缓存" :label-width="100" v-if="updatePermissionDto.type == 0">
+              <RadioGroup v-model="updatePermissionDto.notCache">
                 <Radio :label="1">
                   是
                 </Radio>
@@ -87,59 +94,59 @@
             </FormItem>
           </div>
           <Form-item>
-            <Button type="primary" style="margin-right: 5px;" @click="updatePermissionOpt">修改保存</Button>
+            <Button type="primary" :loading="view.updateButtonLoading" @click="handleUpdatePermission" style="margin-right: 5px;">修改保存</Button>
           </Form-item>
         </Form>
-        <Spin size="large" fix v-if="view.loadingUpdate">
-          <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+        <Spin size="large" fix v-if="view.updatePermissionLoading">
+          <Icon type="ios-loading" size=18 class="spin-icon-load"></Icon>
           <div>暂无操作</div>
         </Spin>
       </Col>
     </Row>
 
-    <Modal v-model="view.showAddModal" title="添加权限" ok-text="提交" :loading="true" :width="600">
-      <Form :label-width="80" :model="addPermission" ref="addPermissionFormValidate" :rules="permissionRuleValidate">
+    <Modal ref="addModal" v-model="view.showAddModal" title="添加权限" :mask-closable="false" ok-text="提交" :loading="true" @on-ok="onOk" :width="600">
+      <Form ref="addFormRef" :model="addPermissionDto" :rules="permissionRuleValidate" :label-width="80">
         <div style="display: flex;justify-content: start;">
           <FormItem label="类型">
-            <RadioGroup v-model="addPermission.type">
-              <Radio :label="0" :disabled="addPermission.type == 1">
+            <RadioGroup v-model="addPermissionDto.type">
+              <Radio :label="0" :disabled="addPermissionDto.type == 1">
                 <Icon type="md-menu" size="16"/>
                 <span>菜单</span>
               </Radio>
-              <Radio :label="1" :disabled="addPermission.type == 0">
+              <Radio :label="1" :disabled="addPermissionDto.type == 0">
                 <Icon type="logo-youtube" size="16"/>
                 <span>按钮</span>
               </Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="排序号">
-            <InputNumber v-model="addPermission.sort"></InputNumber>
-          </FormItem>
-          <FormItem label="pid">
-            <span v-text="addPermission.pid"></span>
+            <InputNumber v-model="addPermissionDto.sort"></InputNumber>
           </FormItem>
         </div>
-        <FormItem label="标题" prop="title">
-          <Input v-model="addPermission.title" placeholder="菜单显示的名称"></Input>
+        <FormItem prop="title" label="标题">
+          <Input v-model="addPermissionDto.title"></Input>
         </FormItem>
-        <FormItem v-if="addPermission.type == 0" prop="name" label="名称">
-          <Input v-model="addPermission.name" placeholder="菜单唯一标记，不可重复"></Input>
+        <FormItem prop="name" label="英文名" v-if="addPermissionDto.type == 0">
+          <Input v-model="addPermissionDto.name"></Input>
         </FormItem>
-        <FormItem v-if="addPermission.type == 0" prop="path" label="路由">
-          <Input v-model="addPermission.path" placeholder="前端路由"></Input>
+        <FormItem prop="path" label="前端路由" v-if="addPermissionDto.type == 0">
+          <Input v-model="addPermissionDto.path"></Input>
         </FormItem>
-        <FormItem v-if="addPermission.type == 0" prop="icon" label="图标">
-          <Input v-model="addPermission.icon" placeholder="菜单图标"></Input>
+        <FormItem prop="component" label="前端组件" v-if="addPermissionDto.type == 0">
+          <Input v-model="addPermissionDto.component"></Input>
         </FormItem>
-        <FormItem v-if="addPermission.type == 0" prop="component" label="组件名">
-          <Input v-model="addPermission.component" placeholder="组件名称"></Input>
+        <FormItem prop="icon" label="图标" v-if="addPermissionDto.type == 0">
+          <Input v-model="addPermissionDto.icon"></Input>
         </FormItem>
-        <FormItem label="备注" prop="description">
-          <Input v-model="addPermission.description" type="textarea" placeholder="备注"/>
+        <FormItem prop="permCode" label="权限编码" v-if="addPermissionDto.type == 1">
+          <Input v-model="addPermissionDto.permCode"></Input>
         </FormItem>
-        <div v-if="addPermission.type == 0" style="display: flex;justify-content: space-between;">
-          <FormItem label="是否隐藏菜单" :label-width="100">
-            <RadioGroup v-model="addPermission.hideInMenu">
+        <FormItem prop="description" label="备注">
+          <Input type="textarea" v-model="addPermissionDto.description"/>
+        </FormItem>
+        <div style="display: flex;justify-content: space-between;">
+          <FormItem label="是否隐藏菜单" :label-width="100" v-if="addPermissionDto.type == 0">
+            <RadioGroup v-model="addPermissionDto.hideInMenu">
               <Radio :label="1">
                 是
               </Radio>
@@ -148,8 +155,8 @@
               </Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem label="是否隐藏面包屑" :label-width="100">
-            <RadioGroup v-model="addPermission.hideInBread">
+          <FormItem label="是否隐藏面包屑" :label-width="100" v-if="addPermissionDto.type == 0">
+            <RadioGroup v-model="addPermissionDto.hideInBread">
               <Radio :label="1">
                 是
               </Radio>
@@ -158,8 +165,8 @@
               </Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem label="是否缓存" :label-width="100">
-            <RadioGroup v-model="addPermission.notCache">
+          <FormItem label="是否缓存" :label-width="100" v-if="addPermissionDto.type == 0">
+            <RadioGroup v-model="addPermissionDto.notCache">
               <Radio :label="1">
                 是
               </Radio>
@@ -170,128 +177,186 @@
           </FormItem>
         </div>
       </Form>
-      <div slot="footer">
-        <Button type="primary" @click="addPermissionOpt">提交</Button>
-      </div>
+      <!--<div slot="footer">-->
+        <!--<Button type="primary">提交</Button>-->
+      <!--</div>-->
     </Modal>
   </Card>
 </template>
 
 <script>
-import {getPermissionTree, addPermission, updatePermission, deletePermissions} from '@/api/sys/permission'
+import { apiGetPermissionTree, apiAddPermission, apiUpdatePermission, apiDeletePermissions } from '@/api/sys/permission'
 
 export default {
   name: 'permission',
   data () {
     return {
       view: {
-        showAddModal: false,
-        loadingUpdate: true,
-        selectTitle: ''
+        treeLoading: true, // tree 加载动画
+        updatePermissionLoading: true, // 修改权限加载动画
+        selectTitle: '', // 选中 title
+        showAddModal: false, // 显示添加Modal
+        updateButtonLoading: false
       },
       dataTree: [],
-      permissionInit: {
+      permissionInitDto: {
+        id: '',
         type: 0,
         sort: 0,
         title: '',
-        path: '',
         name: '',
-        icon: '',
+        path: '',
         component: '',
+        icon: '',
+        permCode: '',
         description: '',
         hideInMenu: 0,
         hideInBread: 0,
         notCache: 0
       },
-      addPermission: {},
-      updatePermission: {},
+      addPermissionDto: {
+        id: '',
+        type: 0,
+        sort: 0,
+        title: '',
+        name: '',
+        path: '',
+        component: '',
+        icon: '',
+        permCode: '',
+        description: '',
+        hideInMenu: 0,
+        hideInBread: 0,
+        notCache: 0
+      },
+      updatePermissionDto: {
+        id: '',
+        type: 0,
+        sort: 0,
+        title: '',
+        name: '',
+        path: '',
+        component: '',
+        icon: '',
+        permCode: '',
+        description: '',
+        hideInMenu: 0,
+        hideInBread: 0,
+        notCache: 0
+      },
       permissionRuleValidate: {
         title: [
-          {required: true, message: '请输入标题', trigger: 'blur'}
+          { required: true, message: '请输入标题', trigger: 'blur' }
         ],
         name: [
-          {required: true, message: '请输入名称', trigger: 'blur'}
+          { required: true, message: '请输入英文名', trigger: 'blur' }
         ],
         path: [
-          {required: true, message: '请输入路由', trigger: 'blur'}
-        ],
-        icon: [
-          {required: true, message: '请输入图标', trigger: 'blur'}
+          { required: true, message: '请输入前端路由', trigger: 'blur' }
         ],
         component: [
-          {required: true, message: '请输入组件', trigger: 'blur'}
+          { required: true, message: '请输入前端组件', trigger: 'blur' }
+        ],
+        icon: [
+          { required: true, message: '请输入图标', trigger: 'blur' }
+        ],
+        permCode: [
+          { required: true, message: '请输入权限编码', trigger: 'blur' }
         ],
         description: [
-          {required: true, message: '请输入备注', trigger: 'blur'}
+          { required: true, message: '请输入备注', trigger: 'blur' }
         ]
       }
     }
   },
   created () {
-    this.addPermission = _.cloneDeep(this.permissionInit)
-    this.updatePermission = _.cloneDeep(this.permissionInit)
-    this.getPermissionTree()
+    this.initPermissionTree()
   },
   methods: {
-    getPermissionTree: function () {
-      getPermissionTree().then(res => {
+    initPermissionTree: function () { // 获取树节点
+      this.view.updatePermissionLoading = true
+      this.view.treeLoading = true
+      this.updatePermissionDto = _.cloneDeep(this.permissionInitDto)
+      apiGetPermissionTree().then(res => {
         this.dataTree = res.data
+        this.view.treeLoading = false
       })
     },
-    handleAddPermission: function () {
-      let selectedNodes = this.$refs.tree.getSelectedNodes()[0]
-      if (selectedNodes) {
-        if (selectedNodes.pid === 0) {
-          this.addPermission.pid = selectedNodes.id
-          this.addPermission.type = 0
-          this.view.showAddModal = true
+    onSelectChange: function (e) { // 点击节点事件
+      let permissionTree = e[0]
+      if (permissionTree) {
+        let { id, type, sort, title, name, path, component, icon, permCode, description, hideInMenu, hideInBread, notCache } = permissionTree
+        this.updatePermissionDto = {
+          id,
+          type,
+          sort,
+          title,
+          name,
+          path,
+          component,
+          icon,
+          permCode,
+          description,
+          hideInMenu,
+          hideInBread,
+          notCache
+        }
+        this.view.selectTitle = title
+        this.view.updatePermissionLoading = false
+      } else {
+        this.view.updatePermissionLoading = true
+        this.updatePermissionDto = _.cloneDeep(this.permissionInitDto)
+      }
+    },
+    handleAddPermission: function (e) {
+      this.addPermissionDto = _.cloneDeep(this.permissionInitDto)
+      if (e === 0) { // 一级菜单
+        this.addPermissionDto.pid = 0
+        this.addPermissionDto.type = 0
+      } else if (e === 1) { // 子节点
+        let selectedNodes = this.$refs.tree.getSelectedNodes()[0]
+        if (!selectedNodes) {
+          this.$Message.warning('请选择子节点')
           return
         }
         if (selectedNodes.type === 1) {
-          this.$Message.error('按钮下不允许添加！')
+          this.$Message.warning('按钮下不允许添加')
           return
-        } else {
-          this.addPermission.pid = selectedNodes.id
-          this.addPermission.type = 1
         }
-      } else {
-        this.addPermission.pid = 0
-        this.addPermission.type = 0
+        this.addPermissionDto.pid = selectedNodes.id
+        console.log(this.addPermissionDto)
+        if (selectedNodes.pid === 0) {
+          this.addPermissionDto.type = 0
+        } else {
+          this.addPermissionDto.type = 1
+        }
       }
       this.view.showAddModal = true
     },
-    addPermissionOpt: function () {
-      this.$refs['addPermissionFormValidate'].validate((valid) => {
+    handleUpdatePermission: function () {
+      this.$refs.updateFormRef.validate(valid => {
         if (valid) {
-          addPermission(this.addPermission).then(res => {
+          apiUpdatePermission(this.updatePermissionDto).then(res => {
+            this.$Message.success('修改成功')
+            this.initPermissionTree()
+          })
+        }
+      })
+    },
+    onOk: function () {
+      this.$refs.addFormRef.validate(valid => {
+        if (valid) {
+          apiAddPermission(this.addPermissionDto).then(res => {
+            this.$Message.success('添加成功')
             this.view.showAddModal = false
-            if (res.code === 200) {
-              this.$refs['addPermissionFormValidate'].resetFields()
-              this.$Message.success('添加成功')
-              this.getPermissionTree()
-            } else {
-              this.$Message.error('添加失败')
-            }
+            this.initPermissionTree()
           })
+        } else {
+          this.$refs.addModal.buttonLoading = false
         }
       })
     },
-    updatePermissionOpt: function () {
-      this.$refs['updatePermissionFormValidate'].validate((valid) => {
-        if (valid) {
-          updatePermission(this.updatePermission).then(res => {
-            if (res.code === 200) {
-              this.$Message.success('修改保存成功')
-              this.view.selectTitle = this.updatePermission.title
-              this.getPermissionTree()
-            } else {
-              this.$Message.error('修改保存失败')
-            }
-          })
-        }
-      })
-    },
-    handleDelPermission: function () {
+    handleDeletePermission: function () {
       if (this.$refs.tree.getCheckedNodes().length <= 0) {
         this.$Message.warning('请选择要删除的数据')
         return
@@ -305,38 +370,12 @@ export default {
             ids += e.id + ','
           })
           ids = ids.substring(0, ids.length - 1)
-          deletePermissions(ids).then(res => {
-            if (res.code === 200) {
-              this.$Message.success('删除成功')
-              this.getPermissionTree()
-            }
+          apiDeletePermissions(ids).then(res => {
+            this.$Message.success('删除成功')
+            this.initPermissionTree()
           })
         }
       })
-    },
-    onSelectChange: function (e) {
-      if (e[0]) {
-        let {id, type, sort, title, path, name, icon, component, description, hideInMenu, hideInBread, notCache} = e[0]
-        this.updatePermission = {
-          id,
-          type,
-          sort,
-          title,
-          path,
-          name,
-          icon,
-          component,
-          description,
-          hideInMenu,
-          hideInBread,
-          notCache
-        }
-        this.view.selectTitle = title
-        this.view.loadingUpdate = false
-      } else {
-        this.view.loadingUpdate = true
-        this.updatePermission = this.permissionInit
-      }
     }
   }
 }
@@ -365,7 +404,7 @@ export default {
     background: #e4e4e4;
   }
 
-  .demo-spin-icon-load {
+  .spin-icon-load {
     animation: ani-demo-spin 1s linear infinite;
   }
 </style>
