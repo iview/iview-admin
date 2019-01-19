@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import {getToken} from './util'
 // import { Spin } from 'iview'
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
@@ -22,7 +23,13 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         //
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
+    }
+    // 设置请求头部token
+    let token = getToken()
+    if (token !== false) {
+      config.headers['Authorization'] = token
     }
     return config
   }

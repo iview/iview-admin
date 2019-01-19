@@ -1,10 +1,11 @@
 import axios from '@/libs/api.request'
+import qs from 'query-string'
 
 export const login = ({ userName, password }) => {
-  const data = {
-    userName,
-    password
-  }
+  const data = qs.stringify({
+    account: userName,
+    password: password
+  })
   return axios.request({
     url: 'login',
     data,
@@ -25,6 +26,9 @@ export const getUserInfo = (token) => {
 export const logout = (token) => {
   return axios.request({
     url: 'logout',
-    method: 'post'
+    // headers: {
+    //   'Authorization': token
+    // },
+    method: 'get'
   })
 }

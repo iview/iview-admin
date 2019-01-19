@@ -41,8 +41,12 @@ export default {
           password
         }).then(res => {
           const data = res.data
-          commit('setToken', data.token)
-          resolve()
+          if (data.code !== 0) {
+            reject(data.msg)
+          } else {
+            commit('setToken', data.data)
+            resolve()
+          }
         }).catch(err => {
           reject(err)
         })
@@ -68,17 +72,27 @@ export default {
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
-          getUserInfo(state.token).then(res => {
-            const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
-            commit('setHasGetInfo', true)
-            resolve(data)
-          }).catch(err => {
-            reject(err)
-          })
+          const data = {avator: 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png',
+            name: 'admin',
+            user_id: 1,
+            access: 'admin'}
+          commit('setAvator', data.avator)
+          commit('setUserName', data.name)
+          commit('setUserId', data.user_id)
+          commit('setAccess', data.access)
+          commit('setHasGetInfo', true)
+          resolve(data)
+          // getUserInfo(state.token).then(res => {
+          //   const data = res.data
+          //   commit('setAvator', data.avator)
+          //   commit('setUserName', data.name)
+          //   commit('setUserId', data.user_id)
+          //   commit('setAccess', data.access)
+          //   commit('setHasGetInfo', true)
+          //   resolve(data)
+          // }).catch(err => {
+          //   reject(err)
+          // })
         } catch (error) {
           reject(error)
         }

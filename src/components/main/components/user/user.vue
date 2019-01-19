@@ -5,6 +5,12 @@
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
         <DropdownItem name="logout">退出登录</DropdownItem>
+        <Modal
+          v-model="modal1"
+          title="退出系统？"
+          @on-ok="ok">
+          <p>确定要退出吗？</p>
+        </Modal>
       </DropdownMenu>
     </Dropdown>
   </div>
@@ -21,18 +27,26 @@ export default {
       default: ''
     }
   },
+  data () {
+    return {
+      modal1: false
+    }
+  },
   methods: {
+    ok () {
+      this.handleLogOut().then(() => {
+        this.$router.push({
+          name: 'login'
+        })
+      })
+    },
     ...mapActions([
       'handleLogOut'
     ]),
     handleClick (name) {
       switch (name) {
         case 'logout':
-          this.handleLogOut().then(() => {
-            this.$router.push({
-              name: 'login'
-            })
-          })
+          this.modal1 = true
           break
       }
     }

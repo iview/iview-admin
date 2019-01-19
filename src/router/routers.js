@@ -59,6 +59,35 @@ export default [
     }
   },
   {
+    path: '/system',
+    name: 'system',
+    meta: {
+      icon: 'md-menu',
+      title: '系统管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'dicts',
+        name: 'dicts',
+        meta: {
+          icon: 'md-funnel',
+          title: '字典管理'
+        },
+        component: () => import('@/view/dicts/dicts.vue')
+      },
+      {
+        path: 'dicts2',
+        name: 'dicts2',
+        meta: {
+          icon: 'md-funnel',
+          title: '字典管理2'
+        },
+        component: () => import('@/view/dicts/dicts.vue')
+      }
+    ]
+  },
+  {
     path: '/multilevel',
     name: 'multilevel',
     meta: {
