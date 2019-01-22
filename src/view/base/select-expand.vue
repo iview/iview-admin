@@ -137,13 +137,14 @@ export default {
         });
     },
     handleSubmit (name) {
+        let rowCode = this.row.code;
         this.$refs[name].validate((valid) => {
             if (valid) {
                 this.form.edit.select_code = this.row.code
                 saveOption(this.form.edit).then(res=>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg);
-                        this.handleGetOptions(this.row.select_code);
+                        this.handleGetOptions(rowCode);
                         this.$refs[name].resetFields();
                         this.drawer.edit=false
                     }
@@ -196,7 +197,7 @@ export default {
   },
   mounted () {
       this.handleGetOptions(this.row.code)
-      this.handleGetOptionTreeSelect(this.row.code);
+    //   this.handleGetOptionTreeSelect(this.row.code);
   }
 }
 </script>

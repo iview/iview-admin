@@ -10,7 +10,7 @@
         <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
         show-total style="margin: 10px 0" @on-change="handleChangePage" />
     </Card>
-    <Drawer title="编辑卡车信息" v-model="drawer.edit" width="720" :mask-closable="true" >
+    <Drawer title="编辑卡车信息" v-model="drawer.edit" width="720" :mask-closable="false" >
         <Form ref="form.edit" :model="form.edit" :rules="rules.edit">
             <Row :gutter="32">
                 <Col span="12">
@@ -19,51 +19,37 @@
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    <FormItem label="资源名称：" prop="res_name" label-position="top">
-                        <Input v-model="form.edit.res_name" placeholder="请输入资源名称" />
+                    <FormItem label="里程数：" prop="mileage" label-position="top">
+                        <Input   v-model="form.edit.mileage" placeholder="请输入里程数" />
                     </FormItem>
                 </Col>
                 
             </Row>
             <Row :gutter="32">
                 <Col span="12">
-                    <FormItem label="资源类型：" prop="res_type" label-position="left">
-                        <Select v-model="form.edit.res_type" class="search-col">
-                            <Option v-for="item in select.res_type" :value="item.key" :key="item.key">{{ item.title }}</Option>
-                        </Select>
+                    <FormItem label="生产日期：" prop="create_time" label-position="top">
+                        <br/>
+                        <DatePicker v-model="form.edit.create_time" type="date" placeholder="选择生产日期" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="12">
-                    <FormItem label="资源URL：" prop="res_url" label-position="top">
-                        <Input   v-model="form.edit.res_url" placeholder="请输入资源URL" />
+                    <FormItem label="出厂日期：" prop="product_time" label-position="left">
+                        <br/>
+                        <DatePicker  v-model="form.edit.product_time" type="date" placeholder="选择出厂日期" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
             </Row>
-            <Row :gutter="32">
+             <Row :gutter="32">
                 <Col span="12">
-                    <FormItem label="资源状态：" prop="res_enable" label-position="top">
-                        <Select v-model="form.edit.res_enable" class="search-col">
-                            <Option v-for="item in select.res_enable" :value="item.key" :key="item.key">{{ item.title }}</Option>
-                        </Select>
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="顺序：" prop="res_order" label-position="top">
-                        <Input  v-model="form.edit.res_order"  placeholder="请输入顺序" />
+                    <FormItem label="上传卡车图：" prop="pic" label-position="left">
+                       <BaseUpload multiple refType=2 :upid.sync="form.edit.img_id" />
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="32">
                 <Col span="24">
-                    <FormItem label="父资源：" prop="parent_id" label-position="top">
-                        <treeselect v-model="form.edit.parent_id" placeholder="请选择父资源，不选默认顶级资源"  :options="options" />
-                    </FormItem>
-                </Col>
-            </Row>
-            <Row :gutter="32">
-                <Col span="24">
-                    <FormItem label="备注：" prop="res_remark" label-position="top">
-                        <Input v-model="form.edit.res_remark" type="textarea" :rows="4" placeholder="请输入资源备注。" />
+                    <FormItem label="简介：" prop="description" label-position="top">
+                        <Input v-model="form.edit.description" type="textarea" :rows="4" placeholder="请输入卡车简介。" />
                     </FormItem>
                 </Col>
             </Row>
@@ -79,11 +65,12 @@
 <script>
 import './index.less'
 import BaseSelect from '@/view/base/base_select'
-import { getRess,addOrUpdateRes,delRes,getRes,resTree } from '@/api/res'
-import { getTrucks } from '@/api/truck/info'
+import BaseUpload from '@/view/base/base_upload'
+import { getTrucks,saveTruck } from '@/api/truck/info'
+import { getOptions } from '@/api/base/select'
 export default {
     components: {
-        BaseSelect
+        BaseSelect,BaseUpload
     },
     data () {
     return {
@@ -96,14 +83,6 @@ export default {
         options: [],
         form:{
             edit:{
-                res_code:'',
-                res_name:'',
-                res_enable:'Y',
-                res_remark:'',
-                res_url:'',
-                res_order:100,
-                res_type:'link',
-                // parent_id:''
             },
         },
         rules:{
@@ -118,14 +97,6 @@ export default {
             status:[
                 {key : 'Y', title:'有效' ,value:'Y' },
                 {key : 'N', title:'无效' ,value:'N' },
-            ],
-            res_enable:[
-                {key : 'Y', title:'有效' ,value:'Y' },
-                {key : 'N', title:'无效' ,value:'N' },
-            ],
-            res_type:[
-                {key : 'link', title:'链接' ,value:'link' },
-                {key : 'module', title:'模块' ,value:'module' },
             ],
         },
         columns: [
@@ -192,19 +163,13 @@ export default {
     handleNewTruck(){
         this.drawer.edit = true
         this.form.edit={
-            res_code:'',
-            res_name:'',
-            res_enable:'Y',
-            res_remark:'',
-            res_url:'',
-            res_order:100,
-            res_type:'link',
+            
         }
     },
     handleSubmit (name) {
         this.$refs[name].validate((valid) => {
             if (valid) {
-                addOrUpdateRes(this.form.edit).then(res=>{
+                saveTruck(this.form.edit).then(res=>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg);
                         this.handleGetTrucks();
@@ -221,15 +186,10 @@ export default {
     },
     handleGetTrucks(){
         getTrucks(this.query).then((res)=>{
-            this.data = res.data.rows;
-            this.page.current=res.data.pageNum
-            this.page.total=res.data.total
-            this.page.pageSize=res.data.pageSize
-        });
-    },
-    handleGetResTree(){
-        resTree({}).then((res)=>{
-            this.options = res.data.data;
+            this.data = res.data.data.rows;
+            this.page.current=res.data.data.pageNum
+            this.page.total=res.data.data.total
+            this.page.pageSize=res.data.data.pageSize
         });
     },
     handleDelete (params) {
@@ -238,7 +198,7 @@ export default {
             content:'确定要删除id为：'+params.row.id+"的记录？",
             onOk:()=>{
                 let id = params.row.id;
-                delRes(id).then(res =>{
+                delTruck(id).then(res =>{
                     if(res.data.status == 1){
                         this.$Message.success(res.data.msg)
                         this.handleGetTrucks()
@@ -253,18 +213,24 @@ export default {
     },
     handleEdit (params) {
         let id = params.row.id;
-        getRes(id).then(res =>{
+        getTruck(id).then(res =>{
             if(res.data.status == 1){
-                console.log(res);
                 this.form.edit = res.data.data
                 this.drawer.edit = true;
+            }
+        })
+    },
+    handleGetBrand(){
+        getOptions({code:"truck_brand"}).then(res=>{
+            if(res.data.status == 1){
+                alert(123);
             }
         })
     }
   },
   mounted () {
     this.handleGetTrucks();
-    this.handleGetResTree();
+    this.handleGetBrand();
   }
 }
 </script>

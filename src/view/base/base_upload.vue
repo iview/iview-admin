@@ -15,6 +15,8 @@
         :headers="headers" 
         :with-credentials="withCredentials" 
         name = "file"
+        :data="uploadData"
+        :multiple="multiple"
         :show-upload-list="showList"
         :on-success="handleOkUpload"
         >
@@ -24,12 +26,14 @@
 </template>
 
 <script>
-import config from '@/config'
-import { getUpload} from '@/api/base/upload'
+import config from '@/config' 
+import { getUpload,getUploadIdsByRef,getRefId} from '@/api/base/upload'
 const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 export default {
     props:{
-        upid:Number
+        upid:Number,
+        multiple:Boolean,
+        refType:Number,//上传文件所属类型
     },
   data () {
     return {
@@ -42,26 +46,45 @@ export default {
         },
         withCredentials:true,
         fileList:[],
+        uploadData:{
+            refType:this.refType,
+            upid:'',
+        },
     }
   },
   methods: {
     handleOkUpload(res,file,fileList){
         let id=res.data.id
-        this.$emit('update:upid',id)
         let url_path = baseUrl+"/upload/file/"+id
-        this.fileList = [{path:url_path}]
-
+        this.fileList.push({path:url_path})
     },
     handleGetFile(upid){
         if(upid){
-            getUpload(upid).then(res => {
-                if(res.data.status == 1){
-                    let url_path = baseUrl+"/upload/file/"+res.data.data.id
-                    this.fileList = [{path:url_path}]
+           getUploadIdsByRef(upid).then(ress =>{
+                if(ress.data.status == 1){
+                    let arr = ress.data.data;
+                    arr.forEach(element => {
+                        let url_path = baseUrl+"/upload/file/"+element
+                        this.fileList.push({path:url_path})
+                    });
                 }
             })
         }else{
             this.fileList = []
+        }
+    },
+    handleGetRefId(){//先获取一个refId
+        if(this.upid){
+            this.fileList = []
+            this.handleGetFile(upid)
+        }else{
+            let type = this.refType?this.refType:1
+            getRefId(type).then(res => {
+                if(res.data.status == 1){
+                    this.uploadData.upid = res.data.data.id
+                    this.$emit('update:upid',res.data.data.id)
+                }
+            })
         }
     }
   },
@@ -72,6 +95,7 @@ export default {
   },
   mounted () {
       this.handleGetFile(this.upid)
+      this.handleGetRefId()
   }
 }
 </script>

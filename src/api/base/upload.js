@@ -8,6 +8,19 @@ export const getUploads=(params)=>{
     params:params
   })
 }
+export const getUploadIdsByRef=(id)=>{
+  return axios.request({
+    url: '/upload/file/type/'+id,
+    method: 'get',
+  })
+}
+export const getRefId=(type)=>{
+  return axios.request({
+    url: '/upload/refId',
+    method: 'get',
+    params:{"type":type}
+  })
+}
 export const getUpload=(id)=>{
   return axios.request({
     url: '/upload/'+id,

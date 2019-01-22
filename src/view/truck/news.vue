@@ -48,7 +48,7 @@
             <Row :gutter="32">
                 <Col span="12">
                     <FormItem label="上传宣传图：" prop="pic" label-position="left">
-                       <BaseUpload :upid.sync="form.edit.img_id" />
+                       <BaseUpload :multiple="multiple" :upid.sync="form.edit.img_id" />
                     </FormItem>
                 </Col>
             </Row>
@@ -85,6 +85,7 @@ export default {
   data () {
     return {
         content:'',
+        multiple:true,
         modal:{
             delete:false
         },
@@ -106,9 +107,9 @@ export default {
         },
         select:{
             status:[
-                {name:'草稿' ,value:'0' },
-                {name:'发表' ,value:'1' },
-                {name:'撤回' ,value:'2' },
+                {name:'草稿' ,value:0 },
+                {name:'发表' ,value:1 },
+                {name:'撤回' ,value:2 },
             ],
         },
         columns: [
@@ -206,9 +207,9 @@ export default {
     handleGetNewss(){
         getNewss(this.query).then((res)=>{
             this.data = res.data.data.rows;
-            this.page.current=res.data.pageNum
-            this.page.total=res.data.total
-            this.page.pageSize=res.data.pageSize
+            this.page.current=res.data.data.pageNum
+            this.page.total=res.data.data.total
+            this.page.pageSize=res.data.data.pageSize
         });
     },
     handleDelete (params) {
@@ -237,6 +238,7 @@ export default {
                 this.form.edit = res.data.data
                 this.drawer.edit = true;
                 getContent(res.data.data.content_id).then(res =>{
+                    this.form.edit.content = res.data.data.content
                     this.$refs.editor.setHtml(res.data.data.content)
                 })
             }
