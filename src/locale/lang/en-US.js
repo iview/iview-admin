@@ -1,5 +1,6 @@
 export default {
   home: 'Home',
+  login: 'Login',
   components: 'Components',
   count_to_page: 'Count-to',
   tables_page: 'Table',
