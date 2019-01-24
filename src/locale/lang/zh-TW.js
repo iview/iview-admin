@@ -40,5 +40,6 @@ export default {
   message_page: '消息中心',
   tree_table_page: '樹狀表格',
   org_tree_page: '組織結構樹',
-  drag_drawer_page: '可拖動抽屜'
+  drag_drawer_page: '可拖動抽屜',
+  tree_select_page: '樹狀下拉選擇器'
 }
