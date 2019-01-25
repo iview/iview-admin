@@ -1,23 +1,6 @@
 {
   "name": "iview-admin",
-  "version": "2.0.0",
-  "author": "Lison<lison16new@163.com>",
-  "private": false,
-  "scripts": {
-    "dev": "vue-cli-service serve --open",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "clipboard": "^2.0.0",
-    "codemirror": "^5.38.0",
-    "countup": "^1.8.2",
-    "cropperjs": "^1.2.2",
-    "dayjs": "^1.7.7",
-    "echarts": "^4.0.4",
+  "ver
     "html2canvas": "^1.0.0-alpha.12",
     "iview": "^3.2.2",
     "iview-area": "^1.5.17",
