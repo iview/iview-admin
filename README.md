@@ -41,7 +41,7 @@ npm run build
 
 ## 加入QQ群，获取最新更新咨询，和3000+开发者交流学习
 
-![image](https://github.com/iview/iview-admin/raw/2.0/src/assets/images/groups.jpg)
+<img src="https://github.com/iview/iview-admin/raw/2.0/src/assets/images/groups.jpg" alt="Sample"  width="400" height="274">
 
 ## 简介
 &emsp;&emsp;iView admin是基于Vue.js，搭配使用[iView](https://www.iviewui.com) UI组件库形成的一套后台集成解决方案，由TalkingData前端可视化团队部分成员开发维护。iView admin遵守iView设计和开发约定，风格统一，设计考究，并且更多功能在不停开发中。
