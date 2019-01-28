@@ -108,6 +108,15 @@ export default [
     component: Main,
     children: [
       {
+        path: 'tree_select_page',
+        name: 'tree_select_page',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '树状下拉选择器'
+        },
+        component: () => import('@/view/components/tree-select/index.vue')
+      },
+      {
         path: 'count_to_page',
         name: 'count_to_page',
         meta: {
