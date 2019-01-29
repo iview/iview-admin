@@ -167,8 +167,9 @@ export default {
      */
     this.setTagNavList()
     this.setHomeRoute(routers)
+    const { name, params, query, meta } = this.$route
     this.addTag({
-      route: this.$store.state.app.homeRoute
+      route: { name, params, query, meta }
     })
     this.setBreadCrumb(this.$route)
     // 设置初始语言
