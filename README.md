@@ -68,6 +68,7 @@ iView Admin is a front-end management background integration solution. It based 
 
 - [Document](https://lison16.github.io/iview-admin-doc/)
 - [Preview](https://admin.iviewui.com/)
+- [Base template recommends using](https://github.com/iview/iview-admin/tree/template)
 
 ![image](https://file.iviewui.com/admin-dist/admin-preview.png)
 
