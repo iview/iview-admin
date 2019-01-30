@@ -262,10 +262,10 @@ export default {
         ],
         permCode: [
           { required: true, message: '请输入权限编码', trigger: 'blur' }
-        ],
+        ]/*,
         description: [
           { required: true, message: '请输入备注', trigger: 'blur' }
-        ]
+        ] */
       }
     }
   },
