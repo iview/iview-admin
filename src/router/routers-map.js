@@ -8,6 +8,11 @@ const Error500 = () => import('@/view/error-page/500.vue')
 const Markdown = () => import('@/view/components/markdown/markdown.vue')
 const Editor = () => import('@/view/components/editor/editor.vue')
 const JoinPage = () => import('@/view/join-page.vue')
+const sysUser = () => import('@/view/sys/user/user.vue')
+const sysRole = () => import('@/view/sys/role/role.vue')
+const sysDept = () => import('@/view/sys/dept')
+const sysPermission = () => import('@/view/sys/permission/permission.vue')
+const sysDisc = () => import('@/view/sys/dist/dist.vue')
 
 export const routerMap = {
   Main,
@@ -19,7 +24,12 @@ export const routerMap = {
   Error500,
   Markdown,
   Editor,
-  JoinPage
+  JoinPage,
+  sysUser,
+  sysRole,
+  sysDept,
+  sysPermission,
+  sysDisc
 }
 
 export const staticRouters = [
@@ -78,52 +88,70 @@ export const staticRouters = [
       hideInMenu: true
     },
     component: routerMap['Error500']
-  },
-  {
-    path: '/sys',
-    name: 'sys',
-    meta: {
-      icon: 'md-settings',
-      title: '系统管理'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'user_table_page',
-        name: 'user_table_page',
-        meta: {
-          icon: 'md-contacts',
-          title: '用户管理'
-        },
-        component: () => import('@/view/sys/user/user.vue')
-      },
-      {
-        path: 'permission_table_page',
-        name: 'permission_table_page',
-        meta: {
-          icon: 'md-contacts',
-          title: '权限管理'
-        },
-        component: () => import('@/view/sys/permission/permission.vue')
-      },
-      {
-        path: 'role_table_page',
-        name: 'role_table_page',
-        meta: {
-          icon: 'md-contacts',
-          title: '角色管理'
-        },
-        component: () => import('@/view/sys/role/role.vue')
-      },
-      {
-        path: 'update_paste_page',
-        name: 'update_paste_page',
-        meta: {
-          icon: 'md-clipboard',
-          title: '粘贴表格数据'
-        },
-        component: () => import('@/view/update/update-paste.vue')
-      }
-    ]
   }
+  // {
+  //   path: '/sysa',
+  //   name: 'sysa',
+  //   meta: {
+  //     icon: 'md-settings',
+  //     title: '系统管理'
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'user_table_page',
+  //       name: 'user_table_page',
+  //       meta: {
+  //         icon: 'md-contacts',
+  //         title: '用户管理'
+  //       },
+  //       component: () => import('@/view/sys/user/user.vue')
+  //     },
+  //     {
+  //       path: 'permission_table_page',
+  //       name: 'permission_table_page',
+  //       meta: {
+  //         icon: 'md-contacts',
+  //         title: '权限管理'
+  //       },
+  //       component: () => import('@/view/sys/permission/permission.vue')
+  //     },
+  //     {
+  //       path: 'role_table_page',
+  //       name: 'role_table_page',
+  //       meta: {
+  //         icon: 'md-contacts',
+  //         title: '角色管理'
+  //       },
+  //       component: () => import('@/view/sys/role/role.vue')
+  //     },
+  //     {
+  //       path: 'disc_table_page',
+  //       name: 'disc_table_page',
+  //       meta: {
+  //         icon: 'md-contacts',
+  //         title: '字典管理'
+  //       },
+  //       component: () => import('@/view/sys/dist/dist.vue')
+  //     },
+  //     {
+  //       path: 'org_tree_page',
+  //       name: 'org_tree_page',
+  //       meta: {
+  //         icon: 'md-contacts',
+  //         title: '部门管理'
+  //       },
+  //       component: () => import('@/view/sys/dept')
+  //     },
+  //     {
+  //       path: 'update_paste_page',
+  //       name: 'update_paste_page',
+  //       meta: {
+  //         icon: 'md-clipboard',
+  //         title: '粘贴表格数据'
+  //       },
+  //       component: () => import('@/view/update/update-paste.vue')
+  //     }
+  //   ]
+  // }
 ]
