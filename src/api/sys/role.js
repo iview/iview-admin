@@ -45,3 +45,10 @@ export const apiUpdateRolePermission = (data) => {
     method: 'POST'
   })
 }
+
+export const apiQueryRole = (roleName) => {
+  return axios.request({
+    url: `/admin/sys/role/queryRole?roleName${roleName}`,
+    method: 'GET'
+  })
+}
