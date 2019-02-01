@@ -6,7 +6,7 @@
 import Icons from '_c/icons'
 export default {
   name: 'CommonIcon',
-  components: {Icons},
+  components: { Icons },
   props: {
     type: {
       type: String,

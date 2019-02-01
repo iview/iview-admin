@@ -1,5 +1,6 @@
 export default {
   home: '首页',
+  login: '登录',
   components: '组件',
   count_to_page: '数字渐变',
   tables_page: '多功能表格',
@@ -40,5 +41,6 @@ export default {
   message_page: '消息中心',
   tree_table_page: '树状表格',
   org_tree_page: '组织结构树',
-  drag_drawer_page: '可拖动抽屉'
+  drag_drawer_page: '可拖动抽屉',
+  tree_select_page: '树状下拉选择器'
 }

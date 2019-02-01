@@ -1,5 +1,6 @@
 export default {
   home: 'Home',
+  login: 'Login',
   components: 'Components',
   count_to_page: 'Count-to',
   tables_page: 'Table',
@@ -40,5 +41,6 @@ export default {
   message_page: 'Message Center',
   tree_table_page: 'Tree Table',
   org_tree_page: 'Org Tree',
-  drag_drawer_page: 'Draggable Drawer'
+  drag_drawer_page: 'Draggable Drawer',
+  tree_select_page: 'Tree Selector'
 }
