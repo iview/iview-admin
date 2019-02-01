@@ -52,7 +52,7 @@
     <Modal ref="assignPermissionModal" v-model="view.showAssignPermissionModal" title="分配权限" :mask-closable="false" ok-text="提交" :loading="true" @on-ok="onOkAssignPermission" :width="600">
       <div class="tree-z" style="position: relative">
         <!--@on-select-change="onSelectChange"-->
-        <Tree ref="tree" :data="dataTree" empty-text="暂无数据" show-checkbox></Tree>
+        <Tree ref="tree" :data="dataTree" empty-text="暂无数据" show-checkbox check-strictly></Tree>
         <Spin  size="large" fix v-if="view.assignPermissionLoading">
           <Icon type="ios-loading" size=18 class="spin-icon-load"></Icon>
           <div>加载中</div>
@@ -348,8 +348,8 @@ export default {
     },
     onOkAssignPermission: function () {
       let permIds = []
-      let selectedNodes = this.$refs.tree.getCheckedNodes()
-      selectedNodes.forEach(function (e) {
+      let checkedAndIndeterminateNodes = this.$refs.tree.getCheckedAndIndeterminateNodes()
+      checkedAndIndeterminateNodes.forEach(function (e) {
         permIds.push(e.id)
       })
       this.assignPermissionDto.permIds = permIds
