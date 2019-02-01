@@ -24,23 +24,24 @@ iView Admin
               <img width="300" src="https://file.iviewui.com/asd/asd-i-2.png">
             </a>
           </td>
-          <td align="center" valign="middle">
+<!--           <td align="center" valign="middle">
             <a href="https://juejin.im/welcome/frontend?utm_source=iview&utm_medium=banner&utm_content=huoyue&utm_campaign=q4_website" target="_blank">
               <img width="300" src="https://file.iviewui.com/asd/asd-juejin3.png">
             </a>
-          </td>
+          </td> -->
           <td align="center" valign="middle">
             <a href="https://studio.qcloud.coding.net/campaign/favorite-plugins/index?utm_source=iview" target="_blank">
               <img width="300" src="https://file.iviewui.com/asd/asd-coding3.png">
             </a>
           </td>
-        </tr>
-        <tr>
           <td align="center" valign="middle">
             <a href="https://cn.udacity.com/fend/?utm_source=iviewui&utm_medium=banner&utm_campaign=fend" target="_blank">
               <img width="300" src="https://file.iviewui.com/asd/asd-u-new-2.png">
             </a>
           </td>
+        </tr>
+        <tr>
+          
 <!--           <td align="center" valign="middle">
             <a href="https://www.vaptcha.com/?from=iview" target="_blank">
               <img width="300" src="https://file.iviewui.com/asd/asd-vaptcha2.jpg">
@@ -51,11 +52,11 @@ iView Admin
               <img width="300" src="https://file.iviewui.com/asd/asd-accesshub.jpg">
             </a>
           </td> -->
-          <td align="center" valign="middle">
+<!--           <td align="center" valign="middle">
             <a href="https://juejin.im/book/5bc844166fb9a05cd676ebca" target="_blank">
               <img width="300" src="https://file.iviewui.com/asd/asd-v-book2.png">
             </a>
-          </td>
+          </td> -->
         </tr>
       </tbody>
 </table>
