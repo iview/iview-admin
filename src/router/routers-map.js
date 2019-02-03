@@ -12,7 +12,7 @@ const sysUser = () => import('@/view/sys/user/user.vue')
 const sysRole = () => import('@/view/sys/role/role.vue')
 const sysDept = () => import('@/view/sys/dept')
 const sysPermission = () => import('@/view/sys/permission/permission.vue')
-const sysDisc = () => import('@/view/sys/dist/dist.vue')
+const sysDisc = () => import('@/view/sys/dict/dict.vue')
 
 export const routerMap = {
   Main,
@@ -132,7 +132,7 @@ export const staticRouters = [
   //         icon: 'md-contacts',
   //         title: '字典管理'
   //       },
-  //       component: () => import('@/view/sys/dist/dist.vue')
+  //       component: () => import('@/view/sys/dict/dict.vue')
   //     },
   //     {
   //       path: 'org_tree_page',
