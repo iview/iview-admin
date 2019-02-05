@@ -9,7 +9,8 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
-import {getRouterReq} from '@/api/routers'
+import { cloudLogin, getCloudUserInfoNew } from '@/api/user-center'
+import { getRouterReq } from '@/api/routers'
 import { setToken, getToken, routersConfigAssembly } from '@/libs/util'
 
 export default {
@@ -75,15 +76,15 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, {userName, password}) {
+    handleLogin ({ commit }, { userName, password }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
-        login({
+        cloudLogin({
           userName,
           password
         }).then(res => {
-          // const data = res.data
-          const token = res.token
+          const data = res.data
+          const token = data.access_token
           commit('setToken', token)
           resolve()
         }).catch(err => {
@@ -93,6 +94,9 @@ export default {
     },
     // 退出登录
     handleLogOut ({ state, commit }) {
+      commit('setToken', '')
+      commit('setAccess', [])
+      return
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('setToken', '')
@@ -111,11 +115,11 @@ export default {
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
-          getUserInfo(state.token).then(res => {
-            const data = res
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
+          getCloudUserInfoNew().then(res => {
+            const { data } = res
+            commit('setAvator', data.avatar)
+            commit('setUserName', data.getCloudUserInfoNew)
+            commit('setUserId', data.id)
             commit('setAccess', data.access)
             commit('setHasGetInfo', true)
             resolve(data)
@@ -215,11 +219,11 @@ export default {
       })
     },
     // 获取用户路由
-    getRoutersConfig ({state, commit}) {
+    getRoutersConfig ({ state, commit }) {
       return getRouterReq().then((routersData) => {
         let routersConfig = _.cloneDeep(routersData.data)
         let newRoutersConfigObj = routersConfigAssembly(routersConfig)
-        commit('setRoutersConfig', {newRouters: newRoutersConfigObj, routersData: routersData.data})
+        commit('setRoutersConfig', { newRouters: newRoutersConfigObj, routersData: routersData.data })
         return newRoutersConfigObj
       })
     }
