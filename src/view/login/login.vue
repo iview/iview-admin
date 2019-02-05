@@ -25,15 +25,21 @@ export default {
   methods: {
     ...mapActions([
       'handleLogin',
-      'getUserInfo'
+      'getUserInfo',
+      'getRoutersConfig'
     ]),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
-        this.getUserInfo().then(res => {
-          this.$router.push({
-            name: this.$config.homeName
+        const _this = this;
+        _this.getRoutersConfig().then(res => {
+          _this.$router.addRoutes(res)
+          _this.$router.push({
+            name: 'home'
           })
         })
+      }).catch(err => {
+        const data = err.response.data;
+        this.$Message.error(data.message)
       })
     }
   }
