@@ -27,6 +27,7 @@ export default {
   'export-excel': 'Export Excel',
   tools_methods_page: 'Tools Methods',
   drag_list_page: 'Drag-list',
+  tree_drag: 'Tree Dragger',
   i18n_page: 'Internationalization',
   modalTitle: 'Modal Title',
   content: 'This is the modal box content.',
