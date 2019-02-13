@@ -108,6 +108,15 @@ export default [
     component: Main,
     children: [
       {
+        path: 'tree_select_page',
+        name: 'tree_select_page',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '树状下拉选择器'
+        },
+        component: () => import('@/view/components/tree-select/index.vue')
+      },
+      {
         path: 'count_to_page',
         name: 'count_to_page',
         meta: {
@@ -133,6 +142,24 @@ export default [
           title: '树节点拖拽'
         },
         component: () => import('@/view/components/tree-drag/index.vue')
+      },
+      {
+        path: 'drag_drawer_page',
+        name: 'drag_drawer_page',
+        meta: {
+          icon: 'md-list',
+          title: '可拖拽抽屉'
+        },
+        component: () => import('@/view/components/drag-drawer')
+      },
+      {
+        path: 'org_tree_page',
+        name: 'org_tree_page',
+        meta: {
+          icon: 'ios-people',
+          title: '组织结构树'
+        },
+        component: () => import('@/view/components/org-tree')
       },
       {
         path: 'tree_table_page',

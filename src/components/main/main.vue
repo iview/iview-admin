@@ -44,7 +44,7 @@ import Fullscreen from './components/fullscreen'
 import Language from './components/language'
 import ErrorStore from './components/error-store'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
-import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
+import { getNewTagList, routeEqual } from '@/libs/util'
 import routers from '@/router/routers'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -83,7 +83,8 @@ export default {
       return this.$store.state.user.avatorImgPath
     },
     cacheList () {
-      return ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
+      const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
+      return list
     },
     menuList () {
       return this.$store.getters.menuList
@@ -104,7 +105,8 @@ export default {
       'setTagNavList',
       'addTag',
       'setLocal',
-      'setHomeRoute'
+      'setHomeRoute',
+      'closeTag'
     ]),
     ...mapActions([
       'handleLogin',
@@ -132,12 +134,13 @@ export default {
       this.collapsed = state
     },
     handleCloseTag (res, type, route) {
-      if (type === 'all') {
-        this.turnToPage(this.$config.homeName)
-      } else if (routeEqual(this.$route, route)) {
-        if (type !== 'others') {
-          const nextRoute = getNextRoute(this.tagNavList, route)
-          this.$router.push(nextRoute)
+      if (type !== 'others') {
+        if (type === 'all') {
+          this.turnToPage(this.$config.homeName)
+        } else {
+          if (routeEqual(this.$route, route)) {
+            this.closeTag(route)
+          }
         }
       }
       this.setTagNavList(res)
@@ -164,8 +167,9 @@ export default {
      */
     this.setTagNavList()
     this.setHomeRoute(routers)
+    const { name, params, query, meta } = this.$route
     this.addTag({
-      route: this.$store.state.app.homeRoute
+      route: { name, params, query, meta }
     })
     this.setBreadCrumb(this.$route)
     // 设置初始语言
