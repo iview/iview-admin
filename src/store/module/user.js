@@ -9,7 +9,9 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
+import { cloudLogin, getCloudUserInfoNew } from '@/api/user-center'
+import { getRouterReq } from '@/api/routers'
+import { setToken, getToken, routersConfigAssembly } from '@/libs/util'
 
 export default {
   state: {
@@ -77,12 +79,13 @@ export default {
     handleLogin ({ commit }, { userName, password }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
-        login({
+        cloudLogin({
           userName,
           password
         }).then(res => {
           const data = res.data
-          commit('setToken', data.token)
+          const token = data.access_token
+          commit('setToken', token)
           resolve()
         }).catch(err => {
           reject(err)
@@ -91,6 +94,9 @@ export default {
     },
     // 退出登录
     handleLogOut ({ state, commit }) {
+      commit('setToken', '')
+      commit('setAccess', [])
+      return
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('setToken', '')
@@ -109,11 +115,11 @@ export default {
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
-          getUserInfo(state.token).then(res => {
-            const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
+          getCloudUserInfoNew().then(res => {
+            const { data } = res
+            commit('setAvator', data.avatar)
+            commit('setUserName', data.getCloudUserInfoNew)
+            commit('setUserId', data.id)
             commit('setAccess', data.access)
             commit('setHasGetInfo', true)
             resolve(data)
@@ -128,8 +134,7 @@ export default {
     // 此方法用来获取未读消息条数，接口只返回数值，不返回消息列表
     getUnreadMessageCount ({ state, commit }) {
       getUnreadCount().then(res => {
-        const { data } = res
-        commit('setMessageCount', data)
+        commit('setMessageCount', res)
       })
     },
     // 获取消息列表，其中包含未读、已读、回收站三个列表
@@ -211,6 +216,15 @@ export default {
         }).catch(error => {
           reject(error)
         })
+      })
+    },
+    // 获取用户路由
+    getRoutersConfig ({ state, commit }) {
+      return getRouterReq().then((routersData) => {
+        let routersConfig = _.cloneDeep(routersData.data)
+        let newRoutersConfigObj = routersConfigAssembly(routersConfig)
+        commit('setRoutersConfig', { newRouters: newRoutersConfigObj, routersData: routersData.data })
+        return newRoutersConfigObj
       })
     }
   }

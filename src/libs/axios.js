@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import { getToken } from '@/libs/util'
 // import { Spin } from 'iview'
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
@@ -22,6 +23,7 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         //
+        'Authorization': getToken() ? `Bearer ${getToken()}` : ''
       }
     }
     return config
@@ -46,9 +48,12 @@ class HttpRequest {
     })
     // 响应拦截
     instance.interceptors.response.use(res => {
+      // this.destroy(url)
+      // const { data, status } = res
+      // return { data, status }
       this.destroy(url)
-      const { data, status } = res
-      return { data, status }
+      const data = res.data
+      return data
     }, error => {
       this.destroy(url)
       let errorInfo = error.response

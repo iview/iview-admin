@@ -51,6 +51,35 @@ export default [
     ]
   },
   {
+    path: '/sys',
+    name: 'sys',
+    meta: {
+      icon: 'md-settings',
+      title: '系统管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'user_table_page',
+        name: 'user_table_page',
+        meta: {
+          icon: 'md-contacts',
+          title: '用户管理'
+        },
+        component: () => import('@/view/sys/user/user.vue')
+      },
+      {
+        path: 'update_paste_page',
+        name: 'update_paste_page',
+        meta: {
+          icon: 'md-clipboard',
+          title: '粘贴表格数据'
+        },
+        component: () => import('@/view/update/update-paste.vue')
+      }
+    ]
+  },
+  {
     path: '',
     name: 'doc',
     meta: {

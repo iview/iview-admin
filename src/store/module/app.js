@@ -9,11 +9,13 @@ import {
   routeEqual,
   getRouteTitleHandled,
   localSave,
-  localRead
+  localRead,
+  getRoutersConfig,
+  setRoutersConfig
 } from '@/libs/util'
 import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
-import routers from '@/router/routers'
+import { staticRouters } from '@/router/routers-map'
 import config from '@/config'
 const { homeName } = config
 
@@ -29,13 +31,14 @@ export default {
   state: {
     breadCrumbList: [],
     tagNavList: [],
-    homeRoute: {},
+    homeRoute: getHomeRoute(getRoutersConfig()),
+    routersConfig: getRoutersConfig(),
     local: localRead('local'),
     errorList: [],
     hasReadErrorPage: false
   },
   getters: {
-    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
+    menuList: (state, getters, rootState) => getMenuByRouter(state.routersConfig, rootState.user.access),
     errorCount: state => state.errorList.length
   },
   mutations: {
@@ -85,6 +88,11 @@ export default {
     },
     setHasReadErrorLoggerStatus (state, status = true) {
       state.hasReadErrorPage = status
+    },
+    setRoutersConfig (state, { newRouters, routersData }) {
+      state.routersConfig = _.concat(staticRouters, newRouters)
+      state.homeRoute = getHomeRoute(state.routersConfig)
+      setRoutersConfig(routersData)
     }
   },
   actions: {
