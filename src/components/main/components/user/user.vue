@@ -1,8 +1,8 @@
 <template>
-  <div class="user-avator-dropdown">
+  <div class="user-avatar-dropdown">
     <Dropdown @on-click="handleClick">
       <Badge :dot="!!messageUnreadCount">
-        <Avatar :src="userAvator"/>
+        <Avatar :src="userAvatar"/>
       </Badge>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
@@ -21,7 +21,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'User',
   props: {
-    userAvator: {
+    userAvatar: {
       type: String,
       default: ''
     },
