@@ -94,7 +94,7 @@ export default [
   path: '/truck',
   name: 'truck',
   meta: {
-    icon: 'md-contacts',
+    icon: 'ios-jet-outline',
     title: '卡车管理'
   },
   component: Main,
@@ -112,7 +112,7 @@ export default [
       path: 'driver',
       name: 'driver',
       meta: {
-        icon: 'ios-contacts',
+        icon: 'ios-contact-outline',
         title: '司机信息'
       },
       component: () => import('@/view/backend/user.vue')
@@ -121,7 +121,7 @@ export default [
       path: 'notice',
       name: 'notice',
       meta: {
-        icon: 'ios-contacts',
+        icon: 'md-cog',
         title: '顶部公告'
       },
       component: () => import('@/view/truck/notice.vue')
@@ -130,7 +130,7 @@ export default [
       path: 'carousel',
       name: 'carousel',
       meta: {
-        icon: 'ios-contacts',
+        icon: 'ios-code-working',
         title: '首页轮播'
       },
       component: () => import('@/view/truck/carousel.vue')
@@ -139,7 +139,7 @@ export default [
       path: 'news',
       name: 'news',
       meta: {
-        icon: 'ios-contacts',
+        icon: 'md-aperture',
         title: '新闻'
       },
       component: () => import('@/view/truck/news.vue')
@@ -150,7 +150,7 @@ export default [
   path: '/base',
   name: 'base',
   meta: {
-    icon: 'md-contacts',
+    icon: 'ios-construct-outline',
     title: '基础配置'
   },
   component: Main,

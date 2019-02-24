@@ -10,52 +10,50 @@
         <Page :total="page.total" :current="page.current" :page-size="page.pageSize" size="small" 
         show-total style="margin: 10px 0" @on-change="handleChangePage" />
     </Card>
-    <Drawer title="编辑新闻" v-model="drawer.edit" width="720" :mask-closable="false" >
+    <Drawer title="编辑新闻" v-model="drawer.edit" width="100%" :mask-closable="false" >
         <Form ref="form.edit" :model="form.edit" :rules="rules.edit">
             <Row :gutter="32">
-                <Col span="12">
+                <Col span="8">
                     <FormItem label="标题：" prop="title" label-position="left">
                         <Input v-model="form.edit.title" placeholder="请输入新闻标题" />
                     </FormItem>
                 </Col>
-                <Col span="12">
+                <Col span="8">
                     <FormItem label="状态：" prop="status" label-position="top">
                         <Select v-model="form.edit.status" class="search-col">
                             <Option v-for="item in select.status" :value="item.value" :key="item.value">{{ item.name }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-            </Row>
-            <Row :gutter="32">
-                <Col span="12">
+                <Col span="8">
                     <FormItem label="来源：" prop="source" label-position="left">
                         <Input v-model="form.edit.source" placeholder="请输入新闻来源" />
                     </FormItem>
                 </Col>
-                <Col span="12">
+            </Row>
+            <Row :gutter="32">
+                <Col span="8">
                     <FormItem label="标签：" prop="tag" label-position="left">
                         <Input v-model="form.edit.tag" placeholder="请输入新闻标签" />
                     </FormItem>
                 </Col>
-            </Row>
-            <Row :gutter="32">
-                <Col span="12">
-                    <FormItem label="顺序：" prop="order" label-position="top">
-                        <Input  v-model="form.edit.order"  placeholder="请输入顺序" />
+                <Col span="8">
+                    <FormItem label="跳转：" prop="redirect_url" label-position="left">
+                        <Input v-model="form.edit.redirect_url" placeholder="请输入跳转地址" />
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="32">
                 <Col span="12">
                     <FormItem label="上传宣传图：" prop="pic" label-position="left">
-                       <BaseUpload :multiple="multiple" :upid.sync="form.edit.img_id" />
+                       <BaseUpload :refType="refType" multiple :upid="form.edit.img_id" />
                     </FormItem>
                 </Col>
             </Row>
             <Row :gutter="32">
                 <Col span="24">
                     <FormItem label="描述：" prop="desc" label-position="left">
-                        <Input v-model="form.edit.desc" type="textarea" :rows="4" placeholder="请输入描述" />
+                        <Input v-model="form.edit.desc" type="textarea" :rows="3" placeholder="请输入描述" />
                     </FormItem>
                 </Col>
             </Row>
@@ -65,6 +63,7 @@
                 </Col>
             </Row>
         </Form>
+        <br/>
         <div style="margin-left:40%">
             <Button style="margin-right: 8px" @click="drawer.edit=false">取消</Button>
             <Button type="primary" @click="handleSubmit('form.edit')">提交</Button>
@@ -78,14 +77,16 @@ import './index.less'
 import Editor from '_c/editor'
 import BaseUpload from '@/view/base/base_upload'
 import { getNewss,saveNews,getNews,delNews,getContent } from '@/api/truck/news'
+import { getUpload,getUploadIdsByRef,getRefId} from '@/api/base/upload'
+
 export default {
   components: {
     Editor,BaseUpload
   },
   data () {
     return {
+        refType:3,
         content:'',
-        multiple:true,
         modal:{
             delete:false
         },
@@ -116,7 +117,22 @@ export default {
             {title: 'ID',key: 'id'},
             {title: '标题',key: 'title'},
             {title: '用户ID',key: 'user_id'},
-            {title: '状态',key: 'status'},
+            {title: '创建时间',key: 'ctime'},
+            {
+                title: '状态',
+                key: 'status',
+                align: 'center',
+                render: (h, params) => {
+                    let status = params.row.status;
+                    if(status == 0){
+                        return h('span',{}, '草稿')
+                    }else if(status == 1){
+                        return h('span',{}, '发表')
+                    }else{
+                        return h('span',{}, '撤回')
+                    }
+                } 
+            },
             {
                 title: '操作',
                 key: 'status',
@@ -167,7 +183,6 @@ export default {
   },
   methods: {
     handleChange (html, text) {
-        console.log(html);
         this.form.edit.content = html
     },
     handleChangePage(page){
@@ -175,16 +190,21 @@ export default {
         this.handleGetNewss();
     },
     handleAddNew(){
-        this.drawer.edit = true
-        this.form.edit={
-            id:'',
-            title:'',
-            status:'0',
-            order:1,
-            content:'',
-            // img_id:''
-        }
-        this.$refs.editor.setHtml('<p>请输入</p>')
+        getRefId(2).then(res => {
+            if(res.data.status == 1){
+                // this.form.edit.pic_id = res.data.data.id
+                this.drawer.edit = true
+                this.form.edit={
+                    id:'',
+                    title:'',
+                    status:'0',
+                    order:1,
+                    content:'',
+                    img_id:res.data.data.id
+                }
+                this.$refs.editor.setHtml('')
+            }
+        })
     },
     handleSubmit (name) {
         this.$refs[name].validate((valid) => {

@@ -14,19 +14,6 @@
         <Form ref="form.edit" :model="form.edit" :rules="rules.edit">
             <Row :gutter="32">
                 <Col span="12">
-                    <FormItem label="名称：" prop="title" label-position="left">
-                        <Input   v-model="form.edit.title" placeholder="请输入卡车出售简介" />
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="价格：" prop="price" label-position="top">
-                        <Input   v-model="form.edit.price" placeholder="请输入卡车价格单位万元" />
-                    </FormItem>
-                </Col>
-                
-            </Row>
-            <Row :gutter="32">
-                <Col span="12">
                     <FormItem label="品牌：" prop="brand" label-position="left">
                         <BaseSelect code="truck_brand" :value.sync="form.edit.brand" />
                     </FormItem>
@@ -36,18 +23,7 @@
                         <Input   v-model="form.edit.mileage" placeholder="请输入里程数" />
                     </FormItem>
                 </Col>
-            </Row>
-            <Row :gutter="32">
-                <Col span="12">
-                    <FormItem label="联系方式：" prop="phone" label-position="top">
-                        <Input   v-model="form.edit.phone" placeholder="请输入联系方式，不填默认登录绑定手机" />
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="出售状态：" prop="status" label-position="top">
-                        <BaseSelect code="truck_sell_status" :value.sync="form.edit.brand" />
-                    </FormItem>
-                </Col>
+                
             </Row>
             <Row :gutter="32">
                 <Col span="12">
@@ -62,7 +38,6 @@
                         <DatePicker format="yyyy-MM-dd HH:mm:ss" @on-change="handleProductTime"  v-model="form.edit.product_time"  type="date" placeholder="选择出厂日期" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
-                
             </Row>
              <Row :gutter="32">
                 <Col span="12">

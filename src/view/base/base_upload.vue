@@ -48,7 +48,7 @@ export default {
         fileList:[],
         uploadData:{
             refType:this.refType,
-            upid:'',
+            upid:this.upid,
         },
     }
   },
@@ -63,6 +63,7 @@ export default {
            getUploadIdsByRef(upid).then(ress =>{
                 if(ress.data.status == 1){
                     let arr = ress.data.data;
+                    this.fileList=[];
                     arr.forEach(element => {
                         let url_path = baseUrl+"/upload/file/"+element
                         this.fileList.push({path:url_path})
@@ -73,29 +74,33 @@ export default {
             this.fileList = []
         }
     },
-    handleGetRefId(){//先获取一个refId
-        if(this.upid){
-            this.fileList = []
-            this.handleGetFile(upid)
-        }else{
-            let type = this.refType?this.refType:1
-            getRefId(type).then(res => {
-                if(res.data.status == 1){
-                    this.uploadData.upid = res.data.data.id
-                    this.$emit('update:upid',res.data.data.id)
-                }
-            })
-        }
-    }
+    // handleGetRefId(){//上传文件的时候判断是否是修改，修改直接沿用原来的refid
+    //     if(this.upid){
+    //         this.fileList = []
+    //         this.handleGetFile(this.upid)
+    //     }if(this.uploadData.upid){
+    //         return
+    //     }else{
+    //         let type = this.refType?this.refType:1
+    //         getRefId(type).then(res => {
+    //             if(res.data.status == 1){
+    //                 this.uploadData.upid = res.data.data.id
+    //                 this.$emit('update:upid',res.data.data.id)
+    //             }
+    //         })
+    //     }
+    // }
   },
   watch:{
-      upid(newValue,oldValue){
-          this.handleGetFile(newValue)
+      upid(newValue){
+            console.log(newValue,"222");
+            // this.handleGetFile(newValue)
+            this.uploadData.upid = newValue
+            this.handleGetFile(this.uploadData.upid)
       }
   },
   mounted () {
       this.handleGetFile(this.upid)
-      this.handleGetRefId()
   }
 }
 </script>

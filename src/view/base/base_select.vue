@@ -2,10 +2,9 @@
 <template>
   <div>
         <Select
-            v-model="value"
+            v-model="defaultValue"
             filterable
             remote
-            :remote-method="handleGetSelect"
             @on-change="handleChangeSelect"
             :loading="loading">
             <Option v-for="(option, index) in options" :value="option.value" :key="index">{{option.label}}</Option>
@@ -23,6 +22,7 @@ export default {
   data () {
     return {
         loading : true,
+        defaultValue:"",
         options:[],
     }
   },
@@ -30,6 +30,10 @@ export default {
     handleChangeSelect(value){
         this.$emit('update:value',value)
     },
+    // handleGetSelect(){
+    //     console.log("handleGetSelect");
+    //     this.handlegetSelect('');
+    // },
     handlegetSelect(query){
         this.loading = true
         getOptions({code:this.code}).then(res => {
@@ -53,11 +57,14 @@ export default {
     }
   },
   watch:{
-      name(newValue,oldValue){
-          this.handlegetSelect(newValue)
+      value(newValue,oldValue){
+        //   this.handlegetSelect(newValue)
+        console.log("watch");
+        this.defaultValue=newValue+""
       }
   },
   mounted () {
+      console.log("mounted");
       this.handlegetSelect()
   }
 }
