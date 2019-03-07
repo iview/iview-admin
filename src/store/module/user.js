@@ -15,7 +15,7 @@ export default {
   state: {
     userName: '',
     userId: '',
-    avatorImgPath: '',
+    avatarImgPath: '',
     token: getToken(),
     access: '',
     hasGetInfo: false,
@@ -26,8 +26,8 @@ export default {
     messageContentStore: {}
   },
   mutations: {
-    setAvator (state, avatorPath) {
-      state.avatorImgPath = avatorPath
+    setAvatar (state, avatarPath) {
+      state.avatarImgPath = avatarPath
     },
     setUserId (state, id) {
       state.userId = id
@@ -111,7 +111,7 @@ export default {
         try {
           getUserInfo(state.token).then(res => {
             const data = res.data
-            commit('setAvator', data.avator)
+            commit('setAvatar', data.avatar)
             commit('setUserName', data.name)
             commit('setUserId', data.user_id)
             commit('setAccess', data.access)
