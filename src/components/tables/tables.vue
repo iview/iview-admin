@@ -154,7 +154,6 @@ export default {
   methods: {
     suportEdit (item, index) {
       item.render = (h, params) => {
-        this.edittingText = this.insideTableData[params.index][params.column.key]
         return h(TablesEdit, {
           props: {
             params: params,
