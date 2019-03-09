@@ -49,6 +49,7 @@ export default {
   .tables-edit-con{
     position: relative;
     height: 100%;
+    min-height: 20px;
     .value-con{
       vertical-align: middle;
     }
