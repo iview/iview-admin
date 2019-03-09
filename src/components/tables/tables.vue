@@ -154,10 +154,14 @@ export default {
   methods: {
     suportEdit (item, index) {
       item.render = (h, params) => {
+        let originValue = this.insideTableData[params.index][params.column.key]
+        if (originValue && !this.edittingText) {
+          this.edittingText = originValue
+        }
         return h(TablesEdit, {
           props: {
             params: params,
-            value: this.insideTableData[params.index][params.column.key],
+            value: originValue,
             edittingCellId: this.edittingCellId,
             editable: this.editable
           },
