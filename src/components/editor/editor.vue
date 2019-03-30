@@ -59,6 +59,7 @@ export default {
       this.$emit('on-change', html, text)
     }
     this.editor.customConfig.onchangeTimeout = this.changeInterval
+    this.editor.customConfig.zIndex = 100
     // create这个方法一定要在所有配置项之后调用
     this.editor.create()
     // 如果本地有存储加载本地存储内容
