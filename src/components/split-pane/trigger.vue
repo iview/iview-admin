@@ -1,7 +1,10 @@
 <template>
   <div :class="classes">
     <div :class="barConClasses">
-      <i :class="`${prefix}-bar`" v-once v-for="i in 8" :key="`trigger-${i}`"></i>
+      <i :class="`${prefix}-bar`"
+         v-once
+         v-for="i in 8"
+         :key="`trigger-${i}`"></i>
     </div>
   </div>
 </template>
@@ -25,7 +28,9 @@ export default {
     classes () {
       return [
         this.prefix,
-        this.isVertical ? `${this.prefix}-vertical` : `${this.prefix}-horizontal`
+        this.isVertical
+          ? `${this.prefix}-vertical`
+          : `${this.prefix}-horizontal`
       ]
     },
     barConClasses () {
@@ -39,5 +44,5 @@ export default {
 </script>
 
 <style lang="less">
-@import './index.less';
+  @import './index.less';
 </style>

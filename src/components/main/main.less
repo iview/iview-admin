@@ -1,51 +1,61 @@
-.main{
-  .logo-con{
+.main {
+  .logo-con {
     height: 64px;
     padding: 10px;
-    img{
+
+    img {
       height: 44px;
       width: auto;
       display: block;
       margin: 0 auto;
     }
   }
-  .header-con{
+
+  .header-con {
     background: #fff;
     padding: 0 20px;
     width: 100%;
   }
-  .main-layout-con{
+
+  .main-layout-con {
     height: 100%;
     overflow: hidden;
   }
-  .main-content-con{
+
+  .main-content-con {
     height: ~"calc(100% - 60px)";
     overflow: hidden;
   }
-  .tag-nav-wrapper{
+
+  .tag-nav-wrapper {
     padding: 0;
-    height:40px;
-    background:#F0F0F0;
+    height: 40px;
+    background: #F0F0F0;
   }
-  .content-wrapper{
+
+  .content-wrapper {
     padding: 18px;
     height: ~"calc(100% - 80px)";
     overflow: auto;
   }
-  .left-sider{
-    .ivu-layout-sider-children{
+
+  .left-sider {
+    .ivu-layout-sider-children {
       overflow-y: scroll;
       margin-right: -18px;
     }
   }
 }
-.ivu-menu-item > i{
+
+.ivu-menu-item>i {
   margin-right: 12px !important;
 }
-.ivu-menu-submenu > .ivu-menu > .ivu-menu-item > i {
+
+.ivu-menu-submenu>.ivu-menu>.ivu-menu-item>i {
   margin-right: 8px !important;
 }
-.collased-menu-dropdown{
+
+.collased-menu-dropdown {
   width: 100%;
   margin: 0;
   line-height: normal;
@@ -56,20 +66,24 @@
   list-style: none;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
-  &:hover{
+
+  &:hover {
     background: rgba(100, 100, 100, 0.1);
   }
+
   & * {
     color: #515a6e;
   }
-  .ivu-menu-item > i{
+
+  .ivu-menu-item>i {
     margin-right: 12px !important;
   }
-  .ivu-menu-submenu > .ivu-menu > .ivu-menu-item > i {
+
+  .ivu-menu-submenu>.ivu-menu>.ivu-menu-item>i {
     margin-right: 8px !important;
   }
 }
 
-.ivu-select-dropdown.ivu-dropdown-transfer{
+.ivu-select-dropdown.ivu-dropdown-transfer {
   max-height: 400px;
 }

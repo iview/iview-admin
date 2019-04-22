@@ -1,13 +1,31 @@
 <template>
   <div class="tables-edit-outer">
-    <div v-if="!isEditting" class="tables-edit-con">
+    <div v-if="!isEditting"
+         class="tables-edit-con">
       <span class="value-con">{{ value }}</span>
-      <Button v-if="editable" @click="startEdit" class="tables-edit-btn" style="padding: 2px 4px;" type="text"><Icon type="md-create"></Icon></Button>
+      <Button v-if="editable"
+              @click="startEdit"
+              class="tables-edit-btn"
+              style="padding: 2px 4px;"
+              type="text">
+        <Icon type="md-create"></Icon>
+      </Button>
     </div>
-    <div v-else class="tables-editting-con">
-      <Input :value="value" @input="handleInput" class="tables-edit-input"/>
-      <Button @click="saveEdit" style="padding: 6px 4px;" type="text"><Icon type="md-checkmark"></Icon></Button>
-      <Button @click="canceltEdit" style="padding: 6px 4px;" type="text"><Icon type="md-close"></Icon></Button>
+    <div v-else
+         class="tables-editting-con">
+      <Input :value="value"
+             @input="handleInput"
+             class="tables-edit-input" />
+      <Button @click="saveEdit"
+              style="padding: 6px 4px;"
+              type="text">
+        <Icon type="md-checkmark"></Icon>
+      </Button>
+      <Button @click="canceltEdit"
+              style="padding: 6px 4px;"
+              type="text">
+        <Icon type="md-close"></Icon>
+      </Button>
     </div>
   </div>
 </template>
@@ -23,7 +41,10 @@ export default {
   },
   computed: {
     isEditting () {
-      return this.edittingCellId === `editting-${this.params.index}-${this.params.column.key}`
+      return (
+        this.edittingCellId ===
+        `editting-${this.params.index}-${this.params.column.key}`
+      )
     }
   },
   methods: {

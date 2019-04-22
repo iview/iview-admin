@@ -1,12 +1,18 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import { forEach, hasOneOf, objEqual } from '@/libs/tools'
+import {
+  forEach,
+  hasOneOf,
+  objEqual
+} from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
 
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+  Cookies.set(TOKEN_KEY, token, {
+    expires: config.cookieExpires || 1
+  })
 }
 
 export const getToken = () => {
@@ -53,13 +59,18 @@ export const getMenuByRouter = (list, access) => {
  * @returns {Array}
  */
 export const getBreadCrumbList = (route, homeRoute) => {
-  let homeItem = { ...homeRoute, icon: homeRoute.meta.icon }
+  let homeItem = {
+    ...homeRoute,
+    icon: homeRoute.meta.icon
+  }
   let routeMetched = route.matched
   if (routeMetched.some(item => item.name === homeRoute.name)) return [homeItem]
   let res = routeMetched.filter(item => {
     return item.meta === undefined || !item.meta.hide
   }).map(item => {
-    let meta = {...item.meta}
+    let meta = {
+      ...item.meta
+    }
     if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
@@ -71,12 +82,19 @@ export const getBreadCrumbList = (route, homeRoute) => {
   res = res.filter(item => {
     return !item.meta.hideInMenu
   })
-  return [{...homeItem, to: homeRoute.path}, ...res]
+  return [{
+    ...homeItem,
+    to: homeRoute.path
+  }, ...res]
 }
 
 export const getRouteTitleHandled = (route) => {
-  let router = {...route}
-  let meta = {...route.meta}
+  let router = {
+    ...route
+  }
+  let meta = {
+    ...route.meta
+  }
   let title = ''
   if (meta.title) {
     if (typeof meta.title === 'function') title = meta.title(router)
@@ -136,10 +154,20 @@ export const getHomeRoute = (routers, homeName = 'home') => {
  * @description 如果该newRoute已经存在则不再添加
  */
 export const getNewTagList = (list, newRoute) => {
-  const { name, path, meta } = newRoute
+  const {
+    name,
+    path,
+    meta
+  } = newRoute
   let newList = [...list]
   if (newList.findIndex(item => item.name === name) >= 0) return newList
-  else newList.push({ name, path, meta })
+  else {
+    newList.push({
+      name,
+      path,
+      meta
+    })
+  }
   return newList
 }
 

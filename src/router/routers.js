@@ -14,123 +14,120 @@ import parentView from '@/components/parent-view'
  *  icon: (-) 该页面在左侧菜单、面包屑和标签导航处显示的图标，如果是自定义图标，需要在图标名称前加下划线'_'
  *  beforeCloseName: (-) 设置该字段，则在关闭当前tab页时会去'@/router/before-close.js'里寻找该字段名对应的方法，作为关闭前的钩子函数
  * }
+ *
+ * 路由配置：
+ * redirect: '/home',  // 选填，这里如果不填在浏览器地址栏输入域名后自动跳转到首页
+ * name: 'home', // 必填，在面包屑处理中需要用到，值固定为otherRouter（或者可以在./src/libs/util.js中修改）'
  */
 
-export default [
-  {
-    path: '/login',
-    name: 'login',
+export default [{
+  path: '/login',
+  name: 'login',
+  meta: {
+    title: 'Login - 登录',
+    hideInMenu: true
+  },
+  component: () => import('@/view/login/login')
+},
+{
+  path: '/',
+  name: '_home',
+  redirect: '/home',
+  component: Main,
+  meta: {
+    hideInMenu: false,
+    notCache: true
+  },
+  children: [{
+    path: '/home',
+    name: 'home',
     meta: {
-      title: 'Login - 登录',
-      hideInMenu: true
+      hideInMenu: false,
+      title: '仪表盘',
+      notCache: true,
+      icon: 'md-home'
     },
-    component: () => import('@/view/login/login.vue')
+    component: () => import('@/view/admin')
+  }]
+},
+{
+  path: '/article',
+  name: 'article',
+  meta: {
+    icon: 'md-create',
+    title: '文章管理'
+  },
+  component: Main,
+  children: [{
+    path: 'level_2_1',
+    name: 'level_2_1',
+    meta: {
+      icon: 'md-funnel',
+      title: '二级-1'
+    },
+    component: () => import('@/view/multilevel/level-2-1.vue')
   },
   {
-    path: '/',
-    name: '_home',
-    redirect: '/home',
-    component: Main,
+    path: 'level_2_2',
+    name: 'level_2_2',
     meta: {
-      hideInMenu: true,
-      notCache: true
+      access: ['super_admin'],
+      icon: 'md-funnel',
+      showAlways: true,
+      title: '二级-2'
     },
-    children: [
-      {
-        path: '/home',
-        name: 'home',
-        meta: {
-          hideInMenu: true,
-          title: '首页',
-          notCache: true,
-          icon: 'md-home'
-        },
-        component: () => import('@/view/single-page/home')
-      }
-    ]
-  },
-  {
-    path: '',
-    name: 'doc',
-    meta: {
-      title: '文档',
-      href: 'https://lison16.github.io/iview-admin-doc/#/',
-      icon: 'ios-book'
-    }
-  },
-  {
-    path: '/multilevel',
-    name: 'multilevel',
-    meta: {
-      icon: 'md-menu',
-      title: '多级菜单'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'level_2_1',
-        name: 'level_2_1',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-1'
-        },
-        component: () => import('@/view/multilevel/level-2-1.vue')
+    component: parentView,
+    children: [{
+      path: 'level_2_2_1',
+      name: 'level_2_2_1',
+      meta: {
+        icon: 'md-funnel',
+        title: '三级'
       },
-      {
-        path: 'level_2_2',
-        name: 'level_2_2',
-        meta: {
-          access: ['super_admin'],
-          icon: 'md-funnel',
-          showAlways: true,
-          title: '二级-2'
-        },
-        component: parentView,
-        children: [
-          {
-            path: 'level_2_2_1',
-            name: 'level_2_2_1',
-            meta: {
-              icon: 'md-funnel',
-              title: '三级'
-            },
-            component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
-          }
-        ]
-      },
-      {
-        path: 'level_2_3',
-        name: 'level_2_3',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-3'
-        },
-        component: () => import('@/view/multilevel/level-2-3.vue')
-      }
-    ]
+      component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
+    }]
   },
   {
-    path: '/401',
-    name: 'error_401',
+    path: 'level_2_3',
+    name: 'level_2_3',
     meta: {
-      hideInMenu: true
+      icon: 'md-funnel',
+      title: '二级-3'
     },
-    component: () => import('@/view/error-page/401.vue')
-  },
-  {
-    path: '/500',
-    name: 'error_500',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/500.vue')
-  },
-  {
-    path: '*',
-    name: 'error_404',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/404.vue')
+    component: () => import('@/view/multilevel/level-2-3.vue')
   }
+  ]
+},
+{
+  path: '/comment',
+  name: 'comment',
+  meta: {
+    icon: 'md-chatboxes',
+    title: '评论管理'
+  }
+},
+{
+  path: '/401',
+  name: 'error_401',
+  meta: {
+    hideInMenu: true
+  },
+  component: () => import('@/view/error-page/401.vue')
+},
+{
+  path: '/500',
+  name: 'error_500',
+  meta: {
+    hideInMenu: true
+  },
+  component: () => import('@/view/error-page/500.vue')
+},
+{
+  path: '*',
+  name: 'error_404',
+  meta: {
+    hideInMenu: true
+  },
+  component: () => import('@/view/error-page/404.vue')
+}
 ]

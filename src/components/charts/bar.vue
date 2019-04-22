@@ -1,5 +1,6 @@
 <template>
-  <div ref="dom" class="charts chart-bar"></div>
+  <div ref="dom"
+       class="charts chart-bar"></div>
 </template>
 
 <script>
@@ -41,10 +42,12 @@ export default {
         yAxis: {
           type: 'value'
         },
-        series: [{
-          data: seriesData,
-          type: 'bar'
-        }]
+        series: [
+          {
+            data: seriesData,
+            type: 'bar'
+          }
+        ]
       }
       this.dom = echarts.init(this.$refs.dom, 'tdTheme')
       this.dom.setOption(option)
