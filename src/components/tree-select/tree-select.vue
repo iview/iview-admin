@@ -67,6 +67,8 @@ export default {
 .tree-select {
   .ivu-select-dropdown {
     padding: 0 6px;
+    max-height: 300px;
+    overflow: auto;
   }
 }
 </style>
