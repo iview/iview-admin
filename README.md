@@ -34,6 +34,14 @@ iView Admin
               <img width="300" src="https://file.iviewui.com/asd/asd-u-new-2.png">
             </a>
           </td>
+          <tr>
+            </td>
+            <td align="center" valign="middle">
+            <a href="https://file.iviewui.com/asd/asd-uniapp.png" target="_blank">
+              <img width="300" src="https://file.iviewui.com/asd/asd-uniapp.png">
+            </a>
+          </td>
+        </tr>
         </tr>
       </tbody>
 </table>
