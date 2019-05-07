@@ -121,7 +121,12 @@ export default {
         query = route.query
       }
       if (name.indexOf('isTurnByHref_') > -1) {
-        window.open(name.split('_')[1])
+       if (name.match(/:\/\//)) {
+          window.open(name.split('_')[1])
+        } else {
+          const location = this.$router.resolve({ path: name.split('_')[1] })
+          window.open(location.href)
+        }
         return
       }
       this.$router.push({
