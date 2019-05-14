@@ -65,11 +65,25 @@ export default {
       if (!route) return
       closePage(state, route)
     },
+    // addTag (state, { route, type = 'unshift' }) {
+    //   let router = getRouteTitleHandled(route)
+    //   if (!routeHasExist(state.tagNavList, router)) {
+    //     if (type === 'push') state.tagNavList.push(router)
+    //     else {
+    //       if (router.name === homeName) state.tagNavList.unshift(router)
+    //       else state.tagNavList.splice(1, 0, router)
+    //     }
+    //     setTagNavListInLocalstorage([...state.tagNavList])
+    //   }
+    // },
+
     addTag (state, { route, type = 'unshift' }) {
       let router = getRouteTitleHandled(route)
       if (!routeHasExist(state.tagNavList, router)) {
-        if (type === 'push') state.tagNavList.push(router)
-        else {
+        if (type === 'push') {
+          state.tagNavList = state.tagNavList.filter(d => d.name !== router.name)
+          state.tagNavList.push(router)
+        } else {
           if (router.name === homeName) state.tagNavList.unshift(router)
           else state.tagNavList.splice(1, 0, router)
         }
