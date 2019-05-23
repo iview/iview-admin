@@ -26,7 +26,7 @@ iView Admin
           </td>
           <td align="center" valign="middle">
             <a href="https://e.coding.net/?utm_source=iview" target="_blank">
-              <img width="300" src="https://file.iviewui.com/asd/asd-coding4.png">
+              <img width="300" src="https://file.iviewui.com/asd/asd-coding5.png">
             </a>
           </td>
             <td align="center" valign="middle">
@@ -34,6 +34,14 @@ iView Admin
               <img width="300" src="https://file.iviewui.com/asd/asd-u-new-2.png">
             </a>
           </td>
+          <tr>
+            </td>
+            <td align="center" valign="middle">
+            <a href="https://uniapp.dcloud.io/?hmsr=iview&hmpl=&hmcu=&hmkw=&hmci=" target="_blank">
+              <img width="300" src="https://file.iviewui.com/asd/asd-uniapp2.png">
+            </a>
+          </td>
+        </tr>
         </tr>
       </tbody>
 </table>
