@@ -46,11 +46,11 @@ iView Admin
       </tbody>
 </table>
 
-> If you'd like be a sponsor, to show your ads in GitHub and iView doc, please email admin@aresn.com to get more infomation.
+> If you'd like be a sponsor and show your ads on GitHub and iView doc, please email admin@aresn.com to get more infomation.
 
 ## Introduction
 
-iView Admin is a front-end management background integration solution. It based on [Vue.js](https://github.com/vuejs/vue) and use the UI Toolkit [iView](https://github.com/iview/iview).
+iView Admin is a solution to integrating back-end systems with front-end frameworks. It is built based on [Vue.js](https://github.com/vuejs/vue) and the UI Toolkit [iView](https://github.com/iview/iview).
 
 - [Document](https://lison16.github.io/iview-admin-doc/)
 - [Preview](https://admin.iviewui.com/)
