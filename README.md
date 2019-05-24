@@ -100,8 +100,8 @@ iView Admin is a solution to integrating back-end systems with front-end framewo
 - The message center
 - Personal center
 
-## Getting started
-```bush
+## Getting Started
+``` bash
 # clone the project
 git clone https://github.com/iview/iview-admin.git
 
@@ -113,7 +113,7 @@ npm run dev
 ```
 
 ## Build
-```bush
+``` bash
 npm run build
 ```
 
