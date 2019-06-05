@@ -117,6 +117,9 @@ npm run dev
 npm run build
 ```
 
+## Related
+[typescript version with class style components](https://github.com/dreambo8563/typescript-iview-admin)
+
 ## License
 [MIT](http://opensource.org/licenses/MIT)
 
