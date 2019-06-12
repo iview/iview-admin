@@ -187,6 +187,7 @@ export default {
               this.$emit('input', this.value)
               this.$emit('on-save-edit', Object.assign(params, { value: this.edittingText }))
               this.edittingCellId = ''
+              this.edittingText = ''
             }
           }
         })
