@@ -34,14 +34,14 @@ iView Admin
               <img width="300" src="https://file.iviewui.com/asd/asd-u-13.png">
             </a>
           </td>
-<!--           <tr>
+          <tr>
             </td>
             <td align="center" valign="middle">
-            <a href="https://uniapp.dcloud.io/?hmsr=iview&hmpl=&hmcu=&hmkw=&hmci=" target="_blank">
-              <img width="300" src="https://file.iviewui.com/asd/asd-uniapp2.png">
+            <a href="https://m3w.cn/track/uniapp/iview" target="_blank">
+              <img width="300" src="https://file.iviewui.com/asd/asd-uniapp3.png">
             </a>
           </td>
-        </tr> -->
+        </tr>
         </tr>
       </tbody>
 </table>
