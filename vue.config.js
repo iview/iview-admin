@@ -1,3 +1,6 @@
+const ThemeColorReplacer = require('webpack-theme-color-replacer')
+const colorUtil = require('webpack-theme-color-replacer/forElementUI')
+
 const path = require('path')
 
 const resolve = dir => {
@@ -35,9 +38,22 @@ module.exports = {
       .set('_c', resolve('src/components'))
   },
   // 设为false打包时不生成.map文件
-  productionSourceMap: false
+  productionSourceMap: false,
   // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
   // devServer: {
   //   proxy: 'localhost:3000'
   // }
+
+  configureWebpack: {
+    plugins: [
+      new ThemeColorReplacer({
+        fileName: 'css/theme-colors-[contenthash:8].css',
+        matchColors: colorUtil.getElementUISeries('#2d8cf0').concat('#fff'), // 主色系列
+        // 改变样式选择器，解决样式覆盖问题
+        changeSelector (selector) {
+          return selector
+        }
+      })
+    ]
+  }
 }
