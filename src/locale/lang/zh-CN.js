@@ -28,6 +28,7 @@ export default {
   'export-excel': '导出excel',
   tools_methods_page: '工具函数',
   drag_list_page: '拖拽列表',
+  tree_drag: '树节点拖拽',
   i18n_page: '多语言',
   modalTitle: '模态框题目',
   content: '这是模态框内容',

@@ -135,6 +135,15 @@ export default [
         component: () => import('@/view/components/drag-list/drag-list.vue')
       },
       {
+        path: 'tree_drag',
+        name: 'tree_drag',
+        meta: {
+          icon: 'ios-expand',
+          title: '树节点拖拽'
+        },
+        component: () => import('@/view/components/tree-drag/index.vue')
+      },
+      {
         path: 'drag_drawer_page',
         name: 'drag_drawer_page',
         meta: {
