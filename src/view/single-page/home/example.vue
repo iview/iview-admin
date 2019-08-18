@@ -105,10 +105,13 @@ export default {
       this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)
       on(window, 'resize', this.resize)
+      this.sidebarElm = document.getElementsByClassName('ivu-layout-sider')[0]
+      this.sidebarElm && this.sidebarElm.addEventListener('transitionend', this.resize)
     })
   },
   beforeDestroy () {
     off(window, 'resize', this.resize)
+    this.sidebarElm && this.sidebarElm.removeEventListener('transitionend', this.resize)
   }
 }
 </script>
