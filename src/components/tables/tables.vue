@@ -166,6 +166,7 @@ export default {
               this.edittingText = val
             },
             'on-start-edit': (params) => {
+              this.edittingText = params.row[params.column.key]
               this.edittingCellId = `editting-${params.index}-${params.column.key}`
               this.$emit('on-start-edit', params)
             },
@@ -212,7 +213,7 @@ export default {
       if (e.target.value === '') this.insideTableData = this.value
     },
     handleSearch () {
-      this.insideTableData = this.value.filter(item => item[this.searchKey].indexOf(this.searchValue) > -1)
+      this.insideTableData = this.value.filter(item => item[this.searchKey].toString().indexOf(this.searchValue) > -1)
     },
     handleTableData () {
       this.insideTableData = this.value.map((item, index) => {
