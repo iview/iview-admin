@@ -148,7 +148,8 @@ export default {
       edittingCellId: '',
       edittingText: '',
       searchValue: '',
-      searchKey: ''
+      searchKey: '',
+      isEdittingTextChange: false
     }
   },
   methods: {
@@ -164,20 +165,29 @@ export default {
           on: {
             'input': val => {
               this.edittingText = val
+              this.isEdittingTextChange = true
             },
             'on-start-edit': (params) => {
               this.edittingCellId = `editting-${params.index}-${params.column.key}`
               this.$emit('on-start-edit', params)
+              this.isEdittingTextChange = false
             },
             'on-cancel-edit': (params) => {
               this.edittingCellId = ''
               this.$emit('on-cancel-edit', params)
+              this.isEdittingTextChange = false
             },
             'on-save-edit': (params) => {
+              if (!this.isEdittingTextChange) {
+                this.edittingCellId = ''
+                this.isEdittingTextChange = false
+                return
+              }
               this.value[params.row.initRowIndex][params.column.key] = this.edittingText
               this.$emit('input', this.value)
               this.$emit('on-save-edit', Object.assign(params, { value: this.edittingText }))
               this.edittingCellId = ''
+              this.edittingText = ''
             }
           }
         })
