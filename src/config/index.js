@@ -27,6 +27,11 @@ export default {
   /**
    * @description 需要加载的插件
    */
+  /**
+   * @description 错误页面停留时长，秒单位
+   */
+  error_page_stay_time: 5,
+  
   plugin: {
     'error-store': {
       showInHeader: true, // 设为false后不会在顶部显示错误日志徽标
