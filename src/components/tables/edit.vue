@@ -32,6 +32,7 @@ export default {
     },
     startEdit () {
       this.$emit('on-start-edit', this.params)
+      this.$emit('input', this.value)
     },
     saveEdit () {
       this.$emit('on-save-edit', this.params)
