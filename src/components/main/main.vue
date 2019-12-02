@@ -128,7 +128,7 @@ export default {
         name,
         params,
         query
-      })
+      }).catch(err => {})
     },
     handleCollapsedChange (state) {
       this.collapsed = state
