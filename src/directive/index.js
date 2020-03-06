@@ -11,7 +11,7 @@ const importDirective = Vue => {
    */
   Vue.directive('draggable', directive.draggable)
   /**
-   * clipboard指令 v-draggable="options"
+   * clipboard指令 v-clipboard="options"
    * options = {
    *  value:    /在输入框中使用v-model绑定的值/,
    *  success:  /复制成功后的回调/,
