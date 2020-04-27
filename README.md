@@ -16,7 +16,7 @@ store > user.js
 
 view > login.vue
 
-2.mock数据改造：
+2.mock数据、mock接口：
 
 mock - role.js，新建角色列表、菜单列表、菜单层级列表，这里以我在实际项目中后端给到的数据结构为例
 
@@ -28,12 +28,18 @@ mock - role.js，新建角色列表、菜单列表、菜单层级列表，这里
 
 对应关系图
 
-3.注册mock事件，动态获取路由数据
 
+注册mock事件不过多陈述：
 
-store > app.js，动态获取路由事件，动态挂载菜单
+mock > data getAllMenus
+mock > index getAllMenus
+api > data getAllMenus
 
-libs > 
+3.动态获取路由数据，并对数据进行处理：
+
+store > app.js
+
+libs > router-util.js
 
 router > 
 
