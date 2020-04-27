@@ -1,8 +1,8 @@
-const path = require('path')
+const path = require("path");
 
-const resolve = dir => {
-  return path.join(__dirname, dir)
-}
+const resolve = (dir) => {
+  return path.join(__dirname, dir);
+};
 
 // 项目部署基础
 // 默认情况下，我们假设你的应用将被部署在域的根目录下,
@@ -11,9 +11,8 @@ const resolve = dir => {
 // 如果您的应用程序部署在子路径中，则需要在这指定子路径
 // 例如：https://www.foobar.com/my-app/
 // 需要将它改为'/my-app/'
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? '/'
-  : '/'
+const BASE_URL =
+  process.env.NODE_ENV === "production" ? "/iview-dynamicRouter" : "/";
 
 module.exports = {
   // Project deployment base
@@ -28,10 +27,10 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   // 如果你不需要使用eslint，把lintOnSave设为false即可
   lintOnSave: false,
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias
-      .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-      .set('_c', resolve('src/components'))
+      .set("@", resolve("src")) // key,value自行定义，比如.set('@@', resolve('src/components'))
+      .set("_c", resolve("src/components"));
   },
   // 打包时不生成.map文件
   productionSourceMap: false
@@ -39,4 +38,4 @@ module.exports = {
   // devServer: {
   //   proxy: 'localhost:3000'
   // }
-}
+};
