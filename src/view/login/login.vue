@@ -25,13 +25,15 @@ export default {
     LoginForm
   },
   methods: {
-    ...mapActions(["handleLogin", "getUserInfo"]),
+    ...mapActions(["handleLogin", "getUserInfo", "getRouters"]),
     handleSubmit({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
         res.data.status === 200 &&
           this.getUserInfo().then(res => {
-            this.$router.push({
-              name: this.$config.homeName
+            this.getRouters().then(resRoutes => {
+              this.$router.push({
+                name: this.$config.homeName
+              });
             });
           });
       });
