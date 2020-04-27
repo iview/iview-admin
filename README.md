@@ -41,15 +41,21 @@ store > app.js
 
 libs > router-util.js
 
-router > 
+libs > tools.js 函数: 引入组件
 
-3.github部署：
+4.路由改造
+
+router > index.js
+
+router > router.js
+
+5.github部署：
 
 router > index.js，取消history模式
 
 部署后的css文件 > static > fonts > 把外面的fonts放进去
 
-4.扩展：
+6.扩展：
 
 项目需求万千，万变不离其宗。以下两种情况我已做好demo并集成到项目中
 
