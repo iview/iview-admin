@@ -1,5 +1,5 @@
-import Main from '@/components/main'
-import parentView from '@/components/parent-view'
+import Main from "@/components/main";
+import { dynamicRouterAdd } from "@/libs/router-util"; // 引入动态路由
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -16,121 +16,58 @@ import parentView from '@/components/parent-view'
  * }
  */
 
-export default [
+// 静态路由
+export const otherRouter = [
   {
-    path: '/login',
-    name: 'login',
-    meta: {
-      title: 'Login - 登录',
-      hideInMenu: true
-    },
-    component: () => import('@/view/login/login.vue')
+    path: "/login",
+    name: "login",
+    meta: { title: "Login - 登录", hideInMenu: true },
+    component: () => import("@/view/login/login.vue")
   },
   {
-    path: '/',
-    name: '_home',
-    redirect: '/home',
+    path: "/",
+    name: "_home",
+    redirect: "/home",
     component: Main,
-    meta: {
-      hideInMenu: true,
-      notCache: true
-    },
+    meta: { hideInMenu: true, notCache: true },
     children: [
       {
-        path: '/home',
-        name: 'home',
+        path: "/home",
+        name: "home",
         meta: {
           hideInMenu: true,
-          title: '首页',
+          title: "首页",
           notCache: true,
-          icon: 'md-home'
+          icon: "md-home"
         },
-        component: () => import('@/view/single-page/home')
+        component: () => import("@/view/single-page/home")
       }
     ]
   },
   {
-    path: '',
-    name: 'doc',
-    meta: {
-      title: '文档',
-      href: 'https://lison16.github.io/iview-admin-doc/#/',
-      icon: 'ios-book'
-    }
+    path: "/401",
+    name: "error_401",
+    meta: { hideInMenu: true },
+    component: () => import("@/view/error-page/401.vue")
   },
   {
-    path: '/multilevel',
-    name: 'multilevel',
-    meta: {
-      icon: 'md-menu',
-      title: '多级菜单'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'level_2_1',
-        name: 'level_2_1',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-1'
-        },
-        component: () => import('@/view/multilevel/level-2-1.vue')
-      },
-      {
-        path: 'level_2_2',
-        name: 'level_2_2',
-        meta: {
-          access: ['super_admin'],
-          icon: 'md-funnel',
-          showAlways: true,
-          title: '二级-2'
-        },
-        component: parentView,
-        children: [
-          {
-            path: 'level_2_2_1',
-            name: 'level_2_2_1',
-            meta: {
-              icon: 'md-funnel',
-              title: '三级'
-            },
-            component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
-          }
-        ]
-      },
-      {
-        path: 'level_2_3',
-        name: 'level_2_3',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-3'
-        },
-        component: () => import('@/view/multilevel/level-2-3.vue')
-      }
-    ]
+    path: "/500",
+    meta: { title: "500-服务端错误" },
+    name: "error_500",
+    component: () => import("@/view/error-page/500.vue")
   },
   {
-    path: '/401',
-    name: 'error_401',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/401.vue')
-  },
-  {
-    path: '/500',
-    name: 'error_500',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/500.vue')
-  },
-  {
-    path: '*',
-    name: 'error_404',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/404.vue')
+    path: "*",
+    name: "error_404",
+    meta: { hideInMenu: true },
+    component: () => import("@/view/error-page/404.vue")
   }
-]
+];
+
+// 动态路由
+export const appRouter = [...dynamicRouterAdd("router.js")];
+
+export const routes = [...otherRouter, ...appRouter];
+
+// 所有上面定义的路由都要写在下面输出
+export default routes;
