@@ -39,15 +39,19 @@ api > data getAllMenus
 
 store > app.js
 
-libs > router-util.js
+libs > router-util.js 3个封装方法
 
 libs > tools.js 函数: 引入组件
 
+store > user.js 退出登录时清空路由和标签缓存
+
 4.路由改造
+
+router > router.js
 
 router > index.js
 
-router > router.js
+view > login.vue 登录后，调用app.js的方法，生成动态路由
 
 5.github部署：
 
