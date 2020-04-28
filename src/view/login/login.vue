@@ -20,9 +20,16 @@
 <script>
 import LoginForm from "_c/login-form";
 import { mapActions } from "vuex";
+// function
+import { refreshRoute } from "@/router"; // 路由初始化，清空动态路由
+
 export default {
   components: {
     LoginForm
+  },
+  created() {
+    localStorage.setItem("dynamicRouter", []);
+    refreshRoute();
   },
   methods: {
     ...mapActions(["handleLogin", "getUserInfo", "getRouters"]),
