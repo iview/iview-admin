@@ -3,7 +3,7 @@ import {
   // logout,
   getUserInfo
 } from "@/api/user";
-import { setToken, getToken, removeToken } from "@/libs/util";
+import { setToken, getToken, removeToken, localSave } from "@/libs/util";
 
 export default {
   state: {
@@ -70,6 +70,8 @@ export default {
         // commit('setToken', '')
         removeToken(); // 删除token
         commit("setAccess", []);
+        localSave("dynamicRouter", []); // 清空本地存储localStorage中的dynamicRouter
+        localSave("tagNaveList", []); // 清空localStorage中的tagNaveList记录
         resolve();
       });
     },
