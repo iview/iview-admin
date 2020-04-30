@@ -7,7 +7,9 @@ userName：super_admin / visitor
 password：any / any
 
 
-1.axios加工改造，使其更符合后端的回文格式：
+### axios加工改造
+
+axios加工改造，使其更符合后端的回文格式：
 
 libs > axios.js
 
@@ -18,7 +20,7 @@ store > user.js
 view > login.vue
 
 
-2.mock数据、mock接口：
+### mock数据、mock接口：
 
 mock - role.js，新建菜单列表、菜单层级列表，这里以我在实际项目中后端给到的数据结构为例
 
@@ -34,7 +36,7 @@ mock > index getAllMenus
 api > data getAllMenus
 
 
-3.动态获取路由数据，并对数据进行处理：
+### 动态获取路由数据，并对数据进行处理：
 
 store > app.js
 
@@ -45,7 +47,7 @@ libs > tools.js 函数: 引入组件
 store > user.js 退出登录时清空路由和标签缓存
 
 
-4.路由改造
+### 路由改造
 
 router > router.js
 
@@ -61,7 +63,7 @@ view > login.vue 登录后，调用app.js的方法，生成动态路由
 每次刷新 -> 从localStorage获取路由，处理后生成左侧菜单
 
 
-5.前端控制权限
+### 前端控制权限
 
 实际开发中，后台会提供“根据用户查询菜单（getAllMenus）”的接口，返回的数据已经是该用户的菜单，因此当前步骤仅针对前端控制权限。
 
@@ -74,14 +76,14 @@ mock - role.js，新建角色列表，这里仍以我在实际项目中后端给
 store > app.js 对路由数据进行用户权限处理
 
 
-5.github部署：
+### github部署：
 
 router > index.js，取消history模式
 
 部署后的css文件 > static > fonts > 把外面的fonts放进去
 
 
-6.扩展：
+### 扩展：
 
 项目需求万千，万变不离其宗。以下两种情况我已做好demo并集成到项目中
 
