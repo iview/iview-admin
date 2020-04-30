@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-04-30 13:01:25
+ * @LastEditTime: 2020-04-30 13:17:11
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /iview/iview-admin/src/components/login-form/login-form.vue
+ -->
 <template>
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
     <FormItem prop="userName">
@@ -44,7 +52,7 @@ export default {
     return {
       form: {
         userName: 'super_admin',
-        password: ''
+        password: '1234'
       }
     }
   },
