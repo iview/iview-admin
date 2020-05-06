@@ -12,10 +12,11 @@
 
 ## 在线预览
 
-<a href="https://simon9124.github.io/iview-dynamicRouter" target="_blank">Live Demo</a>
-
+- <a href="https://simon9124.github.io/iview-dynamicRouter" target="_blank">Live Demo</a>
 - userName：super_admin / visitor
 - password：any / any
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXQMvtNjibjXM4hxUhrRpicuaRUpB5Yp6lFHR6hKlW6OCHicQEx5eD4vGIPPhH2iceBeqI0T2MGrCloLibg/0?wx_fmt=png">
 
 在控制台可查看【当前路由】和【左侧菜单】
 
