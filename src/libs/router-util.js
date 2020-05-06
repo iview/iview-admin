@@ -1,7 +1,9 @@
 import { localRead } from "@/libs/util";
 import { lazyLoadingCop } from "@/libs/tools";
-import Main from "@/components/main"; // Main 是架构组件，不在后台返回，在文件里单独引入
-import parentView from "@/components/parent-view"; // parentView 是二级架构组件，不在后台返回，在文件里单独引入
+import { arraySort } from "@/libs/dataHanding"; // 对象数组根据key排序
+import Main from "@/components/main"; // 架构组件
+import parentView from "@/components/parent-view"; // 二级架构组件
+import Vue from "vue";
 
 // 加载路由菜单,从localStorage拿到路由,在创建路由时使用
 export const dynamicRouterAdd = from => {
@@ -17,10 +19,23 @@ export const routerDataHanding = apiRouterData => {
 
   // 外层节点
   apiRouterData.forEach(route => {
-    if (route.parenetId === "root") {
-      // console.log(route);
-      if (route.path === "") {
-        // 有子节点的父级路由（模块，非页面）
+    if (route.parentId === "root") {
+      if (route.isOutSide === true) {
+        // 外链，菜单显示该页面选项， -> 根据url创建外链路由
+        asyncRouterMap.push({
+          path: route.path,
+          name: route.name,
+          meta: {
+            icon: route.ico,
+            title: route.title,
+            href: route.url,
+            id: route.id // 根据id确定子组件
+          },
+          sort: route.sort, // 排序用
+          children: []
+        });
+      } else if (route.path === "") {
+        // 非外链，有子节点的父级路由（模块，非页面）-> 创建父结构路由
         asyncRouterMap.push({
           path: route.url === "/" ? route.url : "/" + route.url,
           name: route.name,
@@ -31,10 +46,11 @@ export const routerDataHanding = apiRouterData => {
             hideInBread: true,
             id: route.id // 根据id确定子组件
           },
+          sort: route.sort, // 排序用
           children: []
         });
-      } else if (parseInt(route.showLevel) === 3) {
-        // 无子节点，菜单显示该页面选项，页面含菜单栏和面包屑 -> 根据url和name创建父子结构的路由
+      } else if (parseInt(route.showLevel) === 2) {
+        // 非外链，无子节点，页面含菜单栏，菜单显示该页面选项 -> 创建父子结构路由
         asyncRouterMap.push({
           path: "/" + route.url.split("/")[0],
           name: route.name.split("/")[0],
@@ -44,6 +60,7 @@ export const routerDataHanding = apiRouterData => {
             title: route.title,
             hideInBread: true
           },
+          sort: route.sort, // 排序用
           children: [
             {
               path: route.url
@@ -67,21 +84,8 @@ export const routerDataHanding = apiRouterData => {
             }
           ]
         });
-      } else if (parseInt(route.showLevel) === 1) {
-        // 无子节点，菜单显示该页面选项，页面不含菜单栏不含面包屑 -> 根节点路由，与main组件平级
-        asyncRouterMap.push({
-          path: "/" + route.url,
-          name: route.name,
-          component: route.path,
-          meta: {
-            icon: route.ico,
-            title: route.title,
-            hideInBread: true
-          },
-          children: []
-        });
-      } else if (parseInt(route.showLevel) === 4) {
-        // 无子节点，菜单隐藏该页面选项，页面不含菜单栏不含面包屑 -> 根节点路由，与main组件平级
+      } else {
+        // 非外链，无子节点，页面不含菜单栏 -> 根节点路由，与main组件平级
         asyncRouterMap.push({
           path: "/" + route.url,
           name: route.name,
@@ -90,8 +94,10 @@ export const routerDataHanding = apiRouterData => {
             icon: route.ico,
             title: route.title,
             hideInBread: true,
-            hideInMenu: true
+            hideInMenu: parseInt(route.showLevel) !== 1, // true or false 菜单是否隐藏该页面选项,
+            id: route.id // 根据id确定子组件
           },
+          sort: route.sort, // 排序用
           children: []
         });
       }
@@ -104,17 +110,53 @@ export const routerDataHanding = apiRouterData => {
   const handleRecurrence = recurrenceData => {
     recurrenceData.forEach(data => {
       apiRouterData.forEach(route => {
-        if (data.meta.id === route.parenetId) {
-          data.children.push({
-            path: route.url,
-            name: route.name,
-            meta: {
-              icon: data.meta.icon,
-              title: route.title
-            },
-            component: route.path,
-            children: []
-          });
+        if (data.meta.id === route.parentId) {
+          if (route.isOutSide === true) {
+            // 外链 -> 根据url创建外链路由
+            data.children.push({
+              path: route.path,
+              name: route.name,
+              meta: {
+                icon: route.ico,
+                title: route.title,
+                href: route.url,
+                id: route.id // 根据id确定子组件
+              },
+              sort: route.sort, // 排序用
+              children: []
+            });
+          } else if (parseInt(route.showLevel) === 2) {
+            // 非外链，页面含菜单栏，菜单显示该页面选项 -> 创建子路由
+            data.children.push({
+              path: route.url,
+              name: route.name,
+              component: route.path,
+              meta: {
+                icon: route.ico,
+                title: route.title,
+                id: route.id // 根据id确定子组件
+              },
+              sort: route.sort, // 排序用
+              children: []
+            });
+          } else {
+            // 非外链，页面不含菜单栏，菜单显示该页面选项 -> 根节点路由，与main组件平级（暂时为根菜单）
+            // 在app.js里调用menuListHanding方法，将原本不是根菜单的数据重新挂载到相应位置
+            asyncRouterMap.push({
+              path: "/" + route.url,
+              name: route.name,
+              component: route.path,
+              meta: {
+                icon: route.ico,
+                title: route.title,
+                hideInBread: true,
+                hideInMenu: parseInt(route.showLevel) !== 1, // true or false 菜单是否隐藏该页面选项
+                parentId: route.parentId // 特殊处理：此类需要处理菜单的数据均追加parentId
+              },
+              sort: route.sort, // 排序用
+              children: []
+            });
+          }
         }
       });
       // console.log(data);
@@ -123,20 +165,38 @@ export const routerDataHanding = apiRouterData => {
   };
   handleRecurrence(asyncRouterMap);
 
-  // 首页重定向：处理name，追加 redirect 和 notCache
+  // 处理重定向
   asyncRouterMap.forEach(route => {
-    if (route.path === "/") {
-      // home 页 -> 重定向为home
-      route.meta.notCache = true;
-      route.children[0].meta.notCache = true;
-      route.children[0].name = "_" + route.name;
-      route.redirect = route.path + route.children[0].path;
-    } else if (route.children.length !== 0) {
+    if (route.children.length !== 0) {
       // 非 home 页且有子组件 -> 重定向为第一个子组件
       route.redirect = route.path + "/" + route.children[0].path;
     }
   });
   return asyncRouterMap;
+};
+
+// @函数：遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
+export const menuListHanding = (menuArray, menuList) => {
+  menuList.forEach((menu, i) => {
+    menuArray.forEach(data => {
+      // 1.有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
+      if (
+        data.meta.parentId !== undefined &&
+        menu.meta.id === data.meta.parentId
+      ) {
+        var dataCopy = JSON.parse(JSON.stringify(data));
+        Vue.delete(dataCopy.meta, "parentId");
+        menu.children.push(dataCopy);
+        menu.children.sort(arraySort("sort", "desc"));
+      }
+      // 2.删除剩余的meta里有parentId的数据
+      if (menu.meta.parentId !== undefined) {
+        menuList.splice(i, 1);
+      }
+    });
+    menuListHanding(menuArray, menu.children);
+  });
+  return menuList;
 };
 
 // @函数: 遍历路由基础数据，转换为前端组件对象
