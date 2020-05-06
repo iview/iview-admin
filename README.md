@@ -18,6 +18,8 @@
 - 在控制台可查看【当前路由】和【左侧菜单】:
 <img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXQMvtNjibjXM4hxUhrRpicuaRaHw2ibHmia0ZPvCkfia5ckocfK1w4CJwejVEJ95d4A54UzZI3hnEge6sA/0?wx_fmt=png">
 
+如果这个模板或模板中的代码段能够在开发中帮助到你，请在右上角star一下，非常感谢～  
+If the template can help you in your work, please give a ⭐️ for motivation
 
 # 开发文档（更新中）
 
