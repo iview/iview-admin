@@ -1,13 +1,22 @@
 # iview-dynamicRouter
 
-iview-admin，后端动态生成路由模板
+<a href="https://github.com/NetEaseGame/aircv"><img src="https://img.shields.io/badge/iview--admin-template-brightgreen"></a>
 
-userName：super_admin / visitor
+基于<a href="https://github.com/iview/iview-admin" target="_blank">iview-admin</a>，动态获取路由数据，经数据处理后生成动态路由和菜单的【后端动态路由模板】。
 
-password：any / any
+## 在线预览
+
+<a href="https://simon9124.github.io/iview-dynamicRouter" target="_blank">Live Demo</a>
+
+- userName：super_admin / visitor
+- password：any / any
+
+在控制台可查看【当前路由】和【左侧菜单】
 
 
-### axios加工改造
+# 开发文档（更新中）
+
+## axios加工改造
 
 axios加工改造，使其更符合后端的回文格式：
 
@@ -20,7 +29,7 @@ store > user.js
 view > login.vue
 
 
-### mock数据、mock接口：
+## mock数据、mock接口：
 
 mock - role.js，新建菜单列表、菜单层级列表，这里以我在实际项目中后端给到的数据结构为例
 
@@ -36,18 +45,20 @@ mock > index getAllMenus
 api > data getAllMenus
 
 
-### 动态获取路由数据，并对数据进行处理：
+## 动态获取路由数据，并对数据进行处理：
 
 store > app.js
 
-libs > router-util.js 3个封装方法
+libs > router-util.js 4个封装方法
 
 libs > tools.js 函数: 引入组件
+
+libs > dataHanding.js 追加通用方法
 
 store > user.js 退出登录时清空路由和标签缓存
 
 
-### 路由改造
+## 路由改造
 
 router > router.js
 
@@ -63,7 +74,7 @@ view > login.vue 登录后，调用app.js的方法，生成动态路由
 每次刷新 -> 从localStorage获取路由，处理后生成左侧菜单
 
 
-### 前端控制权限
+## 前端控制权限
 
 实际开发中，后台会提供“根据用户查询菜单（getAllMenus）”的接口，返回的数据已经是该用户的菜单，因此当前步骤仅针对前端控制权限。
 
@@ -76,14 +87,14 @@ mock - role.js，新建角色列表，这里仍以我在实际项目中后端给
 store > app.js 对路由数据进行用户权限处理
 
 
-### github部署：
+## github部署：
 
 router > index.js，取消history模式
 
 部署后的css文件 > static > fonts > 把外面的fonts放进去
 
 
-### 扩展：
+## 扩展：
 
 项目需求万千，万变不离其宗。以下两种情况我已做好demo并集成到项目中
 
