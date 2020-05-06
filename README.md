@@ -1,6 +1,6 @@
 # iview-dynamicRouter
 
-<a href="https://github.com/NetEaseGame/aircv"><img src="https://img.shields.io/badge/iview--admin-template-brightgreen"></a>
+<a href="https://github.com/iview/iview-admin/tree/template"><img src="https://img.shields.io/badge/iview--admin-template-brightgreen"></a>
 
 基于<a href="https://github.com/iview/iview-admin" target="_blank">iview-admin</a>，动态获取路由数据，经数据处理后生成动态路由和菜单的【后端动态路由模板】。
 
