@@ -1,3 +1,9 @@
+<p align="center">
+    <a href="https://www.iviewui.com">
+        <img width="200" src="https://file.iviewui.com/logo-new.svg">
+    </a>
+</p>
+
 # iview-dynamicRouter
 
 <a href="https://github.com/iview/iview-admin/tree/template"><img src="https://img.shields.io/badge/iview--admin-template-brightgreen"></a>
