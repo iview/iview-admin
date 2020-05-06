@@ -4,7 +4,7 @@ const USER_MAP = {
   super_admin: {
     name: "super_admin",
     user_id: "1",
-    access: ["super_admin"],
+    access: ["super_admin", "visitor"],
     token: "super_admin",
     avator: "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png"
   },
