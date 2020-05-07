@@ -4,7 +4,7 @@
     </a>
 </p>
 
-# iview-dynamicRouter
+# iView DynamicRouter
 
 <a href="https://github.com/iview/iview-admin/tree/template"><img src="https://img.shields.io/badge/iview--admin-template-brightgreen"></a>
 
