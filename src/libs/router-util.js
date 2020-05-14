@@ -34,7 +34,7 @@ export const routerDataHanding = apiRouterData => {
           sort: route.sort, // 排序用
           children: []
         });
-      } else if (route.path === "") {
+      } else if (route.path === "Main") {
         // 非外链，有子节点的父级路由（模块，非页面）-> 创建父结构路由
         asyncRouterMap.push({
           path: route.url === "/" ? route.url : "/" + route.url,
