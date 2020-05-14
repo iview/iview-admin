@@ -88,7 +88,7 @@ const menuList = [
     name: "multilevel",
     title: "多级菜单",
     url: "multilevel",
-    path: "",
+    path: "Main",
     sort: 24,
     parentId: "root",
     ico: "md-menu",
