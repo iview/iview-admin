@@ -168,7 +168,8 @@ export default {
               .then(res => {
                 // console.log(res);
                 /* 1.拿到路由接口数据 */
-                var routerData = routerDataHanding(res.data.data);
+                var routerData = res.data.data;
+                // console.log(routerData);
                 /* 2.根据用户角色，处理该角色的路由数据（后端生成数据时忽略此步骤） */
                 var menus = [];
                 rootState.user.access.forEach(_access => {
@@ -181,9 +182,12 @@ export default {
                 // console.log(menus); // 获取该用户所有角色的所有菜单
                 /* 3.将路由动态数据与该角色拥有的菜单做比对筛选（后端生成数据时忽略此步骤） */
                 routerData = routerData.filter(menu => {
-                  return menus.some(_menu => _menu === menu.name); // 根据id全等筛选数据
+                  return menus.some(_menu => _menu === menu.id); // 根据id全等筛选数据
                 });
                 // console.log(routerData); // 筛选出该角色拥有的路由数据
+                routerData = routerDataHanding(
+                  JSON.parse(JSON.stringify(routerData))
+                );
                 /* 4.处理后路由数据生成路由和菜单等 */
                 localSave("dynamicRouter", JSON.stringify(routerData)); // 存储routerData到localStorage
                 gotRouter = filterAsyncRouter(routerData); // 过滤路由,路由组件转换

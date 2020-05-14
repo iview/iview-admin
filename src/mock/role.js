@@ -14,7 +14,8 @@ const roleList = [
       "level_2_2_2",
       "level_2_3",
       "screen",
-      "github"
+      "github",
+      "singleMenu"
     ],
     id: "1"
   },
@@ -29,7 +30,8 @@ const roleList = [
       "level_2_2_1",
       "level_2_2_2",
       "level_2_3",
-      "screen"
+      "screen",
+      "singleMenu"
     ],
     id: "2"
   }
@@ -63,7 +65,7 @@ const menuList = [
     id: "doc",
     name: "doc",
     title: "文档",
-    url: "https://lison16.github.io/iview-admin-doc/#/",
+    url: "https://simon9124.github.io/iview-dynamicRouter-doc/",
     path: "",
     sort: 28,
     parentId: "root",
@@ -190,6 +192,18 @@ const menuList = [
     ico: "md-log-in",
     isOutSide: true,
     showLevel: 1
+  },
+  {
+    id: "singleMenu",
+    name: "single/menu",
+    title: "单极菜单",
+    url: "single/menu",
+    path: "template",
+    sort: 22,
+    parentId: "root",
+    ico: "md-document",
+    isOutSide: false,
+    showLevel: 2
   }
 ];
 
