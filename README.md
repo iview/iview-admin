@@ -64,4 +64,4 @@ npm run dev
 ```
 
 启动完成后，在控制台可监听【当前路由】和【左侧菜单】：
-<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXQMvtNjibjXM4hxUhrRpicuaRaHw2ibHmia0ZPvCkfia5ckocfK1w4CJwejVEJ95d4A54UzZI3hnEge6sA/0?wx_fmt=png">
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXQDvea6ZkJD5aNx25dymLfInAQzp6snhVQ36aH70AiaqINqCzFI60DiaIX0rkMjiaE7v8gIvY5TzxTnQ/0?wx_fmt=png">
