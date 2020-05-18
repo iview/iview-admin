@@ -67,7 +67,7 @@ export const getBreadCrumbList = (route, homeRoute) => {
   }
   let res = routeMetched
     .filter(item => {
-      return item.meta === undefined || !item.meta.hide;
+      return item.meta === undefined || !item.meta.hideInBread;
     })
     .map(item => {
       let meta = { ...item.meta };
