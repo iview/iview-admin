@@ -45,6 +45,8 @@
     "less-loader": "^4.0.5",
     "lint-staged": "^6.0.0",
     "mockjs": "^1.0.1-beta3",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^7.3.1",
     "vue-template-compiler": "^2.5.13"
   },
   "browserslist": [
