@@ -35,6 +35,11 @@ export default {
       state.hasGetInfo = status;
     }
   },
+  getters: {
+    userAccess: state => state.access,
+    userName: state => state.userName,
+    token: state => state.token
+  },
   actions: {
     // 登录
     handleLogin({ commit }, { userName, password }) {
@@ -46,7 +51,7 @@ export default {
         })
           .then(res => {
             const data = res.data;
-            commit("setToken", data.token);
+            commit("setToken", data.data);
             resolve(res);
           })
           .catch(err => {
@@ -81,11 +86,11 @@ export default {
         try {
           getUserInfo(state.token)
             .then(res => {
-              const data = res.data.data;
-              commit("setAvator", data.avator);
-              commit("setUserName", data.name);
-              commit("setUserId", data.user_id);
-              commit("setAccess", data.access);
+              const data = res.data;
+              commit("setAvator", data.data.avator);
+              commit("setUserName", data.data.name);
+              commit("setUserId", data.data.user_id);
+              commit("setAccess", data.data.access);
               commit("setHasGetInfo", true);
               resolve(data);
             })
