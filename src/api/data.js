@@ -29,6 +29,16 @@ export const saveErrorLogger = info => {
   });
 };
 
+// 获取用户数据
+export const getUserList = () => {
+  return axios.request({ url: "get_user_list", method: "get" });
+};
+
+// 获取角色数据
+export const getRoleList = () => {
+  return axios.request({ url: "get_role_list", method: "get" });
+};
+
 // 获取菜单数据
 export const getAllMenus = token => {
   if (token !== undefined) {
