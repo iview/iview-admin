@@ -1,24 +1,30 @@
-.side-menu-wrapper{
+.side-menu-wrapper {
   user-select: none;
-  .menu-collapsed{
+
+  .menu-collapsed {
     padding-top: 10px;
 
-    .ivu-dropdown{
+    .ivu-dropdown {
       width: 100%;
-      .ivu-dropdown-rel a{
+
+      .ivu-dropdown-rel a {
         width: 100%;
       }
     }
-    .ivu-tooltip{
+
+    .ivu-tooltip {
       width: 100%;
-      .ivu-tooltip-rel{
+
+      .ivu-tooltip-rel {
         width: 100%;
       }
-      .ivu-tooltip-popper .ivu-tooltip-content{
-        .ivu-tooltip-arrow{
+
+      .ivu-tooltip-popper .ivu-tooltip-content {
+        .ivu-tooltip-arrow {
           border-right-color: #fff;
         }
-        .ivu-tooltip-inner{
+
+        .ivu-tooltip-inner {
           background: #fff;
           color: #495060;
         }
@@ -27,14 +33,22 @@
 
 
   }
-  a.drop-menu-a{
+
+  a.drop-menu-a {
     display: inline-block;
     padding: 6px 15px;
     width: 100%;
     text-align: center;
     color: #495060;
   }
+
+  // 处理父子菜单的标签位置
+  .ivu-menu-submenu-title>i,
+  .ivu-menu-submenu-title span>i {
+    margin-right: 12px;
+  }
 }
-.menu-title{
+
+.menu-title {
   padding-left: 6px;
 }
