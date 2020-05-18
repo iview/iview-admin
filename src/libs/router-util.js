@@ -207,6 +207,7 @@ export const filterAsyncRouter = asyncRouterMap => {
         route.component = Main; // Main组件特殊处理
       } else if (route.component === "parentView") {
         route.component = parentView; // parentView组件特殊处理
+        route.meta.hideInBread = true; // 还有子路由因此不显示在面包屑
       } else {
         route.component = lazyLoadingCop(route.component);
       }
