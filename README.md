@@ -44,7 +44,7 @@ If the template can help you in your work, please give a ⭐️ for motivation
   - mock  mock模拟数据   -> 追加：路由列表、路由层级、角色列表 等数据
   - router  路由配置   -> 有较多改动
   - store  Vuex配置   -> 有较多改动
-  - view  页面文件   -> 追加：template.vue 和 screent.vue 页面模板
+  - view  页面文件   -> 追加【权限管理】模块、追加 template.vue 和 screent.vue 页面模板
   - tests  测试相关
 ```
 
