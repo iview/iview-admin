@@ -1,3 +1,23 @@
+// 用户列表
+const userList = [
+  {
+    user_id: "1",
+    name: "super_admin",
+    displayName: "管理员",
+    phone: "13888888888",
+    access: ["super_admin", "visitor"],
+    avator: "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png"
+  },
+  {
+    user_id: "2",
+    name: "visitor",
+    displayName: "访客",
+    phone: "13888888888",
+    access: ["visitor"],
+    avator: "https://avatars0.githubusercontent.com/u/20942571?s=460&v=4"
+  }
+];
+
 // 角色列表
 const roleList = [
   {
@@ -15,7 +35,11 @@ const roleList = [
       "level_2_3",
       "screen",
       "github",
-      "singleMenu"
+      "singleMenu",
+      "authority",
+      "userManage",
+      "roleManage",
+      "menuManage"
     ],
     id: "1"
   },
@@ -204,7 +228,55 @@ const menuList = [
     ico: "md-document",
     isOutSide: false,
     showLevel: 2
+  },
+  {
+    id: "authority",
+    name: "authority",
+    title: "权限管理",
+    url: "authority",
+    path: "Main",
+    sort: 20,
+    parentId: "root",
+    ico: "md-settings",
+    isOutSide: false,
+    showLevel: 2
+  },
+  {
+    id: "userManage",
+    name: "userManage",
+    title: "用户管理",
+    url: "userManage",
+    path: "authority/user",
+    sort: 10,
+    parentId: "authority",
+    ico: "",
+    isOutSide: false,
+    showLevel: 2
+  },
+  {
+    id: "roleManage",
+    name: "roleManage",
+    title: "角色管理",
+    url: "roleManage",
+    path: "authority/role",
+    sort: 8,
+    parentId: "authority",
+    ico: "",
+    isOutSide: false,
+    showLevel: 2
+  },
+  {
+    id: "menuManage",
+    name: "menuManage",
+    title: "菜单管理",
+    url: "menuManage",
+    path: "authority/menu",
+    sort: 6,
+    parentId: "authority",
+    ico: "",
+    isOutSide: false,
+    showLevel: 2
   }
 ];
 
-export { roleList, menuList, menuLevel };
+export { userList, roleList, menuList, menuLevel };
