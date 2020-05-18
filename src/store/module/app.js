@@ -17,7 +17,7 @@ import {
   getAllMenus // 获取当前用户的全部菜单
 } from "@/api/data";
 import router from "@/router";
-import routers from "@/router/routers";
+// import routers from "@/router/routers";
 import config from "@/config";
 import {
   dynamicRouterAdd, // 加载路由菜单，从localStorage拿到路由，在创建路由时使用
@@ -41,7 +41,8 @@ export default {
   state: {
     breadCrumbList: [],
     tagNavList: [],
-    homeRoute: getHomeRoute(routers, homeName),
+    // homeRoute: getHomeRoute(routers, homeName),
+    homeRoute: {},
     local: localRead("local"),
     errorList: [],
     hasReadErrorPage: false,
@@ -56,6 +57,10 @@ export default {
   mutations: {
     setBreadCrumb(state, route) {
       state.breadCrumbList = getBreadCrumbList(route, state.homeRoute);
+    },
+    // 配置主页route
+    setHomeRoute(state, routes) {
+      state.homeRoute = getHomeRoute(routes, homeName);
     },
     setTagNavList(state, list) {
       let tagList = [];
