@@ -1,21 +1,11 @@
 import store from "@/store";
+import { userList } from "./role"; // mockData - 用户列表
 
-const USER_MAP = {
-  super_admin: {
-    name: "super_admin",
-    user_id: "1",
-    access: ["super_admin", "visitor"],
-    token: "super_admin",
-    avator: "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png"
-  },
-  visitor: {
-    name: "visitor",
-    user_id: "2",
-    access: ["visitor"],
-    token: "visitor",
-    avator: "https://avatars0.githubusercontent.com/u/20942571?s=460&v=4"
-  }
-};
+// 用户列表
+const USER_MAP = {};
+userList.forEach(user => {
+  USER_MAP[user.name] = user;
+});
 
 // 用户登录
 export const login = req => {
@@ -24,7 +14,7 @@ export const login = req => {
     return {
       status: 200,
       message: "成功！",
-      token: USER_MAP[req.userName].token
+      data: USER_MAP[req.userName].name
     };
   } else {
     return { status: 500, message: "用户名或密码错误！", data: null };
