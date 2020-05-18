@@ -6,7 +6,7 @@
 
 # iView DynamicRouter
 
-#### 基于<a href="https://github.com/iview/iview-admin/tree/template" target="_blank">iview-admin(branch:template)</a>，动态获取路由数据，经数据处理后生成动态路由和菜单的【后端动态路由模板】
+基于<a href="https://github.com/iview/iview-admin/tree/template" target="_blank">iview-admin(branch:template)</a>，动态获取路由数据，经数据处理后生成动态路由和菜单的【后端动态路由模板】
 
 <a href="https://github.com/vuejs/vue">
   <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg?style=flat-square">
