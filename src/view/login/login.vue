@@ -28,7 +28,7 @@ export default {
     LoginForm
   },
   created() {
-    localStorage.setItem("dynamicRouter", []);
+    localStorage.setItem("dynamicRouter-template", []);
     refreshRoute();
   },
   methods: {

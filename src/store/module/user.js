@@ -75,7 +75,7 @@ export default {
         // commit('setToken', '')
         removeToken(); // 删除token
         commit("setAccess", []);
-        localSave("dynamicRouter", []); // 清空本地存储localStorage中的dynamicRouter
+        localSave("dynamicRouter-template", []); // 清空本地存储localStorage中的dynamicRouter
         localSave("tagNaveList", []); // 清空localStorage中的tagNaveList记录
         resolve();
       });

@@ -165,7 +165,7 @@ export default {
     getRouters({ dispatch, commit, rootState }, routes) {
       return new Promise((resolve, reject) => {
         var gotRouter = []; // 设置动态路由
-        if (localRead("dynamicRouter") === "") {
+        if (localRead("dynamicRouter-template") === "") {
           /* localStorage里dynamicRouter值为空 -> 没有路由数据 -> 获取路由数据 */
           console.log("获取路由：从api");
           try {
@@ -194,7 +194,7 @@ export default {
                   JSON.parse(JSON.stringify(routerData))
                 );
                 /* 4.处理后路由数据生成路由和菜单等 */
-                localSave("dynamicRouter", JSON.stringify(routerData)); // 存储routerData到localStorage
+                localSave("dynamicRouter-template", JSON.stringify(routerData)); // 存储routerData到localStorage
                 gotRouter = filterAsyncRouter(routerData); // 过滤路由,路由组件转换
                 dispatch("updateMenuList", gotRouter).then(res => {
                   resolve(routerData);

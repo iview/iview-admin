@@ -7,7 +7,7 @@ import Vue from "vue";
 
 // 加载路由菜单,从localStorage拿到路由,在创建路由时使用
 export const dynamicRouterAdd = from => {
-  let data = localRead("dynamicRouter");
+  let data = localRead("dynamicRouter-template");
   let dynamicRouter = data !== "" ? filterAsyncRouter(JSON.parse(data)) : [];
   console.log(`动态路由数据：${from}`, dynamicRouter);
   return dynamicRouter;
