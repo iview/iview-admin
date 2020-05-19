@@ -318,7 +318,7 @@ export default {
       this.modalShow = true;
     },
     // 点击按钮 - 编辑
-    async edit(row) {
+    edit(row) {
       this.modalDataType = "edit";
       this.modalDataOrg = row;
       this.modalData = JSON.parse(JSON.stringify(row));
@@ -342,9 +342,11 @@ export default {
                 this.buttonLoading = false;
               } else {
                 // 生成user_id，不能与现有的user_id重复
-                var user_id = 1;
+                var user_id = "1";
                 this.tableDataOrg.forEach(item => {
-                  if (user_id === item.user_id) user_id++;
+                  if (user_id === item.user_id) {
+                    user_id = (parseInt(user_id) + 1).toString();
+                  }
                 });
                 this.modalData.user_id = user_id;
                 userList.push(JSON.parse(JSON.stringify(this.modalData)));
