@@ -10,7 +10,13 @@
             :bordered="false">
         <div class="form-con">
           <login-form @on-success-valid="handleSubmit"></login-form>
-          <p class="login-tip">输入任意用户名和密码即可</p>
+          <!-- <p class="login-tip">输入任意用户名和密码即可</p> -->
+          <p class="tips">
+            <span>账号 : goku</span><span>密码 : 任意</span>
+          </p>
+          <p class="tips">
+            <span>账号 : trunks</span><span>密码 : 任意</span>
+          </p>
         </div>
       </Card>
     </div>
