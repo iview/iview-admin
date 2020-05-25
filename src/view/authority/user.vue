@@ -395,9 +395,8 @@ export default {
               this.pageNum * this.pageSize
             )
             .forEach((item, i) => {
-              if (row.user_id === item.user_id) {
+              row.user_id === item.user_id &&
                 userList.splice((this.pageNum - 1) * this.pageSize + i, 1);
-              }
             });
           resultCallback(200, "删除成功！", () => {
             this.getData();
