@@ -58,7 +58,7 @@ export function listToCascader(array) {
 }
 
 /**
- * 将菜单接口数据转换成iview树形数据结构(2层)
+ * 将菜单接口数据转换成iview树形数据结构(多层)
  *  =>
  * @param {Array} array 数组
  */
@@ -67,7 +67,7 @@ export const computedMenuData = array => {
 
   // 外层节点
   array.forEach(menu => {
-    menu.parenetId === "root" &&
+    menu.parentId === "root" &&
       treeData.push({
         id: menu.id,
         name: menu.name,
@@ -75,7 +75,7 @@ export const computedMenuData = array => {
         url: menu.url,
         path: menu.path,
         sort: menu.sort,
-        parenetId: menu.parenetId,
+        parentId: menu.parentId,
         parenetPath: menu.parenetPath,
         showLevel: menu.showLevel,
         isOutSide: menu.isOutSide,
@@ -90,7 +90,7 @@ export const computedMenuData = array => {
   const handleRecurrence = recurrenceData => {
     recurrenceData.forEach(data => {
       array.forEach(menu => {
-        data.id === menu.parenetId &&
+        data.id === menu.parentId &&
           data.children.push({
             id: menu.id,
             name: menu.name,
@@ -98,7 +98,7 @@ export const computedMenuData = array => {
             url: menu.url,
             path: menu.path,
             sort: menu.sort,
-            parenetId: menu.parenetId,
+            parentId: menu.parentId,
             parenetPath: menu.parenetPath,
             showLevel: menu.showLevel,
             isOutSide: menu.isOutSide,
