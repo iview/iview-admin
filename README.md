@@ -20,8 +20,8 @@
 - 基于<a href="https://github.com/iview/iview-admin/tree/template" target="_blank">iview-admin(branch:template)</a>，动态获取路由数据，经数据处理后生成动态路由和菜单的【后端动态路由模板】
 - <a href="https://simon9124.github.io/iview-dynamicRouter" target="_blank">在线预览</a>
 - <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">使用文档（更新中）</a>
-- userName：super_admin / visitor
-- password：any / any
+- userName：goku / visitor
+- password：trunks / any
 
 如果这个模板或模板中的代码段能够在开发中帮助到你，请在右上角star一下，非常感谢～  
 If the template can help you in your work, please give a ⭐️ for motivation
