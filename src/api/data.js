@@ -41,10 +41,5 @@ export const getRoleList = () => {
 
 // 获取菜单数据
 export const getAllMenus = token => {
-  if (token !== undefined) {
-    return axios.request({
-      url: "get_all_menus",
-      method: "get"
-    });
-  }
+  return axios.request({ url: "get_all_menus", method: "get" });
 };
