@@ -2,7 +2,7 @@
 const userList = [
   {
     user_id: "1",
-    name: "super_admin",
+    name: "goku",
     displayName: "孙悟空",
     phone: "13888888881",
     access: ["super_admin", "visitor"],
@@ -10,7 +10,7 @@ const userList = [
   },
   {
     user_id: "2",
-    name: "visitor",
+    name: "trunks",
     displayName: "特兰克斯",
     phone: "13888888882",
     access: ["visitor"],
@@ -41,7 +41,8 @@ const roleList = [
       "roleManage",
       "menuManage"
     ],
-    id: "1"
+    id: "1",
+    description: "超级管理员，默认拥有全部功能，不可删除"
   },
   {
     name: "visitor",
@@ -57,7 +58,8 @@ const roleList = [
       "screen",
       "singleMenu"
     ],
-    id: "2"
+    id: "2",
+    description: "访客，拥有部分功能，可删除"
   }
 ];
 
@@ -249,7 +251,7 @@ const menuList = [
     path: "authority/user",
     sort: 10,
     parentId: "authority",
-    ico: "",
+    ico: "ios-navigate",
     isOutSide: false,
     showLevel: 2
   },
@@ -261,7 +263,7 @@ const menuList = [
     path: "authority/role",
     sort: 8,
     parentId: "authority",
-    ico: "",
+    ico: "ios-navigate",
     isOutSide: false,
     showLevel: 2
   },
@@ -273,7 +275,7 @@ const menuList = [
     path: "authority/menu",
     sort: 6,
     parentId: "authority",
-    ico: "",
+    ico: "ios-navigate",
     isOutSide: false,
     showLevel: 2
   }
