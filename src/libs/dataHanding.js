@@ -76,12 +76,10 @@ export const computedMenuData = array => {
         path: menu.path,
         sort: menu.sort,
         parentId: menu.parentId,
-        parenetPath: menu.parenetPath,
-        showLevel: menu.showLevel,
-        isOutSide: menu.isOutSide,
-        status: menu.status,
-        description: menu.description,
         ico: menu.ico,
+        isOutSide: menu.isOutSide,
+        showLevel: menu.showLevel,
+        description: menu.description,
         children: []
       });
   });
@@ -99,12 +97,10 @@ export const computedMenuData = array => {
             path: menu.path,
             sort: menu.sort,
             parentId: menu.parentId,
-            parenetPath: menu.parenetPath,
-            showLevel: menu.showLevel,
-            isOutSide: menu.isOutSide,
-            status: menu.status,
-            description: menu.description,
             ico: menu.ico,
+            isOutSide: menu.isOutSide,
+            showLevel: menu.showLevel,
+            description: menu.description,
             children: []
           });
       });
