@@ -7,7 +7,7 @@
              @on-change="handleChange"
              :placeholder="placeholder"
              :size="size"
-             :disabled="disabled"
+             :disabled="true"
              :readonly="readonly"
              :maxlength="maxlength"
              :icon="currentValue" />
@@ -21,6 +21,7 @@
     <!-- modal -->
     <Modal title="选择图标"
            v-model="iconModalVisible"
+           @on-visible-change="iconModalVisibleChange"
            :width="950"
            :styles="{top: '10%'}"
            footer-hide
@@ -150,6 +151,14 @@ export default {
     // value绑定值更新 -> input框 和 button 的 currentValue值 也更新
     setCurrentValue(value) {
       this.currentValue = value;
+    },
+    // 每次重新打开modal时，清空上次的搜索内容，并搜索框失去焦点
+    iconModalVisibleChange(visible) {
+      if (visible === true) {
+        this.key = "";
+        this.getData(this.key);
+        this.handleBlur();
+      }
     }
   },
   watch: {
