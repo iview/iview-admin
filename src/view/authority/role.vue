@@ -139,6 +139,12 @@ export default {
       tableData: [], // 处理后的当页数据
       tableColumns: [
         {
+          title: "标识",
+          key: "name",
+          align: "center",
+          minWidth: 120
+        },
+        {
           title: "名称",
           key: "title",
           align: "center",
@@ -334,7 +340,7 @@ export default {
   methods: {
     // 获取菜单数据
     async getMenuData() {
-      // 未处理的menu数据 -> 非isMock时功能列表筛选用
+      // 未处理的menu数据 -> 功能列表筛选用
       this.menuListNotComputed = (await getAllMenus()).data.data || [];
       // 设置menuList的副本，每次关联时以副本为基准清空已选项
       this.menuListOrg = computedMenuData(this.menuListNotComputed);
@@ -406,56 +412,45 @@ export default {
           this.buttonLoading = true;
           switch (this.modalDataRoleType) {
             case "insert":
-              if (!this.isMock) {
-                /* 接口数据 */
-                const result = (await addRole(this.modalDataRole)).data.status;
-                resultCallback(
-                  result,
-                  "添加成功！",
-                  () => {
-                    this.modalShowRole = false;
-                    this.getData();
-                  },
-                  () => {
-                    this.buttonLoading = false;
-                  }
-                );
+              if (
+                this.tableDataOrg.some(
+                  item => item.name === this.modalDataRole.name
+                ) ||
+                this.tableDataOrg.some(
+                  item => item.title === this.modalDataRole.title
+                )
+              ) {
+                this.$Message.error("角色标识或名称已存在！");
+                this.buttonLoading = false;
               } else {
-                /* mock数据 */
-                if (
-                  this.tableDataOrg.some(
-                    item => item.name === this.modalDataRole.name
-                  )
-                ) {
-                  this.$Message.error("该角色已存在！");
+                // 生成角色id，不能与现有的id重复
+                var id = "1";
+                this.tableDataOrg.forEach(item => {
+                  id === item.id && (id = (parseInt(id) + 1).toString());
+                });
+                this.modalDataRole.id = id;
+                this.modalDataRole.menus = [];
+                this.modalDataRole.users = [];
+                roleList.push(JSON.parse(JSON.stringify(this.modalDataRole)));
+                resultCallback(200, "添加成功！", () => {
+                  this.getData();
                   this.buttonLoading = false;
-                } else {
-                  var id = "1";
-                  this.tableDataOrg.forEach(item => {
-                    id === item.id && (id = (parseInt(id) + 1).toString());
-                  });
-                  this.modalDataRole.id = id; // 生成角色id，不能与现有的id重复
-                  this.modalDataRole.menus = [];
-                  this.modalDataRole.users = [];
-                  this.tableDataOrg.push(
-                    JSON.parse(JSON.stringify(this.modalDataRole))
-                  );
-                  resultCallback(200, "添加成功！", () => {
-                    this.refreshData();
-                    this.buttonLoading = false;
-                    this.modalShowRole = false;
-                  });
-                }
+                  this.modalShowRole = false;
+                });
               }
               break;
             case "edit":
               if (
-                this.tableDataOrg.some(
+                (this.tableDataOrg.some(
                   item => item.name === this.modalDataRole.name
                 ) &&
-                this.modalDataRole.name !== this.modalDataRoleOrg.name
+                  this.modalDataRole.name !== this.modalDataRoleOrg.name) ||
+                (this.tableDataOrg.some(
+                  item => item.title === this.modalDataRole.title
+                ) &&
+                  this.modalDataRole.title !== this.modalDataRoleOrg.title)
               ) {
-                this.$Message.error("该角色已存在！");
+                this.$Message.error("角色标识或名称已存在！");
                 this.buttonLoading = false;
               } else {
                 // 1.在角色列表更新
