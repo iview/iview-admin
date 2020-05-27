@@ -97,7 +97,8 @@ const menuList = [
     parentId: "root",
     ico: "ios-book",
     isOutSide: true,
-    showLevel: 1
+    showLevel: "1",
+    description: "在线文档"
   },
   {
     id: "control",
@@ -109,7 +110,8 @@ const menuList = [
     parentId: "root",
     ico: "md-laptop",
     isOutSide: false,
-    showLevel: 1
+    showLevel: "1",
+    description: "一级大屏"
   },
   {
     id: "multilevel",
@@ -121,7 +123,8 @@ const menuList = [
     parentId: "root",
     ico: "md-menu",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "level_2_1",
@@ -133,7 +136,8 @@ const menuList = [
     parentId: "multilevel",
     ico: "md-funnel",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "level_2_2",
@@ -145,7 +149,8 @@ const menuList = [
     parentId: "multilevel",
     ico: "md-funnel",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: "内层模块"
   },
   {
     id: "level_2_2_1",
@@ -157,7 +162,8 @@ const menuList = [
     parentId: "level_2_2",
     ico: "md-funnel",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "screen2",
@@ -169,7 +175,8 @@ const menuList = [
     parentId: "level_2_2",
     ico: "md-laptop",
     isOutSide: false,
-    showLevel: 1
+    showLevel: "1",
+    description: ""
   },
   {
     id: "level_2_2_2",
@@ -181,7 +188,8 @@ const menuList = [
     parentId: "level_2_2",
     ico: "md-funnel",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "level_2_3",
@@ -193,7 +201,8 @@ const menuList = [
     parentId: "multilevel",
     ico: "md-funnel",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "screen",
@@ -205,7 +214,8 @@ const menuList = [
     parentId: "multilevel",
     ico: "md-laptop",
     isOutSide: false,
-    showLevel: 1
+    showLevel: "1",
+    description: ""
   },
   {
     id: "github",
@@ -217,7 +227,8 @@ const menuList = [
     parentId: "multilevel",
     ico: "md-log-in",
     isOutSide: true,
-    showLevel: 1
+    showLevel: "1",
+    description: "项目地址"
   },
   {
     id: "singleMenu",
@@ -229,7 +240,8 @@ const menuList = [
     parentId: "root",
     ico: "md-document",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: "单极父子结构"
   },
   {
     id: "authority",
@@ -241,7 +253,8 @@ const menuList = [
     parentId: "root",
     ico: "md-settings",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: "管理员专属"
   },
   {
     id: "userManage",
@@ -253,7 +266,8 @@ const menuList = [
     parentId: "authority",
     ico: "ios-navigate",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "roleManage",
@@ -265,7 +279,8 @@ const menuList = [
     parentId: "authority",
     ico: "ios-navigate",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   },
   {
     id: "menuManage",
@@ -277,7 +292,8 @@ const menuList = [
     parentId: "authority",
     ico: "ios-navigate",
     isOutSide: false,
-    showLevel: 2
+    showLevel: "2",
+    description: ""
   }
 ];
 
