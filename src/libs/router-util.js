@@ -220,3 +220,37 @@ export const filterAsyncRouter = asyncRouterMap => {
   // console.log(accessedRouters);
   return accessedRouters;
 };
+
+// @函数: 遍历routes路由数据，手动往router.options.routes里添加数据
+export const routerAddHandle = (routes, router) => {
+  // 遍历routes
+  routes.forEach(_route => {
+    // 比对router.options.routes -> 最外层有没添加的直接添加
+    if (!router.options.routes.some(_router => _router.path === _route.path)) {
+      router.options.routes.push(_route);
+    }
+
+    // 内层路由递归添加
+    const routerChildAddHandle = (array1, child2) => {
+      // 遍历array1
+      array1.forEach(child1 => {
+        // 找到path一致的数据
+        if (child1.path === child2.path) {
+          // 遍历child2.children
+          child2.children.forEach(_child2 => {
+            // 比对child1.children -> 有没添加的直接添加
+            if (
+              !child1.children.some(_child1 => _child1.path === _child2.path)
+            ) {
+              child1.children.push(_child2);
+            }
+            // 递归
+            routerChildAddHandle(child1.children, _child2);
+          });
+        }
+      });
+    };
+
+    routerChildAddHandle(router.options.routes, _route);
+  });
+};
