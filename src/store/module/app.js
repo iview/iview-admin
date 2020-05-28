@@ -24,7 +24,7 @@ import {
   routerDataHanding, // 遍历后台返回的路由数据，转为路由基础数据
   filterAsyncRouter, // 遍历路由基础数据，转换为前端组件对象
   menuListHanding, // 遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
-  routerAddHandle // 遍历routes路由数据，手动往router.options.routes里添加数据
+  routerUpdateHandle // 遍历routes路由数据，手动往router.options.routes里添加数据
 } from "@/libs/router-util";
 import { getValueByKey } from "@/libs/dataHanding"; // 根据对象数组某个key的value，查询另一个key的value
 import { roleList } from "@/mock/role"; // mockData - 角色列表
@@ -151,7 +151,7 @@ export default {
       // 动态添加路由 - 真正添加路由（不会立刻刷新，需要手动往router.options.routes里添加数据）
       router.addRoutes(routes);
       // 手动添加路由数据
-      routerAddHandle(routes, router);
+      routerUpdateHandle(routes, router);
       // 动态渲染菜单数据
       commit("setMenuList", {
         menuList: menuList,
