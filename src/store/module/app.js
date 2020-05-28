@@ -24,7 +24,7 @@ import {
   routerDataHanding, // 遍历后台返回的路由数据，转为路由基础数据
   filterAsyncRouter, // 遍历路由基础数据，转换为前端组件对象
   menuListHanding, // 遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
-  routerUpdateHandle // 遍历routes路由数据，手动往router.options.routes里添加数据
+  routerUpdateHandle // 遍历routes路由数据，1.手动往router.options.routes里添加数据；2.如routes里的name有变化，手动修改router.options.routes的name
 } from "@/libs/router-util";
 import { getValueByKey } from "@/libs/dataHanding"; // 根据对象数组某个key的value，查询另一个key的value
 import { roleList } from "@/mock/role"; // mockData - 角色列表
