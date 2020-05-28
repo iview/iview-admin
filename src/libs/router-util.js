@@ -58,7 +58,8 @@ export const routerDataHanding = apiRouterData => {
           meta: {
             icon: route.ico,
             title: route.title,
-            hideInBread: true
+            hideInBread: true,
+            id: route.id
           },
           sort: route.sort, // 排序用
           children: [
@@ -77,7 +78,8 @@ export const routerDataHanding = apiRouterData => {
                 .join("/"),
               meta: {
                 icon: route.ico,
-                title: route.title
+                title: route.title,
+                id: `_${route.id}`
               },
               component: route.path,
               children: []
@@ -151,7 +153,8 @@ export const routerDataHanding = apiRouterData => {
                 title: route.title,
                 hideInBread: true,
                 hideInMenu: parseInt(route.showLevel) !== 1, // true or false 菜单是否隐藏该页面选项
-                parentId: route.parentId // 特殊处理：此类需要处理菜单的数据均追加parentId
+                parentId: route.parentId, // 特殊处理：此类需要处理菜单的数据均追加parentId
+                id: route.id
               },
               sort: route.sort, // 排序用
               children: []
@@ -221,26 +224,34 @@ export const filterAsyncRouter = asyncRouterMap => {
   return accessedRouters;
 };
 
-// @函数: 遍历routes路由数据，手动往router.options.routes里添加数据
-export const routerAddHandle = (routes, router) => {
+/**
+ * @函数: 遍历routes路由数据
+ * 1.手动往router.options.routes里添加数据
+ * 2.如routes里的name有变化，手动修改router.options.routes的name
+ */
+export const routerUpdateHandle = (routes, router) => {
   // 遍历routes
   routes.forEach(_route => {
-    // 比对router.options.routes -> 最外层有没添加的直接添加
-    if (!router.options.routes.some(_router => _router.path === _route.path)) {
+    /* 手动往router.options.routes里添加数据 */
+    // 1.最外层有没添加的直接添加
+    if (
+      !router.options.routes.some(_router => _router.meta.id === _route.meta.id)
+    ) {
       router.options.routes.push(_route);
     }
-
-    // 内层路由递归添加
+    // 2.内层路由递归添加
     const routerChildAddHandle = (array1, child2) => {
       // 遍历array1
       array1.forEach(child1 => {
         // 找到path一致的数据
-        if (child1.path === child2.path) {
+        if (child1.meta.id === child2.meta.id) {
           // 遍历child2.children
           child2.children.forEach(_child2 => {
             // 比对child1.children -> 有没添加的直接添加
             if (
-              !child1.children.some(_child1 => _child1.path === _child2.path)
+              !child1.children.some(
+                _child1 => _child1.meta.id === _child2.meta.id
+              )
             ) {
               child1.children.push(_child2);
             }
@@ -250,7 +261,20 @@ export const routerAddHandle = (routes, router) => {
         }
       });
     };
-
     routerChildAddHandle(router.options.routes, _route);
+
+    /* 如routes里的name有变化，手动修改router.options.routes的name */
+    // 递归更新
+    const routerChildChangeName = (array1, child2) => {
+      array1.forEach(child1 => {
+        if (child2.meta.id === child1.meta.id && child2.name !== child1.name) {
+          child1.name = child2.name;
+        }
+        child2.children.forEach(_child2 => {
+          child1.children && routerChildChangeName(child1.children, _child2);
+        });
+      });
+    };
+    routerChildChangeName(router.options.routes, _route);
   });
 };
