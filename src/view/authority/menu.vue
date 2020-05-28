@@ -87,8 +87,7 @@
                     prop="name">
             <Input type="text"
                    v-model.trim="modalData.name"
-                   placeholder="英文系统名，20个字符以内"
-                   :disabled="modalData.name==='menuManage'"></Input>
+                   placeholder="英文系统名，20个字符以内"></Input>
           </FormItem>
           <FormItem label="展现名："
                     prop="title">
@@ -465,6 +464,9 @@ export default {
                     );
                 });
                 resultCallback(200, "修改成功！", () => {
+                  this.modalDataOrg = JSON.parse(
+                    JSON.stringify(this.modalData)
+                  );
                   this.refreshRouteData();
                   this.buttonLoading = false;
                 });
