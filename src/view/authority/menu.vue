@@ -52,13 +52,13 @@
                     size="small"
                     style="margin-left:10px"
                     :disabled="menuType==='module'||(modalData.isOutSide&&modalDataType==='insert')"
-                    @click="insert();menuType='module'">新增模块</Button>
+                    @click="menuType='module';insert()">新增模块</Button>
             <Button type="success"
                     icon="md-add"
                     size="small"
                     style="margin-left:10px"
                     :disabled="menuType==='page'||(modalData.isOutSide&&modalDataType==='insert')"
-                    @click="insert();menuType='page'">新增页面</Button>
+                    @click="menuType='page';insert()">新增页面</Button>
             <Checkbox v-model="modalData.isOutSide"
                       style="margin-left:10px"
                       :disabled="modalDataType!=='insert'">外链</Checkbox>
@@ -73,7 +73,7 @@
             </Select>
           </FormItem>
           <FormItem label="层级："
-                    v-show="modalData.isOutSide!==true"
+                    v-show="modalData.isOutSide!==true&&menuType!=='module'"
                     prop="showLevel">
             <Select v-model="modalData.showLevel"
                     @on-change="levelOnChange">
@@ -253,7 +253,10 @@ export default {
           {
             required: true,
             validator: (rule, value, callback) => {
-              if (this.modalData.isOutSide === true) {
+              if (
+                this.modalData.isOutSide === true ||
+                this.menuType === "module"
+              ) {
                 callback();
               } else if (this.modalData.showLevel === "") {
                 callback(new Error("请选择菜单层级"));
