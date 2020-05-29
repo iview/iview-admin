@@ -180,6 +180,7 @@ export const routerDataHanding = apiRouterData => {
 
 // @函数：遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
 export const menuListHanding = (menuArray, menuList) => {
+  menuList.sort(arraySort("sort", "desc")); // 根据sort排序，后端排序可忽略
   menuList.forEach((menu, i) => {
     menuArray.forEach(data => {
       // 1.有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
@@ -190,7 +191,6 @@ export const menuListHanding = (menuArray, menuList) => {
         var dataCopy = JSON.parse(JSON.stringify(data));
         Vue.delete(dataCopy.meta, "parentId");
         menu.children.push(dataCopy);
-        menu.children.sort(arraySort("sort", "desc"));
       }
       // 2.删除剩余的meta里有parentId的数据
       if (menu.meta.parentId !== undefined) {
