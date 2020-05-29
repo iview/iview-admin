@@ -145,7 +145,7 @@ export default {
       // 动态菜单数据
       var menuList = JSON.parse(JSON.stringify(routes));
       // 路由数据处理：将"菜单显示该页面选项，页面不含菜单栏"重新挂载到根路由上
-      menuListHanding(menuList, menuList);
+      menuList = menuListHanding(menuList);
       console.log("动态添加路由：", routes);
       console.log("左侧动态菜单：", menuList);
       // 动态添加路由 - 真正添加路由（不会立刻刷新，需要手动往router.options.routes里添加数据）
@@ -207,10 +207,11 @@ export default {
           /* 有路由数据 -> 直接从localStorage里面获取 */
           console.log("获取路由：从localStorage");
           gotRouter = dynamicRouterAdd("router-util.js");
-          menuListHanding(gotRouter, gotRouter);
-          console.log("左侧动态菜单：", gotRouter);
+          var menuList = JSON.parse(JSON.stringify(gotRouter));
+          menuList = menuListHanding(menuList);
+          console.log("左侧动态菜单：", menuList);
           commit("setMenuList", {
-            menuList: gotRouter,
+            menuList: menuList,
             access: rootState.user.access
           });
           resolve();
