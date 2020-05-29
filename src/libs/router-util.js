@@ -88,6 +88,7 @@ export const routerDataHanding = apiRouterData => {
         });
       } else {
         // 非外链，无子节点，页面不含菜单栏 -> 根节点路由，与main组件平级
+        // 根节点路由最后再挂载，因为需要做菜单数据处理
         asyncRouterMap.push({
           path: "/" + route.url,
           name: route.name,
@@ -144,6 +145,7 @@ export const routerDataHanding = apiRouterData => {
           } else {
             // 非外链，页面不含菜单栏，菜单显示该页面选项 -> 根节点路由，与main组件平级（暂时为根菜单）
             // 在app.js里调用menuListHanding方法，将原本不是根菜单的数据重新挂载到相应位置
+            //  根节点路由最后再挂载，因为需要做菜单数据处理
             asyncRouterMap.push({
               path: "/" + route.url,
               name: route.name,
@@ -180,7 +182,6 @@ export const routerDataHanding = apiRouterData => {
 
 // @函数：遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
 export const menuListHanding = (menuArray, menuList) => {
-  menuList.sort(arraySort("sort", "desc")); // 根据sort排序，后端排序可忽略
   menuList.forEach((menu, i) => {
     menuArray.forEach(data => {
       // 1.有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
@@ -199,6 +200,8 @@ export const menuListHanding = (menuArray, menuList) => {
     });
     menuListHanding(menuArray, menu.children);
   });
+  /* 排序一定最后再做，因为根节点路由(要从menuList删除)是最后挂载的 */
+  menuList.sort(arraySort("sort", "desc")); // 根据sort排序，后端排序可忽略
   return menuList;
 };
 
