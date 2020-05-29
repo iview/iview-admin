@@ -76,8 +76,7 @@
                     v-show="modalData.isOutSide!==true"
                     prop="showLevel">
             <Select v-model="modalData.showLevel"
-                    @on-change="levelOnChange"
-                    :disabled="modalData.name==='menuManage'">
+                    @on-change="levelOnChange">
               <Option v-for="level in menuLevel"
                       :value="level.value"
                       :key="level.value">{{ level.label }}</Option>
@@ -440,6 +439,7 @@ export default {
                 });
                 resultCallback(200, "添加成功！", () => {
                   this.refreshRouteData();
+                  this.insert();
                   this.buttonLoading = false;
                 });
               }
