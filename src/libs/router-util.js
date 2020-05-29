@@ -206,15 +206,10 @@ export const routerDataHanding = apiRouterData => {
         // 非 home 页且有子组件 -> 重定向为第一个子组件
         route.redirect = route.path + "/" + route.children[0].path;
       }
+      handleRedirect(route.children);
     });
   };
   handleRedirect(asyncRouterMap);
-  // asyncRouterMap.forEach(route => {
-  //   if (route.children.length !== 0) {
-  //     // 非 home 页且有子组件 -> 重定向为第一个子组件
-  //     route.redirect = route.path + "/" + route.children[0].path;
-  //   }
-  // });
 
   return asyncRouterMap;
 };
