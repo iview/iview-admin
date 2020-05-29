@@ -17,7 +17,9 @@ export const dynamicRouterAdd = from => {
 export const routerDataHanding = apiRouterData => {
   const asyncRouterMap = [];
 
-  // 外层节点
+  /* 1.路由挂载 */
+
+  // 1-1.外层节点
   apiRouterData.forEach(route => {
     if (route.parentId === "root") {
       if (route.isOutSide === true) {
@@ -107,9 +109,7 @@ export const routerDataHanding = apiRouterData => {
     }
   });
 
-  // console.log(asyncRouterMap);
-
-  // 内层子路由 - 递归
+  // 1-2.内层子路由 - 递归
   const handleRecurrence = recurrenceData => {
     recurrenceData.forEach(data => {
       apiRouterData.forEach(route => {
@@ -123,6 +123,21 @@ export const routerDataHanding = apiRouterData => {
                 icon: route.ico,
                 title: route.title,
                 href: route.url,
+                id: route.id // 根据id确定子组件
+              },
+              sort: route.sort, // 排序用
+              children: []
+            });
+          } else if (route.path === "parentView") {
+            // 非外链，有子节点的二级父级路由（模块，非页面）-> 创建父结构路由
+            data.children.push({
+              path: route.url === "/" ? route.url : "/" + route.url,
+              name: route.name,
+              component: "parentView",
+              meta: {
+                icon: route.ico,
+                title: route.title,
+                hideInBread: true,
                 id: route.id // 根据id确定子组件
               },
               sort: route.sort, // 排序用
@@ -145,7 +160,6 @@ export const routerDataHanding = apiRouterData => {
           } else {
             // 非外链，页面不含菜单栏，菜单显示该页面选项 -> 根节点路由，与main组件平级（暂时为根菜单）
             // 在app.js里调用menuListHanding方法，将原本不是根菜单的数据重新挂载到相应位置
-            //  根节点路由最后再挂载，因为需要做菜单数据处理
             asyncRouterMap.push({
               path: "/" + route.url,
               name: route.name,
@@ -155,7 +169,8 @@ export const routerDataHanding = apiRouterData => {
                 title: route.title,
                 hideInBread: true,
                 hideInMenu: parseInt(route.showLevel) !== 1, // true or false 菜单是否隐藏该页面选项
-                parentId: route.parentId, // 特殊处理：此类需要处理菜单的数据均追加parentId
+                parentId: route.parentId,
+                notInMenu: true, // 追加notInMenu字段，将原本不是根菜单的数据重新挂载到相应位置
                 id: route.id
               },
               sort: route.sort, // 排序用
@@ -170,38 +185,90 @@ export const routerDataHanding = apiRouterData => {
   };
   handleRecurrence(asyncRouterMap);
 
-  // 处理重定向
-  asyncRouterMap.forEach(route => {
-    if (route.children.length !== 0) {
-      // 非 home 页且有子组件 -> 重定向为第一个子组件
-      route.redirect = route.path + "/" + route.children[0].path;
-    }
-  });
+  /* 2.路由处理 */
+
+  // 路由sort排序，后端排序可忽略
+  const handleSort = routeData => {
+    routeData.sort(arraySort("sort", "desc"));
+    routeData.forEach(routeChild => {
+      routeChild.children.sort(arraySort("sort", "desc"));
+      handleSort(routeChild.children);
+    });
+  };
+  handleSort(asyncRouterMap);
+
+  // console.log(asyncRouterMap);
+
+  // 处理重定向 - 递归
+  const handleRedirect = routeData => {
+    routeData.forEach(route => {
+      if (route.children.length !== 0) {
+        // 非 home 页且有子组件 -> 重定向为第一个子组件
+        route.redirect = route.path + "/" + route.children[0].path;
+      }
+    });
+  };
+  handleRedirect(asyncRouterMap);
+  // asyncRouterMap.forEach(route => {
+  //   if (route.children.length !== 0) {
+  //     // 非 home 页且有子组件 -> 重定向为第一个子组件
+  //     route.redirect = route.path + "/" + route.children[0].path;
+  //   }
+  // });
+
   return asyncRouterMap;
 };
 
 // @函数：遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
-export const menuListHanding = (menuArray, menuList) => {
-  menuList.forEach((menu, i) => {
-    menuArray.forEach(data => {
-      // 1.有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
-      if (
-        data.meta.parentId !== undefined &&
-        menu.meta.id === data.meta.parentId
-      ) {
-        var dataCopy = JSON.parse(JSON.stringify(data));
-        Vue.delete(dataCopy.meta, "parentId");
-        menu.children.push(dataCopy);
-      }
-      // 2.删除剩余的meta里有parentId的数据
-      if (menu.meta.parentId !== undefined) {
-        menuList.splice(i, 1);
-      }
+export const menuListHanding = menuList => {
+  // export const menuListHanding = (menuListOrg, menuList) => {
+  // menuList.forEach((menu, i) => {
+  //   menuListOrg.forEach(data => {
+  //     // 1.有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
+  //     if (
+  //       data.meta.parentId !== undefined &&
+  //       menu.meta.id === data.meta.parentId
+  //     ) {
+  //       var dataCopy = JSON.parse(JSON.stringify(data));
+  //       Vue.delete(dataCopy.meta, "parentId");
+  //       menu.children.push(dataCopy);
+  //     }
+  //     // 2.删除剩余的meta里有parentId的数据
+  //     if (menu.meta.parentId !== undefined) {
+  //       menuList.splice(i, 1);
+  //     }
+  //   });
+  //   menuListHanding(menuListOrg, menu.children);
+  // });
+
+  // 1.copy一份menuList，以便递归函数用
+  const menuListOrg = JSON.parse(JSON.stringify(menuList));
+  // 2.递归函数：比对menuList和menuListOrg，挂载数据到menuList
+  const handleData = (list, listOrg) => {
+    list.forEach((menu, i) => {
+      listOrg.forEach(data => {
+        // 有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
+        if (
+          data.meta.parentId !== undefined &&
+          menu.meta.id === data.meta.parentId
+        ) {
+          var dataCopy = JSON.parse(JSON.stringify(data));
+          Vue.delete(dataCopy.meta, "parentId");
+          menu.children.push(dataCopy);
+        }
+      });
+      // 连同新挂载的数据一起根据sort排序，不可忽略否则新挂载到菜单的数据顺序有误
+      menu.children.sort(arraySort("sort", "desc"));
+      handleData(menu.children, listOrg);
     });
-    menuListHanding(menuArray, menu.children);
+  };
+  handleData(menuList, menuListOrg);
+  // 3.最外层菜单做筛选
+  menuList = menuList.filter(menu => {
+    return !menu.meta.notInMenu === true;
   });
-  /* 排序一定最后再做，因为根节点路由(要从menuList删除)是最后挂载的 */
-  menuList.sort(arraySort("sort", "desc")); // 根据sort排序，后端排序可忽略
+  // console.log(menuList);
+
   return menuList;
 };
 
@@ -228,7 +295,7 @@ export const filterAsyncRouter = asyncRouterMap => {
 };
 
 /**
- * @函数: 遍历routes路由数据
+ * @函数: 遍历routes路由数据，实时改变router.options.routes
  * 1.手动往router.options.routes里添加数据
  * 2.如routes里的name有变化，手动修改router.options.routes的name
  */
