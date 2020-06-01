@@ -433,6 +433,9 @@ export default {
                 this.modalData.id = Math.random()
                   .toString(36)
                   .substr(-10);
+                // 如果是外链 -> path值不能为空否则影响父级路由的重定向 ->设置为任意常量
+                this.modalData.isOutSide === true &&
+                  (this.modalData.path = "outSidePath");
                 // 菜单列表追加
                 menuList.push(JSON.parse(JSON.stringify(this.modalData)));
                 // 自动为super_admin赋予权限
