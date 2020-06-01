@@ -208,7 +208,7 @@ export const routerDataHanding = apiRouterData => {
   };
   handleData(asyncRouterMap);
 
-  console.log(asyncRouterMap);
+  // console.log(asyncRouterMap);
 
   return asyncRouterMap;
 };
