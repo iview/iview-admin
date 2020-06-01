@@ -50,9 +50,9 @@ export default {
     menuList: [] // 菜单数据
   },
   getters: {
-    menuList: (state, getters, rootState) =>
-      // getMenuByRouter(routers, rootState.user.access),
-      getMenuByRouter(dynamicRouterAdd("app.js"), rootState.user.access), // 根据路由加载菜单(仅mock时用)
+    // menuList: (state, getters, rootState) =>
+    //   // getMenuByRouter(routers, rootState.user.access),
+    //   getMenuByRouter(dynamicRouterAdd("app.js"), rootState.user.access), // 根据路由加载菜单(仅mock时用)
     errorCount: state => state.errorList.length
   },
   mutations: {
@@ -209,7 +209,9 @@ export default {
           gotRouter = dynamicRouterAdd("router-util.js");
           var menuList = JSON.parse(JSON.stringify(gotRouter));
           menuList = menuListHanding(menuList);
+          console.log("动态路由数据：", gotRouter);
           console.log("左侧动态菜单：", menuList);
+          // 动态渲染菜单数据
           commit("setMenuList", {
             menuList: menuList,
             access: rootState.user.access

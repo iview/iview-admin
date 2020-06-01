@@ -9,7 +9,7 @@ import Vue from "vue";
 export const dynamicRouterAdd = from => {
   let data = localRead("dynamicRouter-template");
   let dynamicRouter = data !== "" ? filterAsyncRouter(JSON.parse(data)) : [];
-  console.log(`动态路由数据：${from}`, dynamicRouter);
+  // console.log(`动态路由数据：${from}`, dynamicRouter);
   return dynamicRouter;
 };
 
