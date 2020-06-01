@@ -193,15 +193,22 @@ export const routerDataHanding = apiRouterData => {
     routeData.forEach(route => {
       // 有子组件
       if (route.children.length !== 0) {
-        route.children.sort(arraySort("sort", "desc")); // 子组件sort排序，后端排序可忽略
-        route.redirect = route.path + "/" + route.children[0].path; // 重定向为第一个子组件
+        // 1.子组件sort排序，后端排序可忽略
+        route.children.sort(arraySort("sort", "desc"));
+        // 2.重定向为第一个非模块菜单的子组件
+        for (let i = 0; i < route.children.length; i++) {
+          if (route.children[i].children.length === 0) {
+            route.redirect = route.path + "/" + route.children[i].path;
+            break;
+          }
+        }
       }
       handleData(route.children);
     });
   };
   handleData(asyncRouterMap);
 
-  // console.log(asyncRouterMap);
+  console.log(asyncRouterMap);
 
   return asyncRouterMap;
 };
