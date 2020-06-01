@@ -187,55 +187,27 @@ export const routerDataHanding = apiRouterData => {
 
   /* 2.路由处理 */
 
-  // 路由sort排序，后端排序可忽略
-  const handleSort = routeData => {
-    routeData.sort(arraySort("sort", "desc"));
-    routeData.forEach(routeChild => {
-      routeChild.children.sort(arraySort("sort", "desc"));
-      handleSort(routeChild.children);
+  // 递归：1.处理sort排序(后端排序可忽略);2.处理重定向
+  const handleData = routeData => {
+    routeData.sort(arraySort("sort", "desc")); // sort排序，后端排序可忽略
+    routeData.forEach(route => {
+      // 有子组件
+      if (route.children.length !== 0) {
+        route.children.sort(arraySort("sort", "desc")); // 子组件sort排序，后端排序可忽略
+        route.redirect = route.path + "/" + route.children[0].path; // 重定向为第一个子组件
+      }
+      handleData(route.children);
     });
   };
-  handleSort(asyncRouterMap);
+  handleData(asyncRouterMap);
 
   // console.log(asyncRouterMap);
-
-  // 处理重定向 - 递归
-  const handleRedirect = routeData => {
-    routeData.forEach(route => {
-      if (route.children.length !== 0) {
-        // 非 home 页且有子组件 -> 重定向为第一个子组件
-        route.redirect = route.path + "/" + route.children[0].path;
-      }
-      handleRedirect(route.children);
-    });
-  };
-  handleRedirect(asyncRouterMap);
 
   return asyncRouterMap;
 };
 
 // @函数：遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
 export const menuListHanding = menuList => {
-  // export const menuListHanding = (menuListOrg, menuList) => {
-  // menuList.forEach((menu, i) => {
-  //   menuListOrg.forEach(data => {
-  //     // 1.有meta里有parentId且parentId与另一个meta里的id相同 -> copy并删除parentId键 -> 将copy塞入meta
-  //     if (
-  //       data.meta.parentId !== undefined &&
-  //       menu.meta.id === data.meta.parentId
-  //     ) {
-  //       var dataCopy = JSON.parse(JSON.stringify(data));
-  //       Vue.delete(dataCopy.meta, "parentId");
-  //       menu.children.push(dataCopy);
-  //     }
-  //     // 2.删除剩余的meta里有parentId的数据
-  //     if (menu.meta.parentId !== undefined) {
-  //       menuList.splice(i, 1);
-  //     }
-  //   });
-  //   menuListHanding(menuListOrg, menu.children);
-  // });
-
   // 1.copy一份menuList，以便递归函数用
   const menuListOrg = JSON.parse(JSON.stringify(menuList));
   // 2.递归函数：比对menuList和menuListOrg，挂载数据到menuList
@@ -263,7 +235,6 @@ export const menuListHanding = menuList => {
     return !menu.meta.notInMenu === true;
   });
   // console.log(menuList);
-
   return menuList;
 };
 
