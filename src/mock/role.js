@@ -5,16 +5,16 @@ const userList = [
     name: "goku",
     displayName: "孙悟空",
     phone: "13888888881",
-    access: ["super_admin", "visitor"],
-    avator: "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png"
+    access: ["super_admin", "visitor"]
+    // avator: "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png"
   },
   {
     user_id: "2",
     name: "trunks",
     displayName: "特兰克斯",
     phone: "13888888882",
-    access: ["visitor"],
-    avator: "https://avatars0.githubusercontent.com/u/20942571?s=460&v=4"
+    access: ["visitor"]
+    // avator: "https://avatars0.githubusercontent.com/u/20942571?s=460&v=4"
   }
 ];
 
