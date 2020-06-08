@@ -4,7 +4,10 @@
       <Row :gutter="20">
 
         <!-- left -->
-        <Col :span="6">
+        <Col :xs="8"
+             :sm="6"
+             :xl="6"
+             :xxl="6">
 
         <!-- 操作 -->
         <Alert show-icon>当前选择：
@@ -34,7 +37,10 @@
         </Col>
 
         <!-- right -->
-        <Col :span="10">
+        <Col :xs="16"
+             :sm="14"
+             :xl="12"
+             :xxl="10">
 
         <!-- form -->
         <Form ref="formModalData"
