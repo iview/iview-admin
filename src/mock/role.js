@@ -66,7 +66,7 @@ const roleList = [
 /** menuList路由列表
  * isOutSide：是否为外链
  * showLevel：路由层级，详见menuLevel路由层级列表
- * path：前端组件路径（父组件为空）
+ * path：前端组件路径（根父组件为Main，非根父组件为parentView，外链任意但不能为空）
  */
 
 // 路由层级
