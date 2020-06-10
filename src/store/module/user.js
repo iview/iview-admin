@@ -51,7 +51,7 @@ export default {
         })
           .then(res => {
             const data = res.data;
-            commit("setToken", data.data);
+            commit("setToken", data.token);
             resolve(res);
           })
           .catch(err => {
@@ -86,11 +86,11 @@ export default {
         try {
           getUserInfo(state.token)
             .then(res => {
-              const data = res.data;
-              commit("setAvator", data.data.avator);
-              commit("setUserName", data.data.name);
-              commit("setUserId", data.data.user_id);
-              commit("setAccess", data.data.access);
+              const data = res.data.data;
+              commit("setAvator", data.avator);
+              commit("setUserName", data.name);
+              commit("setUserId", data.user_id);
+              commit("setAccess", data.access);
               commit("setHasGetInfo", true);
               resolve(data);
             })

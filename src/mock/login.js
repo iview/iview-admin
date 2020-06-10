@@ -18,7 +18,7 @@ export const login = req => {
     return {
       status: 200,
       message: "成功！",
-      data: USER_MAP[req.userName].name
+      token: USER_MAP[req.userName].name
     };
   } else {
     return { status: 500, message: "用户名或密码错误！", data: null };
