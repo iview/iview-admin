@@ -19,7 +19,7 @@ export const routerDataHanding = apiRouterData => {
 
   /* 1.路由挂载 */
 
-  // 1-1.外层节点
+  // 1-1.根节点
   apiRouterData.forEach(route => {
     if (route.parentId === "root") {
       if (route.isOutSide === true) {
@@ -90,7 +90,6 @@ export const routerDataHanding = apiRouterData => {
         });
       } else {
         // 非外链，无子节点，页面不含菜单栏 -> 根节点路由，与main组件平级
-        // 根节点路由最后再挂载，因为需要做菜单数据处理
         asyncRouterMap.push({
           path: "/" + route.url,
           name: route.name,
@@ -109,7 +108,7 @@ export const routerDataHanding = apiRouterData => {
     }
   });
 
-  // 1-2.内层子路由 - 递归
+  // 1-2.非根节点 - 递归
   const handleRecurrence = recurrenceData => {
     recurrenceData.forEach(data => {
       apiRouterData.forEach(route => {
@@ -159,7 +158,7 @@ export const routerDataHanding = apiRouterData => {
             });
           } else {
             // 非外链，页面不含菜单栏，菜单显示该页面选项 -> 根节点路由，与main组件平级（暂时为根菜单）
-            // 在app.js里调用menuListHanding方法，将原本不是根菜单的数据重新挂载到相应位置
+            // 在app.js里调用menuListHanding方法，为了将原本不是根菜单的数据重新挂载到相应位置
             asyncRouterMap.push({
               path: "/" + route.url,
               name: route.name,
