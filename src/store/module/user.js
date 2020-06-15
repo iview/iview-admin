@@ -3,7 +3,7 @@ import {
   // logout,
   getUserInfo
 } from "@/api/user";
-import { setToken, getToken, removeToken, localSave } from "@/libs/util";
+import { setToken, getToken, localSave } from "@/libs/util";
 
 export default {
   state: {
@@ -72,8 +72,7 @@ export default {
         //     reject(err);
         //   });
         // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
-        // commit('setToken', '')
-        removeToken(); // 删除token
+        commit("setToken", "");
         commit("setAccess", []);
         localSave("dynamicRouter-template", []); // 清空本地存储localStorage中的dynamicRouter
         localSave("tagNaveList-template", []); // 清空localStorage中的tagNaveList记录
