@@ -20,7 +20,6 @@ import router from "@/router";
 // import routers from "@/router/routers";
 import config from "@/config";
 import {
-  dynamicRouterAdd, // 加载路由菜单，从localStorage拿到路由，在创建路由时使用
   routerDataHanding, // 遍历后台返回的路由数据，转为路由基础数据
   filterAsyncRouter, // 遍历路由基础数据，转换为前端组件对象
   menuListHanding, // 遍历菜单数据，将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
@@ -52,7 +51,6 @@ export default {
   getters: {
     // menuList: (state, getters, rootState) =>
     //   // getMenuByRouter(routers, rootState.user.access),
-    //   getMenuByRouter(dynamicRouterAdd("app.js"), rootState.user.access), // 根据路由加载菜单(仅mock时用)
     errorCount: state => state.errorList.length
   },
   mutations: {
@@ -168,7 +166,6 @@ export default {
           try {
             getAllMenus(rootState.user.token)
               .then(res => {
-                // console.log(res);
                 /* 1.拿到路由接口数据 */
                 var routerData = res.data.data;
                 // console.log(routerData);
@@ -206,7 +203,9 @@ export default {
         } else {
           /* 有路由数据 -> 直接从localStorage里面获取 */
           console.log("获取路由：从localStorage");
-          gotRouter = dynamicRouterAdd("router-util.js");
+          gotRouter = filterAsyncRouter(
+            JSON.parse(localRead("dynamicRouter-template"))
+          );
           var menuList = JSON.parse(JSON.stringify(gotRouter));
           menuList = menuListHanding(menuList);
           console.log("动态路由数据：", gotRouter);
