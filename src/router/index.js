@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import { routes, otherRouter } from "./routers"; // 动态路由
+import {
+  routes, // 总路由表
+  constantRouter // 静态路由表
+} from "./routers";
 import store from "@/store";
 import iView from "iview";
 import { setToken, getToken, canTurnTo } from "@/libs/util";
@@ -24,7 +27,8 @@ const turnTo = (to, access, next) => {
 
 // 方法：初始化路由表刷新
 export const refreshRoute = () => {
-  const routes = [...otherRouter];
+  const routes = [...constantRouter];
+  // 新路由实例matcer，赋值给旧路由实例的matcher，（相当于replaceRouter）
   router.matcher = new Router({ routes }).matcher;
 };
 
@@ -36,10 +40,11 @@ router.beforeEach((to, from, next) => {
   } else if (!token && to.name !== LOGIN_PAGE_NAME) {
     next({ name: LOGIN_PAGE_NAME }); // 未登录且要跳转的页面不是登录页 -> 跳转到登录页
   } else if (!token && to.name === LOGIN_PAGE_NAME) {
-    next(); // 未登陆且要跳转的页面是登录页 -> 跳转到登录页
+    next(); // 未登陆且要跳转的页面是登录页 -> 可跳转
   } else if (token && to.name === LOGIN_PAGE_NAME) {
     next({ name: homeName }); // 已登录且要跳转的页面是登录页 -> 跳转到homeName页
   } else {
+    // 剩余情况：已登录且要跳转的页面不是登录页
     if (store.state.user.hasGetInfo) {
       turnTo(to, store.state.user.access, next);
     } else {
