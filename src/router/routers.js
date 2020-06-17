@@ -17,7 +17,7 @@ import { dynamicRouterAdd } from "@/libs/router-util"; // 引入动态路由
  */
 
 // 静态路由
-export const otherRouter = [
+export const constantRouter = [
   {
     path: "/login",
     name: "login",
@@ -67,7 +67,7 @@ export const otherRouter = [
 // 动态路由
 export const appRouter = [...dynamicRouterAdd("router.js")];
 
-export const routes = [...otherRouter, ...appRouter];
+export const routes = [...constantRouter, ...appRouter];
 
 // 所有上面定义的路由都要写在下面输出
 export default routes;
