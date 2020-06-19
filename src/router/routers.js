@@ -52,8 +52,8 @@ export const constantRouter = [
   },
   {
     path: "/500",
-    meta: { title: "500-服务端错误" },
     name: "error_500",
+    meta: { hideInMenu: true },
     component: () => import("@/view/error-page/500.vue")
   },
   {
