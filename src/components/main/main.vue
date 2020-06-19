@@ -112,8 +112,7 @@ export default {
         : [];
     },
     menuList() {
-      // return this.$store.getters.menuList;
-      return this.$store.state.app.menuList; // 改造：动态生成左侧菜单
+      return this.$store.getters.menuList;
     },
     local() {
       return this.$store.state.app.local;
