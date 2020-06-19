@@ -146,7 +146,7 @@ export default {
       console.log("动态添加路由：", routes);
       /* 2.处理菜单数据 */
       var menuList = JSON.parse(JSON.stringify(routes));
-      menuList = menuListHanding(menuList); // 将"菜单显示该页面选项，页面不含菜单栏"重新挂载到根路由上
+      menuList = menuListHanding(menuList); // 将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
       console.log("左侧动态菜单：", menuList);
       /* 3.提交到 setMenuList，修改state.menuList */
       commit("setMenuList", {
@@ -208,7 +208,7 @@ export default {
           console.log("动态路由数据：", gotRouter);
           /* 2.处理菜单数据 */
           var menuList = JSON.parse(JSON.stringify(gotRouter));
-          menuList = menuListHanding(menuList); // 将"菜单显示该页面选项，页面不含菜单栏"重新挂载到根路由上
+          menuList = menuListHanding(menuList); // 将"原本不应挂载在根菜单"的数据，重新挂载到相应位置
           console.log("左侧动态菜单：", menuList);
           /* 3.提交到 setMenuList，修改state.menuList */
           commit("setMenuList", {
