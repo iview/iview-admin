@@ -41,7 +41,6 @@ export default {
   state: {
     breadCrumbList: [],
     tagNavList: [],
-    // homeRoute: getHomeRoute(routers, homeName),
     homeRoute: {},
     local: localRead("local"),
     errorList: [],
@@ -49,8 +48,9 @@ export default {
     menuList: [] // 菜单数据
   },
   getters: {
-    // menuList: (state, getters, rootState) =>
-    //   // getMenuByRouter(routers, rootState.user.access),
+    menuList: (state, getters, rootState) =>
+      //   getMenuByRouter(routers, rootState.user.access),
+      state.menuList, // 改造：动态菜单渲染
     errorCount: state => state.errorList.length
   },
   mutations: {
@@ -114,7 +114,7 @@ export default {
     setHasReadErrorLoggerStatus(state, status = true) {
       state.hasReadErrorPage = status;
     },
-    // 根据路由和权限，生成左侧菜单
+    // 修改state.menuList，生成左侧菜单
     setMenuList(state, data) {
       state.menuList = getMenuByRouter(data.menuList, data.access);
     }
@@ -138,19 +138,17 @@ export default {
         commit("addError", data);
       });
     },
-    // 动态路由数据 -> 首次登录挂载路由
-    updateMenuList({ commit, rootState }, routes) {
-      // 动态菜单数据
-      var menuList = JSON.parse(JSON.stringify(routes));
-      // 路由数据处理：将"菜单显示该页面选项，页面不含菜单栏"重新挂载到根路由上
-      menuList = menuListHanding(menuList);
+    // 动态添加路由数据 -> 首次登录挂载路由
+    addRouterData({ commit, rootState }, routes) {
+      /* 1.动态添加路由（不会立刻刷新，需要手动往router.options.routes里添加数据） */
+      router.addRoutes(routes); // 动态添加路由
+      routerUpdateHandle(routes, router); // 手动添加路由数据
       console.log("动态添加路由：", routes);
+      /* 2.处理菜单数据 */
+      var menuList = JSON.parse(JSON.stringify(routes));
+      menuList = menuListHanding(menuList); // 将"菜单显示该页面选项，页面不含菜单栏"重新挂载到根路由上
       console.log("左侧动态菜单：", menuList);
-      // 动态添加路由 - 真正添加路由（不会立刻刷新，需要手动往router.options.routes里添加数据）
-      router.addRoutes(routes);
-      // 手动添加路由数据
-      routerUpdateHandle(routes, router);
-      // 动态渲染菜单数据
+      /* 3.提交到 setMenuList，修改state.menuList */
       commit("setMenuList", {
         menuList: menuList,
         access: rootState.user.access
@@ -186,12 +184,12 @@ export default {
                 // console.log(routerData); // 筛选出该角色拥有的路由数据
                 routerData = routerDataHanding(
                   JSON.parse(JSON.stringify(routerData))
-                );
+                ); // 过滤路由，转为路由基础数据
                 /* 4.处理后路由数据生成路由和菜单等 */
-                localSave("dynamicRouter-template", JSON.stringify(routerData)); // 存储routerData到localStorage
-                gotRouter = filterAsyncRouter(routerData); // 过滤路由,路由组件转换
-                dispatch("updateMenuList", gotRouter).then(res => {
-                  resolve(routerData);
+                localSave("dynamicRouter-template", JSON.stringify(routerData)); // 存储到localStorage
+                gotRouter = filterAsyncRouter(routerData); // 过滤路由，路由组件转换
+                dispatch("addRouterData", gotRouter).then(res => {
+                  resolve(gotRouter);
                 });
               })
               .catch(err => {
@@ -203,14 +201,16 @@ export default {
         } else {
           /* 有路由数据 -> 直接从localStorage里面获取 */
           console.log("获取路由：从localStorage");
+          /* 1.动态路由数据 */
           gotRouter = filterAsyncRouter(
             JSON.parse(localRead("dynamicRouter-template"))
-          );
-          var menuList = JSON.parse(JSON.stringify(gotRouter));
-          menuList = menuListHanding(menuList);
+          ); // 过滤路由，路由组件转换
           console.log("动态路由数据：", gotRouter);
+          /* 2.处理菜单数据 */
+          var menuList = JSON.parse(JSON.stringify(gotRouter));
+          menuList = menuListHanding(menuList); // 将"菜单显示该页面选项，页面不含菜单栏"重新挂载到根路由上
           console.log("左侧动态菜单：", menuList);
-          // 动态渲染菜单数据
+          /* 3.提交到 setMenuList，修改state.menuList */
           commit("setMenuList", {
             menuList: menuList,
             access: rootState.user.access
