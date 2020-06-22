@@ -58,7 +58,7 @@
 - 权限管理
   - 用户管理（增删改查、用户1对多绑定角色）
   - 角色管理（增删改查、角色1对多绑定菜单）
-  - 菜单管理（增删改查、修改上级目录）
+  - 菜单管理（增删改查、修改层级、修改上级目录）
   - 纯前端控制路由权限
 ```
 
@@ -104,3 +104,14 @@ npm run dev
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXQDvea6ZkJD5aNx25dymLfInAQzp6snhVQ36aH70AiaqINqCzFI60DiaIX0rkMjiaE7v8gIvY5TzxTnQ/0?wx_fmt=png">
 
+权限管理 - 菜单管理，可任意新增/更新菜单、修改层级、修改上级目录
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FayPN5e59qlaRaL3bWk5wTHY4lIjk12IfZh9LHX5GUst1zictcTD5Ggg/0?wx_fmt=png">
+
+权限管理 - 角色管理，可任意新增/更新角色、修改角色关联的菜单
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FxIxHjX8N9UeibatuJNPMQuFhhibEic9a3e4BXn1icQcoj7zVibEvgDvGgsw/0?wx_fmt=png">
+
+权限管理 - 用户管理，可任意新增/更新用户、修改用户关联的角色
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FGmqiabpQSoJxjDbU1kQS70qXt7Bj7gjrZkaAuAP7OLjk28NyOTtD4Ig/0?wx_fmt=png">
