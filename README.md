@@ -27,14 +27,14 @@
 
 > 在控制台可监听 **当前路由和菜单**
 
+## 使用文档
+
+如果你想快速使用，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">**配置文档 →**</a>  
+如果你想和我一起，从 iview-admin 的原始框架一步步实现 **iView-DynamicRouter**，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc/develop/axios/" target="_blank">**开发指南 →**</a>
+
 如果这个模板或模板中的代码段能够在开发中帮助到你，请到在 <a href="https://github.com/simon9124/iview-dynamicRouter" target="_blank">项目地址</a> 的右上角 :star: 一下，更可以买一杯果汁表示鼓励 :tropical_drink:，非常感谢！
 
 <img width="300" src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FnsRE7yMOwSwBicVNVhzJsiaDuEaiahTeiavk3Tm1ic5z5etIe5PVvI0J70w/0?wx_fmt=png">
-
-## 使用文档
-
-如果你是快速拿来使用，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">**配置文档 →**</a>  
-如果你想和我一起，从 iview-admin 的原始框架一步步实现 **iView-DynamicRouter**，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc/develop/axios/" target="_blank">**开发指南 →**</a>
 
 ## 目录结构
 
