@@ -52,8 +52,8 @@
   - libs  封装工具函数   -> 追加：若干路由数据处理函数
   - locale  多语言文件
   - mock  mock模拟数据   -> 追加：路由列表、路由层级、角色列表 等数据
-  - router  路由配置   -> 有较多改动
-  - store  Vuex配置   -> 有较多改动
+  - router  路由配置   -> 有较多改动，路由改造
+  - store  Vuex配置   -> 有较多改动，菜单渲染改造
   - view  页面文件   -> 追加【权限管理】模块、追加 template.vue 和 screent.vue 页面模板
   - tests  测试相关
 ```
