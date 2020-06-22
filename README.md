@@ -30,11 +30,37 @@
 ## 使用文档
 
 如果你想快速使用，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">**配置文档 →**</a>  
-如果你想和我一起，从 iview-admin 的原始框架一步步实现 **iView-DynamicRouter**，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc/develop/axios/" target="_blank">**开发指南 →**</a>
+如果你想和我一起，从 **iview-admin** 的原始框架一步步实现 **iView-DynamicRouter**，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc/develop/axios/" target="_blank">**开发指南 →**</a>
 
-如果这个模板或模板中的代码段能够在开发中帮助到你，请到在 <a href="https://github.com/simon9124/iview-dynamicRouter" target="_blank">项目地址</a> 的右上角 :star: 一下，更可以买一杯果汁表示鼓励 :tropical_drink:，非常感谢！
+如果这个模板或模板中的代码段能够在开发中帮助到你，请到在 <a href="https://github.com/simon9124/iview-dynamicRouter" target="_blank">**项目地址**</a> 的右上角 :star: 一下，更可以买一杯果汁表示鼓励 :tropical_drink:，非常感谢！
 
 <img width="300" src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FnsRE7yMOwSwBicVNVhzJsiaDuEaiahTeiavk3Tm1ic5z5etIe5PVvI0J70w/0?wx_fmt=png">
+
+## 功能介绍
+
+这里总结相比 iview-admin 原架构追加的新功能：
+
+```bash
+- 动态路由数据
+  - 路由改造（静态路由+动态路由）
+  - 路由数据处理
+  - 手动添加路由
+  - 路由清空
+  - 路由监听
+
+- 动态菜单渲染
+  - 菜单数据处理（大屏路由在二级/多级菜单）
+  - 菜单监听
+
+- 动态模拟数据mockData
+  - 用户列表、角色列表、路由列表、路由层级
+
+- 权限管理
+  - 用户管理（增删改查、用户1对多绑定角色）
+  - 角色管理（增删改查、角色1对多绑定菜单）
+  - 菜单管理（增删改查、修改上级目录）
+  - 纯前端控制路由权限
+```
 
 ## 目录结构
 
@@ -75,4 +101,6 @@ npm run dev
 ```
 
 启动完成后，在控制台可监听【当前路由】和【左侧菜单】：
+
 <img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXQDvea6ZkJD5aNx25dymLfInAQzp6snhVQ36aH70AiaqINqCzFI60DiaIX0rkMjiaE7v8gIvY5TzxTnQ/0?wx_fmt=png">
+
