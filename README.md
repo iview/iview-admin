@@ -17,9 +17,19 @@
 </a>
 <p></p>
 
-- 基于<a href="https://github.com/iview/iview-admin/tree/template" target="_blank">iview-admin(branch:template)</a>，动态获取路由数据，经数据处理后生成动态路由和菜单的【后端动态路由模板】
-- <a href="https://simon9124.github.io/iview-dynamicRouter" target="_blank">在线预览</a>
-- <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">使用文档（更新中）</a>
+<a href="https://github.com/simon9124/iview-dynamicRouter" target="_blank">iView-DynamicRouter</a> 基于 <a href="https://github.com/iview/iview-admin/tree/template" target="_blank">iview-admin(branch:template)</a>，由“后端动态提供路由数据，经前端处理后生成动态路由和菜单”的【后端动态路由模板】，内置“权限管理”业务模型，可任意调整左侧菜单栏、修改其相关权限、监听当前路由和菜单，是一套更安全、更智能的后台管理系统模板。
+
+## 在线预览
+
+- <a href="https://simon9124.github.io/iview-dynamicRouter" target="_blank">iview-dynamicRouter →</a>
+
+> 在控制台可监听 **当前路由和菜单**
+
+## 使用文档
+
+如果你是快速拿来使用，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">**配置文档 →**</a>  
+如果你想和我一起，从 iview-admin 的原始框架一步步实现 **iView-DynamicRouter**，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc/develop/axios/" target="_blank">**开发指南 →**</a>
+
 - userName：goku / visitor
 - password：trunks / any
 
