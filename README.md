@@ -118,4 +118,4 @@ npm run dev
 
 实现路由权限控制：
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FtTcibHMEZgj4bQohuYKx6J8ZShpiciarhibtaGWs9zib83taRmTuSEdXe0g/0?wx_fmt=png">
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXSzsMiaymWHcjibfquK5EYaSzwLxvJvojntLcRLx8A8QUPIpQfa1lsSnLYykqHIF1jJ6jRJEasXJiaqA/0?wx_fmt=png">
