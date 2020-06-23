@@ -119,3 +119,7 @@ npm run dev
 实现路由权限控制：
 
 <img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXSzsMiaymWHcjibfquK5EYaSzwLxvJvojntLcRLx8A8QUPIpQfa1lsSnLYykqHIF1jJ6jRJEasXJiaqA/0?wx_fmt=png">
+
+大屏路由在二级/多级菜单亦可挂载：
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXSzsMiaymWHcjibfquK5EYaSz6zhTS8gF4n1gJOFRAqoQxm3IFCyUvPTicaVtWaicAaclqXDIn7TTw45A/0?wx_fmt=png">
