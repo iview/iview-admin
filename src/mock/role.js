@@ -5,7 +5,7 @@ const userList = [
     name: "goku",
     displayName: "孙悟空",
     phone: "13888888881",
-    access: ["super_admin", "visitor"]
+    access: ["super_admin"]
     // avator: "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png"
   },
   {
