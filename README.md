@@ -62,6 +62,10 @@
   - 纯前端也可控制路由权限
 ```
 
+<img src="https://user-gold-cdn.xitu.io/2020/6/24/172e52b5201b1fd6?w=1909&h=996&f=gif&s=2588614">
+
+<img src="https://user-gold-cdn.xitu.io/2020/6/24/172e533ebbf3d3e7?w=1919&h=985&f=gif&s=331719">
+
 ## 目录结构
 
 ```bash
