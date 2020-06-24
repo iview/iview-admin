@@ -105,6 +105,8 @@
 </template>
 
 <script>
+// vuex
+import store from "@/store";
 // mockData
 import {
   userList, // 用户列表
@@ -120,10 +122,9 @@ import {
 // api
 import {
   getRoleList, // 获取角色列表
-  getAllMenus
+  getAllMenus // 获取全部菜单
 } from "@/api/data";
-// import { getUserList } from "@/api/user/index"; // 获取全部用户
-// import { getAllMenus } from "@/api/menu/index"; // 获取全部菜单
+import { refreshRoute } from "@/router"; // 路由初始化，清空动态路由
 
 export default {
   data() {
@@ -522,16 +523,16 @@ export default {
           _menu.children.length === 0 &&
             this.menuSelectList.some(__menu => _menu.id === __menu) &&
             this.$set(_menu, "checked", true);
-          row.name === "super_admin" &&
-            this.$set(_menu, "disableCheckbox", true); // super_admin所有子节点禁止选择
+          // row.name === "super_admin" &&
+          //   this.$set(_menu, "disableCheckbox", true); // super_admin所有子节点禁止选择
           childrenHanding(_menu.children);
         });
       };
       // 根据menuSelectList，动态渲染menuList已选中的选项
       this.menuList.length > 0 &&
         this.menuList.forEach(menu => {
-          row.name === "super_admin" &&
-            this.$set(menu, "disableCheckbox", true); // super_admin所有父节点禁止选择
+          // row.name === "super_admin" &&
+          //   this.$set(menu, "disableCheckbox", true); // super_admin所有父节点禁止选择
           if (menu.children.length === 0) {
             // 如果没有子节点 -> 选中包含id的父节点
             this.menuSelectList.some(_menu => menu.id === _menu) &&
@@ -545,7 +546,7 @@ export default {
     },
     // 提交表单 - 菜单
     async handleSubmitMenu() {
-      // this.buttonLoading = true;
+      this.buttonLoading = true;
       /* 1获取所有的tree中被勾选的节点，concat成一个数组（数组对象） */
       let menuSelected = [];
       this.menuList.forEach((menu, i) => {
@@ -569,9 +570,18 @@ export default {
       resultCallback(200, "修改成功！", () => {
         this.buttonLoading = false;
         this.modalShowMenu = false;
+        this.refreshRouteData();
         this.getData();
         // 清空选项
         this.menuList = JSON.parse(JSON.stringify(this.menuListOrg));
+      });
+    },
+    // 刷新左侧菜单数据
+    refreshRouteData() {
+      localStorage.setItem("dynamicRouter-template", []);
+      refreshRoute();
+      store.dispatch("getRouters").then(res => {
+        this.getData();
       });
     }
   }
