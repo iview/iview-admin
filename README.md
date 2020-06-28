@@ -36,7 +36,7 @@
 
 登录后，**不同权限**的用户监听到不同的**动态路由**和**动态菜单**：
 
-<img width="1012" src="https://mmbiz.qlogo.cn/mmbiz_gif/Tlm6c1DNgXSUXo3baQ69FGiboBMR7HWAtv6lrmT57KyuNssjwEMY9V0dicz1urMjTytEoUXIY2agH9N2eMZZ4l7Q/0?wx_fmt=gif">
+<img src="https://user-gold-cdn.xitu.io/2020/6/28/172f9ddb32aa32e3?w=1910&h=922&f=gif&s=1838123">
 
 菜单自由**选择上级**、自由**增删改**：
 
@@ -48,7 +48,7 @@
 
 修改“角色-菜单”关联，**控制菜单权限**：
 
-<img width="1012" src="https://mmbiz.qpic.cn/mmbiz_gif/Tlm6c1DNgXSUXo3baQ69FGiboBMR7HWAtyFU7BaGzk6icPUHKpYvsnibZK2Vns28qAW5NHgZX4s4YbkMa8tyDO4LA/0?wx_fmt=gif">
+<img src="https://user-gold-cdn.xitu.io/2020/6/28/172f9dee14301a7d?w=1505&h=860&f=gif&s=1438180">
 
 功能汇总：
 
