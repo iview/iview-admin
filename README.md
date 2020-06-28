@@ -40,19 +40,19 @@
 
 登录后，**不同权限**的用户监听到不同的**动态路由**和**动态菜单**：
 
-![](https://user-gold-cdn.xitu.io/2020/6/28/172f983dd97f2355?w=1910&h=922&f=gif&s=1838123)
+<img src="https://user-gold-cdn.xitu.io/2020/6/28/172f983dd97f2355?w=1910&h=922&f=gif&s=1838123">
 
 菜单自由**选择上级**、自由**增删改**：
 
-![](https://user-gold-cdn.xitu.io/2020/6/28/172f9840378af7c0?w=1361&h=791&f=gif&s=1252459)
+<img src="https://user-gold-cdn.xitu.io/2020/6/28/172f9840378af7c0?w=1361&h=791&f=gif&s=1252459">
 
 自由**选择菜单的层级**，大屏路由亦可在子菜单挂载：
 
-![](https://user-gold-cdn.xitu.io/2020/6/28/172f9847696b997c?w=1505&h=851&f=gif&s=942974)
+<img src="https://user-gold-cdn.xitu.io/2020/6/28/172f9847696b997c?w=1505&h=851&f=gif&s=942974">
 
 修改“角色-菜单”关联，**控制菜单权限**：
 
-![](https://user-gold-cdn.xitu.io/2020/6/28/172f984930bb4ca4?w=1505&h=860&f=gif&s=1438180)
+<img src="https://user-gold-cdn.xitu.io/2020/6/28/172f984930bb4ca4?w=1505&h=860&f=gif&s=1438180">
 
 功能汇总：
 
