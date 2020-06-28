@@ -36,9 +36,25 @@
 
 <img width="300" src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FnsRE7yMOwSwBicVNVhzJsiaDuEaiahTeiavk3Tm1ic5z5etIe5PVvI0J70w/0?wx_fmt=png">
 
-## 功能介绍
+## 功能特点
 
-这里总结相比 iview-admin 原架构追加的新功能：
+登录后，**不同权限**的用户监听到不同的**动态路由**和**动态菜单**：
+
+![](https://user-gold-cdn.xitu.io/2020/6/28/172f983dd97f2355?w=1910&h=922&f=gif&s=1838123)
+
+菜单自由**选择上级**、自由**增删改**：
+
+![](https://user-gold-cdn.xitu.io/2020/6/28/172f9840378af7c0?w=1361&h=791&f=gif&s=1252459)
+
+自由**选择菜单的层级**，大屏路由亦可在子菜单挂载：
+
+![](https://user-gold-cdn.xitu.io/2020/6/28/172f9847696b997c?w=1505&h=851&f=gif&s=942974)
+
+修改“角色-菜单”关联，**控制菜单权限**：
+
+![](https://user-gold-cdn.xitu.io/2020/6/28/172f984930bb4ca4?w=1505&h=860&f=gif&s=1438180)
+
+功能汇总：
 
 ```bash
 - 动态路由数据
@@ -61,10 +77,6 @@
   - 菜单管理（增删改查、修改层级、修改上级目录）
   - 纯前端也可控制路由权限
 ```
-
-<img src="https://user-gold-cdn.xitu.io/2020/6/24/172e52b5201b1fd6?w=1909&h=996&f=gif&s=2588614">
-
-<img src="https://user-gold-cdn.xitu.io/2020/6/24/172e533ebbf3d3e7?w=1919&h=985&f=gif&s=331719">
 
 ## 目录结构
 
