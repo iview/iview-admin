@@ -32,15 +32,11 @@
 如果你想快速使用，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc" target="_blank">**配置文档 →**</a>  
 如果你想和我一起，从 **iview-admin** 的原始框架一步步实现 **iView-DynamicRouter**，请看 <a href="https://simon9124.github.io/iview-dynamicRouter-doc/develop/axios/" target="_blank">**开发指南 →**</a>
 
-如果这个模板或模板中的代码段能够在开发中帮助到你，请到在 <a href="https://github.com/simon9124/iview-dynamicRouter" target="_blank">**项目地址**</a> 的右上角 :star: 一下，更可以买一杯果汁表示鼓励 :tropical_drink:，非常感谢！
-
-<img width="300" src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FnsRE7yMOwSwBicVNVhzJsiaDuEaiahTeiavk3Tm1ic5z5etIe5PVvI0J70w/0?wx_fmt=png">
-
 ## 功能特点
 
 登录后，**不同权限**的用户监听到不同的**动态路由**和**动态菜单**：
 
-<img src="https://mmbiz.qlogo.cn/mmbiz_gif/Tlm6c1DNgXSUXo3baQ69FGiboBMR7HWAtv6lrmT57KyuNssjwEMY9V0dicz1urMjTytEoUXIY2agH9N2eMZZ4l7Q/0?wx_fmt=gif">
+<img style="width:100%" src="https://mmbiz.qlogo.cn/mmbiz_gif/Tlm6c1DNgXSUXo3baQ69FGiboBMR7HWAtv6lrmT57KyuNssjwEMY9V0dicz1urMjTytEoUXIY2agH9N2eMZZ4l7Q/0?wx_fmt=gif">
 
 菜单自由**选择上级**、自由**增删改**：
 
@@ -52,7 +48,7 @@
 
 修改“角色-菜单”关联，**控制菜单权限**：
 
-<img src="https://mmbiz.qpic.cn/mmbiz_gif/Tlm6c1DNgXSUXo3baQ69FGiboBMR7HWAtyFU7BaGzk6icPUHKpYvsnibZK2Vns28qAW5NHgZX4s4YbkMa8tyDO4LA/0?wx_fmt=gif">
+<img style="width:100%" src="https://mmbiz.qpic.cn/mmbiz_gif/Tlm6c1DNgXSUXo3baQ69FGiboBMR7HWAtyFU7BaGzk6icPUHKpYvsnibZK2Vns28qAW5NHgZX4s4YbkMa8tyDO4LA/0?wx_fmt=gif">
 
 功能汇总：
 
@@ -115,6 +111,12 @@ npm install
 # 本地开发 启动项目
 npm run dev
 ```
+
+如果这个模板或模板中的代码段能够在开发中帮助到你，请到在 <a href="https://github.com/simon9124/iview-dynamicRouter" target="_blank">**项目地址**</a> 的右上角 :star: 一下，更可以买一杯果汁表示鼓励 :tropical_drink:，非常感谢！
+
+<img width="300" src="https://mmbiz.qpic.cn/mmbiz_png/Tlm6c1DNgXRhxyU1EIlwed2ErNQvYG7FnsRE7yMOwSwBicVNVhzJsiaDuEaiahTeiavk3Tm1ic5z5etIe5PVvI0J70w/0?wx_fmt=png">
+
+## 权限控制
 
 启动完成后，在控制台可监听【当前路由】和【左侧菜单】：
 
