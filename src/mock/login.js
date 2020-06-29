@@ -1,31 +1,43 @@
-import { getParams } from '@/libs/util'
-const USER_MAP = {
-  super_admin: {
-    name: 'super_admin',
-    user_id: '1',
-    access: ['super_admin', 'admin'],
-    token: 'super_admin',
-    avator: 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
-  },
-  admin: {
-    name: 'admin',
-    user_id: '2',
-    access: ['admin'],
-    token: 'admin',
-    avator: 'https://avatars0.githubusercontent.com/u/20942571?s=460&v=4'
-  }
-}
+import store from "@/store";
+import { userList } from "./role"; // mockData - 用户列表
 
+// 用户列表
+const getUserMap = userList => {
+  const USER_MAP = {};
+  userList.forEach(user => {
+    USER_MAP[user.name] = user;
+  });
+  return USER_MAP;
+};
+
+// 用户登录
 export const login = req => {
-  req = JSON.parse(req.body)
-  return {token: USER_MAP[req.userName].token}
-}
+  req = JSON.parse(req.body);
+  const USER_MAP = getUserMap(userList);
+  if (USER_MAP[req.userName] !== undefined) {
+    return {
+      status: 200,
+      message: "成功！",
+      token: USER_MAP[req.userName].name
+    };
+  } else {
+    return { status: 500, message: "用户名或密码错误！", data: null };
+  }
+};
 
+// 获取用户信息
 export const getUserInfo = req => {
-  const params = getParams(req.url)
-  return USER_MAP[params.token]
-}
+  // console.log(store.state.user.token);
+  const USER_MAP = getUserMap(userList);
+  if (store.state.user.token !== undefined) {
+    return {
+      status: 200,
+      message: "成功！",
+      data: USER_MAP[store.state.user.token]
+    };
+  }
+};
 
 export const logout = req => {
-  return null
-}
+  return null;
+};
