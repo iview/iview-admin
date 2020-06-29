@@ -467,6 +467,7 @@ export default {
                 this.$Message.error("系统名或路径已存在！");
                 this.buttonLoading = false;
               } else {
+                // 在菜单列表更新
                 menuList.forEach((list, i) => {
                   list.id === this.modalData.id &&
                     this.$set(
@@ -475,6 +476,14 @@ export default {
                       JSON.parse(JSON.stringify(this.modalData))
                     );
                 });
+                // 在tagList，用事件总线更新 -> tags.nav.vue组件
+                this.$store.state.app.tagNavList.some(
+                  tag => tag.name === this.modalDataOrg.name
+                ) &&
+                  this.$EventBus.$emit("tagUpdate", {
+                    dataOrg: this.modalDataOrg,
+                    dataUpdate: this.modalData
+                  });
                 resultCallback(200, "修改成功！", () => {
                   this.modalDataOrg = JSON.parse(
                     JSON.stringify(this.modalData)
@@ -500,6 +509,8 @@ export default {
             menuList.forEach((list, i) => {
               data.id === list.id && menuList.splice(i, 1);
             });
+            // 在tagList，用事件总线删除 -> tags.nav.vue组件
+            this.$EventBus.$emit("tagDelete", data);
             // 自动为super_admin删除权限
             roleList.forEach(role => {
               role.name === "super_admin" &&
