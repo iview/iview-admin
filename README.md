@@ -15,39 +15,6 @@ iView Admin
 [![iview ui](https://img.shields.io/badge/iview-3.2.2-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 [![npm](https://img.shields.io/npm/l/express.svg)]()
 
-<h2 align="center">Special Sponsors</h2>
-<table>
-      <tbody>
-        <tr>
-          <td align="center" valign="middle">
-            <a href="https://segmentfault.com/ls/1650000016424063" target="_blank">
-              <img width="300" src="https://file.iviewui.com/asd/asd-i-2.png">
-            </a>
-          </td>
-          <td align="center" valign="middle">
-            <a href="https://e.coding.net/?utm_source=iview" target="_blank">
-              <img width="300" src="https://file.iviewui.com/asd/asd-coding5.png">
-            </a>
-          </td>
-            <td align="center" valign="middle">
-            <a href="https://cn.udacity.com/fend/?utm_source=iviewui&utm_medium=banner&utm_campaign=fend" target="_blank">
-              <img width="300" src="https://file.iviewui.com/asd/asd-u-new-2.png">
-            </a>
-          </td>
-          <tr>
-            </td>
-            <td align="center" valign="middle">
-            <a href="https://uniapp.dcloud.io/?hmsr=iview&hmpl=&hmcu=&hmkw=&hmci=" target="_blank">
-              <img width="300" src="https://file.iviewui.com/asd/asd-uniapp2.png">
-            </a>
-          </td>
-        </tr>
-        </tr>
-      </tbody>
-</table>
-
-> If you'd like be a sponsor, to show your ads in GitHub and iView doc, please email admin@aresn.com to get more infomation.
-
 ## Introduction
 
 iView Admin is a front-end management background integration solution. It based on [Vue.js](https://github.com/vuejs/vue) and use the UI Toolkit [iView](https://github.com/iview/iview).
@@ -120,4 +87,4 @@ npm run build
 ## License
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2016-present, iView
+Copyright (c) 2016-present, TalkingData
