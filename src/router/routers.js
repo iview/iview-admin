@@ -1,5 +1,6 @@
 import Main from '@/components/main'
 import parentView from '@/components/parent-view'
+import hRouter from './hRouter'
 
 const debug = process.env.NODE_ENV === 'production'
 
@@ -52,62 +53,62 @@ export default [
       }
     ]
   },
-  {
-    path: '',
-    name: 'setting',
-    component: Main,
-    meta: {
-      title: '设置',
-      icon: 'ios-book'
-    },
-    children: [
-      {
-        path: 'demo_page',
-        name: 'resetPwd',
-        meta: {
-          icon: '_qq',
-          title: '重置密码'
-        },
-        component: () => import('@/view/demo-page.vue')
-      },
-      {
-        path: 'set_limit',
-        name: 'setQX',
-        meta: {
-          icon: '_qq',
-          title: '重置密码2'
-        },
-        component: () => import('@/view/demo-page.vue')
-      }
-      // {
-      //   path: 'join_page',
-      //   name: 'setQX',
-      //   meta: {
-      //     icon: '_qq',
-      //     title: '权限设置'
-      //   },
-      //   component: () => import('@/view/join-page.vue')
-      // },
-      // {
-      //   path: 'join_page',
-      //   name: 'setQX',
-      //   meta: {
-      //     icon: '_qq',
-      //     title: '病例模板设置'
-      //   },
-      //   component: () => import('@/view/join-page.vue')
-      // },
-      // {
-      //   path: 'join_page',
-      //   name: 'setQX',
-      //   meta: {
-      //     icon: '_qq',
-      //     title: '表格模板设置'
-      //   },
-      //   component: () => import('@/view/join-page.vue')
-      // }
-    ]
-  },
+  // {
+  //   path: '',
+  //   name: 'setting',
+  //   component: Main,
+  //   meta: {
+  //     title: '设置',
+  //     icon: 'ios-book'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'demo_page',
+  //       name: 'resetPwd',
+  //       meta: {
+  //         icon: '_qq',
+  //         title: '重置密码'
+  //       },
+  //       component: () => import('@/view/demo-page.vue')
+  //     },
+  //     {
+  //       path: 'set_limit',
+  //       name: 'setQX',
+  //       meta: {
+  //         icon: '_qq',
+  //         title: '重置密码2'
+  //       },
+  //       component: () => import('@/view/demo-page.vue')
+  //     }
+  //     // {
+  //     //   path: 'join_page',
+  //     //   name: 'setQX',
+  //     //   meta: {
+  //     //     icon: '_qq',
+  //     //     title: '权限设置'
+  //     //   },
+  //     //   component: () => import('@/view/join-page.vue')
+  //     // },
+  //     // {
+  //     //   path: 'join_page',
+  //     //   name: 'setQX',
+  //     //   meta: {
+  //     //     icon: '_qq',
+  //     //     title: '病例模板设置'
+  //     //   },
+  //     //   component: () => import('@/view/join-page.vue')
+  //     // },
+  //     // {
+  //     //   path: 'join_page',
+  //     //   name: 'setQX',
+  //     //   meta: {
+  //     //     icon: '_qq',
+  //     //     title: '表格模板设置'
+  //     //   },
+  //     //   component: () => import('@/view/join-page.vue')
+  //     // }
+  //   ]
+  // },
   // {
   //   path: '',
   //   name: 'search',
@@ -590,4 +591,4 @@ export default [
     },
     component: () => import('@/view/error-page/404.vue')
   }
-]
+].concat([...hRouter])
