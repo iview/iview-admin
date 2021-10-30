@@ -1,23 +1,16 @@
 <template>
-<!-- 住院记录 -->
   <div class="split-pane-page-wrapper">
     <split-pane v-model="offset" @on-moving="handleMoving">
       <div slot="left" class="pane left-pane">
-        <normal-info></normal-info>
-      </div>
-      <div slot="right" class="pane right-pane">
         <split-pane v-model="offsetVertical" mode="vertical" @on-moving="handleMoving">
-          <div slot="top" class="pane top-pane">
-            123456
-          </div>
-          <div slot="bottom" class="pane bottom-pane">
-            456789
-          </div>
+          <div slot="top" class="pane top-pane"></div>
+          <div slot="bottom" class="pane bottom-pane"></div>
           <div slot="trigger" class="custom-trigger">
             <icons class="trigger-icon" :size="22" type="resize-vertical" color="#fff"/>
           </div>
         </split-pane>
       </div>
+      <div slot="right" class="pane right-pane"></div>
     </split-pane>
   </div>
 </template>
@@ -25,13 +18,11 @@
 <script>
 import SplitPane from '_c/split-pane'
 import Icons from '_c/icons'
-import NormalInfo from '@/view/zero/components/normalInfo.vue'
 export default {
-  name: 'in_hospital_record',
+  name: 'split_pane_page',
   components: {
     SplitPane,
-    Icons,
-    NormalInfo
+    Icons
   },
   data () {
     return {
@@ -59,19 +50,17 @@ export default {
   .pane{
     width: 100%;
     height: 100%;
-    &.right-pane{
-      background: #999;
-    }
     &.left-pane{
-      background: #eeeeee;
+      background: sandybrown;
+    }
+    &.right-pane{
+      background: palevioletred;
     }
     &.top-pane{
-      padding-left: 5px;
       background: sandybrown;
     }
     &.bottom-pane{
-      padding-left: 5px;
-      background: #565656;
+      background: palevioletred;
     }
   }
   .custom-trigger{
