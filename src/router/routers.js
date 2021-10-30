@@ -1,6 +1,8 @@
 import Main from '@/components/main'
 import parentView from '@/components/parent-view'
 
+const debug = process.env.NODE_ENV === 'production'
+
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
  * meta: {
@@ -55,6 +57,7 @@ export default [
     name: 'doc',
     meta: {
       title: '文档',
+      hideInMenu: debug,
       href: 'https://lison16.github.io/iview-admin-doc/#/',
       icon: 'ios-book'
     }
@@ -64,6 +67,7 @@ export default [
     name: 'join',
     component: Main,
     meta: {
+      hideInMenu: debug,
       hideInBread: true
     },
     children: [
@@ -72,7 +76,7 @@ export default [
         name: 'join_page',
         meta: {
           icon: '_qq',
-          title: 'QQ群'
+          title: 'QQ群111'
         },
         component: () => import('@/view/join-page.vue')
       }
@@ -102,6 +106,7 @@ export default [
     path: '/components',
     name: 'components',
     meta: {
+      hideInMenu: debug,
       icon: 'logo-buffer',
       title: '组件'
     },
@@ -221,6 +226,7 @@ export default [
     path: '/update',
     name: 'update',
     meta: {
+      hideInMenu: debug,
       icon: 'md-cloud-upload',
       title: '数据上传'
     },
@@ -250,6 +256,7 @@ export default [
     path: '/excel',
     name: 'excel',
     meta: {
+      hideInMenu: debug,
       icon: 'ios-stats',
       title: 'EXCEL导入导出'
     },
@@ -279,6 +286,7 @@ export default [
     path: '/tools_methods',
     name: 'tools_methods',
     meta: {
+      hideInMenu: debug,
       hideInBread: true
     },
     component: Main,
@@ -357,6 +365,7 @@ export default [
     path: '/directive',
     name: 'directive',
     meta: {
+      hideInMenu: debug,
       hideInBread: true
     },
     component: Main,
@@ -376,6 +385,7 @@ export default [
     path: '/multilevel',
     name: 'multilevel',
     meta: {
+      hideInMenu: debug,
       icon: 'md-menu',
       title: '多级菜单'
     },
