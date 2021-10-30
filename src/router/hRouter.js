@@ -4,7 +4,7 @@ import Main from '@/components/main'
 // 设置
 const setting = [
   {
-    path: 'zero_setting',
+    path: '/setting',
     name: 'zero_setting',
     component: Main,
     meta: {
@@ -55,7 +55,7 @@ const setting = [
 // 搜索
 const search = [
   {
-    path: 'zero_search',
+    path: '/search',
     name: 'zero_search',
     component: Main,
     meta: {
@@ -97,7 +97,7 @@ const search = [
 // 审批
 const approval = [
   {
-    path: 'zero_approval',
+    path: '/approval',
     name: 'zero_approval',
     component: Main,
     meta: {
@@ -130,7 +130,7 @@ const approval = [
 // 模板
 const templete = [
   {
-    path: 'zero_template',
+    path: '/template',
     name: 'zero_template',
     component: Main,
     meta: {
@@ -172,7 +172,7 @@ const templete = [
 // 精神疾病
 const spirit = [
   {
-    path: 'zero_spirit',
+    path: '/spirit',
     name: 'zero_spirit',
     component: Main,
     meta: {
