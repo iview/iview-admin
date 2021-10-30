@@ -42,5 +42,9 @@ export default {
   tree_table_page: '树状表格',
   org_tree_page: '组织结构树',
   drag_drawer_page: '可拖动抽屉',
-  tree_select_page: '树状下拉选择器'
+  tree_select_page: '树状下拉选择器',
+  setting: '设置',
+  resetPwd: '重置密码',
+  setQX: '设置权限',
+  demo_page: 'demo'
 }

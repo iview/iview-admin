@@ -54,6 +54,99 @@ export default [
   },
   {
     path: '',
+    name: 'setting',
+    component: Main,
+    meta: {
+      title: '设置',
+      icon: 'ios-book'
+    },
+    children: [
+      {
+        path: 'demo_page',
+        name: 'resetPwd',
+        meta: {
+          icon: '_qq',
+          title: '重置密码'
+        },
+        component: () => import('@/view/demo-page.vue')
+      },
+      {
+        path: 'set_limit',
+        name: 'setQX',
+        meta: {
+          icon: '_qq',
+          title: '重置密码2'
+        },
+        component: () => import('@/view/demo-page.vue')
+      }
+      // {
+      //   path: 'join_page',
+      //   name: 'setQX',
+      //   meta: {
+      //     icon: '_qq',
+      //     title: '权限设置'
+      //   },
+      //   component: () => import('@/view/join-page.vue')
+      // },
+      // {
+      //   path: 'join_page',
+      //   name: 'setQX',
+      //   meta: {
+      //     icon: '_qq',
+      //     title: '病例模板设置'
+      //   },
+      //   component: () => import('@/view/join-page.vue')
+      // },
+      // {
+      //   path: 'join_page',
+      //   name: 'setQX',
+      //   meta: {
+      //     icon: '_qq',
+      //     title: '表格模板设置'
+      //   },
+      //   component: () => import('@/view/join-page.vue')
+      // }
+    ]
+  },
+  // {
+  //   path: '',
+  //   name: 'search',
+  //   meta: {
+  //     title: '查询',
+  //     icon: 'ios-book'
+  //   },
+  //   children:[
+  //     {
+  //       path: 'join_page',
+  //       name: 'searchBR',
+  //       meta: {
+  //         icon: '_qq',
+  //         title: '病人查询'
+  //       },
+  //       component: () => import('@/view/join-page.vue')
+  //     },
+  //     {
+  //       path: 'join_page',
+  //       name: 'setQX1',
+  //       meta: {
+  //         icon: '_qq',
+  //         title: '个人用户查询'
+  //       },
+  //       component: () => import('@/view/join-page.vue')
+  //     },
+  //     {
+  //       path: 'join_page',
+  //       name: 'setQX2',
+  //       meta: {
+  //         icon: '_qq',
+  //         title: '医院医生查询'
+  //       },
+  //       component: () => import('@/view/join-page.vue')
+  //     }
+  //   ]
+  // },
+  {
+    path: '',
     name: 'doc',
     meta: {
       title: '文档',
@@ -76,7 +169,7 @@ export default [
         name: 'join_page',
         meta: {
           icon: '_qq',
-          title: 'QQ群111'
+          title: 'QQ群'
         },
         component: () => import('@/view/join-page.vue')
       }
