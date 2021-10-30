@@ -6,7 +6,7 @@ const debug = process.env.NODE_ENV === 'production'
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
  * meta: {
- *  title: { String|Number|Function }
+ *  title: { String|Number|Function  }
  *         显示在侧边栏、面包屑和标签栏的文字
  *         使用'{{ 多语言字段 }}'形式结合多语言使用，例子看多语言的路由配置;
  *         可以传入一个回调函数，参数是当前路由对象，例子看动态路由和带参路由
