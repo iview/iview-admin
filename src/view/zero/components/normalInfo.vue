@@ -1,79 +1,87 @@
 <template>
-  <div class="split-pane-page-wrapper">
-    <split-pane v-model="offset" @on-moving="handleMoving">
-      <div slot="left" class="pane left-pane">
-        <split-pane v-model="offsetVertical" mode="vertical" @on-moving="handleMoving">
-          <div slot="top" class="pane top-pane"></div>
-          <div slot="bottom" class="pane bottom-pane"></div>
-          <div slot="trigger" class="custom-trigger">
-            <icons class="trigger-icon" :size="22" type="resize-vertical" color="#fff"/>
-          </div>
-        </split-pane>
-      </div>
-      <div slot="right" class="pane right-pane"></div>
-    </split-pane>
-  </div>
+  <Form :model="formItem" :label-width="80">
+    <FormItem label="Input">
+      <Input v-model="formItem.input" placeholder="Enter something..."></Input>
+    </FormItem>
+    <FormItem label="Select">
+      <Select v-model="formItem.select">
+        <Option value="beijing">New York</Option>
+        <Option value="shanghai">London</Option>
+        <Option value="shenzhen">Sydney</Option>
+      </Select>
+    </FormItem>
+    <FormItem label="DatePicker">
+      <Row>
+        <Col span="11">
+          <DatePicker
+            type="date"
+            placeholder="Select date"
+            v-model="formItem.date"
+          ></DatePicker>
+        </Col>
+        <Col span="2" style="text-align: center">-</Col>
+        <Col span="11">
+          <TimePicker
+            type="time"
+            placeholder="Select time"
+            v-model="formItem.time"
+          ></TimePicker>
+        </Col>
+      </Row>
+    </FormItem>
+    <FormItem label="Radio">
+      <RadioGroup v-model="formItem.radio">
+        <Radio label="male">Male</Radio>
+        <Radio label="female">Female</Radio>
+      </RadioGroup>
+    </FormItem>
+    <FormItem label="Checkbox">
+      <CheckboxGroup v-model="formItem.checkbox">
+        <Checkbox label="Eat"></Checkbox>
+        <Checkbox label="Sleep"></Checkbox>
+        <Checkbox label="Run"></Checkbox>
+        <Checkbox label="Movie"></Checkbox>
+      </CheckboxGroup>
+    </FormItem>
+    <FormItem label="Switch">
+      <i-switch v-model="formItem.switch" size="large">
+        <span slot="open">On</span>
+        <span slot="close">Off</span>
+      </i-switch>
+    </FormItem>
+    <FormItem label="Slider">
+      <Slider v-model="formItem.slider" range></Slider>
+    </FormItem>
+    <FormItem label="Text">
+      <Input
+        v-model="formItem.textarea"
+        type="textarea"
+        :autosize="{ minRows: 2, maxRows: 5 }"
+        placeholder="Enter something..."
+      ></Input>
+    </FormItem>
+    <FormItem>
+      <Button type="primary">Submit</Button>
+      <Button style="margin-left: 8px">Cancel</Button>
+    </FormItem>
+  </Form>
 </template>
-
 <script>
-import SplitPane from '_c/split-pane'
-import Icons from '_c/icons'
 export default {
-  name: 'split_pane_page',
-  components: {
-    SplitPane,
-    Icons
-  },
   data () {
     return {
-      offset: 0.6,
-      offsetVertical: '250px'
-    }
-  },
-  methods: {
-    handleMoving (e) {
-      console.log(e.atMin, e.atMax)
+      formItem: {
+        input: '',
+        select: '',
+        radio: 'male',
+        checkbox: [],
+        switch: true,
+        date: '',
+        time: '',
+        slider: [20, 50],
+        textarea: ''
+      }
     }
   }
 }
 </script>
-
-<style lang="less">
-.center-middle{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.split-pane-page-wrapper{
-  height: 600px;
-  .pane{
-    width: 100%;
-    height: 100%;
-    &.left-pane{
-      background: sandybrown;
-    }
-    &.right-pane{
-      background: palevioletred;
-    }
-    &.top-pane{
-      background: sandybrown;
-    }
-    &.bottom-pane{
-      background: palevioletred;
-    }
-  }
-  .custom-trigger{
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #000000;
-    position: absolute;
-    .center-middle;
-    box-shadow: 0 0 6px 0 rgba(28, 36, 56, 0.4);
-    i.trigger-icon{
-      .center-middle;
-    }
-  }
-}
-</style>
