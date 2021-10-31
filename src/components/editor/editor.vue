@@ -53,6 +53,7 @@ export default {
   mounted () {
     this.editor = new Editor(`#${this.editorId}`)
     this.editor.config.onchange = (html) => {
+      console.log(`onchange html si: ${JSON.stringify(html)}`)
       let text = this.editor.txt.text()
       if (this.cache) localStorage.editorCache = html
       this.$emit('input', this.valueType === 'html' ? html : text)
