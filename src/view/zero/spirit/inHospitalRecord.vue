@@ -59,7 +59,7 @@ export default {
       职业： 公务员&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       记录时间：2021-01-01<span style=\"font-size: 12px;\"><br/></span></p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       民族： 汗&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-      病史来源： 其他<br/></p><p>&nbsp; &nbsp; &nbsp;住院号：001&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+      病史来源： 其他<br/></p><p>&nbsp; &nbsp; &nbsp;身份证：001&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
       &nbsp; &nbsp; &nbsp; &nbsp;电话： 13500000000</p><p><br/></p><p style=\"line-height:2;\">
       &nbsp; &nbsp; &nbsp;<b>主诉</b>：失眠，自言自语、疑心，乱撕东西，大喊大叫15年，加重一年。
       <br/></p><p style=\"line-height:2;\">&nbsp; &nbsp;&nbsp;&nbsp;<b> 现病史</b>：患者于15年前，无明显诱因，逐渐出现重复做一件事情，重复已说过的话。无故自笑，女儿常看到其自言自语，说母亲能听到有墨人生人和自己说话。大小便不能自理，穿衣经常不知道正反，在家里经常无缘无故，大喊大叫，家人劝说不听。在家里喜欢撕东西。。<br/></p><br/>`

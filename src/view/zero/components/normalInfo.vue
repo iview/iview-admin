@@ -80,6 +80,13 @@
         </Row>
         <Row>
           <Col span="24">
+            <FormItem label="身份证号">
+              <Input v-model="formItem.gongzuodanwei" placeholder="请输入身份证号"></Input>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+          <Col span="24">
             <FormItem label="工作单位">
               <Input v-model="formItem.gongzuodanwei" placeholder="请输入工作单位"></Input>
             </FormItem>
