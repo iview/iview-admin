@@ -104,7 +104,7 @@ export default {
 .editor-wrapper {
   // z-index: 100 !important;
   .w-e-text-container{
-    height: calc(~"100% - 100px") !important;
+    height: calc(~"130%") !important;
   }
   .w-e-toolbar{
     height: 100px;

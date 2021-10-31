@@ -127,21 +127,21 @@
         <Row>
           <Col span="24">
             <FormItem label="选择表格">
-              <Select v-model="formItem.switchTable" multiple>
-                <Option value="01">精神分裂症心理治疗记录单</Option>
-                <Option value="02">躁狂症状量表（BRMS)</Option>
-                <Option value="03">汉密尔顿焦虑量表（HAMA）</Option>
-                <Option value="04">汉密尔顿抑郁量表（HAMD）</Option>
-                <Option value="05">药物不良反应表（TESS）</Option>
-                <Option value="06">临床总体印象量表（CGI）</Option>
-                <Option value="07">简明精神病评定量表（BPRS）</Option>
-                <Option value="08">阴性症状量表（SANS）</Option>
-                <Option value="09">阳性症状量表（SAPS）</Option>
-                <Option value="10">精神护理观察量表（NOSIE）</Option>
-                <Option value="11">行为观察和治疗记录单</Option>
-                <Option value="12">双向情感障碍心理治疗记录单</Option>
-                <Option value="13">抑郁症心理治疗记录单</Option>
-              </Select>
+              <CheckboxGroup v-model="formItem.switchTable">
+                <Checkbox label="精神分裂症心理治疗记录单"></Checkbox>
+                <Checkbox label="躁狂症状量表（BRMS"></Checkbox>
+                <Checkbox label="汉密尔顿焦虑量表（HAMA）"></Checkbox>
+                <Checkbox label="汉密尔顿抑郁量表（HAMD）"></Checkbox>
+                <Checkbox label="药物不良反应表（TESS）"></Checkbox>
+                <Checkbox label="临床总体印象量表（CGI）"></Checkbox>
+                <Checkbox label="简明精神病评定量表（BPRS）"></Checkbox>
+                <Checkbox label="阴性症状量表（SANS）"></Checkbox>
+                <Checkbox label="阳性症状量表（SAPS）"></Checkbox>
+                <Checkbox label="精神护理观察量表（NOSIE）"></Checkbox>
+                <Checkbox label="行为观察和治疗记录单"></Checkbox>
+                <Checkbox label="双向情感障碍心理治疗记录单"></Checkbox>
+                <Checkbox label="抑郁症心理治疗记录单"></Checkbox>
+              </CheckboxGroup>
             </FormItem>
           </Col>
         </Row>
