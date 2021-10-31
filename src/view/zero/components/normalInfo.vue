@@ -141,6 +141,7 @@
         <FormItem>
           <Button type="primary">确认</Button>
           <Button style="margin-left: 8px">重置</Button>
+          <Button type="success" style="margin-left: 8px">语音导入</Button>
         </FormItem>
       </Form>
     </Panel>
