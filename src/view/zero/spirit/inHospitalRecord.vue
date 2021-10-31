@@ -6,7 +6,8 @@
         <normal-info></normal-info>
       </div>
       <div slot="right" class="pane right-pane">
-        <split-pane v-model="offsetVertical" mode="vertical" @on-moving="handleMoving">
+        <editor ref="editor" :value="content" @on-change="handleChange"/>
+        <!-- <split-pane v-model="offsetVertical" mode="vertical" @on-moving="handleMoving">
           <div slot="top" class="pane top-pane">
             123456
           </div>
@@ -16,7 +17,7 @@
           <div slot="trigger" class="custom-trigger">
             <icons class="trigger-icon" :size="22" type="resize-vertical" color="#fff"/>
           </div>
-        </split-pane>
+        </split-pane> -->
       </div>
     </split-pane>
   </div>
@@ -25,23 +26,32 @@
 <script>
 import SplitPane from '_c/split-pane'
 import Icons from '_c/icons'
+import Editor from '_c/editor'
 import NormalInfo from '@/view/zero/components/normalInfo.vue'
 export default {
   name: 'in_hospital_record',
   components: {
     SplitPane,
     Icons,
-    NormalInfo
+    NormalInfo,
+    Editor
   },
   data () {
     return {
       offset: 0.6,
-      offsetVertical: '250px'
+      offsetVertical: '250px',
+      content: '123456789'
     }
   },
   methods: {
     handleMoving (e) {
       console.log(e.atMin, e.atMax)
+    },
+    handleChange (html, text) {
+      console.log(html, text)
+    },
+    changeContent () {
+      this.$refs.editor.setHtml('<p>powered by wangeditor</p>')
     }
   }
 }

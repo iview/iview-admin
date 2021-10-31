@@ -1,6 +1,6 @@
 <template>
-  <div class="editor-wrapper">
-    <div :id="editorId"></div>
+  <div class="editor-wrapper" style="height:100%;">
+    <div :id="editorId" style="height:100% !important;" ></div>
   </div>
 </template>
 
@@ -82,7 +82,13 @@ export default {
 </script>
 
 <style lang="less">
-.editor-wrapper *{
+.editor-wrapper {
   // z-index: 100 !important;
+  .w-e-text-container{
+    height: calc(~"100% - 150px") !important;
+  }
+  .w-e-toolbar{
+    height: 150px;
+  }
 }
 </style>
