@@ -61,6 +61,24 @@ export default {
     // this.editor.config.menuTooltipPosition = 'down'
     this.editor.config.showMenuTooltips = false
     this.editor.config.onchangeTimeout = this.changeInterval
+    this.editor.config.menus = [
+      'head',
+      'bold',
+      'fontSize',
+      'italic',
+      'strikeThrough',
+      'indent',
+      'lineHeight',
+      'foreColor',
+      'backColor',
+      'list',
+      'justify',
+      'quote',
+      'table',
+      'splitLine',
+      'undo',
+      'redo'
+    ]
     this.editor.config.colors = [
       '#ffffff',
       '#000000',
@@ -85,10 +103,10 @@ export default {
 .editor-wrapper {
   // z-index: 100 !important;
   .w-e-text-container{
-    height: calc(~"100% - 150px") !important;
+    height: calc(~"100% - 100px") !important;
   }
   .w-e-toolbar{
-    height: 150px;
+    height: 100px;
   }
 }
 </style>
