@@ -42,5 +42,32 @@ export default {
   tree_table_page: '树状表格',
   org_tree_page: '组织结构树',
   drag_drawer_page: '可拖动抽屉',
-  tree_select_page: '树状下拉选择器'
+  tree_select_page: '树状下拉选择器',
+  // 设置路由
+  zero_setting: '设置',
+  my_info: '个人信息',
+  permissions: '权限设置',
+  phone_num: '重置手机号',
+  pwd: '重置密码',
+  // 搜索路由
+  zero_search: '查询',
+  doctor: '医生信息',
+  patient: '病人信息',
+  transforPatient: '病人转移',
+  // 审批路由
+  zero_approval: '申请审批',
+  filed: '申请加入医院',
+  sure: '审批加入医院',
+  // 模板
+  zero_template: '模板',
+  cases: '病例模板',
+  dropdown: '下拉框模板',
+  table: '表格模板',
+  // 精神疾病路由
+  zero_spirit: '精神疾病',
+  in_hospital_record: '入院记录',
+  search_home_record: '查房记录',
+  download_table: '下载表格',
+  setting_table: '表格配置'
+
 }

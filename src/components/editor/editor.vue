@@ -1,12 +1,12 @@
 <template>
-  <div class="editor-wrapper">
-    <div :id="editorId"></div>
+  <div class="editor-wrapper" style="height:100%;">
+    <div :id="editorId" style="height:100% !important;" ></div>
   </div>
 </template>
 
 <script>
 import Editor from 'wangeditor'
-import 'wangeditor/release/wangEditor.min.css'
+// import 'wangeditor/release/wangEditor.min.css'
 import { oneOf } from '@/libs/tools'
 export default {
   name: 'Editor',
@@ -52,13 +52,45 @@ export default {
   },
   mounted () {
     this.editor = new Editor(`#${this.editorId}`)
-    this.editor.customConfig.onchange = (html) => {
+    this.editor.config.onchange = (html) => {
+      console.log(`onchange html si: ${JSON.stringify(html)}`)
       let text = this.editor.txt.text()
       if (this.cache) localStorage.editorCache = html
       this.$emit('input', this.valueType === 'html' ? html : text)
       this.$emit('on-change', html, text)
     }
-    this.editor.customConfig.onchangeTimeout = this.changeInterval
+    // this.editor.config.menuTooltipPosition = 'down'
+    this.editor.config.showMenuTooltips = false
+    this.editor.config.onchangeTimeout = this.changeInterval
+    this.editor.config.menus = [
+      'head',
+      'bold',
+      'fontSize',
+      'italic',
+      'strikeThrough',
+      'indent',
+      'lineHeight',
+      'foreColor',
+      'backColor',
+      'list',
+      'justify',
+      'quote',
+      'table',
+      'splitLine',
+      'undo',
+      'redo'
+    ]
+    this.editor.config.colors = [
+      '#ffffff',
+      '#000000',
+      '#1c487f',
+      '#4d80bf',
+      '#c24f4a',
+      '#8baa4a',
+      '#7b5ba1',
+      '#46acc8',
+      '#f9963b'
+    ]
     // create这个方法一定要在所有配置项之后调用
     this.editor.create()
     // 如果本地有存储加载本地存储内容
@@ -69,7 +101,13 @@ export default {
 </script>
 
 <style lang="less">
-.editor-wrapper *{
-  z-index: 100 !important;
+.editor-wrapper {
+  // z-index: 100 !important;
+  .w-e-text-container{
+    height: calc(~"130%") !important;
+  }
+  .w-e-toolbar{
+    height: 100px;
+  }
 }
 </style>

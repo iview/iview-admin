@@ -11,7 +11,7 @@ export default {
   name: 'backBtnGroup',
   data () {
     return {
-      second: 5,
+      second: 5000,
       timer: null
     }
   },
