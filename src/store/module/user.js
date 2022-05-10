@@ -17,7 +17,7 @@ export default {
     userId: '',
     avatarImgPath: '',
     token: getToken(),
-    access: '',
+    access: [],
     hasGetInfo: false,
     unreadCount: 0,
     messageUnreadList: [],
